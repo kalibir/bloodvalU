@@ -1,0 +1,14 @@
+name: bloodv_backend
+dependencies:
+  - python=3.6
+  - psycopg2
+  - pip:
+      - flake8
+      - django==3.0.3
+      - djangorestframework==3.11.0
+      - djangorestframework-simplejwt==4.4.0
+      - Pillow==7.1.2
+      - coreapi==2.3.3
+      - markdown==3.2.2
+      - gunicorn==20.0.4
+      - django-cors-headers==3.4.0
