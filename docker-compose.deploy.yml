@@ -1,7 +1,7 @@
 version: '3'
 services:
   backend:
-    image: registry.gitlab.propulsion-home.ch/full-stack/batch-12-may-2020/group-projects/scorpio/luna_project:master
+    image: registry.gitlab.propulsion-home.ch/full-stack/batch-12-may-2020/final-projects/bloodvalyou/blood_value:master
     volumes:
     - frontend:/frontend/build
     - static-files:/static-files
