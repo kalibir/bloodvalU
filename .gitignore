@@ -1,1 +1,12 @@
+.idea
+.DS_Store
+*.pyc
+__pycache__
+*.sqlite3
+media-files
+static-files
+/app/.coverage
+/app/htmlcov
+/node_modules
+/frontend/node_modules/
 frontend/node_modules
