@@ -26,7 +26,7 @@ import {
   InputTextArea,
 } from "../../style/GlobalInputs";
 import Spinner from "../GenericSpinner";
-import {DonorRegistrationPage} from "../Credentials/RegistrationDonor";
+import {DonorValidationPage} from "../Credentials/ValidationDonor";
 
 
 
@@ -34,7 +34,7 @@ function Template(props) {
   return (
     <div className="App">
       <header className="App-header">
-       <DonorRegistrationPage />
+       <DonorValidationPage />
         {/*<h1>Spinner</h1>*/}
         {/*<Spinner />*/}
         {/*<br></br>*/}

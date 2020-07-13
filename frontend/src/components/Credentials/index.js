@@ -2,7 +2,7 @@ import React from "react";
 //import Login from "./Login";
 import {Route} from "react-router-dom";
 //import Verification from "./Verification";
-import RegistrationSeeker from "./RegistrationSeeker";
+import RegistrationSeeker from "./ValidationSeeker";
 //import SignUpSent from "./RegistrationSent";
 
 const Credentials = (props) => {
