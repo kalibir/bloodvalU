@@ -19,4 +19,6 @@ export const GlobalStyle = createGlobalStyle`
     }
 `;
 
-export const theme = {};
+export const theme = {
+    baseRed: "#FF303F",
+};
