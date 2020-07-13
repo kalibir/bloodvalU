@@ -1,4 +1,5 @@
-import Link from "react-router-dom/modules/Link";
+import { Link } from "react-router-dom";
+import React from "react";
 
 const CodeSent = () => {
 
@@ -6,14 +7,7 @@ const CodeSent = () => {
     <div>
         <h2>Registration</h2>
         <p>
-          Thanks for your registration.
-          <br />
-          Our hard working monkeys are preparing a digital
-          <br /> message called E-Mail that will be sent to you soon.
-          <br />
-          Since monkeys aren't good in writing the message could
-          <br /> end up in your junk folder. Our apologies for any
-          <br /> inconvenience.
+          Thanks for your registration. Please check your email for the validation code.
         </p>
               <Link to="">
                 <button>Next</button>
