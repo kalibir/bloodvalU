@@ -5,6 +5,7 @@ import {
   Route,
 } from "react-router-dom";
 import Template from "../components/Test";
+import Credentials from "../components/Credentials";
 
 const Routes = () => {
   return (
@@ -13,7 +14,7 @@ const Routes = () => {
         <Switch>
           {/*<Navigation>*/}
             <Route path="/templates" component={Template} />
-            {/*<Route path="/auth" component={Credentials} />*/}
+            <Route path="/auth" component={Credentials} />
             {/*<Route path="/auth" component={Credentials} />*/}
             {/*<Route path="/auth" component={Credentials} />*/}
           {/*</Navigation>*/}
