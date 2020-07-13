@@ -1,4 +1,5 @@
-import Link from "react-router-dom/modules/Link";
+import {Link} from "react-router-dom";
+import React from "react";
 
 const CodeSent = () => {
 
