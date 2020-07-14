@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'email']
+        fields = ['id', 'email', 'is_donor']
         extra_kwargs = {
             'email': {'read_only': True},
         }

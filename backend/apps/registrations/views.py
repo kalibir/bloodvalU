@@ -6,10 +6,12 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from apps.donorprofiles.models import DonorProfile
 from apps.registrations.models import Registration
 from apps.registrations.serializers import RegistrationSerializer, ResetPasswordSerializer, CreateUserSerializer
 from apps.registrations.models import code_generator
-from apps.users.serializer import UserSerializer
+from apps.seekerprofiles.models import SeekerProfile
+from apps.users.serializers import UserSerializer
 
 User = get_user_model()
 
@@ -42,12 +44,19 @@ class CreateUserView(CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         target_profile = Registration.objects.get(email=request.data['email'])
-        user = User.objects.create_user(request.data['username'], request.data['email'],
-                                        request.data['password'])
+        user = User.objects.create_user(request.data['email'], request.data['email'],
+                                        request.data['password'], is_donor=request.data['is_donor'])
 
         self.perform_create(user)
         target_profile.user = user
         target_profile.save()
+        if request.data['is_donor'] == "True":
+            DonorProfile.objects.create(user=user)
+            user.donor_profile.save()
+        else:
+            SeekerProfile.objects.create(user=user)
+            user.seeker_profile.save()
+
         return Response(status=status.HTTP_201_CREATED)
 
 

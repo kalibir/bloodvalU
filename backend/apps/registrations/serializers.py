@@ -61,15 +61,16 @@ class CreateUserSerializer(UserSerializer):
             'password',
             'password_repeat',
             'code',
+            'is_donor'
         ]
 
     def validate(self, data):
         try:
             target_profile = Registration.objects.get(email=data.get('email'))
         except Registration.DoesNotExist:
-            self.add_error({"1": "Your email is incorrect or does not exist!"})
+            raise serializers.ValidationError({"1": "Your email is incorrect or does not exist!"})
         if data.get('code') != target_profile.code:
-            self.add_error({"2": "Your validation code is incorrect!"})
+            raise serializers.ValidationError({"2": "Your validation code is incorrect!"})
         if data.get('password') != data.get('password_repeat'):
-            self.add_error({"3": "The passwords do not match!"})
+            raise serializers.ValidationError({"3": "The passwords do not match!"})
         return data
