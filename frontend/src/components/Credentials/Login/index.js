@@ -42,10 +42,10 @@ const Login = (props) => {
 
     return (
         <div>
-                <div>Validation</div>
+                <div>Login</div>
                 <form>
                         <input placeholder="email" type="email" required/>
-                        <input placeholder="validation code" type="number" required/>
+                        <input placeholder="password" type="password" required/>
                 </form>
         </div>
    );
