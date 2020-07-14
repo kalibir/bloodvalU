@@ -15,7 +15,8 @@ const Routes = () => {
       <Router>
         <Switch>
           <Navigation>
-            <Route path="/templates" component={LandingPage} />
+            <Route path="/templates" component={Template} />
+            <Route path="/home" component={LandingPage} />
             <Route path="/auth" component={Credentials} />
             {/*<Route path="/auth" component={Credentials} />*/}
             {/*<Route path="/auth" component={Credentials} />*/}

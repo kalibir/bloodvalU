@@ -68,7 +68,7 @@ export const ChooseRoleButton = styled.button`
     border-radius: 4px;
     font-style: normal;
     font-weight: 500;
-    font-size: 18px;
+    font-size: ${rem("18px")};
     line-height: 24px;
     color: #121232;
     transition-duration: 0.5s;
@@ -83,4 +83,35 @@ export const ChooseRoleButton = styled.button`
         color: #FFF;
         border: 2px solid #121232;
         background: #121232;
+`;
+
+export const SmallBlueButton = styled.button`
+    width: ${rem("49px")};
+    height: ${rem("21px")};
+    background: #2196F3;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 24px;
+    letter-spacing: 0.16px;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    transition-duration: 0.4s;
+    transition-timing-function: ease-in-out;
+    outline: none;
+    border: 1px solid #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    :hover {
+        color: #2196F3;
+        background: #FFF;
+        border: 1px solid #2196F3;
+    }
+    :active {
+        color: #2196F3;
+        background: #FFF;
+        border: 1px solid #2196F3;
 `;
