@@ -1,5 +1,8 @@
 import React from "react";
-import {RedRoundButton, GreenRoundButton, RedSquareButton} from "../../style/GlobalButtons";
+import {
+    ChooseRoleButton,
+    DarkBlueButton
+} from "../../style/GlobalButtons";
 import {BaseInput, BigInput} from "../../style/GlobalInputs";
 import {BlackTitle, RedTitle} from "../../style/GlobalTitles";
 import {PageContainer} from "../../style/GlobalWrappers";
@@ -13,14 +16,13 @@ function Template(props) {
         <RedTitle>RedTitle</RedTitle>
           <BigBloodTypeIcon>O-</BigBloodTypeIcon>
         <br></br>
-       <GreenRoundButton>Confirm</GreenRoundButton>
+       <DarkBlueButton>Confirm</DarkBlueButton>
           <p>.</p>
           <BaseInput placeholder="some text"/>
           <br></br>
           <BigInput placeholder="placeholder"/>
-        <RedRoundButton>Cancel</RedRoundButton>
           <br></br>
-          <RedSquareButton>Donating</RedSquareButton>
+          <ChooseRoleButton>Becoming a donor</ChooseRoleButton>
           <BlackTitle>BlackTitle</BlackTitle>
       </PageContainer>
   );
