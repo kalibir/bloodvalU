@@ -106,7 +106,7 @@ const ValidationSeeker = (props) => {
         if (response.status < 300) {
             console.log("woohooo", response)
             const seekerId = response.data.id
-            history.push(`/seekers/${seekerId}`)
+            history.push(`/seekerprofiles/${seekerId}`)
         } else {
             console.log('error', response)
         }
