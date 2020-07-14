@@ -6,18 +6,19 @@ import {
 } from "react-router-dom";
 import Template from "../components/Test";
 import Credentials from "../components/Credentials";
+import Navigation from "../components/Navigation";
 
 const Routes = () => {
   return (
     <>
       <Router>
         <Switch>
-          {/*<Navigation>*/}
+          <Navigation>
             <Route path="/templates" component={Template} />
             <Route path="/auth" component={Credentials} />
             {/*<Route path="/auth" component={Credentials} />*/}
             {/*<Route path="/auth" component={Credentials} />*/}
-          {/*</Navigation>*/}
+          </Navigation>
         </Switch>
       </Router>
     </>
