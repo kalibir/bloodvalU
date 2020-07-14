@@ -46,12 +46,12 @@ INSTALLED_APPS = [
     'django_filters',
     # Own Apps
     'apps.users',
-    # 'apps.bloodrequests',
+    'apps.bloodrequests',
     'apps.donorprofiles',
     'apps.seekerprofiles',
     'apps.registrations',
-    # 'apps.testresults',
-    # 'apps.offeredtests',
+    'apps.testresults',
+    'apps.offeredtests',
 ]
 
 MIDDLEWARE = [
