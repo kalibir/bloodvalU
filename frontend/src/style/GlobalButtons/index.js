@@ -1,68 +1,83 @@
 import { rem } from "polished";
 import styled from "styled-components";
 
-export const RedRoundButton = styled.button`
-  border-radius: ${rem("50px")};
-  border: none;
-  width: ${rem("218px")};
-  height: ${rem("74px")};
-  background: #E57373;
-  cursor: pointer;
-  font-size: ${rem("36px")};
-  font-style: normal;
-  font-weight: normal;
-  line-height: ${rem("42px")};
-  text-align: center;
-  color: #ffffff;
+export const DarkBlueButton = styled.button`
+    background: #121232;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+    width: ${rem("141px")};
+    height: ${rem("48px")};
+    cursor: pointer;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0.5px;
+    color: #FFFFFF;
+    transition-duration: 0.4s;
 
-  :hover {
-    background-color: #e35d5d;
-  }
-  :active {
-    background-color: #e35d5d;
+    :hover {
+        color: #121232;
+        background: #FFF;
+        border: 1px solid #121232;
+    }
+    :active {
+        color: #121232;
+        background: #FFF;
+        border: 1px solid #121232;
+    }
 `;
 
-export const GreenRoundButton = styled.button`
-  background: #9CCC65;
-  border-radius: ${rem("50px")};
-  border: none;
-  width: ${rem("218px")};
-  height: ${rem("74px")};
-  cursor: pointer;
-  font-size: ${rem("36px")};
-  font-style: normal;
-  font-weight: normal;
-  line-height: ${rem("42px")};
-  text-align: center;
-  color: #ffffff;
-  
-  :hover {
-    background: #91cc4e;
-  }
-  :active {
-    background: #91cc4e;
-`;
+export const WhiteButton = styled.button`
+    background: #FFFFFF;
+    border: 1px solid #121232;
+    box-sizing: border-box;
+    border-radius: 4px;
+    outline: none;
+    width: ${rem("106px")};
+    height: ${rem("48px")};
+    cursor: pointer;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0.5px;
+    color: #121232;
+    transition-duration: 0.4s;
+   
+    :hover {
+        color: #FFF;
+        background: #121232;
+        border: 1px solid #FFF;
+    }
+    :active {
+        color: #FFF;
+        background: #121232;
+        border: 1px solid #FFF;
+    }
+`
 
-export const RedSquareButton = styled.button`
-  width: ${rem("204px")};
-  height: ${rem("204px")};
-  background: #E57373;
-  border-radius: 5px;
-  border: none;
-  font-style: normal;
-  font-weight: bold;
-  font-size: ${rem("48px")};
-  line-height: ${rem("56px")};
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: ${rem("35px")};
-
-color: #FFFFFF;
+export const ChooseRoleButton = styled.button`
+    width: ${rem("352px")};
+    height: ${rem("160px")};
+    background: #FFFFFF;
+    border: 1px solid #D3D4D8;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    color: #121232;
+    transition-duration: 0.4s;
   
-  :hover {
-    background-color: #e35d5d;
-  }
-  :active {
-    background-color: #e35d5d;
+    :hover {
+        color: #FFF;
+        border: 2px solid #121232;
+        background: #121232;
+    }
+    :active {
+        color: #FFF;
+        border: 2px solid #121232;
+        background: #121232;
 `;

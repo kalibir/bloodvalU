@@ -42,9 +42,16 @@ INSTALLED_APPS = [
     # Third Party
     'rest_framework',
     'corsheaders',
+    'django_countries',
     'django_filters',
-    # Project Apps
+    # Own Apps
     'apps.users',
+    # 'apps.bloodrequests',
+    'apps.donorprofiles',
+    'apps.seekerprofiles',
+    'apps.registrations',
+    # 'apps.testresults',
+    # 'apps.offeredtests',
 ]
 
 MIDDLEWARE = [
@@ -152,7 +159,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

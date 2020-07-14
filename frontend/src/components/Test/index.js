@@ -1,27 +1,28 @@
 import React from "react";
-import {RedRoundButton, GreenRoundButton, RedSquareButton} from "../../style/GlobalButtons";
-import {BaseInput, BigInput} from "../../style/GlobalInputs";
-import {BlackTitle, RedTitle} from "../../style/GlobalTitles";
+import {
+    ChooseRoleButton,
+    DarkBlueButton, WhiteButton
+} from "../../style/GlobalButtons";
+import {BigInput, SmallInput} from "../../style/GlobalInputs";
+import {BigTitle, MiddleTitle, SmallTitle} from "../../style/GlobalTitles";
 import {PageContainer} from "../../style/GlobalWrappers";
-import {BigBloodTypeIcon} from "../../style/GlobalIcons";
 
 
 function Template(props) {
   return (
       <PageContainer>
           <br></br>
-        <RedTitle>RedTitle</RedTitle>
-          <BigBloodTypeIcon>O-</BigBloodTypeIcon>
+        <SmallTitle>RedTitle</SmallTitle>
+          <BigTitle>First Page Title</BigTitle>
+          <WhiteButton>Back</WhiteButton>
         <br></br>
-       <GreenRoundButton>Confirm</GreenRoundButton>
+       <DarkBlueButton>Confirm</DarkBlueButton>
           <p>.</p>
-          <BaseInput placeholder="some text"/>
+          <BigInput type="text" placeholder="Street"/>
+          <SmallInput type="text" placeholder="Country"/>
           <br></br>
-          <BigInput placeholder="placeholder"/>
-        <RedRoundButton>Cancel</RedRoundButton>
-          <br></br>
-          <RedSquareButton>Donating</RedSquareButton>
-          <BlackTitle>BlackTitle</BlackTitle>
+          <ChooseRoleButton>Becoming a donor</ChooseRoleButton>
+          <MiddleTitle>Your registration is now complete!</MiddleTitle>
       </PageContainer>
   );
 }

@@ -6,4 +6,5 @@ export const PageContainer = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
+  background: #E5E5E5;
 `;

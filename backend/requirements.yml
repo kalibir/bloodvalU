@@ -13,3 +13,4 @@ dependencies:
       - gunicorn==20.0.4
       - django-cors-headers==3.4.0
       - django-filter==2.1.0
+      - django-countries==6.1.2
