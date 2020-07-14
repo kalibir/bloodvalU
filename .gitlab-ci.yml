@@ -61,9 +61,9 @@ cleanup:
 
 deploy:
   stage: deploy
-  when: manual
   only:
     - master
+  when: manual
   script:
     - docker-compose -f docker-compose.deploy.yml pull
     - docker-compose -f docker-compose.deploy.yml down --remove-orphans
