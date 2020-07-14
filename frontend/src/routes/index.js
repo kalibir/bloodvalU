@@ -7,7 +7,6 @@ import {
 import Template from "../components/Test";
 import Credentials from "../components/Credentials";
 import Navigation from "../components/Navigation";
-import {LandingPage} from "../components/LandingPage";
 
 const Routes = () => {
   return (
@@ -15,7 +14,7 @@ const Routes = () => {
       <Router>
         <Switch>
           <Navigation>
-            <Route path="/templates" component={LandingPage} />
+            <Route path="/templates" component={Template} />
             <Route path="/auth" component={Credentials} />
             {/*<Route path="/auth" component={Credentials} />*/}
             {/*<Route path="/auth" component={Credentials} />*/}
