@@ -31,7 +31,7 @@ const ForgotContainer = styled.div`
     height: ${rem("48px")};
     display: flex;
     align-items: center;
-`
+`;
 
 const ForgotPassword = styled.p`
     font-weight: 600;

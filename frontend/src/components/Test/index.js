@@ -6,6 +6,7 @@ import {
 import {BigInput, SmallInput} from "../../style/GlobalInputs";
 import {BigTitle, MiddleTitle, SmallTitle} from "../../style/GlobalTitles";
 import {PageContainer} from "../../style/GlobalWrappers";
+import GenericDonorTestCard from "../GenericDonorTestCard";
 
 
 function Template(props) {
@@ -14,6 +15,7 @@ function Template(props) {
           <br></br>
         <SmallTitle>RedTitle</SmallTitle>
           <BigTitle>First Page Title</BigTitle>
+          <GenericDonorTestCard/>
           <WhiteButton>Back</WhiteButton>
         <br></br>
        <DarkBlueButton>Confirm</DarkBlueButton>
