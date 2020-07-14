@@ -2,6 +2,51 @@ import React from "react";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
 import {connect, useDispatch} from "react-redux";
+import {PageContainer} from "../../../style/GlobalWrappers";
+import {BigInput, SmallInput} from "../../../style/GlobalInputs";
+import {MiddleTitle, SmallTitle} from "../../../style/GlobalTitles";
+import {DarkBlueButton} from "../../../style/GlobalButtons";
+
+const PageWrapper = styled(PageContainer)`
+    height: 78.2vh;
+`;
+
+const FormWrapper = styled.form`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 90px;
+`;
+
+const EmailInput = styled(BigInput)`
+    margin-top: 9px;
+    margin-bottom: 32px;
+`;
+
+const RegistrationTitle = styled(MiddleTitle)`
+    margin-bottom: 23px;
+`;
+
+const ForgotContainer = styled.div`
+    height: ${rem("48px")};
+    display: flex;
+    align-items: center;
+`
+
+const ForgotPassword = styled.p`
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 32px;
+    text-decoration-line: underline;
+    color: #3E465F;
+    margin-left: 24px;
+`;
+
+const ButtonWrapper = styled.div`
+    display: flex;
+    width: ${rem("352px")};
+    height: ${rem("97px")};
+`
 
 
 const Login = (props) => {
@@ -41,13 +86,21 @@ const Login = (props) => {
   };*/
 
     return (
-        <div>
-                <div>Login</div>
-                <form>
-                        <input placeholder="email" type="email" required/>
-                        <input placeholder="password" type="password" required/>
-                </form>
-        </div>
+        <PageWrapper>
+                <FormWrapper>
+                        <RegistrationTitle>Login</RegistrationTitle>
+                        <SmallTitle>Email</SmallTitle>
+                        <EmailInput placeholder="example@email.com" type="email" required/>
+                        <SmallTitle>Password</SmallTitle>
+                        <EmailInput placeholder="***********" type="password" required/>
+                        <ButtonWrapper>
+                            <DarkBlueButton>Login</DarkBlueButton>
+                            <ForgotContainer>
+                                <ForgotPassword>Forgot password</ForgotPassword>
+                            </ForgotContainer>
+                        </ButtonWrapper>
+                </FormWrapper>
+        </PageWrapper>
    );
 };
 

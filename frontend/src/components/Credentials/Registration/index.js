@@ -2,6 +2,30 @@ import React from "react";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
 import {connect, useDispatch} from "react-redux";
+import {MiddleTitle, SmallTitle} from "../../../style/GlobalTitles";
+import {BigInput} from "../../../style/GlobalInputs";
+import {DarkBlueButton} from "../../../style/GlobalButtons";
+import {PageContainer} from "../../../style/GlobalWrappers";
+
+const PageWrapper = styled(PageContainer)`
+    height: 78.2vh;
+`;
+
+const FormWrapper = styled.form`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 90px;
+`;
+
+const EmailInput = styled(BigInput)`
+    margin-top: 9px;
+    margin-bottom: 32px;
+`;
+
+const RegistrationTitle = styled(MiddleTitle)`
+    margin-bottom: 23px;
+`;
 
 
 const Registration = (props) => {
@@ -30,13 +54,14 @@ const Registration = (props) => {
 
 
     return (
-        <div>
-                <div>Validation</div>
-                <form>
-                        <input placeholder="email" type="email" required/>
-                        <input placeholder="validation code" type="number" required/>
-                </form>
-        </div>
+        <PageWrapper>
+                <FormWrapper>
+                        <RegistrationTitle>Registration</RegistrationTitle>
+                        <SmallTitle>Email</SmallTitle>
+                        <EmailInput placeholder="email" type="email" required/>
+                        <DarkBlueButton>Register</DarkBlueButton>
+                </FormWrapper>
+        </PageWrapper>
    );
 };
 
