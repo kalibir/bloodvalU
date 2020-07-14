@@ -1,68 +1,50 @@
 import { rem } from "polished";
 import styled from "styled-components";
 
-export const RedRoundButton = styled.button`
-  border-radius: ${rem("50px")};
-  border: none;
-  width: ${rem("218px")};
-  height: ${rem("74px")};
-  background: #E57373;
-  cursor: pointer;
-  font-size: ${rem("36px")};
-  font-style: normal;
-  font-weight: normal;
-  line-height: ${rem("42px")};
-  text-align: center;
-  color: #ffffff;
+export const DarkBlueButton = styled.button`
+    background: #121232;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+    width: ${rem("141px")};
+    height: ${rem("48px")};
+    cursor: pointer;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.5px;
+    color: #FFFFFF;
 
   :hover {
-    background-color: #e35d5d;
+    border: 1px solid #E5E5E5;;
   }
   :active {
     background-color: #e35d5d;
 `;
 
-export const GreenRoundButton = styled.button`
-  background: #9CCC65;
-  border-radius: ${rem("50px")};
-  border: none;
-  width: ${rem("218px")};
-  height: ${rem("74px")};
-  cursor: pointer;
-  font-size: ${rem("36px")};
+export const ChooseRoleButton = styled.button`
+  width: ${rem("352px")};
+  height: ${rem("160px")};
+  background: #FFFFFF;
+  border: 1px solid #D3D4D8;
+  box-sizing: border-box;
+  border-radius: 4px;
   font-style: normal;
-  font-weight: normal;
-  line-height: ${rem("42px")};
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
   text-align: center;
-  color: #ffffff;
+  color: #121232;
   
   :hover {
-    background: #91cc4e;
+    border: 2px solid #E5E5E5;
+    background: #fcfcfc;
   }
   :active {
-    background: #91cc4e;
-`;
-
-export const RedSquareButton = styled.button`
-  width: ${rem("204px")};
-  height: ${rem("204px")};
-  background: #E57373;
-  border-radius: 5px;
-  border: none;
-  font-style: normal;
-  font-weight: bold;
-  font-size: ${rem("48px")};
-  line-height: ${rem("56px")};
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: ${rem("35px")};
-
-color: #FFFFFF;
-  
-  :hover {
-    background-color: #e35d5d;
-  }
-  :active {
-    background-color: #e35d5d;
+    border: 2px solid #E5E5E5;
+    background: #fcfcfc;
 `;
