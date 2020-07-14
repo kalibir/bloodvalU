@@ -4,7 +4,7 @@ import rem from "polished/lib/helpers/rem";
 import {connect, useDispatch} from "react-redux";
 import {BigInput, SmallInput} from "../../../style/GlobalInputs";
 import {MiddleTitle, SmallTitle} from "../../../style/GlobalTitles";
-import {DarkBlueButton} from "../../../style/GlobalButtons";
+import {DarkBlueButton, WhiteButton} from "../../../style/GlobalButtons";
 
 const FormWrapper = styled.form`
     display: flex;
@@ -24,15 +24,6 @@ const CostumizedSmallInput = styled(SmallInput)`
     margin-top: 9px;
 `;
 
-const StreetInput = styled(SmallInput)`
-    margin-top: 9px;
-    width: ${rem("256px")};
-`;
-
-const NrInput = styled(SmallInput)`
-    margin-top: 9px;
-    width: ${rem("64px")};
-`;
 
 const ValidationTitle = styled(MiddleTitle)`
     margin-bottom: 23px;
@@ -55,10 +46,46 @@ const ButtonWrapper = styled.div`
     display: flex;
     justify-content: flex-end;
     width: ${rem("352px")};
+`;
+
+const BlueButton = styled(DarkBlueButton)`
+    margin-left: ${rem("16px")};
 `
 
+const InputLabel = styled.label`
+      background: #121232;
+      border-radius: 4px;
+      border: none;
+      outline: none;
+      width: ${rem("141px")};
+      height: ${rem("48px")};
+      cursor: pointer;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      color: #FFFFFF;
+      margin-top: ${rem("9px")};
 
-const ValidationSeeker = (props) => {
+    :hover {
+        color: #121232;
+        background: #FFF;
+        border: 1px solid #121232;
+    }
+    :active {
+        color: #121232;
+        background: #FFF;
+        border: 1px solid #121232;
+    }
+`;
+
+const InputFile = styled.input`
+      display: none;
+      
+`;
+
+
+const ValidationSeeker2 = (props) => {
     /*const {authReducer} = props
     console.log("authReducer", authReducer)
     const history = useHistory()
@@ -123,42 +150,38 @@ const ValidationSeeker = (props) => {
                 </TitleWrapper>
                 <InputWrapper>
                     <div>
-                        <SmallTitle>Company name</SmallTitle>
-                        <CostumizedBigInput placeholder="Company name" required/>
+                        <SmallTitle>Email</SmallTitle>
+                        <CostumizedBigInput placeholder="example@email.com" type="email" required/>
                     </div>
                 </InputWrapper>
                 <InputWrapper>
                     <div>
-                        <SmallTitle>Street</SmallTitle>
-                        <StreetInput placeholder="Longstreet" required/>
-                    </div>
-                    <div>
-                        <SmallTitle>Nr.</SmallTitle>
-                        <NrInput placeholder="30" required/>
+                        <SmallTitle>Password</SmallTitle>
+                        <CostumizedBigInput placeholder="***********"type="password" required/>
                     </div>
                 </InputWrapper>
                 <InputWrapper>
                     <div>
-                        <SmallTitle>Zip</SmallTitle>
-                        <CostumizedSmallInput placeholder="8000 Zurich" required/>
-                    </div>
-                    <div>
-                        <SmallTitle>Country</SmallTitle>
-                        <CostumizedSmallInput placeholder="Switzerland" required/>
+                        <SmallTitle>Repeat password</SmallTitle>
+                        <CostumizedBigInput placeholder="***********"type="password" required/>
                     </div>
                 </InputWrapper>
                 <InputWrapper>
                     <div>
-                        <SmallTitle>Phone</SmallTitle>
-                        <CostumizedSmallInput placeholder="044 123 45 67" required/>
+                        <SmallTitle>Validation code</SmallTitle>
+                        <CostumizedSmallInput placeholder="12345" type="text" required/>
                     </div>
                     <div>
-                        <SmallTitle>Website</SmallTitle>
-                        <CostumizedSmallInput placeholder="www.example.ch" required/>
+                        <SmallTitle>Licence</SmallTitle>
+                        <InputLabel htmlFor="restaurant_image">Choose a file...</InputLabel>
+                        <div><p></p></div>
+                        <InputFile id="restaurant_image" accept="application/pdf"
+                                   type="file"/>
                     </div>
                 </InputWrapper>
                 <ButtonWrapper>
-                    <DarkBlueButton>Continue</DarkBlueButton>
+                    <WhiteButton>Back</WhiteButton>
+                    <BlueButton>Register</BlueButton>
                 </ButtonWrapper>
             </FormWrapper>
     )
@@ -171,4 +194,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(ValidationSeeker);
+export default connect(mapStateToProps)(ValidationSeeker2);
