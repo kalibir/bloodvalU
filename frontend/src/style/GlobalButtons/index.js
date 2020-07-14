@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const DarkBlueButton = styled.button`
     background: #121232;
     border-radius: 4px;
-    border: none;
+    border: 1px solid #121232;
     outline: none;
     width: ${rem("141px")};
     height: ${rem("48px")};
@@ -16,6 +16,7 @@ export const DarkBlueButton = styled.button`
     letter-spacing: 0.5px;
     color: #FFFFFF;
     transition-duration: 0.4s;
+    transition-timing-function: ease-in-out;
 
     :hover {
         color: #121232;
@@ -45,16 +46,17 @@ export const WhiteButton = styled.button`
     letter-spacing: 0.5px;
     color: #121232;
     transition-duration: 0.4s;
+    transition-timing-function: ease-in-out;
    
     :hover {
         color: #FFF;
         background: #121232;
-        border: 1px solid #FFF;
+        //border: 1px solid #FFF;
     }
     :active {
         color: #FFF;
         background: #121232;
-        border: 1px solid #FFF;
+        //border: 1px solid #FFF;
     }
 `
 
@@ -69,7 +71,8 @@ export const ChooseRoleButton = styled.button`
     font-size: 18px;
     line-height: 24px;
     color: #121232;
-    transition-duration: 0.4s;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
   
     :hover {
         color: #FFF;

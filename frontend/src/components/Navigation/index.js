@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { rem } from "polished";
+import {WhiteButton} from "../../style/GlobalButtons";
+import {BloodValU} from "../../style/GlobalTitles";
 
 const Wrapper = styled.div`
   padding-top: 72px; /* Needs to be exactly the same height as the Header, offsets content because it's fixed */
@@ -14,7 +16,7 @@ const Header = styled.div`
   height: 72px;
   left: 0;
   top: 0;
-  background-color: white;
+  background-color: #FFFFFF;
   //background: #E57373;
   padding: 0 ${rem("160px")} 0 ${rem("160px")};
   position: fixed;
@@ -32,37 +34,42 @@ const Bloodval = styled.span`
   line-height: ${rem("24px")};
   color: #262541;
 `
+
 const U = styled(Bloodval)`
-  font-size: ${rem("28px")};
+  font-size: ${rem("36px")};
   font-weight: 600;
   color: #D33449;
 `
 
 /* -----------BUTTONS------------------ */
-const HeaderButtonUser = styled.button`
+const HeaderButtonUser = styled(WhiteButton)`
   font-family: Roboto;
   font-size: ${rem("14px")};
   line-height: ${rem("16px")};
-  letter-spacing: 0.5px;
-  color: #3E465F;
-  background-color: white;
-  height:  ${rem("48px")};
   width:  ${rem("144px")};
+  color: #3E465F;
+  transition-duration: initial;  //to remove base button
+    
+  :hover, :active{
+  color: #3E465F;
+  background-color: #FFFFFF;
   border: 1px solid #121232;
-  box-sizing: border-box;
-  border-radius: 4px;
+  }  
 `
 
 const HeaderButtonLogin = styled(HeaderButtonUser)`  
   border: none;
+  
+  :hover, :active{
+    border: none;
+  }
 `
 
 // TODO delete them
-let logged_in = true;
+let authenticated = false;
 const clicked = () => {
     console.log("The button is clicked")
 }
-
 
 /* -----------FOOTER------------------ */
 const Footer = styled.div`
@@ -80,15 +87,14 @@ const Footer = styled.div`
   flex-direction: column;
 `;
 
-
 const Navigation = ({children}) => {
 
   return (
     <div>
       <Wrapper>
         <Header>
-            <div><Bloodval>bloodval</Bloodval><U>U</U></div>
-            {logged_in ? <HeaderButtonUser>Edina M.</HeaderButtonUser> : <HeaderButtonLogin onClick={clicked}>Login</HeaderButtonLogin>}
+            <BloodValU text="bloodval" black={24} red={36} />
+            {authenticated ? <HeaderButtonUser>Edina M.</HeaderButtonUser> : <HeaderButtonLogin onClick={clicked}>Login</HeaderButtonLogin>}
         </Header>
         {children}
         <Footer>
@@ -97,6 +103,5 @@ const Navigation = ({children}) => {
     </div>
   );
 };
-
 
 export default Navigation;
