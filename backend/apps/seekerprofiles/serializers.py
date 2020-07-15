@@ -21,4 +21,4 @@ class SeekerProfileSerializer(serializers.ModelSerializer):
                   'zip_code',
                   'country',
                   'phone',
-                  'logo', 'code', 'made_requests', 'offered_tests']
+                  'logo', 'made_requests', 'offered_tests']

@@ -5,4 +5,11 @@ class IsRequesterOrAdminOrReadOnly(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method == 'GET':
             return True
-        return obj.seeker == request.user.seeker_profile or request.user.is_staff
+        return (not request.user.is_donor and obj.seeker == request.user.seeker_profile) or request.user.is_staff
+
+
+class IsDonorOrReadOnly(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method == 'GET':
+            return True
+        return request.user.is_donor
