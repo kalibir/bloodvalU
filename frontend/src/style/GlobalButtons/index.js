@@ -176,6 +176,7 @@ export const SmallRedButton = styled.button`
         border: 1px solid #D33449;
 `;
 
+//edina version
 export const BaseStatusButton = styled.button`
   border: none;
   width: 82px;
@@ -186,3 +187,4 @@ export const BaseStatusButton = styled.button`
   cursor: pointer;
   color: white;
 `;
+
