@@ -4,6 +4,10 @@ import Template from "../components/Test";
 import Credentials from "../components/Credentials";
 import Navigation from "../components/Navigation";
 import { LandingPage } from "../components/LandingPage";
+import {
+  DonorValidationPageOne,
+  DonorValidationPageTwo,
+} from "../components/Credentials/ValidationDonor";
 import GenericDonorRequestBar from "../components/GenericDonorRequestBar";
 
 const Routes = () => {
