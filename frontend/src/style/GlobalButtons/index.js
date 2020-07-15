@@ -115,6 +115,7 @@ export const SmallBlueButton = styled.button`
         color: #2196F3;
         background: #FFF;
         border: 1px solid #2196F3;
+        }
 `;
 
 export const SmallGreenButton = styled.button`
@@ -145,6 +146,7 @@ export const SmallGreenButton = styled.button`
         color: #43A047;
         background: #FFFFFF;
         border: 1px solid #43A047;
+        }
 `;
 
 export const SmallRedButton = styled.button`
@@ -175,9 +177,9 @@ export const SmallRedButton = styled.button`
         color: #D33449;;
         background: #FFFFFF;
         border: 1px solid #D33449;
+        }
 `;
 
-//edina version
 export const BaseStatusButton = styled.button`
   border: none;
   width: 82px;
@@ -189,3 +191,30 @@ export const BaseStatusButton = styled.button`
   color: white;
 `;
 
+export const CompleteButton = styled.button`
+    width: ${rem("138px")};
+    height: ${rem("32px")};
+    background: #FFFFFF;
+    border-radius: 70px;
+    font-weight: bold;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    color: #43A047;
+    border: 1px solid #FFFFFF;
+    justify-content: center;
+    transition-duration: 0.4s;
+    transition-timing-function: ease-in-out;
+    outline: none;
+    
+    :hover {
+        color: #FFFFFF;
+        background: #43A047;
+        border: 1px solid #43A047;
+    }
+    :active {
+        color: #FFFFFF;
+        background: #43A047;
+        border: 1px solid #43A047;
+        }
+`

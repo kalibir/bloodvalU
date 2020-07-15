@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import {
-    ChooseRoleButton,
+    ChooseRoleButton, CompleteButton,
     DarkBlueButton, SmallGreenButton, WhiteButton
 } from "../../style/GlobalButtons";
 import {BigInput, SmallInput} from "../../style/GlobalInputs";
@@ -9,8 +9,8 @@ import {BigTitle, MiddleTitle, SmallTitle} from "../../style/GlobalTitles";
 import {PageContainer} from "../../style/GlobalWrappers";
 import GenericDonorTestCard from "../GenericDonorTestCard";
 import GenericSeekerTestCard from "../GenericSeekerTestCard";
-import DonorProfileCard from "../GenericDonorProfileCard";
-import SeekerProfileCard from "../GenericSeekerProfileCard";
+import DonorProfileCardWide from "../GenericDonorProfileWide";
+import DonorProfileSelected from "../GenericDonorSelected";
 
 const TestWrapper = styled(PageContainer)`
     height: 100%;
@@ -22,12 +22,13 @@ function Template(props) {
   return (
       <TestWrapper>
           <br></br>
-          <DonorProfileCard/>
-          <SeekerProfileCard/>
+          <DonorProfileSelected/>
+          <DonorProfileCardWide/>
         <SmallTitle>RedTitle</SmallTitle>
           <BigTitle>First Page Title</BigTitle>
           <GenericDonorTestCard/>
           <GenericSeekerTestCard/>
+          <CompleteButton>Complete request</CompleteButton>
           <SmallGreenButton>Redeem</SmallGreenButton>
           <WhiteButton>Back</WhiteButton>
         <br></br>

@@ -24,6 +24,7 @@ export const BigTitle = styled.h1`
     font-size: 32px;
     line-height: 48px;
     color: #232735;
+    text-transform: uppercase;
 `
 
 export const BloodValU = ({text, black, red}) => {
