@@ -1,21 +1,34 @@
 import React from "react";
+import styled from "styled-components";
 import {
     ChooseRoleButton,
-    DarkBlueButton, WhiteButton
+    DarkBlueButton, SmallGreenButton, WhiteButton
 } from "../../style/GlobalButtons";
 import {BigInput, SmallInput} from "../../style/GlobalInputs";
 import {BigTitle, MiddleTitle, SmallTitle} from "../../style/GlobalTitles";
 import {PageContainer} from "../../style/GlobalWrappers";
 import GenericDonorTestCard from "../GenericDonorTestCard";
+import GenericSeekerTestCard from "../GenericSeekerTestCard";
+import DonorProfileCard from "../GenericDonorProfileCard";
+import SeekerProfileCard from "../GenericSeekerProfileCard";
+
+const TestWrapper = styled(PageContainer)`
+    height: 100%;
+    display: flex;
+`
 
 
 function Template(props) {
   return (
-      <PageContainer>
+      <TestWrapper>
           <br></br>
+          <DonorProfileCard/>
+          <SeekerProfileCard/>
         <SmallTitle>RedTitle</SmallTitle>
           <BigTitle>First Page Title</BigTitle>
           <GenericDonorTestCard/>
+          <GenericSeekerTestCard/>
+          <SmallGreenButton>Redeem</SmallGreenButton>
           <WhiteButton>Back</WhiteButton>
         <br></br>
        <DarkBlueButton>Confirm</DarkBlueButton>
@@ -25,7 +38,7 @@ function Template(props) {
           <br></br>
           <ChooseRoleButton>Becoming a donor</ChooseRoleButton>
           <MiddleTitle>Your registration is now complete!</MiddleTitle>
-      </PageContainer>
+      </TestWrapper>
   );
 }
 
