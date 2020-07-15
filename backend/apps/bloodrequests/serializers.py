@@ -16,7 +16,10 @@ class BloodRequestSerializer(serializers.ModelSerializer):
         return obj.applicants.count()
 
     def get_logged_in_donor_is_selected(self, obj):
-        return self.context.get('request').user.donor_profile == obj.selected_donor
+        if self.context.get('request').user.is_donor:
+            return self.context.get('request').user.donor_profile == obj.selected_donor
+        else:
+            return False
 
     class Meta:
         model = BloodRequest

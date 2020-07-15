@@ -41,16 +41,19 @@ class CreateBloodRequestView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save(seeker=self.request.user.seeker_profile)
         target_emails = self.get_target_blood_type_emails(serializer.validated_data.get('blood_group'))
-        email = EmailMessage()
-        email.subject = '{seeker_name} is looking for blood donations!'.format(
-            seeker_name=request.user.seeker_profile.name)
-        email.body = '{seeker_name} is looking for donors with a blood type of {request_blood_type}.\nYou your blood type seems to match, be sure to contact them at {seeker_street}, {seeker_zip_code}!'.format(
-            seeker_name=request.user.seeker_profile.name,
-            request_blood_type=serializer.validated_data.get('blood_group'),
-            seeker_street=request.user.seeker_profile.street, seeker_zip_code=request.user.seeker_profile.zip_code)
-        email.to = target_emails
-        email.send(fail_silently=False)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if target_emails:
+            email = EmailMessage()
+            email.subject = '{seeker_name} is looking for blood donations!'.format(
+                seeker_name=request.user.seeker_profile.name)
+            email.body = '{seeker_name} is looking for donors with a blood type of {request_blood_type}.\nYou your blood type seems to match, be sure to contact them at {seeker_street}, {seeker_zip_code}!'.format(
+                seeker_name=request.user.seeker_profile.name,
+                request_blood_type=serializer.validated_data.get('blood_group'),
+                seeker_street=request.user.seeker_profile.street, seeker_zip_code=request.user.seeker_profile.zip_code)
+            email.to = target_emails
+            email.send(fail_silently=False)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class ListAllBloodRequestsView(ListAPIView):
