@@ -9,6 +9,7 @@ import {
   DonorValidationPageTwo,
 } from "../components/Credentials/ValidationDonor";
 import GenericDonorRequestBar from "../components/GenericDonorRequestBar";
+import CreateTestModal from "../components/CreateTestModal";
 
 const Routes = () => {
   return (
@@ -21,7 +22,7 @@ const Routes = () => {
             <Route path="/auth" component={Credentials} />
             {/* <Route path="/donorbartest" component={GenericDonorRequestBar} /> */}
             {/*<Route path="/auth" component={Credentials} />*/}
-            {/*<Route path="/auth" component={Credentials} />*/}
+            <Route path="/modal" component={CreateTestModal} />
           </Navigation>
         </Switch>
       </Router>
