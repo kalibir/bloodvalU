@@ -50,38 +50,6 @@ const ButtonWrapper = styled.div`
 
 const BlueButton = styled(DarkBlueButton)`
     margin-left: ${rem("16px")};
-`
-
-const InputLabel = styled.label`
-      background: #121232;
-      border-radius: 4px;
-      border: none;
-      outline: none;
-      width: ${rem("141px")};
-      height: ${rem("48px")};
-      cursor: pointer;
-      font-style: normal;
-      font-weight: normal;
-      font-size: 14px;
-      letter-spacing: 0.5px;
-      color: #FFFFFF;
-      margin-top: ${rem("9px")};
-
-    :hover {
-        color: #121232;
-        background: #FFF;
-        border: 1px solid #121232;
-    }
-    :active {
-        color: #121232;
-        background: #FFF;
-        border: 1px solid #121232;
-    }
-`;
-
-const InputFile = styled.input`
-      display: none;
-      
 `;
 
 
@@ -170,13 +138,6 @@ const ValidationSeeker2 = (props) => {
                     <div>
                         <SmallTitle>Validation code</SmallTitle>
                         <CostumizedSmallInput placeholder="12345" type="text" required/>
-                    </div>
-                    <div>
-                        <SmallTitle>Licence</SmallTitle>
-                        <InputLabel htmlFor="restaurant_image">Choose a file...</InputLabel>
-                        <div><p></p></div>
-                        <InputFile id="restaurant_image" accept="application/pdf"
-                                   type="file"/>
                     </div>
                 </InputWrapper>
                 <ButtonWrapper>

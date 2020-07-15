@@ -1,7 +1,7 @@
 import React from "react";
 import { rem } from "polished";
 import styled from "styled-components";
-import {SmallBlueButton} from "../../style/GlobalButtons";
+import {SmallBlueButton, SmallRedButton} from "../../style/GlobalButtons";
 
 const TestCard = styled.div`
     width: ${rem("192px")};
@@ -18,22 +18,10 @@ const TestCard = styled.div`
 const Text = styled.p`
     width: ${rem("144px")};
     height: ${rem("20px")};
-    font-style: normal;
-    font-weight: 300;
-    font-size: 14px;
+    font-weight: 500;
+    font-size: 12px;
     line-height: 22px;
     color: #121232;
-`;
-
-const TextContainer = styled.div`
-    width: ${rem("144px")};
-    height: ${rem("20px")};
-`;
-
-const BottomContainer = styled.div`
-    height: ${rem("24px")};
-    width: ${rem("160px")};
-    display: flex;
 `;
 
 const PointContainer = styled.div`
@@ -48,27 +36,39 @@ const PointContainer = styled.div`
     color: #43A047;
     border: 1px solid #71B774;
     border-radius: 4px;
-    margin-left: ${rem("32px")};
     text-transform: uppercase;
 `;
 
-const GenericDonorTestCard = (props) => {
+const TextContainer = styled.div`
+    width: ${rem("144px")};
+    height: ${rem("42px")};
+    margin-right: ${rem("17px")};
+`;
+
+const BottomContainer = styled.div`
+    height: ${rem("24px")};
+    width: ${rem("144px")};
+    display: flex;
+    justify-content: space-between;
+    margin-right: ${rem("16px")};
+`;
+
+
+const GenericSeekerTestCard = (props) => {
   return (
       <TestCard>
             <TextContainer>
                 <Text>
-                FREE Blood Test Type
-            </Text>
-            <Text>
-                from Company
-            </Text>
+                Blood Test Type
+                </Text>
+                <PointContainer>8000 points</PointContainer>
             </TextContainer>
             <BottomContainer>
-                <SmallBlueButton>Buy</SmallBlueButton>
-                <PointContainer>8000 Points</PointContainer>
+                <SmallBlueButton>edit</SmallBlueButton>
+                <SmallRedButton>delete</SmallRedButton>
             </BottomContainer>
       </TestCard>
   );
 };
 
-export default GenericDonorTestCard;
+export default GenericSeekerTestCard;

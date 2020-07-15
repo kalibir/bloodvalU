@@ -100,7 +100,7 @@ export const SmallBlueButton = styled.button`
     transition-duration: 0.4s;
     transition-timing-function: ease-in-out;
     outline: none;
-    border: 1px solid #FFF;
+    border: 1px solid #2196F3;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -114,4 +114,64 @@ export const SmallBlueButton = styled.button`
         color: #2196F3;
         background: #FFF;
         border: 1px solid #2196F3;
+`;
+
+export const SmallGreenButton = styled.button`
+    width: ${rem("48px")};
+    height: ${rem("20px")};
+    background: #43A047;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 24px;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    transition-duration: 0.4s;
+    transition-timing-function: ease-in-out;
+    outline: none;
+    border: 1px solid #43A047;
+    
+    :hover {
+        color: #43A047;
+        background: #FFFFFF;
+        border: 1px solid #43A047;
+    }
+    :active {
+        color: #43A047;
+        background: #FFFFFF;
+        border: 1px solid #43A047;
+`;
+
+export const SmallRedButton = styled.button`
+    width: ${rem("48px")};
+    height: ${rem("20px")};
+    background: #D33449;;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 24px;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    transition-duration: 0.4s;
+    transition-timing-function: ease-in-out;
+    outline: none;
+    border: 1px solid #D33449;
+    
+    :hover {
+        color: #D33449;;
+        background: #FFFFFF;
+        border: 1px solid #D33449;
+    }
+    :active {
+        color: #D33449;;
+        background: #FFFFFF;
+        border: 1px solid #D33449;
 `;
