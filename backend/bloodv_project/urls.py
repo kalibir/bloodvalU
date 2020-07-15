@@ -16,8 +16,8 @@ urlpatterns = [
     path('backend/api/seeker/', include('apps.seekerprofiles.urls')),
     # Donor Urls
     path('backend/api/donor/', include('apps.donorprofiles.urls')),
-    # # Blood Request Urls
-    # path('backend/api/request/', include('apps.bloodrequests.urls')),
+    # Blood Request Urls
+    path('backend/api/request/', include('apps.bloodrequests.urls')),
     # # Comments Urls
     # path('backend/api/tests/', include('apps.offeredtests.urls')),
     #

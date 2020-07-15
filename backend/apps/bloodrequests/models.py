@@ -6,11 +6,11 @@ from apps.seekerprofiles.models import SeekerProfile
 
 
 class BloodRequest(models.Model):
-    blood_seeker = models.ForeignKey(to=SeekerProfile, on_delete=models.CASCADE, related_name='made_requests')
+    seeker = models.ForeignKey(to=SeekerProfile, on_delete=models.CASCADE, related_name='made_requests')
 
     selected_donor = models.ForeignKey(to=DonorProfile, on_delete=models.CASCADE,
                                        related_name="accepted_requests",
-                                       blank=True)
+                                       blank=True, null=True)
 
     STATUS_CHOICES = [
         ('OP', 'Open'),
@@ -18,7 +18,7 @@ class BloodRequest(models.Model):
         ('COM', 'Completed'),
     ]
 
-    status = models.CharField(max_length=3, choices=STATUS_CHOICES, default='OPEN')
+    status = models.CharField(max_length=4, choices=STATUS_CHOICES, default='OP')
 
     BLOOD_GROUP_CHOICES = [
         ('O', 'O'),
@@ -31,13 +31,13 @@ class BloodRequest(models.Model):
         ('AB+', 'AB+'),
     ]
 
-    blood_group = models.CharField(max_length=3, choices=BLOOD_GROUP_CHOICES, default='O-')
+    blood_group = models.CharField(max_length=4, choices=BLOOD_GROUP_CHOICES)
 
-    is_for_covid = models.BooleanField(default=False)
+    is_for_covid = models.BooleanField()
 
-    is_urgent = models.BooleanField(default=False)
+    is_urgent = models.BooleanField()
 
-    is_renewable = models.BooleanField(default=False)
+    is_renewable = models.BooleanField()
 
     created = models.DateTimeField(auto_now_add=True)
 

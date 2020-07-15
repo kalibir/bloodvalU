@@ -15,7 +15,7 @@ class SeekerProfile(models.Model):
 
     certificate = models.FileField(null=True, blank=True, validators=[FileExtensionValidator(['pdf'])])
 
-    is_valid = models.BooleanField(default=False)
+    is_valid = models.BooleanField(default=True)
 
     name = models.CharField(max_length=100, default="name")
 
