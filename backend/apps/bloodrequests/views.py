@@ -129,20 +129,15 @@ class SelectDonorFromApplicantsView(CreateAPIView):
         else:
             return Response({"detail": "Your selected Donor is not an applicant!"}, status=status.HTTP_400_BAD_REQUEST)
 
-class MarkRequestAsOpenView(UpdateAPIView):
+
+class MarkRequestAsOpenView(CreateAPIView):
     permission_classes = [IsRequesterOrAdminOrReadOnly]
     queryset = BloodRequest
     serializer_class = BloodRequestSerializer
     lookup_url_kwarg = 'request_id'
 
-
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
-        serializer = self.get_serializer(data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        target_profile = Registration.objects.get(email=request.data['email'])
-        target_profile.user.set_password(request.data['password'])
-        target_profile.user.save()
-        target_profile.code = code_generator()
-        target_profile.save()
-        return Response(status=status.HTTP_202_ACCEPTED)
+    def post(self, request, *args, **kwargs):
+        target_blood_request = self.get_object()  # We found the post with 'post_id'
+        target_blood_request.status = "OP"
+        target_blood_request.save()
+        return Response(self.get_serializer(target_blood_request).data)
