@@ -25,9 +25,7 @@ class SeekerProfile(models.Model):
 
     country = CountryField(blank=True)
 
-    zip = models.CharField(max_length=15, blank=True)
-
-    city = models.CharField(max_length=50, blank=True)
+    zip_code = models.CharField(max_length=100, blank=True)
 
     street = models.CharField(max_length=100, blank=True)
 

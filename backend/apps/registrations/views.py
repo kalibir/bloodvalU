@@ -7,11 +7,12 @@ from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from apps.donorprofiles.models import DonorProfile
+from apps.donorprofiles.serializers import DonorProfileSerializer
 from apps.registrations.models import Registration
 from apps.registrations.serializers import RegistrationSerializer, ResetPasswordSerializer, CreateUserSerializer
 from apps.registrations.models import code_generator
 from apps.seekerprofiles.models import SeekerProfile
-from apps.users.serializers import SeekerUserSerializer, DonorUserSerializer
+from apps.seekerprofiles.serializers import SeekerProfileSerializer
 
 User = get_user_model()
 
@@ -113,18 +114,19 @@ class TokenUserObtainView(TokenObtainPairView):
         req = request
         req.user = user
         if user.is_donor:
-            user_serializer = DonorUserSerializer(instance=user, context={'request': req})
+
+            profile_serializer = DonorProfileSerializer(instance=user.donor_profile, context={'request': req})
             res = {
                 **serializer.validated_data,
-                'user': user_serializer.data
+                'profile': profile_serializer.data
             }
 
             return Response(res, status=status.HTTP_200_OK)
         else:
-            user_serializer = SeekerUserSerializer(instance=user, context={'request': req})
+            profile_serializer = SeekerProfileSerializer(instance=user.seeker_profile, context={'request': req})
             res = {
                 **serializer.validated_data,
-                'user': user_serializer.data
+                'profile': profile_serializer.data
             }
 
             return Response(res, status=status.HTTP_200_OK)

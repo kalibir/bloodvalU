@@ -13,6 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'email', 'is_donor']
         extra_kwargs = {
             'email': {'read_only': True},
+            'is_donor': {'read_only': True},
         }
 
 
@@ -24,6 +25,7 @@ class DonorUserSerializer(serializers.ModelSerializer):
         fields = ['id', 'email', 'is_donor', 'donor_profile']
         extra_kwargs = {
             'email': {'read_only': True},
+            'is_donor': {'read_only': True},
         }
 
 
@@ -35,4 +37,5 @@ class SeekerUserSerializer(serializers.ModelSerializer):
         fields = ['id', 'email', 'is_donor', 'seeker_profile']
         extra_kwargs = {
             'email': {'read_only': True},
+            'is_donor': {'read_only': True},
         }
