@@ -61,28 +61,29 @@ export const WhiteButton = styled.button`
 `;
 
 export const ChooseRoleButton = styled.button`
-    width: ${rem("352px")};
-    height: ${rem("160px")};
-    background: #FFFFFF;
-    border: 1px solid #D3D4D8;
-    border-radius: 4px;
-    font-style: normal;
-    font-weight: 500;
-    font-size: ${rem("18px")};
-    line-height: 24px;
-    color: #121232;
-    transition-duration: 0.5s;
-    transition-timing-function: ease-in-out;
-  
-    :hover {
-        color: #FFF;
-        border: 2px solid #121232;
-        background: #121232;
-    }
-    :active {
-        color: #FFF;
-        border: 2px solid #121232;
-        background: #121232;
+  width: ${rem("352px")};
+  height: ${rem("160px")};
+  background: #ffffff;
+  border: 1px solid #d3d4d8;
+  border-radius: 4px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: ${rem("18px")};
+  line-height: 24px;
+  color: #121232;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-in-out;
+
+  :hover {
+    color: #fff;
+    border: 2px solid #121232;
+    background: #121232;
+  }
+  :active {
+    color: #fff;
+    border: 2px solid #121232;
+    background: #121232;
+  }
 `;
 
 export const SmallBlueButton = styled.button`
@@ -115,4 +116,15 @@ export const SmallBlueButton = styled.button`
     background: #fff;
     border: 1px solid #2196f3;
   }
+`;
+
+export const BaseStatusButton = styled.button`
+  border: none;
+  width: 82px;
+  height: 28px;
+  border-radius: 87px;
+  background-color: #2196f3;
+  font-size: 12px;
+  cursor: pointer;
+  color: white;
 `;
