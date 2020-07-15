@@ -20,7 +20,18 @@ class BloodRequest(models.Model):
 
     status = models.CharField(max_length=3, choices=STATUS_CHOICES, default='OPEN')
 
-    blood_group = models.CharField(max_length=10, blank=True)
+    BLOOD_GROUP_CHOICES = [
+        ('O', 'O'),
+        ('O+', 'O+'),
+        ('A-', 'A-'),
+        ('A+', 'A+'),
+        ('B-', 'B-'),
+        ('B+', 'B+'),
+        ('AB-', 'AB-'),
+        ('AB+', 'AB+'),
+    ]
+
+    blood_group = models.CharField(max_length=3, choices=BLOOD_GROUP_CHOICES, default='O-')
 
     is_for_covid = models.BooleanField(default=False)
 

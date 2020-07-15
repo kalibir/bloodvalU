@@ -11,7 +11,7 @@ from apps.registrations.models import Registration
 from apps.registrations.serializers import RegistrationSerializer, ResetPasswordSerializer, CreateUserSerializer
 from apps.registrations.models import code_generator
 from apps.seekerprofiles.models import SeekerProfile
-from apps.users.serializers import UserSerializer
+from apps.users.serializers import SeekerUserSerializer, DonorUserSerializer
 
 User = get_user_model()
 
@@ -112,10 +112,19 @@ class TokenUserObtainView(TokenObtainPairView):
         user = User.objects.get(email=request.data['email'])
         req = request
         req.user = user
-        user_serializer = UserSerializer(instance=user, context={'request': req})
-        res = {
-            **serializer.validated_data,
-            'user': user_serializer.data
-        }
+        if user.is_donor:
+            user_serializer = DonorUserSerializer(instance=user, context={'request': req})
+            res = {
+                **serializer.validated_data,
+                'user': user_serializer.data
+            }
 
-        return Response(res, status=status.HTTP_200_OK)
+            return Response(res, status=status.HTTP_200_OK)
+        else:
+            user_serializer = SeekerUserSerializer(instance=user, context={'request': req})
+            res = {
+                **serializer.validated_data,
+                'user': user_serializer.data
+            }
+
+            return Response(res, status=status.HTTP_200_OK)

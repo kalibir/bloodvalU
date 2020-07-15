@@ -34,7 +34,18 @@ class DonorProfile(models.Model):
 
     total_points = models.IntegerField(blank=True, default=0)
 
-    blood_group = models.CharField(max_length=10, blank=True)
+    BLOOD_GROUP_CHOICES = [
+        ('O', 'O'),
+        ('O+', 'O+'),
+        ('A-', 'A-'),
+        ('A+', 'A+'),
+        ('B-', 'B-'),
+        ('B+', 'B+'),
+        ('AB-', 'AB-'),
+        ('AB+', 'AB+'),
+    ]
+
+    blood_group = models.CharField(max_length=3, choices=BLOOD_GROUP_CHOICES, default='O-')
 
     GENDER_CHOICES = [
         ('M', 'Male'),
@@ -45,7 +56,7 @@ class DonorProfile(models.Model):
     gender = models.CharField(max_length=2, choices=GENDER_CHOICES, default='M')
 
     @property
-    def calculate_age(self):
+    def age(self):
         today = date.today()
         return today.year - self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
 

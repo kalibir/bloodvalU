@@ -10,6 +10,7 @@ User = get_user_model()
 
 
 class SeekerProfile(models.Model):
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name='seeker_profile')
 
     certificate = models.FileField(null=True, blank=True, validators=[FileExtensionValidator(['pdf'])])
