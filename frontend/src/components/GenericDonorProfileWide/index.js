@@ -4,7 +4,7 @@ import styled from "styled-components";
 import profilePic from "../../assets/images/default-profile-pic.jpg"
 
 const ProfileWrapper = styled.div`
-    width: ${rem("416px")};
+    width: ${rem("544px")};
     height: ${rem("628px")};
     background: #FFFFFF;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
@@ -14,7 +14,7 @@ const ProfileWrapper = styled.div`
 `;
 
 const UpperContainer = styled.div`
-    width: ${rem("416px")};
+    width: ${rem("544px")};
     height: ${rem("300px")};
     display: flex;
     justify-content: center;
@@ -33,7 +33,7 @@ const ProfilePicPlaceholder = styled.div`
 `;
 
 const NameContainer = styled.div`
-    width: ${rem("416px")};
+    width: ${rem("544px")};
     height: ${rem("24px")};
     font-style: normal;
     font-weight: 600;
@@ -48,7 +48,7 @@ const NameContainer = styled.div`
 `;
 
 const CityContainer = styled.div`
-    width: ${rem("416px")};
+    width: ${rem("544px")};
     height: ${rem("16px")};
     font-style: normal;
     font-weight: normal;
@@ -61,7 +61,7 @@ const CityContainer = styled.div`
 `;
 
 const BottomContainer = styled.div`
-    width: ${rem("416px")};
+    width: ${rem("544px")};
     height: ${rem("328px")};
     display: flex;
 `;
@@ -69,9 +69,8 @@ const BottomContainer = styled.div`
 const DetailTitlesContainer = styled.div`
     height: ${rem("328px")};
     width: ${rem("25px")};
-    margin-left: ${rem("64px")};
+    margin-left: ${rem("158px")};
 `;
-
 const DetailTitle = styled.p`
     font-style: normal;
     font-weight: 600;
@@ -104,7 +103,7 @@ const AddressTitle = styled(DetailTitle)`
     margin-bottom: ${rem("64px")};
 `;
 
-const DonorProfileCard = (props) => {
+const DonorProfileCardWide = (props) => {
   return (
       <ProfileWrapper>
             <UpperContainer>
@@ -138,4 +137,4 @@ const DonorProfileCard = (props) => {
   )
 }
 
-export default DonorProfileCard;
+export default DonorProfileCardWide;
