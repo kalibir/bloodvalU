@@ -26,9 +26,9 @@ class DonorProfile(models.Model):
 
     avatar = models.ImageField(blank=True)
 
-    birthday = models.DateField(auto_now=False, null=True, blank=True)
+    birthday = models.DateTimeField(auto_now=False, null=True, blank=True)
 
-    last_donation = models.DateField(auto_now=False, null=True, blank=True)
+    last_donation = models.DateTimeField(auto_now=False, null=True, blank=True)
 
     total_points = models.IntegerField(blank=True, default=0)
 

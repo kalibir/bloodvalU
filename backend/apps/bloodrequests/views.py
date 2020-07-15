@@ -1,6 +1,10 @@
+import datetime
+
+from django.core.mail import EmailMessage
 from django.shortcuts import render
 
 # Create your views here.
+
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -120,11 +124,20 @@ class SelectDonorFromApplicantsView(CreateAPIView):
         target_applicant = DonorProfile.objects.get(id=self.kwargs['donor_id'])
         if target_applicant == target_blood_request.selected_donor:
             target_blood_request.selected_donor = None
+            target_blood_request.status = "OP"
             target_blood_request.save()
             return Response(self.get_serializer(target_blood_request).data)
         elif target_applicant in target_blood_request.applicants.all():
             target_blood_request.selected_donor = target_applicant
+            target_blood_request.status = "CL"
             target_blood_request.save()
+            email = EmailMessage()
+            email.subject = 'Congratulations you have been Selected for a Blood Donation!'
+            email.body = '{seeker_name} would like you to come and donate blood at their site at {seeker_street}, {seeker_zip_code}!'.format(
+                seeker_name=request.user.seeker_profile.name,
+                seeker_street=request.user.seeker_profile.street, seeker_zip_code=request.user.seeker_profile.zip_code)
+            email.to = [target_applicant.user.email]
+            email.send(fail_silently=False)
             return Response(self.get_serializer(target_blood_request).data)
         else:
             return Response({"detail": "Your selected Donor is not an applicant!"}, status=status.HTTP_400_BAD_REQUEST)
@@ -141,3 +154,33 @@ class MarkRequestAsOpenView(CreateAPIView):
         target_blood_request.status = "OP"
         target_blood_request.save()
         return Response(self.get_serializer(target_blood_request).data)
+
+
+class MarkRequestAsCompletedView(CreateAPIView):
+    permission_classes = [IsRequesterOrAdminOrReadOnly]
+    queryset = BloodRequest
+    serializer_class = BloodRequestSerializer
+    lookup_url_kwarg = 'request_id'
+
+    def post(self, request, *args, **kwargs):
+        target_blood_request = self.get_object()
+        target_donor = target_blood_request.selected_donor
+        if target_donor is None:
+            return Response({"detail": "You cannot complete a request with no selected donor"},
+                            status=status.HTTP_400_BAD_REQUEST)
+        elif target_blood_request.status == "COM":
+            return Response({"detail": "This request has already been completed"},
+                            status=status.HTTP_400_BAD_REQUEST)
+        else:
+            target_blood_request.status = "COM"
+            target_donor.last_donation = datetime.datetime.now()
+            target_donor.total_points += int(target_blood_request.points_value)
+            target_donor.save()
+            target_blood_request.save()
+            email = EmailMessage()
+            email.subject = 'Thanks for Donating :)'
+            email.body = '{seeker_name} would like you to thank you for your generous blood donation.\n Points have been added to your profile!  '.format(
+                seeker_name=request.user.seeker_profile.name)
+            email.to = [target_donor.user.email]
+            email.send(fail_silently=False)
+            return Response(self.get_serializer(target_blood_request).data)
