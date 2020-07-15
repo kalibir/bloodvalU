@@ -175,3 +175,14 @@ export const SmallRedButton = styled.button`
         background: #FFFFFF;
         border: 1px solid #D33449;
 `;
+
+export const BaseStatusButton = styled.button`
+  border: none;
+  width: 82px;
+  height: 28px;
+  border-radius: 87px;
+  background-color: #2196f3;
+  font-size: 12px;
+  cursor: pointer;
+  color: white;
+`;
