@@ -87,37 +87,97 @@ export const ChooseRoleButton = styled.button`
 `;
 
 export const SmallBlueButton = styled.button`
-  width: ${rem("49px")};
-  height: ${rem("21px")};
-  background: #2196f3;
-  border-radius: 4px;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 10px;
-  line-height: 24px;
-  letter-spacing: 0.16px;
-  color: #ffffff;
-  text-transform: uppercase;
-  transition-duration: 0.4s;
-  transition-timing-function: ease-in-out;
-  outline: none;
-  border: 1px solid #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  :hover {
-    color: #2196f3;
-    background: #fff;
-    border: 1px solid #2196f3;
-  }
-  :active {
-    color: #2196f3;
-    background: #fff;
-    border: 1px solid #2196f3;
-  }
+    width: ${rem("49px")};
+    height: ${rem("21px")};
+    background: #2196F3;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 24px;
+    letter-spacing: 0.16px;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    transition-duration: 0.4s;
+    transition-timing-function: ease-in-out;
+    outline: none;
+    border: 1px solid #2196F3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    :hover {
+        color: #2196F3;
+        background: #FFF;
+        border: 1px solid #2196F3;
+    }
+    :active {
+        color: #2196F3;
+        background: #FFF;
+        border: 1px solid #2196F3;
 `;
 
+export const SmallGreenButton = styled.button`
+    width: ${rem("48px")};
+    height: ${rem("20px")};
+    background: #43A047;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 24px;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    transition-duration: 0.4s;
+    transition-timing-function: ease-in-out;
+    outline: none;
+    border: 1px solid #43A047;
+    
+    :hover {
+        color: #43A047;
+        background: #FFFFFF;
+        border: 1px solid #43A047;
+    }
+    :active {
+        color: #43A047;
+        background: #FFFFFF;
+        border: 1px solid #43A047;
+`;
+
+export const SmallRedButton = styled.button`
+    width: ${rem("48px")};
+    height: ${rem("20px")};
+    background: #D33449;;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 24px;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    transition-duration: 0.4s;
+    transition-timing-function: ease-in-out;
+    outline: none;
+    border: 1px solid #D33449;
+    
+    :hover {
+        color: #D33449;;
+        background: #FFFFFF;
+        border: 1px solid #D33449;
+    }
+    :active {
+        color: #D33449;;
+        background: #FFFFFF;
+        border: 1px solid #D33449;
+`;
+
+//edina version
 export const BaseStatusButton = styled.button`
   border: none;
   width: 82px;
@@ -128,3 +188,4 @@ export const BaseStatusButton = styled.button`
   cursor: pointer;
   color: white;
 `;
+
