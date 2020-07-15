@@ -28,10 +28,26 @@ class CreateBloodRequestView(CreateAPIView):
     serializer_class = BloodRequestSerializer
     permission_classes = [IsAuthenticated | ReadOnly]
 
+    def get_target_blood_type_emails(self, blood_group):
+        target_blood_type_emails = []
+        for donor_profile in DonorProfile.objects.all():
+            if donor_profile.blood_group == blood_group:
+                target_blood_type_emails.append(donor_profile.user.email)
+        return target_blood_type_emails
+
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(seeker=self.request.user.seeker_profile)
+        target_emails = self.get_target_blood_type_emails(serializer.blood_group)
+        email = EmailMessage()
+        email.subject = '{seeker_name} is looking for blood donations!'.format(
+            seeker_name=request.user.seeker_profile.name)
+        email.body = '{seeker_name} is looking for {request_blood_type}.\nYou your blood type seems to match, be sure to contact them at {seeker_street}, {seeker_zip_code}!'.format(
+            seeker_name=request.user.seeker_profile.name, request_blood_type=serializer.blood_group,
+            seeker_street=request.user.seeker_profile.street, seeker_zip_code=request.user.seeker_profile.zip_code)
+        email.to = [target_emails]
+        email.send(fail_silently=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -177,10 +193,18 @@ class MarkRequestAsCompletedView(CreateAPIView):
             target_donor.total_points += int(target_blood_request.points_value)
             target_donor.save()
             target_blood_request.save()
+            if target_blood_request.is_renewable:
+                cloned_blood_request = BloodRequest.objects.get(id=target_blood_request.id)
+                cloned_blood_request.id = None
+                cloned_blood_request.save()
+                cloned_blood_request.status = 'OP'
+                cloned_blood_request.selected_donor = None
+                cloned_blood_request.applicants.clear()
+                cloned_blood_request.save()
             email = EmailMessage()
             email.subject = 'Thanks for Donating :)'
-            email.body = '{seeker_name} would like you to thank you for your generous blood donation.\n Points have been added to your profile!  '.format(
-                seeker_name=request.user.seeker_profile.name)
+            email.body = '{seeker_name} would like you to thank you for your generous blood donation.\n{points_value} points have been added to your profile, enjoy!'.format(
+                seeker_name=request.user.seeker_profile.name, points_value=target_blood_request.points_value)
             email.to = [target_donor.user.email]
             email.send(fail_silently=False)
             return Response(self.get_serializer(target_blood_request).data)
