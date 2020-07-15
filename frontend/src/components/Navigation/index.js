@@ -17,6 +17,7 @@ const Header = styled.div`
   left: 0;
   top: 0;
   background-color: #FFFFFF;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
   //background: #E57373;
   padding: 0 ${rem("160px")} 0 ${rem("160px")};
   position: fixed;
