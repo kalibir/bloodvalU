@@ -21,9 +21,10 @@ from apps.users.permissions import ReadOnly
 class CreateBloodRequestView(CreateAPIView):
     """
     GET:
-    List all Requests.
+    List all blood Requests.
     POST:
-    Create a Request.
+    Create a Blood Request. Upon creation of the request,
+    an email will be sent to all corresponding donors with matching blood types
     """
     serializer_class = BloodRequestSerializer
     permission_classes = [IsAuthenticated | ReadOnly]
@@ -44,7 +45,8 @@ class CreateBloodRequestView(CreateAPIView):
         email.subject = '{seeker_name} is looking for blood donations!'.format(
             seeker_name=request.user.seeker_profile.name)
         email.body = '{seeker_name} is looking for donors with a blood type of {request_blood_type}.\nYou your blood type seems to match, be sure to contact them at {seeker_street}, {seeker_zip_code}!'.format(
-            seeker_name=request.user.seeker_profile.name, request_blood_type=serializer.validated_data.get('blood_group'),
+            seeker_name=request.user.seeker_profile.name,
+            request_blood_type=serializer.validated_data.get('blood_group'),
             seeker_street=request.user.seeker_profile.street, seeker_zip_code=request.user.seeker_profile.zip_code)
         email.to = target_emails
         email.send(fail_silently=False)
@@ -96,14 +98,19 @@ class ToggleApplyToRequestView(CreateAPIView):
     lookup_url_kwarg = 'request_id'
 
     def post(self, request, *args, **kwargs):
-        receiver = self.get_object()  # We found the post with 'post_id'
-        requester = self.request.user.donor_profile
-        apply_relation = requester in receiver.applicants.all()
-        if apply_relation:
-            receiver.applicants.remove(requester)
+        target_blood_request = self.get_object()
+        if target_blood_request.selected_donor is None or target_blood_request.status is "OP":
+            requester = self.request.user.donor_profile
+            apply_relation = requester in target_blood_request.applicants.all()
+            if apply_relation:
+                target_blood_request.applicants.remove(requester)
+            else:
+                target_blood_request.applicants.add(requester)
+            return Response(self.get_serializer(target_blood_request).data)
         else:
-            receiver.applicants.add(requester)
-        return Response(self.get_serializer(receiver).data)
+            return Response(
+                {"detail": "Sorry, you can no longer interact with this blood request as it is closed or completed."},
+                status=status.HTTP_400_BAD_REQUEST)
 
 
 class ListApplicantsOfSpecificRequestView(ListAPIView):
@@ -144,6 +151,7 @@ class SelectDonorFromApplicantsView(CreateAPIView):
             target_blood_request.save()
             return Response(self.get_serializer(target_blood_request).data)
         elif target_applicant in target_blood_request.applicants.all():
+            target_applicant = DonorProfile.objects.get(id=self.kwargs['donor_id'])
             target_blood_request.selected_donor = target_applicant
             target_blood_request.status = "CL"
             target_blood_request.save()
@@ -156,10 +164,16 @@ class SelectDonorFromApplicantsView(CreateAPIView):
             email.send(fail_silently=False)
             return Response(self.get_serializer(target_blood_request).data)
         else:
-            return Response({"detail": "Your selected Donor is not an applicant!"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "The Donor you selected is not an applicant!"},
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
 class MarkRequestAsOpenView(CreateAPIView):
+    """
+    POST:
+    Mark a request as open by placing the request ID in the url.
+    Once re-opened the selected donor will be set to null, and the status will be set to open
+    """
     permission_classes = [IsRequesterOrAdminOrReadOnly]
     queryset = BloodRequest
     serializer_class = BloodRequestSerializer
@@ -168,11 +182,19 @@ class MarkRequestAsOpenView(CreateAPIView):
     def post(self, request, *args, **kwargs):
         target_blood_request = self.get_object()  # We found the post with 'post_id'
         target_blood_request.status = "OP"
+        target_blood_request.selected_donor = None
         target_blood_request.save()
         return Response(self.get_serializer(target_blood_request).data)
 
 
 class MarkRequestAsCompletedView(CreateAPIView):
+    """
+    POST:
+    Mark a request as completed by placing the request ID in the url.
+    Once completed the donor will receive the corresponding points value
+    of the request and will also be notified by email for his good deeds :).
+    Already completed request cannot be re-completed to avoid abusing the points system.
+    """
     permission_classes = [IsRequesterOrAdminOrReadOnly]
     queryset = BloodRequest
     serializer_class = BloodRequestSerializer

@@ -38,4 +38,4 @@ class SeekerProfile(models.Model):
     )
 
     def __str__(self):
-        return f'User ID: {self.user.id} Seeker Profile'
+        return f'Seeker ID: {self.id} Seeker Profile'

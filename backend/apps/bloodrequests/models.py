@@ -41,6 +41,8 @@ class BloodRequest(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
 
+    until = models.DateTimeField(auto_now=False)
+
     applicants = models.ManyToManyField(to=DonorProfile, related_name='applied_to_requests', blank=True)
 
     @property

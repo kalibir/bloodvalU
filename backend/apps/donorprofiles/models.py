@@ -59,4 +59,4 @@ class DonorProfile(models.Model):
         return today.year - self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
 
     def __str__(self):
-        return f'User ID: {self.user.id} Donor Profile'
+        return f'Donor ID: {self.id} Donor Profile'
