@@ -1,6 +1,6 @@
 import {resetError, setError} from "./errorActions";
 import Axios from "../../axios";
-import {SET_IS_DONOR} from "../actionTypes";
+import {SET_EMAIL, SET_IS_DONOR} from "../actionTypes";
 
 export const setIsDonor = (pythonBooleanString) => {
     return {

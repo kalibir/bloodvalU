@@ -1,4 +1,4 @@
-import {SET_IS_DONOR} from "../actionTypes";
+import {SET_EMAIL, SET_IS_DONOR} from "../actionTypes";
 
 
 const initialState = {
@@ -12,6 +12,9 @@ export const registrationReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_IS_DONOR: {
             return {...newState, isDonor: action.payload};
+        }
+        case SET_EMAIL: {
+            return {...newState, email: action.payload};
         }
         default:
             return state;

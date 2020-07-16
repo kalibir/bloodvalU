@@ -7,7 +7,7 @@ import {BigInput} from "../../../style/GlobalInputs";
 import {DarkBlueButton} from "../../../style/GlobalButtons";
 import {PageContainer} from "../../../style/GlobalWrappers";
 import {useHistory} from "react-router";
-import {sendCode} from "../../../store/actions/registrationActions";
+import {sendCode, setEmail} from "../../../store/actions/registrationActions";
 
 const PageWrapper = styled(PageContainer)`
     height: 78.2vh;
@@ -47,6 +47,7 @@ const Registration = ({registrationReducer, dispatch}) => {
         e.preventDefault();
         const response = await dispatch(sendCode(userInfo));
         if (response.status < 300) {
+            dispatch(setEmail(userInfo.email))
             history.push("/auth/signup/sent");
         } else {
             console.log("error", response);
@@ -59,7 +60,7 @@ const Registration = ({registrationReducer, dispatch}) => {
             <FormWrapper>
                 <RegistrationTitle>Registration</RegistrationTitle>
                 <SmallTitle>Email</SmallTitle>
-                <EmailInput placeholder="email" type="email" required/>
+                <EmailInput onChange={(e) => onChangeHandler(e, "email")} placeholder="email" type="email" required/>
                 <DarkBlueButton>Register</DarkBlueButton>
             </FormWrapper>
         </PageWrapper>
