@@ -5,8 +5,10 @@ import {PageContainer} from "../../style/GlobalWrappers";
 import {BigInput} from "../../style/GlobalInputs";
 import {DarkBlueButton} from "../../style/GlobalButtons";
 import {SmallTitle} from "../../style/GlobalTitles";
+import {GenericDonorTestCard} from "../GenericDonorTestCard";
+import GenericDonorRequestBar from "../GenericDonorRequestBar";
 
-const ColorDebug = true;  //at true all element get colored background for checking
+const ColorDebug = false;  //at true all element get colored background for checking
 
 const PageWrapper = styled.div`
     display: flex;
@@ -65,8 +67,7 @@ const SideButton = styled(MiddleButton)`
 
 const DashboardContentContainer = styled.div`
     //width: ${rem("445px")};
-    width: 70%;
-   
+    width: 70%;   
     display: flex;
     flex-flow: column;
     justify-content: flex-start;
@@ -127,12 +128,60 @@ const UnderLine = styled.div`
     margin-bottom: ${rem("16px")};
 `
 
-let points = 1000;
+const OfferContainer = styled.div`
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: ${ColorDebug ? "greenyellow" : ""};    
+`
+
+const RequestContainer = styled.div`
+    width: 100%;
+    background-color: ${ColorDebug ? "lightslategrey" : ""};
+`
+
+
+
+//TEST variables
+let points = 100000;
+let offeredTest = {
+    "test_type": "Blood Amount check",
+    "seeker_name": "Buche GmBh",
+    "is_bought": false,
+    "points_cost": 7000,
+    "expiry_date": "2020-08-01",
+    "is_expired": false,
+}
+let offeredTest2 = {
+    "test_type": "Blood Amount check",
+    "seeker_name": "Buche GmBh",
+    "is_bought": true,
+    "points_cost": 7000,
+    "expiry_date": "2020-08-01",
+    "is_expired": false,
+}
+let offeredTest3 = {
+    "test_type": "Blood Amount check",
+    "seeker_name": "Buche GmBh",
+    "is_bought": true,
+    "points_cost": 7000,
+    "expiry_date": "2020-08-01",
+    "is_expired": true,
+}
+let offeredTest4 = {
+    "test_type": "Blood Amount check",
+    "seeker_name": "Buche GmBh",
+    "is_bought": false,
+    "points_cost": 7000,
+    "expiry_date": "2020-08-01",
+    "is_expired": true,
+}
+
+
 
 export const DonorDashboard = () => {
-
     // const [active, setActive] = useState("All_requests");
-    const [active, setActive] = useState("Points");
+    const [active, setActive] = useState("All_requests");
 
     const handleClick = (e) => {
         const value = e.target.id;
@@ -177,8 +226,26 @@ export const DonorDashboard = () => {
                                 <PointsText>Your total points: {points} pts</PointsText>
                             </PointsHeader>
                             <UnderLine />
-                            <div>Offers should be here :)</div></>
-                            : <div>Requests should be here</div>}
+                            <OfferContainer>
+                                <GenericDonorTestCard offeredTest={offeredTest} />
+                                <GenericDonorTestCard offeredTest={offeredTest2} />
+                                <GenericDonorTestCard offeredTest={offeredTest3} />
+                                <GenericDonorTestCard offeredTest={offeredTest4} />
+                            </OfferContainer>
+                            </>
+                            : active === "All_requests" ?
+                                <RequestContainer>
+                                    <div>All requests should be here</div>
+                                    <GenericDonorRequestBar reqnumber={1}/>
+                                    <GenericDonorRequestBar reqnumber={10}/>
+                                    <GenericDonorRequestBar reqnumber={100}/>
+                                    <GenericDonorRequestBar reqnumber={1000}/>
+                                    <GenericDonorRequestBar reqnumber={10000}/>
+                                    <GenericDonorRequestBar reqnumber={100000}/>
+                                    <GenericDonorRequestBar reqnumber={1000000}/>
+                                </RequestContainer>
+                                : <div>Applied requests should be here</div>
+                        }
 
                     </DashboardContentContainer>
                 </LeftSide>

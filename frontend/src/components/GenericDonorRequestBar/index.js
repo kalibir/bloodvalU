@@ -5,8 +5,10 @@ import { BaseStatusButton } from "../../style/GlobalButtons/";
 import { rem } from "polished";
 
 const BarWrapper = styled.div`
-  width: 445px;
+  //width: 445px;
+  width: 100%;
 `;
+
 const RequestBar = styled.div`
   width: 100%;
   height: 48px;
@@ -81,7 +83,14 @@ const SeekerInfoBodyLine = styled.li`
   font-size: 13px;
 `;
 
-const GenericDonorRequestBar = () => {
+const TextWrapper = styled.div`
+  text-align: left;
+  width: 30%;
+  margin-right: -8%;
+`
+
+// const GenericDonorRequestBar = () => {
+const GenericDonorRequestBar = (props) => {
   const [showSeeker, setSeekerInfo] = useState(false);
 
   const showSeekerHandler = (event) => {
@@ -91,8 +100,9 @@ const GenericDonorRequestBar = () => {
   return (
     <BarWrapper>
       <RequestBar onClick={showSeekerHandler}>
-        Request 10
-        <GreenButton>Apply</GreenButton>
+        {/*Request 10*/}
+        <TextWrapper> Request {props.reqnumber}</TextWrapper>
+        <GreenButton onClick={()=>{console.log("Clicked")}}>Apply</GreenButton>
         <BarArrowRight></BarArrowRight>
       </RequestBar>
       {showSeeker ? (
