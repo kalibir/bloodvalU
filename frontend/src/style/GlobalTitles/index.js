@@ -30,6 +30,7 @@ export const BigTitle = styled.h1`
 export const BloodValU = ({text, black, red}) => {
 
     const Bloodval = styled.span`
+      cursor: pointer;
       font-family: 'Poppins', sans-serif;
       font-weight: 600;
       font-size: ${rem(`${black}px`)};

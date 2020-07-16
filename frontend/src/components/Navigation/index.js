@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { rem } from "polished";
+import {rem} from "polished";
 import {WhiteButton} from "../../style/GlobalButtons";
 import {BloodValU} from "../../style/GlobalTitles";
+import {useHistory} from "react-router";
+import {Link} from "react-router-dom";
 
 const Wrapper = styled.div`
   padding-top: 72px; /* Needs to be exactly the same height as the Header, offsets content because it's fixed */
@@ -88,21 +90,33 @@ const Footer = styled.div`
   flex-direction: column;
 `;
 
-const Navigation = ({children}) => {
+const NavLink = styled(Link)`
+  text-decoration: none;
+`
 
-  return (
-    <div>
-      <Wrapper>
-        <Header>
-            <BloodValU text="bloodval" black={24} red={36} />
-            {authenticated ? <HeaderButtonUser>Edina M.</HeaderButtonUser> : <HeaderButtonLogin onClick={clicked}>Login</HeaderButtonLogin>}
-        </Header>
-        {children}
-        <Footer>
-        </Footer>
-      </Wrapper>
-    </div>
-  );
+const Navigation = ({children}) => {
+    const {push} = useHistory()
+    const handleClick = e => {
+        console.log("in the click")
+        push("/")
+    }
+
+
+    return (
+        <div>
+            <Wrapper>
+                <Header>
+                    <NavLink to={"/"}><BloodValU onClick={handleClick} text="bloodval" black={24} red={36}/></NavLink>
+
+                    {authenticated ? <HeaderButtonUser>Edina M.</HeaderButtonUser> :
+                        <HeaderButtonLogin onClick={clicked}>Login</HeaderButtonLogin>}
+                </Header>
+                {children}
+                <Footer>
+                </Footer>
+            </Wrapper>
+        </div>
+    );
 };
 
 export default Navigation;
