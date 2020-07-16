@@ -7,10 +7,11 @@ import {
 import {BigInput, SmallInput} from "../../style/GlobalInputs";
 import {BigTitle, MiddleTitle, SmallTitle} from "../../style/GlobalTitles";
 import {PageContainer} from "../../style/GlobalWrappers";
-import GenericDonorTestCard from "../GenericDonorTestCard";
+import {GenericDonorTestCard} from "../GenericDonorTestCard";
 import GenericSeekerTestCard from "../GenericSeekerTestCard";
 import DonorProfileCardWide from "../GenericDonorProfileWide";
 import DonorProfileSelected from "../GenericDonorSelected";
+import GenericSeekerRequestBar from "../GenericSeekerRequestBar";
 
 const TestWrapper = styled(PageContainer)`
     height: 100%;
@@ -22,9 +23,9 @@ function Template(props) {
   return (
       <TestWrapper>
           <br></br>
-          <DonorProfileSelected/>
+          <GenericSeekerRequestBar/>
           <DonorProfileCardWide/>
-        <SmallTitle>RedTitle</SmallTitle>
+          <SmallTitle>RedTitle</SmallTitle>
           <BigTitle>First Page Title</BigTitle>
           <GenericDonorTestCard/>
           <GenericSeekerTestCard/>
