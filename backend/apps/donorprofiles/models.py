@@ -2,7 +2,6 @@ from datetime import date
 
 from django.contrib.auth import get_user_model
 from django.core.validators import FileExtensionValidator
-from django_countries.fields import CountryField
 from django.db import models
 
 # Create your models here.
@@ -18,7 +17,7 @@ class DonorProfile(models.Model):
 
     last_name = models.CharField(max_length=100, blank=True)
 
-    country = CountryField(blank=True)
+    country = models.CharField(max_length=50, blank=True)
 
     zip_code = models.CharField(max_length=100, blank=True)
 
@@ -48,7 +47,7 @@ class DonorProfile(models.Model):
     GENDER_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female'),
-        ('0', 'other'),
+        ('O', 'other'),
     ]
 
     gender = models.CharField(max_length=2, choices=GENDER_CHOICES, default='M')

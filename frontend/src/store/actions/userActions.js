@@ -1,9 +1,7 @@
-
 import Axios from "../../axios";
 import {setLoggedInUser} from "./loginActions";
 import {userLogout} from "./logoutActions";
 import {resetError, setError} from "./errorActions";
-
 
 
 export const getLoggedInUserAction = () => async (dispatch) => {
@@ -20,10 +18,10 @@ export const getLoggedInUserAction = () => async (dispatch) => {
 }
 
 
-export const updateUserAction = data => async (dispatch) => {
+export const updateProfileAction = data => async (dispatch) => {
     try {
-        const response = await Axios.patch(`users/me/`, data)
-        console.log("in the patch:", response.data)
+        const response = await Axios.patch(`me/`, data)
+        console.log("updated profile", response.data)
         dispatch(resetError())
         dispatch(setLoggedInUser(response.data))
         return response

@@ -54,7 +54,7 @@ const ButtonWrapper = styled.div`
 const Login = (props) => {
     // const {authReducer} = props;
     // console.log("authReducer", authReducer);
-    const history = useHistory();
+    const {push} = useHistory();
     const dispatch = useDispatch();
     const [loginInfo, setloginInfo] = useState({
         email: "",
@@ -83,7 +83,9 @@ const Login = (props) => {
         console.log("in the submit");
         const response = await dispatch(sendLoginAction(loginInfo));
         if (response.status < 300) {
-            history.push("/dashboard/donor");
+            const profile = response.data.profile
+            console.log("profile", profile)
+            push(`${profile.is_donor ? "/dashboard/donor" : "/dashboard/seeker"}`);
         }
     };
 

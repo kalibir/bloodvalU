@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import React from "react";
 import styled from "styled-components";
 import {PageContainer} from "../../../style/GlobalWrappers";
@@ -48,19 +48,20 @@ const TextContainer = styled.div`
 
 const CodeSent = () => {
 
-  return (
-    <PageWrapper>
-        <NiceImage>Some hearts</NiceImage>
-        <TextContainer>
-            <Title>
-          Your registration is<br /> now complete.
-            </Title>
-        </TextContainer>
-        <LinkContainer>
-            <LoginLink to="/auth/login">Login here</LoginLink>
-        </LinkContainer>
-    </PageWrapper>
-  );
+
+    return (
+        <PageWrapper>
+            <NiceImage>Some hearts</NiceImage>
+            <TextContainer>
+                <Title>
+                    Your registration is<br/> now complete.
+                </Title>
+            </TextContainer>
+            <LinkContainer>
+                <LoginLink to="/auth/login">Login here</LoginLink>
+            </LinkContainer>
+        </PageWrapper>
+    );
 };
 
 export default CodeSent;

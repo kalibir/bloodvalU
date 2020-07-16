@@ -30,6 +30,7 @@ export const BigTitle = styled.h1`
 export const BloodValU = ({text, black, red}) => {
 
     const Bloodval = styled.span`
+      cursor: pointer;
       font-family: 'Poppins', sans-serif;
       font-weight: 600;
       font-size: ${rem(`${black}px`)};
@@ -49,3 +50,15 @@ export const BloodValU = ({text, black, red}) => {
         </div>
     )
 }
+
+export const ErrorPlaceholder = styled.div`
+  // width: ${rem("340px")};
+  // height: ${rem("52px")};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  p {
+    color: red;
+    text-align: center;
+  }
+`;

@@ -1,18 +1,30 @@
 import {resetError, setError} from "./errorActions";
 import Axios from "../../axios";
+import {SET_EMAIL, SET_IS_DONOR} from "../actionTypes";
 
+export const setIsDonor = (pythonBooleanString) => {
+    return {
+        type: SET_IS_DONOR,
+        payload: pythonBooleanString,
+    };
+};
+
+export const setEmail = (email) => {
+    return {
+        type: SET_EMAIL,
+        payload: email,
+    };
+};
 
 export const sendCode = data => async (dispatch) => {
     try {
-        console.log("data obj", data)
         const response = await Axios.post('auth/registration/', data);
-        // TODO use an axios await on COMPONENT to check whether the code sent was successful
         dispatch(resetError())
-        console.log("success!", response.data)
+        console.log("success!")
         return response
     } catch (error) {
         console.log("error message", error.response)
-        dispatch(setError(error.response.data.email))
+        dispatch(setError(error.response.data.email[0]))
         return error
     }
 }

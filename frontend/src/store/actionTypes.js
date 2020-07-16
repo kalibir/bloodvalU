@@ -1,3 +1,9 @@
+// Registration types
+
+export const SET_IS_DONOR = 'SET_IS_DONOR'
+export const SET_EMAIL = 'SET_EMAIL'
+
+
 
 // Login types
 

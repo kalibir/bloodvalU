@@ -5,7 +5,6 @@ from apps.seekerprofiles.models import SeekerProfile
 
 
 class SeekerProfileSerializer(serializers.ModelSerializer):
-    country = CountryField(country_dict=True)
     is_donor = serializers.SerializerMethodField()
     no_of_requests = serializers.SerializerMethodField()
     email = serializers.SerializerMethodField()

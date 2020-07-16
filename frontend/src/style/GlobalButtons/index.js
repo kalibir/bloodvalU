@@ -63,6 +63,7 @@ export const WhiteButton = styled.button`
 export const ChooseRoleButton = styled.button`
     width: ${rem("352px")};
     height: ${rem("160px")};
+    cursor: pointer;
     background: #FFFFFF;
     border: 1px solid #D3D4D8;
     border-radius: 4px;

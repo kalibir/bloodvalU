@@ -196,9 +196,9 @@ const DonorDashboard = ({
     };
 
     const [searchParams, setSearchParams] = useState("");
-    console.log('searchParams', searchParams);
-    console.log('active', active);
-    console.log("requests", requests)
+    // console.log('searchParams', searchParams);
+    // console.log('active', active);
+    // console.log("requests", requests)
 
     const handleSearch = (event) => {
         if (active === "requests" || active === "tests") {
@@ -284,7 +284,7 @@ const DonorDashboard = ({
                     </DashboardContentContainer>
                 </LeftSide>
                 <RightSide>
-                    <DonorProfileCardWide userObj={userObj}/>
+                    {userObj? <DonorProfileCardWide userObj={userObj}/> : null}
                 </RightSide>
             </PageWrapper>
         </PageContainer>

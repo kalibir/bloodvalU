@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.core.validators import FileExtensionValidator
 from django.db import models
-from django_countries.fields import CountryField
 
 # Create your models here.
 from apps.registrations.models import code_generator
@@ -23,7 +22,7 @@ class SeekerProfile(models.Model):
 
     phone = models.CharField(max_length=50, blank=True)
 
-    country = CountryField(blank=True)
+    country = models.CharField(max_length=50, blank=True)
 
     zip_code = models.CharField(max_length=100, blank=True)
 
