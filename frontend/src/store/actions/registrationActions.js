@@ -9,6 +9,13 @@ export const setIsDonor = (pythonBooleanString) => {
     };
 };
 
+export const setEmail = (email) => {
+    return {
+        type: SET_EMAIL,
+        payload: email,
+    };
+};
+
 export const sendCode = data => async (dispatch) => {
     try {
         console.log("data obj", data)

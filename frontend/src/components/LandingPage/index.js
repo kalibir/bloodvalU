@@ -46,9 +46,9 @@ export const LandingPage = () => {
     const {push} = useHistory()
     // setIsDonor
     const handleClick = e => {
-        const value = e.currenTarget.id
+        const value = e.currentTarget.id
         dispatch(setIsDonor(value))
-        push("/")
+        push("/auth/signup")
 
     }
 
@@ -58,8 +58,8 @@ export const LandingPage = () => {
                 <BloodValU text="Welcome to bloodval" black={32} red={48} />
                 <WelcomeText>Let’s start creating your profile. Are you interested in</WelcomeText>
                 <ButtonWrapper>
-                    <ChooseRoleButton id={"True"}>Becoming a donor</ChooseRoleButton>
-                    <ChooseRoleButton id={"False"}>Becoming a recipient</ChooseRoleButton>
+                    <ChooseRoleButton onClick={handleClick} id={"True"}>Becoming a donor</ChooseRoleButton>
+                    <ChooseRoleButton onClick={handleClick} id={"False"}>Becoming a recipient</ChooseRoleButton>
                 </ButtonWrapper>
             </ContentWrapper>
         </LandPageContainer>

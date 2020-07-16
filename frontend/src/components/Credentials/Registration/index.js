@@ -1,11 +1,13 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
-import {connect, useDispatch} from "react-redux";
+import {connect} from "react-redux";
 import {MiddleTitle, SmallTitle} from "../../../style/GlobalTitles";
 import {BigInput} from "../../../style/GlobalInputs";
 import {DarkBlueButton} from "../../../style/GlobalButtons";
 import {PageContainer} from "../../../style/GlobalWrappers";
+import {useHistory} from "react-router";
+import {sendCode} from "../../../store/actions/registrationActions";
 
 const PageWrapper = styled(PageContainer)`
     height: 78.2vh;
@@ -28,49 +30,49 @@ const RegistrationTitle = styled(MiddleTitle)`
 `;
 
 
-const Registration = (props) => {
+const Registration = ({registrationReducer, dispatch}) => {
 
-    /*const history = useHistory();
-  const dispatch = useDispatch();
-  const [userInfo, setUserInfo] = useState({
-    email: "",
-  });
-  console.log(userInfo);
-  const onChangeHandler = (event, property) => {
-    const value = event.currentTarget.value;
-    setUserInfo({ ...userInfo, [property]: value });
-  };
+    const history = useHistory();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const response = await dispatch(sendCode(userInfo));
+    const [userInfo, setUserInfo] = useState({
+        email: "",
+    });
+    console.log(userInfo);
+    const onChangeHandler = (event, property) => {
+        const value = event.currentTarget.value;
+        setUserInfo({...userInfo, [property]: value});
+    };
 
-    if (response.status < 300) {
-      history.push("/auth/signup/sent");
-    } else {
-      console.log("error", response);
-    }
-  };*/
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const response = await dispatch(sendCode(userInfo));
+        if (response.status < 300) {
+            history.push("/auth/signup/sent");
+        } else {
+            console.log("error", response);
+        }
+    };
 
 
     return (
         <PageWrapper>
-                <FormWrapper>
-                        <RegistrationTitle>Registration</RegistrationTitle>
-                        <SmallTitle>Email</SmallTitle>
-                        <EmailInput placeholder="email" type="email" required/>
-                        <DarkBlueButton>Register</DarkBlueButton>
-                </FormWrapper>
+            <FormWrapper>
+                <RegistrationTitle>Registration</RegistrationTitle>
+                <SmallTitle>Email</SmallTitle>
+                <EmailInput placeholder="email" type="email" required/>
+                <DarkBlueButton>Register</DarkBlueButton>
+            </FormWrapper>
         </PageWrapper>
-   );
+    );
 };
 
 
 const mapStateToProps = (state) => {
-  console.log("state", state);
-  return {
-    authReducer: state.authReducer,
-  };
+    console.log("state", state);
+    return {
+        registrationReducer: state.registrationReducer,
+        authReducer: state.authReducer,
+    };
 };
 
 export default connect(mapStateToProps)(Registration);
