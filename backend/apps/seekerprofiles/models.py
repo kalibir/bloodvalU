@@ -10,11 +10,12 @@ User = get_user_model()
 
 
 class SeekerProfile(models.Model):
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name='seeker_profile')
 
     certificate = models.FileField(null=True, blank=True, validators=[FileExtensionValidator(['pdf'])])
 
-    is_valid = models.BooleanField(default=False)
+    is_valid = models.BooleanField(default=True)
 
     name = models.CharField(max_length=100, default="name")
 
@@ -24,9 +25,7 @@ class SeekerProfile(models.Model):
 
     country = CountryField(blank=True)
 
-    zip = models.CharField(max_length=15, blank=True)
-
-    city = models.CharField(max_length=50, blank=True)
+    zip_code = models.CharField(max_length=100, blank=True)
 
     street = models.CharField(max_length=100, blank=True)
 
@@ -39,4 +38,4 @@ class SeekerProfile(models.Model):
     )
 
     def __str__(self):
-        return f'User ID: {self.user.id} Seeker Profile'
+        return f'Seeker ID: {self.id} Seeker Profile'

@@ -10,14 +10,16 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # Registration Urls
     path('backend/api/auth/', include('apps.registrations.urls')),
+    # User Urls
+    path('backend/api/', include('apps.users.urls')),
     # Seeker Urls
-    # path('backend/api/seeker/', include('apps.seekerprofiles.urls')),
-    # # Donor Urls
-    # path('backend/api/donor/', include('apps.donorprofiles.urls')),
-    # # Blood Request Urls
-    # path('backend/api/request/', include('apps.bloodrequests.urls')),
-    # # Comments Urls
-    # path('backend/api/tests/', include('apps.offeredtests.urls')),
+    path('backend/api/seeker/', include('apps.seekerprofiles.urls')),
+    # Donor Urls
+    path('backend/api/donor/', include('apps.donorprofiles.urls')),
+    # Blood Request Urls
+    path('backend/api/request/', include('apps.bloodrequests.urls')),
+    # Offered Tests Urls
+    path('backend/api/tests/', include('apps.offeredtests.urls')),
     #
     # path('backend/api/docs/', include_docs_urls(title='BloodValU Endpoints', public=True, permission_classes=[])),
 ]
