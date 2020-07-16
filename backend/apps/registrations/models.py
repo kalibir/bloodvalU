@@ -48,6 +48,7 @@ class Registration(models.Model):
 
         )
     )
+
     code_expiration = models.DateTimeField(
         default=timezone.now() + timedelta(days=2)
     )

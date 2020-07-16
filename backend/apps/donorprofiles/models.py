@@ -20,21 +20,30 @@ class DonorProfile(models.Model):
 
     country = CountryField(blank=True)
 
-    zip = models.CharField(max_length=15, blank=True)
-
-    city = models.CharField(max_length=50, blank=True)
+    zip_code = models.CharField(max_length=100, blank=True)
 
     street = models.CharField(max_length=100, blank=True)
 
     avatar = models.ImageField(blank=True)
 
-    birthday = models.DateField(auto_now=False, null=True, blank=True)
+    birthday = models.DateTimeField(auto_now=False, null=True, blank=True)
 
-    last_donation = models.DateField(auto_now=False, null=True, blank=True)
+    last_donation = models.DateTimeField(auto_now=False, null=True, blank=True)
 
     total_points = models.IntegerField(blank=True, default=0)
 
-    blood_group = models.CharField(max_length=10, blank=True)
+    BLOOD_GROUP_CHOICES = [
+        ('O', 'O'),
+        ('O+', 'O+'),
+        ('A-', 'A-'),
+        ('A+', 'A+'),
+        ('B-', 'B-'),
+        ('B+', 'B+'),
+        ('AB-', 'AB-'),
+        ('AB+', 'AB+'),
+    ]
+
+    blood_group = models.CharField(max_length=3, choices=BLOOD_GROUP_CHOICES, default='O-')
 
     GENDER_CHOICES = [
         ('M', 'Male'),
@@ -45,9 +54,9 @@ class DonorProfile(models.Model):
     gender = models.CharField(max_length=2, choices=GENDER_CHOICES, default='M')
 
     @property
-    def calculate_age(self):
+    def age(self):
         today = date.today()
         return today.year - self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
 
     def __str__(self):
-        return f'User ID: {self.user.id} Donor Profile'
+        return f'Donor ID: {self.id} Donor Profile'

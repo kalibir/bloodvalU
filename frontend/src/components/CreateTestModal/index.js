@@ -16,7 +16,6 @@ const ModalWrapper = styled.div`
 
 const Modal = styled.div`
   width: 352px;
-  height: 163px;
   background: white;
   border-radius: 4px;
   display: flex;
@@ -57,11 +56,28 @@ const PointsInput = styled.input`
   font-size: 9pt;
 `;
 
+const ExpidryDateInputWrapper = styled.div`
+  width: 100%;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+`;
+
+const ExpidryDateInput = styled.input`
+  width: 160px;
+  height: 30px;
+  border-radius: 4px;
+  border: 1px solid #a1a4b1;
+  color: #a1a4b1;
+  margin-left: 8px;
+`;
+
 const ModalBtnWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
   margin-top: 24px;
+  margin-bottom: 24px;
 `;
 
 const CustomWhiteButton = styled(WhiteButton)`
@@ -83,10 +99,16 @@ const CreateTestModal = () => {
           Title:
           <TitleInput />
         </TitleInputWrapper>
+
         <PointsInputWrapper>
           Points:
           <PointsInput type="number" />
         </PointsInputWrapper>
+
+        <ExpidryDateInputWrapper>
+          Expiry Date:
+          <ExpidryDateInput type="date" />
+        </ExpidryDateInputWrapper>
 
         <ModalBtnWrapper>
           <CustomWhiteButton>Cancel</CustomWhiteButton>

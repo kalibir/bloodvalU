@@ -5,6 +5,8 @@ import Credentials from "../components/Credentials";
 import Navigation from "../components/Navigation";
 import { LandingPage } from "../components/LandingPage";
 import CreateTestModal from "../components/CreateTestModal";
+import { SeekerEditProfile } from "../components/SeekerEditProfile";
+import { DonorEditProfile } from "../components/DonorEditProfile";
 import { DonorDashboard } from "../components/DonorDashboard";
 import SeekerDashboard from "../components/SeekerRequestPage"
 
@@ -15,7 +17,7 @@ const Routes = () => {
         <Switch>
           <Navigation>
             <Route path="/test" component={DonorDashboard} />
-            <Route path="/offer" component={DonorDashboard} />
+            <Route path="/offer" component={GenericDonorTestCard} />
             <Route path="/templates" component={Template} />
             <Route path="/home" component={LandingPage} />
             <Route path="/auth" component={Credentials} />

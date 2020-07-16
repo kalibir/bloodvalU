@@ -87,8 +87,8 @@ export const ChooseRoleButton = styled.button`
 `;
 
 export const SmallBlueButton = styled.button`
-    width: ${rem("49px")};
-    height: ${rem("21px")};
+    width: ${rem("48px")};
+    height: ${rem("20px")};
     background: #2196F3;
     border-radius: 4px;
     font-style: normal;
