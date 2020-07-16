@@ -94,74 +94,74 @@ const InputFile = styled.input`
 
 const CreateSeekerProfile = ({authReducer}) => {
 
-    console.log("authReducer", authReducer)
     const history = useHistory()
     const dispatch = useDispatch()
     const [seekerInfo, setSeekerInfo] = useState({
-        email: "",
-        validation_code: "",
-        password: "",
-        password_repeat: "",
         name: "",
         country: "",
-        city: "",
-        zip: "",
+        zip_code: "",
         street: "",
         phone: "",
         website: "",
-        certificate: ""
+        certificate: null
     })
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const form = new FormData()
+        form.append('name', seekerInfo.name)
+        form.append('country', seekerInfo.country)
+        form.append('zip_code', seekerInfo.zip_code)
+        form.append('street', seekerInfo.street)
+        form.append('zip', seekerInfo.country)
+        form.append('phone', seekerInfo.phone)
+        form.append('website', seekerInfo.website)
+        if (seekerInfo.certificate) {
+            form.append('certificate', seekerInfo.certificate)
+        }
+        // if (seekerInfo.logo) {
+        //     form.append('logo', seekerInfo.logo)
+        // }
+        const response = await dispatch(updateProfileAction(form));
+        if (response.status < 300) {
+            console.log("woohooo, success!")
+            history.push(`/dashboard/seeker`)
+        }
+    }
+    console.log("seekerInfo", seekerInfo)
 
     const onChangeHandler = (event, property) => {
         const value = event.currentTarget.value;
         setSeekerInfo({...seekerInfo, [property]: value});
     };
 
-    const imageSelectHandler = e => {
+    const logoSelectHandler = e => {
+        if (e.target.files[0]) {
+            setSeekerInfo({...seekerInfo, logo: e.target.files[0]})
+        }
+    }
+
+    const certificateSelectHandler = e => {
         if (e.target.files[0]) {
             setSeekerInfo({...seekerInfo, certificate: e.target.files[0]})
         }
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const form = new FormData()
-        form.append('name', seekerInfo.name)
-        form.append('country', seekerInfo.password)
-        form.append('street', seekerInfo.password_repeat)
-        form.append('city', seekerInfo.company_name)
-        form.append('zip', seekerInfo.country)
-        form.append('website', seekerInfo.city)
-        form.append('phone', seekerInfo.zip)
-        form.append('email', seekerInfo.street)
-        form.append('opening_hours', seekerInfo.phone)
-        form.append('price_level', seekerInfo.website)
-        form.append('image', seekerInfo.certificate)
-        const response = await dispatch(updateProfileAction(seekerInfo));
-        if (response.status < 300) {
-            console.log("woohooo", response)
-            const seekerId = response.data.id
-            history.push(`/seekerprofiles/${seekerId}`)
-        } else {
-            console.log('error', response)
-        }
-    }
 
-
-    return (<FormWrapper>
+    return (<FormWrapper onSubmit={handleSubmit}>
             <TitleWrapper>
                 <ValidationTitle>Create an account</ValidationTitle>
             </TitleWrapper>
             <InputWrapper>
                 <div>
                     <SmallTitle>Company name</SmallTitle>
-                    <CostumizedBigInput placeholder="Company name" required/>
+                    <CostumizedBigInput onChange={(e) => onChangeHandler(e, "name")} placeholder="Company name"
+                                        required/>
                 </div>
             </InputWrapper>
             <InputWrapper>
                 <div>
                     <SmallTitle>Street</SmallTitle>
-                    <StreetInput placeholder="Longstreet" required/>
+                    <StreetInput onChange={(e) => onChangeHandler(e, "street")} placeholder="Longstreet" required/>
                 </div>
                 <div>
                     <SmallTitle>Nr.</SmallTitle>
@@ -171,21 +171,25 @@ const CreateSeekerProfile = ({authReducer}) => {
             <InputWrapper>
                 <div>
                     <SmallTitle>Zip</SmallTitle>
-                    <CostumizedSmallInput placeholder="8000 Zurich" required/>
+                    <CostumizedSmallInput onChange={(e) => onChangeHandler(e, "zip_code")} placeholder="8000 Zurich"
+                                          required/>
                 </div>
                 <div>
                     <SmallTitle>Country</SmallTitle>
-                    <CostumizedSmallInput placeholder="Switzerland" required/>
+                    <CostumizedSmallInput onChange={(e) => onChangeHandler(e, "country")} placeholder="Switzerland"
+                                          required/>
                 </div>
             </InputWrapper>
             <InputWrapper>
                 <div>
                     <SmallTitle>Phone</SmallTitle>
-                    <CostumizedSmallInput placeholder="044 123 45 67" required/>
+                    <CostumizedSmallInput onChange={(e) => onChangeHandler(e, "phone")} placeholder="044 123 45 67"
+                                          required/>
                 </div>
                 <div>
                     <SmallTitle>Website</SmallTitle>
-                    <CostumizedSmallInput placeholder="www.example.ch" required/>
+                    <CostumizedSmallInput onChange={(e) => onChangeHandler(e, "website")} placeholder="www.example.ch"
+                                          required/>
                 </div>
             </InputWrapper>
             <ButtonWrapper>
@@ -193,7 +197,7 @@ const CreateSeekerProfile = ({authReducer}) => {
                     <SmallTitle>Licence</SmallTitle>
                     <InputLabel htmlFor="restaurant_image">Choose a file...</InputLabel>
                     <div><p></p></div>
-                    <InputFile id="restaurant_image" accept="application/pdf"
+                    <InputFile onChange={certificateSelectHandler} id="restaurant_image" accept="application/pdf"
                                type="file"/>
                 </div>
                 <DarkBlueButton>Continue</DarkBlueButton>

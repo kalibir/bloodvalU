@@ -10,6 +10,7 @@ import {SeekerEditProfile} from "../components/SeekerEditProfile";
 import {DonorEditProfile} from "../components/DonorEditProfile";
 import DonorDashboard from "../components/DonorDashboard";
 import Login from "../components/Credentials/Login";
+import SeekerDashboard from "../components/SeekerRequestPage";
 
 const Routes = () => {
     return (
@@ -20,6 +21,7 @@ const Routes = () => {
                         <Route path="/test" component={DonorDashboard}/>
                         <Route path="/offer" component={DonorDashboard}/>
                         <Route path="/dashboard/donor" component={DonorDashboard}/>
+                        <Route path="/dashboard/seeker" component={SeekerDashboard}/>
                         <Route path="/offered-tests" component={DonorDashboard}/>
                         <Route path="/templates" component={Template}/>
                         <Route exact path="/" component={LandingPage}/>

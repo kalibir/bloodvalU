@@ -1,9 +1,7 @@
-
 import Axios from "../../axios";
 import {setLoggedInUser} from "./loginActions";
 import {userLogout} from "./logoutActions";
 import {resetError, setError} from "./errorActions";
-
 
 
 export const getLoggedInUserAction = () => async (dispatch) => {
