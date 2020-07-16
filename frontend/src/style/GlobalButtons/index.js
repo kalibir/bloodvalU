@@ -194,22 +194,22 @@ export const BaseStatusButton = styled.button`
 export const CompleteButton = styled.button`
     width: ${rem("138px")};
     height: ${rem("32px")};
-    background: #FFFFFF;
+    background: #43A047;
     border-radius: 70px;
     font-weight: bold;
     font-size: 12px;
     display: flex;
     align-items: center;
-    color: #43A047;
-    border: 1px solid #FFFFFF;
+    color: #FFFFFF;
+    border: 1px solid #43A047;
     justify-content: center;
     transition-duration: 0.4s;
     transition-timing-function: ease-in-out;
     outline: none;
     
     :hover {
-        color: #FFFFFF;
-        background: #43A047;
+        color: #43A047;
+        background: #FFFFFF;
         border: 1px solid #43A047;
     }
     :active {
