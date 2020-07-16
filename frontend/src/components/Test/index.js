@@ -11,6 +11,7 @@ import {GenericDonorTestCard} from "../GenericDonorTestCard";
 import GenericSeekerTestCard from "../GenericSeekerTestCard";
 import DonorProfileCardWide from "../GenericDonorProfileWide";
 import DonorProfileSelected from "../GenericDonorSelected";
+import GenericSeekerRequestBar from "../GenericSeekerRequestBar";
 
 const TestWrapper = styled(PageContainer)`
     height: 100%;
@@ -22,7 +23,7 @@ function Template(props) {
   return (
       <TestWrapper>
           <br></br>
-          <DonorProfileSelected/>
+          <GenericSeekerRequestBar/>
           <DonorProfileCardWide/>
           <SmallTitle>RedTitle</SmallTitle>
           <BigTitle>First Page Title</BigTitle>

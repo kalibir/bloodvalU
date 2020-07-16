@@ -4,12 +4,11 @@ import Template from "../components/Test";
 import Credentials from "../components/Credentials";
 import Navigation from "../components/Navigation";
 import { LandingPage } from "../components/LandingPage";
-import GenericDonorRequestBar from "../components/GenericDonorRequestBar";
-import {GenericDonorTestCard} from "../components/GenericDonorTestCard";
 import CreateTestModal from "../components/CreateTestModal";
 import { SeekerEditProfile } from "../components/SeekerEditProfile";
 import { DonorEditProfile } from "../components/DonorEditProfile";
 import { DonorDashboard } from "../components/DonorDashboard";
+import SeekerDashboard from "../components/SeekerRequestPage"
 
 const Routes = () => {
   return (
@@ -23,10 +22,8 @@ const Routes = () => {
             <Route path="/home" component={LandingPage} />
             <Route path="/auth" component={Credentials} />
             {/* <Route path="/donorbartest" component={GenericDonorRequestBar} /> */}
-            {/*<Route path="/auth" component={Credentials} />*/}
-            <Route path="/editseeker" component={SeekerEditProfile} />
-            <Route path="/editdonor" component={DonorEditProfile} />
-            <Route path="/bars" component={GenericDonorRequestBar} />
+            <Route path="/modal" component={CreateTestModal} />
+            <Route exact path="/requests/handle" component={SeekerDashboard } />
           </Navigation>
         </Switch>
       </Router>
