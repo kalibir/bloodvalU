@@ -23,11 +23,10 @@ function Template(props) {
   return (
       <TestWrapper>
           <br></br>
-          <GenericSeekerRequestBar/>
+          <CompleteButton>Complete</CompleteButton>
           <DonorProfileCardWide/>
           <SmallTitle>RedTitle</SmallTitle>
           <BigTitle>First Page Title</BigTitle>
-          <GenericDonorTestCard/>
           <GenericSeekerTestCard/>
           <CompleteButton>Complete request</CompleteButton>
           <SmallGreenButton>Redeem</SmallGreenButton>

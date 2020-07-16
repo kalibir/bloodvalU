@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import styled from "styled-components";
-import { BaseStatusButton } from "../../style/GlobalButtons/";
+import {BaseStatusButton, CompleteButton} from "../../style/GlobalButtons/";
 import { rem } from "polished";
 
 const BarWrapper = styled.div`
@@ -66,6 +66,7 @@ const GenericSeekerRequestBar = (props) => {
   let selected_donor_id = 1
     let donorObj_id = 2
 
+
   // const [status, setStatus] = useState("OP");
   //
   //   const handleSelectButton = (e) => {
@@ -80,13 +81,17 @@ const GenericSeekerRequestBar = (props) => {
     <BarWrapper>
       <RequestBar onClick={showDonorHandler}>
         Request 10
-        <BlueButton>Open</BlueButton>
+          {props.status === "OP"
+          ? <BlueButton>Open</BlueButton>
+          : props.status === "CL"
+              ? <CompleteButton onClick={props.func}>Complete request</CompleteButton>
+          : <CompleteButton>Complete</CompleteButton>}
         <BarArrowRight></BarArrowRight>
       </RequestBar>
       {showDonor ? (
         <>
             {props.status === "OP"
-            ? <DonorSubBar active={false}>userObj.name</DonorSubBar>
+            ? <DonorSubBar active={false}>donorObj.name</DonorSubBar>
             : props.status === "CL" && selected_donor_id === donorObj_id
                 ? <DonorSelectedBar>donorObj.name</DonorSelectedBar>
             : <DonorNotSelected>donorObj.name</DonorNotSelected>}
