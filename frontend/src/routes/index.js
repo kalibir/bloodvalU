@@ -4,9 +4,9 @@ import Template from "../components/Test";
 import Credentials from "../components/Credentials";
 import Navigation from "../components/Navigation";
 import { LandingPage } from "../components/LandingPage";
-import GenericDonorRequestBar from "../components/GenericDonorRequestBar";
 import CreateTestModal from "../components/CreateTestModal";
 import { DonorDashboard } from "../components/DonorDashboard";
+import SeekerDashboard from "../components/SeekerRequestPage"
 
 const Routes = () => {
   return (
@@ -20,8 +20,8 @@ const Routes = () => {
             <Route path="/home" component={LandingPage} />
             <Route path="/auth" component={Credentials} />
             {/* <Route path="/donorbartest" component={GenericDonorRequestBar} /> */}
-            {/*<Route path="/auth" component={Credentials} />*/}
             <Route path="/modal" component={CreateTestModal} />
+            <Route exact path="/requests/handle" component={SeekerDashboard } />
           </Navigation>
         </Switch>
       </Router>

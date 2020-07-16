@@ -5,7 +5,7 @@ import { BaseStatusButton } from "../../style/GlobalButtons/";
 import { rem } from "polished";
 
 const BarWrapper = styled.div`
-  width: 445px;
+  width: 100%;
 `;
 const RequestBar = styled.div`
   width: 100%;
@@ -32,7 +32,7 @@ const BarArrowRight = styled.i`
   transform: rotate(-45deg);
 `;
 
-const DonorSubBar = styled.div`
+export const DonorSubBar = styled.div`
   width: 100%;
   height: 48px;
   border-left: ${(props) => props.active && "13px solid #2196F3"};
@@ -47,12 +47,34 @@ const DonorSubBar = styled.div`
   color: white;
 `;
 
-const GenericSeekerRequestBar = () => {
+const DonorSelectedBar = styled(DonorSubBar)`
+    background: #43A047;
+`;
+
+const DonorNotSelected = styled(DonorSubBar)`
+    background: #C6C6C6;
+`;
+
+const GenericSeekerRequestBar = (props) => {
+    console.log("status", props.status)
   const [showDonor, setDonorBar] = useState(false);
 
   const showDonorHandler = (event) => {
     setDonorBar(!showDonor);
   };
+
+  let selected_donor_id = 1
+    let donorObj_id = 2
+
+  // const [status, setStatus] = useState("OP");
+  //
+  //   const handleSelectButton = (e) => {
+  //       setStatus("CL")
+  //   }
+  //
+  //   const handleUnSelectButton = (e) => {
+  //       setStatus("OP")
+  //   }
 
   return (
     <BarWrapper>
@@ -63,8 +85,11 @@ const GenericSeekerRequestBar = () => {
       </RequestBar>
       {showDonor ? (
         <>
-          <DonorSubBar active={false}>Edina</DonorSubBar>
-          <DonorSubBar active={false}>Antonio</DonorSubBar>
+            {props.status === "OP"
+            ? <DonorSubBar active={false}>userObj.name</DonorSubBar>
+            : props.status === "CL" && selected_donor_id === donorObj_id
+                ? <DonorSelectedBar>donorObj.name</DonorSelectedBar>
+            : <DonorNotSelected>donorObj.name</DonorNotSelected>}
         </>
       ) : null}
     </BarWrapper>
