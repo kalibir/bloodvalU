@@ -6,6 +6,8 @@ import Navigation from "../components/Navigation";
 import { LandingPage } from "../components/LandingPage";
 import GenericDonorRequestBar from "../components/GenericDonorRequestBar";
 import CreateTestModal from "../components/CreateTestModal";
+import { SeekerEditProfile } from "../components/SeekerEditProfile";
+import { DonorEditProfile } from "../components/DonorEditProfile";
 import { DonorDashboard } from "../components/DonorDashboard";
 
 const Routes = () => {
@@ -21,7 +23,8 @@ const Routes = () => {
             <Route path="/auth" component={Credentials} />
             {/* <Route path="/donorbartest" component={GenericDonorRequestBar} /> */}
             {/*<Route path="/auth" component={Credentials} />*/}
-            <Route path="/modal" component={CreateTestModal} />
+            <Route path="/editseeker" component={SeekerEditProfile} />
+            <Route path="/editdonor" component={DonorEditProfile} />
           </Navigation>
         </Switch>
       </Router>
