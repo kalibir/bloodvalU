@@ -58,9 +58,6 @@ const InputTitle = styled(SmallTitle)`
 
 const Error = styled(ErrorPlaceholder)``
 
-{/*<Link to={`${isDonor === "False" ? "/auth/signup/validation/seeker" : "/auth/signup/validation/donor"}`}>*/
-}
-
 
 const CreateBaseUser = ({registrationReducer: {isDonor, email}, dispatch, errorReducer: {error}}) => {
     const {push} = useHistory()
@@ -90,7 +87,7 @@ const CreateBaseUser = ({registrationReducer: {isDonor, email}, dispatch, errorR
             const loginInfo = {email: userInfo.email, password: userInfo.password}
             const response = await dispatch(sendLoginAction(loginInfo));
             if (response.status < 300) {
-                push(`${isDonor === "False" ? "/auth/signup/validation/seeker" : "/auth/signup/validation/donor"}`);
+                push(`${isDonor === "False" ? "/auth/signup/seeker-profile/" : "/auth/signup/donor-profile/"}`);
             }
 
         }

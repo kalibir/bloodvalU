@@ -7,6 +7,7 @@ import CodeSent from "./CodeSent";
 import RegistrationSuccess from "./RegistrationSuccess"
 import CreateBaseUser from "./CreateBaseUser";
 import CreateSeekerProfile from "./CreateSeekerProfile";
+import CreateDonorProfile from "./CreateDonorProfile";
 
 const Credentials = (props) => {
     return (

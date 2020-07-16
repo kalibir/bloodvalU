@@ -1,8 +1,67 @@
+import React, {useState} from "react";
+import styled from "styled-components";
+import rem from "polished/lib/helpers/rem";
+import {MiddleTitle, SmallTitle} from "../../../style/GlobalTitles";
+import {BigInput, Select, SmallInput} from "../../../style/GlobalInputs";
+import {DarkBlueButton, WhiteButton} from "../../../style/GlobalButtons";
 import {PageContainer} from "../../../style/GlobalWrappers";
-import {Select, SmallInput} from "../../../style/GlobalInputs";
-import {DarkBlueButton} from "../../../style/GlobalButtons";
-import React from "react";
 import {connect} from "react-redux";
+
+const FormWrapper = styled.form`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    //background-color: darkorange;
+`;
+
+const FormContainer = styled.div`    
+    display: flex;
+    flex-flow: column;
+    //background-color: burlywood;
+`;
+
+const InputPairContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: ${rem("24px")};
+    width: ${rem("352px")};
+`
+
+const TitleContainer = styled(InputPairContainer)`
+    justify-content: flex-start;
+    margin-top: ${rem("48px")};
+`
+
+const MiddleTitle500 = styled(MiddleTitle)`
+    font-weight: 500;
+`
+
+
+const ButtonContainer = styled(InputPairContainer)`
+    justify-content: flex-end;
+    margin: 0;
+    //background-color: rosybrown;
+`
+
+const InputTitle = styled(SmallTitle)`
+    margin-bottom: ${rem("8px")};
+    font-weight: 500;
+`
+
+const AddressInput = styled(BigInput)`
+    width: ${rem("256px")};
+`;
+
+const HouseNumberInput = styled(BigInput)`
+    width: ${rem("64px")};
+`;
+
+const WhiteButtonWithMargin = styled(WhiteButton)`
+    margin-right: ${rem("16px")};
+`
 
 const CreateDonorProfile = (props) => {
 
@@ -155,4 +214,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(CreateBaseUser);
+export default connect(mapStateToProps)(CreateDonorProfile);
