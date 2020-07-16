@@ -6,6 +6,7 @@ import {PageContainer} from "../../style/GlobalWrappers";
 import {ChooseRoleButton} from "../../style/GlobalButtons";
 import {useDispatch} from "react-redux";
 import {useHistory} from "react-router";
+import {setIsDonor} from "../../store/actions/registrationActions";
 
 const LandPageContainer = styled(PageContainer)`
     //background-color: lightcoral;
@@ -46,6 +47,8 @@ export const LandingPage = () => {
     // setIsDonor
     const handleClick = e => {
         const value = e.currenTarget.id
+        dispatch(setIsDonor(value))
+        push("/")
 
     }
 
