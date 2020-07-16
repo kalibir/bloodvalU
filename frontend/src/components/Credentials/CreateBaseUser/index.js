@@ -10,6 +10,7 @@ import {validate} from "../../../store/actions/registrationActions";
 import {useHistory} from "react-router";
 import {Link} from "react-router-dom";
 import {resetError} from "../../../store/actions/errorActions";
+import {sendLoginAction} from "../../../store/actions/loginActions";
 
 const FormWrapper = styled.form`
     display: flex;
@@ -86,7 +87,12 @@ const CreateBaseUser = ({registrationReducer: {isDonor, email}, dispatch, errorR
         const response = await dispatch(validate(userInfo));
         if (response.status < 300) {
             console.log("success!")
-            // push(``)
+            const loginInfo = {email: userInfo.email, password: userInfo.password}
+            const response = await dispatch(sendLoginAction(loginInfo));
+            if (response.status < 300) {
+                push(`${isDonor === "False" ? "/auth/signup/validation/seeker" : "/auth/signup/validation/donor"}`);
+            }
+
         }
 
     }
@@ -115,7 +121,8 @@ const CreateBaseUser = ({registrationReducer: {isDonor, email}, dispatch, errorR
                         <div>
                             <InputTitle>Password</InputTitle>
                             <Error><p>{error === "3" ? "Passwords do not match!" : null}</p></Error>
-                            <BigInput title="Password must be at least 4 characters" pattern=".{4,}" type="password" placeholder="password"
+                            <BigInput title="Password must be at least 4 characters" pattern=".{4,}" type="password"
+                                      placeholder="password"
                                       onChange={(e) => onChangeHandler(e, "password")} required/>
                         </div>
                     </InputPairContainer>
