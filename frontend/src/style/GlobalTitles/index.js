@@ -49,3 +49,15 @@ export const BloodValU = ({text, black, red}) => {
         </div>
     )
 }
+
+export const ErrorPlaceholder = styled.div`
+  // width: ${rem("340px")};
+  // height: ${rem("52px")};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  p {
+    color: red;
+    text-align: center;
+  }
+`;
