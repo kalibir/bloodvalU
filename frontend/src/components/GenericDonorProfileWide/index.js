@@ -1,5 +1,5 @@
-import React from "react";
-import { rem } from "polished";
+import React, {useEffect} from "react";
+import {rem} from "polished";
 import styled from "styled-components";
 import profilePic from "../../assets/images/default-profile-pic.jpg"
 
@@ -103,38 +103,56 @@ const AddressTitle = styled(DetailTitle)`
     margin-bottom: ${rem("64px")};
 `;
 
-const DonorProfileCardWide = (props) => {
-  return (
-      <ProfileWrapper>
+const DonorProfileCardWide = ({
+                                  userObj: {
+                                      phone,
+                                      is_donor,
+                                      email,
+                                      first_name,
+                                      last_name,
+                                      country,
+                                      zip_code,
+                                      street,
+                                      avatar,
+                                      birthday,
+                                      total_points,
+                                      blood_group,
+                                      gender,
+                                  }
+                              }) => {
+
+
+    return (
+        <ProfileWrapper>
             <UpperContainer>
                 <ProfilePicPlaceholder>
-                   <img src={profilePic} alt={"avatar"}/>
+                    <img src={avatar ? avatar : profilePic} alt={"avatar"}/>
                 </ProfilePicPlaceholder>
                 <NameContainer>
-                    Name Name Name
+                    {`${first_name} ${last_name}`}
                 </NameContainer>
                 <CityContainer>
-                    City, Country
+                    {zip_code}, {country.name}
                 </CityContainer>
             </UpperContainer>
             <BottomContainer>
                 <DetailTitlesContainer>
-                    <DetailTitle>Gender:</DetailTitle>
-                    <DetailTitle>Birthday:</DetailTitle>
+                    <DetailTitle>Gender: </DetailTitle>
+                    <DetailTitle>Birthday: </DetailTitle>
                     <AddressTitle>Address:</AddressTitle>
                     <DetailTitle>Phone:</DetailTitle>
                     <DetailTitle>Email:</DetailTitle>
                 </DetailTitlesContainer>
                 <DetailsContainer>
-                    <Details>Female</Details>
-                    <Details>25.07.1999</Details>
-                    <Details>Technoparkstrasse 1<br/> 8999 Zürich<br/> Schweiz</Details>
-                    <Details>0781111111</Details>
-                    <Details>example@email.com</Details>
+                    <Details>{gender}</Details>
+                    <Details>{birthday}</Details>
+                    <Details>{street}<br/> {zip_code}<br/>{country.name}</Details>
+                    <Details>{phone.length ? phone : "please add a number"}</Details>
+                    <Details>{email}</Details>
                 </DetailsContainer>
             </BottomContainer>
-      </ProfileWrapper>
-  )
+        </ProfileWrapper>
+    )
 }
 
 export default DonorProfileCardWide;

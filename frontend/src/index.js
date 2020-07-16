@@ -6,6 +6,16 @@ import { GlobalStyle, theme } from "./style";
 import { ThemeProvider } from "styled-components";
 import { store } from "./store";
 import * as serviceWorker from './serviceWorker';
+import {sendLogin, setLoggedInUser} from "./store/actions/loginActions";
+
+if (localStorage.getItem("token")) {
+  const token = localStorage.getItem("token");
+  store.dispatch(sendLogin(token));
+}
+if (localStorage.getItem("profile")) {
+  const profile = localStorage.getItem("profile");
+  store.dispatch(setLoggedInUser(JSON.parse(profile)));
+}
 
 ReactDOM.render(
   <Provider store={store}>

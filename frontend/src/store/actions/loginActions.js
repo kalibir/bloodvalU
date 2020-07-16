@@ -1,7 +1,7 @@
 import Axios from "../../axios";
 import {SET_LOGGED_IN_USER, USER_LOGIN} from "../actionTypes";
 import {getLoggedInUserAction} from "./userActions";
-import {resetError, setError} from "./errorActions";
+import { setError} from "./errorActions";
 
 
 export const sendLogin = (token) => {

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
 import {PageContainer} from "../../style/GlobalWrappers";
@@ -7,6 +7,10 @@ import {DarkBlueButton} from "../../style/GlobalButtons";
 import {SmallTitle} from "../../style/GlobalTitles";
 import {GenericDonorTestCard} from "../GenericDonorTestCard";
 import GenericDonorRequestBar from "../GenericDonorRequestBar";
+import {connect} from "react-redux";
+import DonorProfileCardWide from "../GenericDonorProfileWide";
+import {getAllAppliedToRequestsAction, getAllRequestsAction} from "../../store/actions/bloodRequestActions";
+import {searchAllRequestsAndTestsAction} from "../../store/actions/searchActions";
 
 const ColorDebug = false;  //at true all element get colored background for checking
 
@@ -141,7 +145,6 @@ const RequestContainer = styled.div`
 `
 
 
-
 //TEST variables
 let points = 100000;
 let offeredTest = {
@@ -178,15 +181,45 @@ let offeredTest4 = {
 }
 
 
+const DonorDashboard = ({
+                            dispatch,
+                            userProfileReducer: {offeredTests, requests, appliedRequests},
+                            authReducer: {
+                                userObj
+                            }
+                        }) => {
 
-export const DonorDashboard = () => {
-    // const [active, setActive] = useState("All_requests");
-    const [active, setActive] = useState("All_requests");
-
+    const [active, setActive] = useState("requests");
     const handleClick = (e) => {
         const value = e.target.id;
         setActive(value);
     };
+
+    const [searchParams, setSearchParams] = useState("");
+    console.log('searchParams', searchParams);
+    console.log('active', active);
+    console.log("requests", requests)
+
+    const handleSearch = (event) => {
+        if (active === "requests" || active === "tests") {
+            dispatch(searchAllRequestsAndTestsAction(searchParams, active));
+            setSearchParams("");
+        }
+    };
+
+    const handleSearchInput = (e) => {
+        const value = e.currentTarget.value;
+        setSearchParams(value);
+    };
+
+    useEffect(() => {
+        console.log("in the hook of getting requests")
+        // get Requests
+        dispatch(getAllAppliedToRequestsAction())
+        dispatch(getAllRequestsAction())
+        dispatch(searchAllRequestsAndTestsAction("", "tests")) //This gets all offered tests
+
+    }, [dispatch])
 
     return (
         <PageContainer>
@@ -195,9 +228,9 @@ export const DonorDashboard = () => {
                     <DashboardContentContainer>
                         <MenuContainer>
                             <SideButton
-                                id="All_requests"
+                                id="requests"
                                 onClick={handleClick}
-                                active={active === "All_requests"}>
+                                active={active === "requests"}>
                                 All requests
                             </SideButton>
                             <MiddleButton
@@ -207,52 +240,63 @@ export const DonorDashboard = () => {
                                 Applied
                             </MiddleButton>
                             <SideButton
-                                id="Points"
+                                id="tests"
                                 onClick={handleClick}
-                                active={active === "Points"}>
+                                active={active === "tests"}>
                                 Points menu
                             </SideButton>
                         </MenuContainer>
 
                         <SearchContainer>
-                            <SearchInput placeholder="Search..." />
-                            <SearchButton>Search</SearchButton>
+                            <SearchInput onChange={handleSearchInput}
+                                         placeholder="Search..."/> {/* TODO add search on enter*/}
+                            <SearchButton onClick={handleSearch}>Search</SearchButton>
                         </SearchContainer>
 
-                        {active === "Points" ?
+                        {active === "tests" ?
                             <>
-                            <PointsHeader>
-                                <OfferTitle>Offers</OfferTitle>
-                                <PointsText>Your total points: {points} pts</PointsText>
-                            </PointsHeader>
-                            <UnderLine />
-                            <OfferContainer>
-                                <GenericDonorTestCard offeredTest={offeredTest} />
-                                <GenericDonorTestCard offeredTest={offeredTest2} />
-                                <GenericDonorTestCard offeredTest={offeredTest3} />
-                                <GenericDonorTestCard offeredTest={offeredTest4} />
-                            </OfferContainer>
+                                <PointsHeader>
+                                    <OfferTitle>Offers</OfferTitle>
+                                    <PointsText>Your total points: {points} pts</PointsText>
+                                </PointsHeader>
+                                <UnderLine/>
+                                <OfferContainer>
+                                    {offeredTests ? offeredTests.map((test, index) => {
+                                        return (<GenericDonorTestCard key={index} test={test}/>)
+                                    }) : null}
+
+
+                                </OfferContainer>
                             </>
-                            : active === "All_requests" ?
+                            : active === "requests" ?
                                 <RequestContainer>
                                     <div>All requests should be here</div>
-                                    <GenericDonorRequestBar reqnumber={1}/>
-                                    <GenericDonorRequestBar reqnumber={10}/>
-                                    <GenericDonorRequestBar reqnumber={100}/>
-                                    <GenericDonorRequestBar reqnumber={1000}/>
-                                    <GenericDonorRequestBar reqnumber={10000}/>
-                                    <GenericDonorRequestBar reqnumber={100000}/>
-                                    <GenericDonorRequestBar reqnumber={1000000}/>
+                                    {requests ? requests.map((request, index) => {
+                                        return (<GenericDonorRequestBar key={index} request={request}/>)
+                                    }) : null}
                                 </RequestContainer>
-                                : <div>Applied requests should be here</div>
+                                : <div>{appliedRequests ? appliedRequests.map((request, index) => {
+                            return (<GenericDonorRequestBar key={index} request={request}/>)
+                        }) : null}</div>
+
                         }
 
                     </DashboardContentContainer>
                 </LeftSide>
                 <RightSide>
-                    <div>Hello Right Dashboard :)</div>
+                    <DonorProfileCardWide userObj={userObj}/>
                 </RightSide>
             </PageWrapper>
         </PageContainer>
     )
 }
+
+const mapStateToProps = (state) => {
+    console.log("state", state);
+    return {
+        userProfileReducer: state.userProfileReducer,
+        authReducer: state.authReducer,
+    };
+};
+
+export default connect(mapStateToProps)(DonorDashboard);
