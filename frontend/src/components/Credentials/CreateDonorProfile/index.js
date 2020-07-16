@@ -5,7 +5,9 @@ import {MiddleTitle, SmallTitle} from "../../../style/GlobalTitles";
 import {BigInput, Select, SmallInput} from "../../../style/GlobalInputs";
 import {DarkBlueButton, WhiteButton} from "../../../style/GlobalButtons";
 import {PageContainer} from "../../../style/GlobalWrappers";
-import {connect} from "react-redux";
+import {connect, useDispatch} from "react-redux";
+import {useHistory} from "react-router";
+import {updateProfileAction} from "../../../store/actions/userActions";
 
 const FormWrapper = styled.form`
     display: flex;
@@ -65,40 +67,49 @@ const WhiteButtonWithMargin = styled(WhiteButton)`
 
 const CreateDonorProfile = (props) => {
 
+    const history = useHistory()
+    const dispatch = useDispatch()
+    const [donorInfo, setDonorInfo] = useState({
+        first_name: "",
+        last_name: "",
+        zip_code: "",
+        phone: "",
+        country: "",
+        street: "",
+        avatar: null,
+        birthday: "",
+        blood_group: "",
+        gender: "",
+    })
+
     const onChangeHandler = (event, property) => {
         const value = event.currentTarget.value;
-        // setDonorInfo({...donorInfo, [property]:value})
+        setDonorInfo({...donorInfo, [property]:value})
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("This is a submit function.")
 
-        // from Luna-project
-        //donorInfo is just a name, correct it later!!!
-
-        // const form = new FormData()
-        // form.append('first_name', donorInfo.first_name)
-        // form.append('last_name', donorInfo.last_name)
-        // form.append('zip', donorInfo.zip)
-        // form.append('street', donorInfo.street)
-        // form.append('city', donorInfo.city)
-        // form.append('country', donorInfo.country)
-        // form.append('birthday', donorInfo.birthday)
-        // form.append('gender', donorInfo.gender)
-        // form.append('blood_group', donorInfo.blood_group)
-        // form.append('phone_number', donorInfo.phone_number)
-        // form.append('email', donorInfo.email)
-        // form.append('validation_code', donorInfo.validation_code)
-        // form.append('password', donorInfo.password)
-        // form.append('password2', donorInfo.password2)
-
-        // const response = await dispatch(createRestaurantAction(form));
-        // if (response.status < 300) {
-        //     console.log("woohooo", response)
-        //     const restaurantId = response.data.id
-        //     history.push(`/restaurants/${restaurantId}`)
-        // }
+        const form = new FormData()
+        form.append('first_name', donorInfo.first_name)
+        form.append('last_name', donorInfo.last_name)
+        form.append('zip_code', donorInfo.zip_code)
+        form.append('street', donorInfo.street)
+        form.append('country', donorInfo.country)
+        form.append('birthday', donorInfo.birthday)
+        form.append('gender', donorInfo.gender)
+        form.append('blood_group', donorInfo.blood_group)
+        form.append('phone', donorInfo.phone)
+        if (donorInfo.avatar) {
+            form.append('avatar', donorInfo.avatar)
+        }
+        const response = await dispatch(updateProfileAction(form));
+        if (response.status < 300) {
+            console.log("woohooo", response)
+            const restaurantId = response.data.id
+            history.push(`/restaurants/${restaurantId}`)
+        }
 
     }
 
