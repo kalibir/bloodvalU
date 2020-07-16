@@ -6,6 +6,7 @@ import Navigation from "../components/Navigation";
 import { LandingPage } from "../components/LandingPage";
 import GenericDonorRequestBar from "../components/GenericDonorRequestBar";
 import CreateTestModal from "../components/CreateTestModal";
+import {DonorDashboard} from "../components/DonorDashboard";
 
 const Routes = () => {
   return (

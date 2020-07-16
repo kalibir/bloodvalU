@@ -6,7 +6,7 @@ import {BigInput} from "../../style/GlobalInputs";
 import {DarkBlueButton} from "../../style/GlobalButtons";
 import {SmallTitle} from "../../style/GlobalTitles";
 
-const ColorDebug = false;  //at true all element get colored background for checking
+const ColorDebug = true;  //at true all element get colored background for checking
 
 const PageWrapper = styled.div`
     display: flex;
