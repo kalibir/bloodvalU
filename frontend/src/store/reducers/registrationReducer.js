@@ -1,16 +1,18 @@
+import {SET_IS_DONOR} from "../actionTypes";
 
 
 const initialState = {
     email: null,
     password: null,
+    isDonor: "True",
 };
 
 export const registrationReducer = (state = initialState, action) => {
     const newState = {...state};
     switch (action.type) {
-        // case USER_LOGIN: {
-        //     return {...newState, token: action.payload, authenticated: true};
-        // }
+        case SET_IS_DONOR: {
+            return {...newState, isDonor: action.payload};
+        }
         default:
             return state;
     }
