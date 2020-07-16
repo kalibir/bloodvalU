@@ -13,7 +13,7 @@ class OfferedTest(models.Model):
 
     points_cost = models.IntegerField()
 
-    seekers = models.ManyToManyField(to=SeekerProfile, related_name='offered_tests', blank=True)
+    seeker = models.ForeignKey(to=SeekerProfile, on_delete=models.CASCADE, related_name='offered_tests', blank=True)
 
     secret_code = models.CharField(
         max_length=5,
@@ -21,15 +21,10 @@ class OfferedTest(models.Model):
         default=code_generator,
     )
 
-    donors = models.ManyToManyField(to=DonorProfile, related_name='bought_tests', blank=True)
+    donors_who_bought = models.ManyToManyField(to=DonorProfile, related_name='bought_tests', blank=True)
 
     expiry_date = models.DateField(auto_now=False)
 
     @property
     def is_expired(self):
         return date.today() < self.expiry_date
-
-
-
-
-
