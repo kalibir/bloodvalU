@@ -12,6 +12,7 @@ const ModalWrapper = styled.div`
   justify-content: center;
   align-items: center;
   position: fixed;
+  z-index: 999;
 `;
 
 const Modal = styled.div`

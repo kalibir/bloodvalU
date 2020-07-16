@@ -7,6 +7,7 @@ import profilePic from "../../assets/images/default-profile-pic.jpg"
 import success from "../../assets/icons/success.png"
 import {BigTitle} from "../../style/GlobalTitles";
 import {DarkBlueButton, WhiteButton} from "../../style/GlobalButtons";
+import RequestModal from "../RequestModal";
 
 const PageWrapper = styled.div`
     display: flex;
@@ -66,7 +67,8 @@ const DashboardContentContainer = styled.div`
     flex-flow: column;
     justify-content: flex-start;
     overflow: auto;
-    max-height: ${rem("620px")};
+    max-height: ${rem("560px")};
+    margin-bottom: ${rem("32px")};
 `;
 
 const ProfileWrapper = styled.div`
@@ -210,17 +212,22 @@ const MinusSignButton = styled(PlusSignButton)`
     color: #121232;
 `;
 
+const NewRequestButton = styled(DarkBlueButton)`
+    width: ${rem("194px")};
+`
+
 
 const SeekerDashboard = () => {
-    // const [active, setActive] = useState("All_requests");
     const [active, setActive] = useState("Open");
+    const [activeProfile, setActiveProfile] = useState(null)
+    const [modalActive, setModalActive] = useState(false)
+    const [status, setStatus] = useState("OP");
 
     const handleClick = (e) => {
         const value = e.target.id;
         setActive(value);
     };
 
-    const [status, setStatus] = useState("OP");
 
     const handleSelectButton = (e) => {
         setStatus("CL")
@@ -234,9 +241,13 @@ const SeekerDashboard = () => {
         setStatus("OP")
     }
 
+
     return (
         <PageContainer>
             <PageWrapper>
+                {modalActive
+                    ? <RequestModal></RequestModal>
+                    : null}
                 <LeftSide>
                     <DashboardContentContainer>
                         <MenuContainer>
@@ -260,11 +271,8 @@ const SeekerDashboard = () => {
                             </SideButton>
                         </MenuContainer>
                         <GenericSeekerRequestBar status={status} func={handleComplete}/>
-                        {/*<GenericSeekerRequestBar/>*/}
-                        {/*<GenericSeekerRequestBar/>*/}
-                        {/*<GenericSeekerRequestBar/>*/}
-                        {/*<GenericSeekerRequestBar/>*/}
                     </DashboardContentContainer>
+                    <NewRequestButton onClick={() => setModalActive(true)}><PlusSignButton></PlusSignButton>+ Select Donor</NewRequestButton>
                 </LeftSide>
                 <RightSide>
                     <ProfileWrapper>
@@ -315,7 +323,7 @@ const SeekerDashboard = () => {
             </ButtonContainer>
       </ProfileWrapper>
                 </RightSide>
-            </PageWrapper>
+                        </PageWrapper>
         </PageContainer>
     );
 };
