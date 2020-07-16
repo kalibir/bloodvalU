@@ -2,11 +2,13 @@ from django.db.models import Q
 from django.shortcuts import render
 
 # Create your views here.
+from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
 from apps.bloodrequests.serializers import BloodRequestSerializer
+from apps.offeredtests.serializers import OfferedTestSerializer
 from apps.seekerprofiles.models import SeekerProfile
 from apps.seekerprofiles.serializers import SeekerProfileSerializer
 
@@ -40,3 +42,21 @@ class FilterSeekersRequestsByStatus(ListAPIView):
         results = queryset.filter(Q(status__icontains=req_status))
         serializer = self.get_serializer(results, many=True)
         return Response(serializer.data)
+
+
+class ListAllOfferedTestOfLoggedInSeeker(ListAPIView):
+    """
+    List all the offered tests of a logged in seeker.
+    """
+    serializer_class = OfferedTestSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def list(self, request, *args, **kwargs):
+        if not self.request.user.is_donor:
+            queryset = self.request.user.seeker_profile.offered_tests.all().order_by('-created')
+            serializer = self.get_serializer(queryset, many=True)
+            return Response(serializer.data)
+        else:
+            return Response(
+                {"detail": "Sorry, you must be a seeker to perform this request"},
+                status=status.HTTP_400_BAD_REQUEST)

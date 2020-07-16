@@ -18,8 +18,8 @@ urlpatterns = [
     path('backend/api/donor/', include('apps.donorprofiles.urls')),
     # Blood Request Urls
     path('backend/api/request/', include('apps.bloodrequests.urls')),
-    # # Comments Urls
-    # path('backend/api/tests/', include('apps.offeredtests.urls')),
+    # Offered Tests Urls
+    path('backend/api/tests/', include('apps.offeredtests.urls')),
     #
     # path('backend/api/docs/', include_docs_urls(title='BloodValU Endpoints', public=True, permission_classes=[])),
 ]

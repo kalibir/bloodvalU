@@ -23,8 +23,12 @@ class OfferedTest(models.Model):
 
     donors_who_bought = models.ManyToManyField(to=DonorProfile, related_name='bought_tests', blank=True)
 
+    created = models.DateTimeField(
+        auto_now=True
+    )
+
     expiry_date = models.DateField(auto_now=False)
 
     @property
     def is_expired(self):
-        return date.today() < self.expiry_date
+        return date.today() > self.expiry_date
