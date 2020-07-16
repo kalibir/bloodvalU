@@ -9,6 +9,7 @@ import { SeekerEditProfile } from "../components/SeekerEditProfile";
 import { DonorEditProfile } from "../components/DonorEditProfile";
 import { DonorDashboard } from "../components/DonorDashboard";
 import SeekerDashboard from "../components/SeekerRequestPage"
+import {GenericDonorTestCard} from "../components/GenericDonorTestCard";
 
 const Routes = () => {
   return (

@@ -210,14 +210,6 @@ const MinusSignButton = styled(PlusSignButton)`
     color: #121232;
 `;
 
-const DonorSelectedBar = styled(DonorSubBar)`
-    background: #43A047;
-`;
-
-const DonorNotSelected = styled(DonorSubBar)`
-    background: #C6C6C6;
-`;
-
 
 const SeekerDashboard = () => {
     // const [active, setActive] = useState("All_requests");
@@ -232,6 +224,10 @@ const SeekerDashboard = () => {
 
     const handleSelectButton = (e) => {
         setStatus("CL")
+    }
+
+    const handleComplete = (e) => {
+        setStatus("COM")
     }
 
     const handleUnSelectButton = (e) => {
@@ -263,7 +259,7 @@ const SeekerDashboard = () => {
                                 Closed
                             </SideButton>
                         </MenuContainer>
-                        <GenericSeekerRequestBar status={status}/>
+                        <GenericSeekerRequestBar status={status} func={handleComplete}/>
                         {/*<GenericSeekerRequestBar/>*/}
                         {/*<GenericSeekerRequestBar/>*/}
                         {/*<GenericSeekerRequestBar/>*/}
