@@ -9,7 +9,7 @@ class OfferedTestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OfferedTest
-        fields = ['test_type', 'points_cost', 'seekers', 'donors']
+        fields = ['test_type', 'points_cost', 'expiry_date', 'is_expired', 'seekers', 'donors']
 
 
 class BoughtTestsOnProfileSerializer(serializers.ModelSerializer):

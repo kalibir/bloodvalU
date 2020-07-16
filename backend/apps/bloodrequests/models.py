@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db import models
 
 # Create your models here.
@@ -41,9 +43,13 @@ class BloodRequest(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
 
-    until = models.DateField(auto_now=False)
+    valid_until = models.DateField(auto_now=False)
 
     applicants = models.ManyToManyField(to=DonorProfile, related_name='applied_to_requests', blank=True)
+
+    @property
+    def is_valid(self):
+        return date.today() < self.valid_until
 
     @property
     def points_value(self):

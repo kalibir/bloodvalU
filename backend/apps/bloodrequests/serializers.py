@@ -11,6 +11,13 @@ class BloodRequestSerializer(serializers.ModelSerializer):
     seeker = SeekerProfileSerializer(required=False)
     no_of_applicants = serializers.SerializerMethodField()
     logged_in_donor_is_selected = serializers.SerializerMethodField()
+    logged_in_donor_applied = serializers.SerializerMethodField()
+
+    def get_logged_in_donor_applied(self, obj):
+        if self.context.get('request').user.is_donor:
+            return self.context.get('request').user.donor_profile in obj.applicants.all()
+        else:
+            return False
 
     def get_no_of_applicants(self, obj):
         return obj.applicants.count()
@@ -23,7 +30,8 @@ class BloodRequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BloodRequest
-        fields = ['id', 'status', 'blood_group', 'until', 'is_for_covid', 'is_urgent', 'logged_in_donor_is_selected',
+        fields = ['id', 'status', 'blood_group', 'valid_until', 'is_valid', 'is_for_covid', 'is_urgent',
+                  'logged_in_donor_is_selected', 'logged_in_donor_applied',
                   'is_renewable', 'created', 'points_value', 'no_of_applicants', 'selected_donor', 'seeker'
                   ]
 
