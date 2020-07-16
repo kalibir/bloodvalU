@@ -2,6 +2,7 @@ import React from "react";
 import { rem } from "polished";
 import styled from "styled-components";
 import profilePic from "../../assets/images/default-profile-pic.jpg"
+import success from "../../assets/icons/success.png"
 import {BigTitle} from "../../style/GlobalTitles";
 import {DarkBlueButton, WhiteButton} from "../../style/GlobalButtons";
 
@@ -147,17 +148,24 @@ const MinusSignButton = styled(PlusSignButton)`
 `
 
 const DonorProfileSelected = (props) => {
-    let selected_donor = false
+    let status = "OP" //we are going to fetch this information
+
 
   return (
       <ProfileWrapper>
             <UpperContainer>
                 <BigTitle>donor profile</BigTitle>
-                    {selected_donor
-                    ? <SelectedTitle>Selected</SelectedTitle>
-                    : <ProfilePicPlaceholder>
+                    {status === "OP"
+                    ? <ProfilePicPlaceholder>
                         <img src={profilePic} alt={"avatar"}/>
-                      </ProfilePicPlaceholder>}
+                      </ProfilePicPlaceholder>
+                    : status === "CL"
+                            ? <SelectedTitle>Selected</SelectedTitle>
+                    : status === "COM"
+                                ? <ProfilePicPlaceholder>
+                        <img src={success} alt={"should be antonios pic"}/>
+                      </ProfilePicPlaceholder>
+                    : <p>Sorry, we are confused a little bit.</p>}
                 <NameContainer>
                     Name Name Name
                 </NameContainer>
@@ -182,10 +190,13 @@ const DonorProfileSelected = (props) => {
                 </DetailsContainer>
             </BottomContainer>
             <ButtonContainer>
-                {selected_donor
-                ? <CancelButton><MinusSignButton></MinusSignButton>X Cancel Select</CancelButton>
-              : <SelectButton><PlusSignButton></PlusSignButton>+ Select Donor</SelectButton>
-                    }
+                {status === "OP"
+                    ? <SelectButton><PlusSignButton></PlusSignButton>+ Select Donor</SelectButton>
+                    : status === "CL"
+                            ? <CancelButton><MinusSignButton></MinusSignButton>X Cancel Select</CancelButton>
+                    : status === "COM"
+                                ? null
+                    : null}
             </ButtonContainer>
       </ProfileWrapper>
   )
