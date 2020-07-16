@@ -4,6 +4,8 @@ import { rem } from "polished";
 import {BloodValU} from "../../style/GlobalTitles";
 import {PageContainer} from "../../style/GlobalWrappers";
 import {ChooseRoleButton} from "../../style/GlobalButtons";
+import {useDispatch} from "react-redux";
+import {useHistory} from "react-router";
 
 const LandPageContainer = styled(PageContainer)`
     //background-color: lightcoral;
@@ -39,14 +41,22 @@ const ButtonWrapper = styled.div`
 `
 
 export const LandingPage = () => {
+    const dispatch = useDispatch()
+    const {push} = useHistory()
+    // setIsDonor
+    const handleClick = e => {
+        const value = e.currenTarget.id
+
+    }
+
     return (
         <LandPageContainer>
             <ContentWrapper>
                 <BloodValU text="Welcome to bloodval" black={32} red={48} />
                 <WelcomeText>Let’s start creating your profile. Are you interested in</WelcomeText>
                 <ButtonWrapper>
-                    <ChooseRoleButton>Becoming a donor</ChooseRoleButton>
-                    <ChooseRoleButton>Becoming a recipient</ChooseRoleButton>
+                    <ChooseRoleButton id={"True"}>Becoming a donor</ChooseRoleButton>
+                    <ChooseRoleButton id={"False"}>Becoming a recipient</ChooseRoleButton>
                 </ButtonWrapper>
             </ContentWrapper>
         </LandPageContainer>
