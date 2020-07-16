@@ -1,8 +1,8 @@
 import React from "react";
-import { useState } from "react";
+import {useState} from "react";
 import styled from "styled-components";
-import { BaseStatusButton } from "../../style/GlobalButtons/";
-import { rem } from "polished";
+import {BaseStatusButton} from "../../style/GlobalButtons/";
+import {rem} from "polished";
 
 const BarWrapper = styled.div`
   //width: 445px;
@@ -90,44 +90,64 @@ const TextWrapper = styled.div`
 `
 
 // const GenericDonorRequestBar = () => {
-const GenericDonorRequestBar = (props) => {
-  const [showSeeker, setSeekerInfo] = useState(false);
+const GenericDonorRequestBar = ({
+                                    request: {
+                                        id,
+                                        status,
+                                        blood_group,
+                                        valid_until,
+                                        is_valid,
+                                        is_for_covid,
+                                        is_urgent,
+                                        logged_in_donor_is_selected,
+                                        logged_in_donor_applied,
+                                        is_renewable,
+                                        created,
+                                        points_value,
+                                        no_of_applicants,
+                                        seeker:{name, phone, email, website, street, zip_code, logo, country}
 
-  const showSeekerHandler = (event) => {
-    setSeekerInfo(!showSeeker);
-  };
+                                    }
+                                }) => {
+    const [showSeeker, setSeekerInfo] = useState(false);
 
-  return (
-    <BarWrapper>
-      <RequestBar onClick={showSeekerHandler}>
-        {/*Request 10*/}
-        <TextWrapper> Request {props.reqnumber}</TextWrapper>
-        <GreenButton onClick={()=>{console.log("Clicked")}}>Apply</GreenButton>
-        <BarArrowRight></BarArrowRight>
-      </RequestBar>
-      {showSeeker ? (
-        <>
-          <SeekerInfo name={"wrapper"}>
-            <SeekerInfoHeader>
-              <CompanyName>MediLab Inc AG</CompanyName>
-              <RequestPoints>7000 pts</RequestPoints>
-            </SeekerInfoHeader>
-            <SeekerInfoBodyWrapper>
-              <SeekerInfoBody>
-                <SeekerInfoBodyLine>Phone: 079 345 7689</SeekerInfoBodyLine>
-                <SeekerInfoBodyLine>City: Zurich</SeekerInfoBodyLine>
-                <SeekerInfoBodyLine>Zip Code: 8005</SeekerInfoBodyLine>
-              </SeekerInfoBody>
-              <SeekerInfoBody>
-                <SeekerInfoBodyLine>Phone: 079 345 7689</SeekerInfoBodyLine>
-                <SeekerInfoBodyLine>City: Zurich</SeekerInfoBodyLine>
-              </SeekerInfoBody>
-            </SeekerInfoBodyWrapper>
-          </SeekerInfo>
-        </>
-      ) : null}
-    </BarWrapper>
-  );
+    const showSeekerHandler = (event) => {
+        setSeekerInfo(!showSeeker);
+    };
+
+    return (
+        <BarWrapper>
+            <RequestBar onClick={showSeekerHandler}>
+                {/*Request 10*/}
+                <TextWrapper> Request {id}</TextWrapper>
+                <GreenButton onClick={() => {
+                    console.log("Clicked")
+                }}>Apply</GreenButton>
+                <BarArrowRight></BarArrowRight>
+            </RequestBar>
+            {showSeeker ? (
+                <>
+                    <SeekerInfo name={"wrapper"}>
+                        <SeekerInfoHeader>
+                            <CompanyName>MediLab Inc AG</CompanyName>
+                            <RequestPoints>7000 pts</RequestPoints>
+                        </SeekerInfoHeader>
+                        <SeekerInfoBodyWrapper>
+                            <SeekerInfoBody>
+                                <SeekerInfoBodyLine>Phone: 079 345 7689</SeekerInfoBodyLine>
+                                <SeekerInfoBodyLine>City: Zurich</SeekerInfoBodyLine>
+                                <SeekerInfoBodyLine>Zip Code: 8005</SeekerInfoBodyLine>
+                            </SeekerInfoBody>
+                            <SeekerInfoBody>
+                                <SeekerInfoBodyLine>Phone: 079 345 7689</SeekerInfoBodyLine>
+                                <SeekerInfoBodyLine>City: Zurich</SeekerInfoBodyLine>
+                            </SeekerInfoBody>
+                        </SeekerInfoBodyWrapper>
+                    </SeekerInfo>
+                </>
+            ) : null}
+        </BarWrapper>
+    );
 };
 
 export default GenericDonorRequestBar;

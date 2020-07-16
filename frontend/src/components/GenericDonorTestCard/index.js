@@ -98,7 +98,7 @@ const RedeemButton = styled(SmallGreenButton)`
 
 export const GenericDonorTestCard = (props) => {
     console.log("Testcard props", props);
-    const { offeredTest: { test_type, seeker_name, is_bought, points_cost, expiry_date, is_expired }, } = props;
+    const { test: { test_type, seeker_name, is_bought, points_cost, expiry_date, is_expired }, } = props;
 
 
   return (

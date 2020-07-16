@@ -8,9 +8,10 @@ import {resetError, setError} from "./errorActions";
 
 export const getLoggedInUserAction = () => async (dispatch) => {
     try {
-        const response = await Axios.get(`users/me/`)
+        const response = await Axios.get(`me/`)
+        console.log("me", response.data)
         dispatch(setLoggedInUser(response.data))
-        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("profile", JSON.stringify(response.data));
         return response
     } catch (error) {
         console.log('error', error.response.data)
