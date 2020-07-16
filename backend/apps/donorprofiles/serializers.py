@@ -6,7 +6,6 @@ from apps.offeredtests.serializers import BoughtTestsOnProfileSerializer
 
 
 class DonorProfileSerializer(serializers.ModelSerializer):
-    country = CountryField(country_dict=True)
     bought_tests = BoughtTestsOnProfileSerializer(required=False, many=True)
 
     is_donor = serializers.SerializerMethodField()

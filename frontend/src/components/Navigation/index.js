@@ -5,6 +5,8 @@ import {WhiteButton} from "../../style/GlobalButtons";
 import {BloodValU} from "../../style/GlobalTitles";
 import {useHistory} from "react-router";
 import {Link} from "react-router-dom";
+import {connect} from "react-redux";
+import {userLogout} from "../../store/actions/logoutActions";
 
 const Wrapper = styled.div`
   padding-top: 72px; /* Needs to be exactly the same height as the Header, offsets content because it's fixed */
@@ -69,10 +71,7 @@ const HeaderButtonLogin = styled(HeaderButtonUser)`
 `
 
 // TODO delete them
-let authenticated = false;
-const clicked = () => {
-    console.log("The button is clicked")
-}
+
 
 /* -----------FOOTER------------------ */
 const Footer = styled.div`
@@ -94,11 +93,20 @@ const NavLink = styled(Link)`
   text-decoration: none;
 `
 
-const Navigation = ({children}) => {
+const Navigation = ({children, authReducer: {authenticated}, dispatch}) => {
     const {push} = useHistory()
-    const handleClick = e => {
+    const handleClickLogo = e => {
         console.log("in the click")
         push("/")
+    }
+
+    const handleLogout = e => {
+        dispatch(userLogout())
+        push("/")
+    }
+
+    const handClickLogin = () => {
+        push("/auth/login")
     }
 
 
@@ -106,10 +114,14 @@ const Navigation = ({children}) => {
         <div>
             <Wrapper>
                 <Header>
-                    <NavLink to={"/"}><BloodValU onClick={handleClick} text="bloodval" black={24} red={36}/></NavLink>
+                    <NavLink to={"/"}><BloodValU onClick={handleClickLogo} text="bloodval" black={24}
+                                                 red={36}/></NavLink>
 
-                    {authenticated ? <HeaderButtonUser>Edina M.</HeaderButtonUser> :
-                        <HeaderButtonLogin onClick={clicked}>Login</HeaderButtonLogin>}
+                    {authenticated ? <> <HeaderButtonUser>Edina M.</HeaderButtonUser> <HeaderButtonUser
+                        onClick={handleLogout}>Logout</HeaderButtonUser>
+                    </> : <HeaderButtonUser onClick={handClickLogin}>Login</HeaderButtonUser>
+
+                    }
                 </Header>
                 {children}
                 <Footer>
@@ -119,4 +131,11 @@ const Navigation = ({children}) => {
     );
 };
 
-export default Navigation;
+const mapStateToProps = (state) => {
+    console.log("state", state);
+    return {
+        authReducer: state.authReducer,
+    };
+};
+
+export default connect(mapStateToProps)(Navigation);

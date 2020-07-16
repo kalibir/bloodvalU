@@ -5,6 +5,8 @@ import {connect, useDispatch} from "react-redux";
 import {BigInput, SmallInput} from "../../../style/GlobalInputs";
 import {MiddleTitle, SmallTitle} from "../../../style/GlobalTitles";
 import {DarkBlueButton} from "../../../style/GlobalButtons";
+import {useHistory} from "react-router";
+import {updateProfileAction} from "../../../store/actions/userActions";
 
 const FormWrapper = styled.form`
     display: flex;
@@ -90,8 +92,8 @@ const InputFile = styled.input`
 `;
 
 
-const CreateSeekerProfile = (props) => {
-    /*const {authReducer} = props
+const CreateSeekerProfile = ({authReducer}) => {
+
     console.log("authReducer", authReducer)
     const history = useHistory()
     const dispatch = useDispatch()
@@ -100,7 +102,7 @@ const CreateSeekerProfile = (props) => {
         validation_code: "",
         password: "",
         password_repeat: "",
-        company_name: "",
+        name: "",
         country: "",
         city: "",
         zip: "",
@@ -124,8 +126,7 @@ const CreateSeekerProfile = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const form = new FormData()
-        form.append('name', seekerInfo.email)
-        form.append('category_id', seekerInfo.validation_code)
+        form.append('name', seekerInfo.name)
         form.append('country', seekerInfo.password)
         form.append('street', seekerInfo.password_repeat)
         form.append('city', seekerInfo.company_name)
@@ -136,8 +137,7 @@ const CreateSeekerProfile = (props) => {
         form.append('opening_hours', seekerInfo.phone)
         form.append('price_level', seekerInfo.website)
         form.append('image', seekerInfo.certificate)
-        }
-        const response = await dispatch(validate(seekerInfo));
+        const response = await dispatch(updateProfileAction(seekerInfo));
         if (response.status < 300) {
             console.log("woohooo", response)
             const seekerId = response.data.id
@@ -145,69 +145,68 @@ const CreateSeekerProfile = (props) => {
         } else {
             console.log('error', response)
         }
-    };*/
+    }
 
 
-    return (
-            <FormWrapper>
-                <TitleWrapper>
-                    <ValidationTitle>Create an account</ValidationTitle>
-                </TitleWrapper>
-                <InputWrapper>
-                    <div>
-                        <SmallTitle>Company name</SmallTitle>
-                        <CostumizedBigInput placeholder="Company name" required/>
-                    </div>
-                </InputWrapper>
-                <InputWrapper>
-                    <div>
-                        <SmallTitle>Street</SmallTitle>
-                        <StreetInput placeholder="Longstreet" required/>
-                    </div>
-                    <div>
-                        <SmallTitle>Nr.</SmallTitle>
-                        <NrInput placeholder="30" required/>
-                    </div>
-                </InputWrapper>
-                <InputWrapper>
-                    <div>
-                        <SmallTitle>Zip</SmallTitle>
-                        <CostumizedSmallInput placeholder="8000 Zurich" required/>
-                    </div>
-                    <div>
-                        <SmallTitle>Country</SmallTitle>
-                        <CostumizedSmallInput placeholder="Switzerland" required/>
-                    </div>
-                </InputWrapper>
-                <InputWrapper>
-                    <div>
-                        <SmallTitle>Phone</SmallTitle>
-                        <CostumizedSmallInput placeholder="044 123 45 67" required/>
-                    </div>
-                    <div>
-                        <SmallTitle>Website</SmallTitle>
-                        <CostumizedSmallInput placeholder="www.example.ch" required/>
-                    </div>
-                </InputWrapper>
-                <ButtonWrapper>
-                     <div>
-                        <SmallTitle>Licence</SmallTitle>
-                        <InputLabel htmlFor="restaurant_image">Choose a file...</InputLabel>
-                        <div><p></p></div>
-                        <InputFile id="restaurant_image" accept="application/pdf"
-                                   type="file"/>
-                    </div>
-                    <DarkBlueButton>Continue</DarkBlueButton>
-                </ButtonWrapper>
-            </FormWrapper>
+    return (<FormWrapper>
+            <TitleWrapper>
+                <ValidationTitle>Create an account</ValidationTitle>
+            </TitleWrapper>
+            <InputWrapper>
+                <div>
+                    <SmallTitle>Company name</SmallTitle>
+                    <CostumizedBigInput placeholder="Company name" required/>
+                </div>
+            </InputWrapper>
+            <InputWrapper>
+                <div>
+                    <SmallTitle>Street</SmallTitle>
+                    <StreetInput placeholder="Longstreet" required/>
+                </div>
+                <div>
+                    <SmallTitle>Nr.</SmallTitle>
+                    <NrInput placeholder="30" required/>
+                </div>
+            </InputWrapper>
+            <InputWrapper>
+                <div>
+                    <SmallTitle>Zip</SmallTitle>
+                    <CostumizedSmallInput placeholder="8000 Zurich" required/>
+                </div>
+                <div>
+                    <SmallTitle>Country</SmallTitle>
+                    <CostumizedSmallInput placeholder="Switzerland" required/>
+                </div>
+            </InputWrapper>
+            <InputWrapper>
+                <div>
+                    <SmallTitle>Phone</SmallTitle>
+                    <CostumizedSmallInput placeholder="044 123 45 67" required/>
+                </div>
+                <div>
+                    <SmallTitle>Website</SmallTitle>
+                    <CostumizedSmallInput placeholder="www.example.ch" required/>
+                </div>
+            </InputWrapper>
+            <ButtonWrapper>
+                <div>
+                    <SmallTitle>Licence</SmallTitle>
+                    <InputLabel htmlFor="restaurant_image">Choose a file...</InputLabel>
+                    <div><p></p></div>
+                    <InputFile id="restaurant_image" accept="application/pdf"
+                               type="file"/>
+                </div>
+                <DarkBlueButton>Continue</DarkBlueButton>
+            </ButtonWrapper>
+        </FormWrapper>
     )
 }
 
 const mapStateToProps = (state) => {
     console.log("state", state)
-  return {
-    authReducer: state.authReducer,
-  };
+    return {
+        authReducer: state.authReducer,
+    };
 };
 
 export default connect(mapStateToProps)(CreateSeekerProfile);
