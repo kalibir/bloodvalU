@@ -25,6 +25,7 @@ const Routes = () => {
             {/*<Route path="/auth" component={Credentials} />*/}
             <Route path="/editseeker" component={SeekerEditProfile} />
             <Route path="/editdonor" component={DonorEditProfile} />
+            <Route path="/bars" component={GenericDonorRequestBar} />
           </Navigation>
         </Switch>
       </Router>
