@@ -284,7 +284,7 @@ const DonorDashboard = ({
                     </DashboardContentContainer>
                 </LeftSide>
                 <RightSide>
-                    <DonorProfileCardWide userObj={userObj}/>
+                    {userObj? <DonorProfileCardWide userObj={userObj}/> : null}
                 </RightSide>
             </PageWrapper>
         </PageContainer>
