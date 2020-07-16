@@ -1,6 +1,13 @@
 import {resetError, setError} from "./errorActions";
 import Axios from "../../axios";
+import {SET_IS_DONOR} from "../actionTypes";
 
+export const setIsDonor = (pythonBooleanString) => {
+    return {
+        type: SET_IS_DONOR,
+        payload: pythonBooleanString,
+    };
+};
 
 export const sendCode = data => async (dispatch) => {
     try {
