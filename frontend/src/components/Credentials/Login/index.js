@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
 import {connect, useDispatch} from "react-redux";
@@ -6,6 +6,8 @@ import {PageContainer} from "../../../style/GlobalWrappers";
 import {BigInput, SmallInput} from "../../../style/GlobalInputs";
 import {MiddleTitle, SmallTitle} from "../../../style/GlobalTitles";
 import {DarkBlueButton} from "../../../style/GlobalButtons";
+import {sendLoginAction} from "../../../store/actions/loginActions";
+import {useHistory} from "react-router";
 
 const PageWrapper = styled(PageContainer)`
     height: 78.2vh;
@@ -50,66 +52,67 @@ const ButtonWrapper = styled.div`
 
 
 const Login = (props) => {
-    /*const { authReducer } = props;
-  console.log("authReducer", authReducer);
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const [loginInfo, setloginInfo] = useState({
-    email: "",
-    password: "",
-  });
-
-  console.log("loginInfo", loginInfo);
-  const handleEmail = (e) => {
-    const value = e.currentTarget.value;
-    setloginInfo({
-      ...loginInfo,
-      email: value,
+    // const {authReducer} = props;
+    // console.log("authReducer", authReducer);
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const [loginInfo, setloginInfo] = useState({
+        email: "",
+        password: "",
     });
-  };
 
-  const handlePassword = (e) => {
-    const value = e.currentTarget.value;
-    setloginInfo({
-      ...loginInfo,
-      password: value,
-    });
-  };
+    console.log("loginInfo", loginInfo);
+    const handleEmail = (e) => {
+        const value = e.currentTarget.value;
+        setloginInfo({
+            ...loginInfo,
+            email: value,
+        });
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("in the submit");
-    const response = await dispatch(sendLoginAction(loginInfo));
-    if (response.status < 300) {
-      history.push("/");
-    }
-  };*/
+    const handlePassword = (e) => {
+        const value = e.currentTarget.value;
+        setloginInfo({
+            ...loginInfo,
+            password: value,
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log("in the submit");
+        const response = await dispatch(sendLoginAction(loginInfo));
+        if (response.status < 300) {
+            history.push("/dashboard/donor");
+        }
+    };
+
 
     return (
         <PageWrapper>
-                <FormWrapper>
-                        <RegistrationTitle>Login</RegistrationTitle>
-                        <SmallTitle>Email</SmallTitle>
-                        <EmailInput placeholder="example@email.com" type="email" required/>
-                        <SmallTitle>Password</SmallTitle>
-                        <EmailInput placeholder="***********" type="password" required/>
-                        <ButtonWrapper>
-                            <DarkBlueButton>Login</DarkBlueButton>
-                            <ForgotContainer>
-                                <ForgotPassword>Forgot password</ForgotPassword>
-                            </ForgotContainer>
-                        </ButtonWrapper>
-                </FormWrapper>
+            <FormWrapper onSubmit={handleSubmit}>
+                <RegistrationTitle>Login</RegistrationTitle>
+                <SmallTitle>Email</SmallTitle>
+                <EmailInput onChange={handleEmail} placeholder="example@email.com" type="email" required/>
+                <SmallTitle>Password</SmallTitle>
+                <EmailInput onChange={handlePassword} placeholder="***********" type="password" required/>
+                <ButtonWrapper>
+                    <DarkBlueButton>Login</DarkBlueButton>
+                    <ForgotContainer>
+                        <ForgotPassword>Forgot password</ForgotPassword>
+                    </ForgotContainer>
+                </ButtonWrapper>
+            </FormWrapper>
         </PageWrapper>
-   );
+    );
 };
 
 
 const mapStateToProps = (state) => {
-  console.log("state", state);
-  return {
-    authReducer: state.authReducer,
-  };
+    console.log("state", state);
+    return {
+        authReducer: state.authReducer,
+    };
 };
 
 export default connect(mapStateToProps)(Login);

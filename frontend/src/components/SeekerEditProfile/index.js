@@ -5,6 +5,7 @@ import { MiddleTitle, SmallTitle } from "../../style/GlobalTitles";
 import { BigInput, Select, SmallInput } from "../../style/GlobalInputs";
 import { DarkBlueButton, WhiteButton } from "../../style/GlobalButtons";
 import { PageContainer } from "../../style/GlobalWrappers";
+import {connect} from "react-redux";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -282,3 +283,12 @@ export const SeekerEditProfile = (props) => {
     </PageContainer>
   );
 };
+
+const mapStateToProps = (state) => {
+  console.log("state", state);
+  return {
+    userProfileReducer: state.userProfileReducer,
+  };
+};
+
+export default connect(mapStateToProps)(SeekerEditProfile);

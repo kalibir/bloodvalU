@@ -9,6 +9,7 @@ import CreateTestModal from "../components/CreateTestModal";
 import { SeekerEditProfile } from "../components/SeekerEditProfile";
 import { DonorEditProfile } from "../components/DonorEditProfile";
 import { DonorDashboard } from "../components/DonorDashboard";
+import Login from "../components/Credentials/Login";
 
 const Routes = () => {
   return (
@@ -17,7 +18,9 @@ const Routes = () => {
         <Switch>
           <Navigation>
             <Route path="/test" component={DonorDashboard} />
+            <Route path="/login" component={Login} />
             <Route path="/offer" component={DonorDashboard} />
+            <Route path="/dashboard/donor" component={DonorDashboard} />
             <Route path="/templates" component={Template} />
             <Route path="/home" component={LandingPage} />
             <Route path="/auth" component={Credentials} />

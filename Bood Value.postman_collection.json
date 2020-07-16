@@ -1,0 +1,1135 @@
+{
+	"info": {
+		"_postman_id": "6f1d02ec-0f5b-410a-bc8a-68d1b5197fec",
+		"name": "Bood Value",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authorization",
+			"item": [
+				{
+					"name": "GET Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3184a424-38bd-4980-b3ea-9b709150ed79",
+								"exec": [
+									"const jsonData = JSON.parse(responseBody);\r",
+									"postman.setGlobalVariable('access', jsonData.access);\r",
+									"postman.setGlobalVariable('refresh', jsonData.refresh);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "doroj19110@pastmao.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "ilikepython",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{local8000}}/api/auth/token/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"token",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "refresh",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU5NDQyMDAxMCwianRpIjoiNmJiNWJiMDkwY2QwNGRmNjk4YmE4YWI5ZjU2MTVmZDkiLCJ1c2VyX2lkIjoxfQ.qyjW3Oc-a9PbYsKfD2Mw38Xfp1KP79Asum8a-HpUI34",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local8000}}/api/auth/token/refresh/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"token",
+								"refresh",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTkzNzE5MzI5LCJqdGkiOiJkNWUyMzFhYzZkMmQ0MmVmYTBhMzMxZWIzNzRiYzE4NyIsInVzZXJfaWQiOjV9.BQF5AKgPb6xD1j9eLUACw_2svtlReo4AF9xy3hpygww",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local8000}}/backend/api/auth/token/verify/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"backend",
+								"api",
+								"auth",
+								"token",
+								"verify",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a validation Code",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "doroj19110@pastmao.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local8000}}/api/auth/registration/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"registration",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register a User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "doroj19110@pastmao.com",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "86560",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "ilikepython",
+									"type": "text"
+								},
+								{
+									"key": "is_donor",
+									"value": "False",
+									"type": "text"
+								},
+								{
+									"key": "password_repeat",
+									"value": "ilikepython",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local8000}}/api/auth/registration/validation/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"registration",
+								"validation",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Password Reset Code",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_docker}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "habib1@email.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local8000}}/api/auth/password-reset/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"password-reset",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "code",
+									"value": "61564",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "oranges",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "habib13@email.com",
+									"type": "text"
+								},
+								{
+									"key": "password_repeat",
+									"value": "oranges",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local8000}}/api/auth/password-reset/validation/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"password-reset",
+								"validation",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "ME Requests",
+			"item": [
+				{
+					"name": "Get my Profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{local8000}}/api/me/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update my Profile",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "first_name",
+									"value": "Sam",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local8000}}/api/me/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete my profile",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "first_name",
+									"value": "Billy",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local8000}}/api/me/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "User Requests",
+			"item": [],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "General Requests",
+			"item": [],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Seeker Requests",
+			"item": [
+				{
+					"name": "List all valid seekers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local8000}}/api/seeker/list/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"seeker",
+								"list",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specific Seeker by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local8000}}/api/seeker/2/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"seeker",
+								"2",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filter Seeker's Requests by Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local8000}}/api/seeker/search/?request_status=",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"seeker",
+								"search",
+								""
+							],
+							"query": [
+								{
+									"key": "request_status",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Logged-in Seeker Offered Tests",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local8000}}/api/seeker/tests/me/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"seeker",
+								"tests",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Donor Requests",
+			"item": [
+				{
+					"name": "Get all Donors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local8000}}/api/donor/list/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"donor",
+								"list",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List all donor's Applied to requests",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local8000}}/api/donor/requests/applied/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"donor",
+								"requests",
+								"applied",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Donors Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local8000}}/api/donor/list/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"donor",
+								"list",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get or Filter all available requests or tests for donor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local8000}}/api/donor/search/?search_param=&type=requests",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"donor",
+								"search",
+								""
+							],
+							"query": [
+								{
+									"key": "search_param",
+									"value": ""
+								},
+								{
+									"key": "type",
+									"value": "requests"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Blood Requests",
+			"item": [
+				{
+					"name": "Create a blood request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "blood_group",
+									"value": "O",
+									"type": "text"
+								},
+								{
+									"key": "is_for_covid",
+									"value": "False",
+									"type": "text"
+								},
+								{
+									"key": "is_urgent",
+									"value": "True",
+									"type": "text"
+								},
+								{
+									"key": "is_renewable",
+									"value": "True",
+									"type": "text"
+								},
+								{
+									"key": "valid_until",
+									"value": "2020-11-15",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local8000}}/api/request/new/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"request",
+								"new",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List ALL Blood Requests",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local8000}}/api/request/list/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"request",
+								"list",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get single Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local8000}}/api/request/2/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"request",
+								"2",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update single Request",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "status",
+									"value": "CL",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local8000}}/api/request/2/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"request",
+								"2",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete single Request",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{local8000}}/api/request/2/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"request",
+								"2",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Toggle Applying To a request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{local8000}}/api/request/apply/1/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"request",
+								"apply",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List all Applicants of Specific Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local8000}}/api/request/applicants/4/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"request",
+								"applicants",
+								"4",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign an Applicant to a BloodRequest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{local8000}}/api/request/1/assign/1/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"request",
+								"1",
+								"assign",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set Request as Completed",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{local8000}}/api/request/complete/4/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"request",
+								"complete",
+								"4",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set Request as Open",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{local8000}}/api/request/open/3/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"request",
+								"open",
+								"3",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Offered Test Requests",
+			"item": [
+				{
+					"name": "Create an Offered Test",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "test_type",
+									"value": "Blood sodium Level Check",
+									"type": "text"
+								},
+								{
+									"key": "points_cost",
+									"value": "8000",
+									"type": "text"
+								},
+								{
+									"key": "expiry_date",
+									"value": "2020-05-01",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local8000}}/api/tests/new/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"tests",
+								"new",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get single Offered test",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "test_type",
+									"value": "Blood sodium Level Check",
+									"type": "text"
+								},
+								{
+									"key": "points_cost",
+									"value": "8000",
+									"type": "text"
+								},
+								{
+									"key": "expiry_date",
+									"value": "2020-05-01",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local8000}}/api/tests/6/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"tests",
+								"6",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update single Offered test",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "test_type",
+									"value": "Fat Bllod Level Check",
+									"type": "text"
+								},
+								{
+									"key": "points_cost",
+									"value": "8000",
+									"type": "text"
+								},
+								{
+									"key": "expiry_date",
+									"value": "2020-05-01",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local8000}}/api/tests/2/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"tests",
+								"2",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete single Offered test",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "test_type",
+									"value": "Blood sodium Level Check",
+									"type": "text"
+								},
+								{
+									"key": "points_cost",
+									"value": "8000",
+									"type": "text"
+								},
+								{
+									"key": "expiry_date",
+									"value": "2020-05-01",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local8000}}/api/tests/1/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"tests",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buy an Offered Test",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "test_type",
+									"value": "Blood sodium Level Check",
+									"type": "text"
+								},
+								{
+									"key": "points_cost",
+									"value": "8000",
+									"type": "text"
+								},
+								{
+									"key": "expiry_date",
+									"value": "2020-05-01",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local8000}}/api/tests/buy/6/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"tests",
+								"buy",
+								"6",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List all Offered Tests of Specific Seeker",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "test_type",
+									"value": "Blood sodium Level Check",
+									"type": "text"
+								},
+								{
+									"key": "points_cost",
+									"value": "8000",
+									"type": "text"
+								},
+								{
+									"key": "expiry_date",
+									"value": "2020-05-01",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local8000}}/api/tests/seeker/1/",
+							"host": [
+								"{{local8000}}"
+							],
+							"path": [
+								"api",
+								"tests",
+								"seeker",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "97ea16cd-a4bd-4b4b-9cf1-ba2727632178",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "cc4a337b-3297-4c91-ab4f-debfceb3568b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
