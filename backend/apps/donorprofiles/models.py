@@ -47,7 +47,7 @@ class DonorProfile(models.Model):
     GENDER_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female'),
-        ('0', 'other'),
+        ('O', 'other'),
     ]
 
     gender = models.CharField(max_length=2, choices=GENDER_CHOICES, default='M')

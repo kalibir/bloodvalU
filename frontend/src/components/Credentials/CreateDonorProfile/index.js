@@ -67,7 +67,7 @@ const WhiteButtonWithMargin = styled(WhiteButton)`
 
 const CreateDonorProfile = (props) => {
 
-    const history = useHistory()
+    const {push} = useHistory()
     const dispatch = useDispatch()
     const [donorInfo, setDonorInfo] = useState({
         first_name: "",
@@ -82,15 +82,21 @@ const CreateDonorProfile = (props) => {
         gender: "",
     })
 
+    console.log("donorInfo", donorInfo)
+
     const onChangeHandler = (event, property) => {
         const value = event.currentTarget.value;
-        setDonorInfo({...donorInfo, [property]:value})
+        setDonorInfo({...donorInfo, [property]: value})
+    }
+
+    const avatarSelectHandler = e => {
+        if (e.target.files[0]) {
+            setDonorInfo({...donorInfo, avatar: e.target.files[0]})
+        }
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("This is a submit function.")
-
         const form = new FormData()
         form.append('first_name', donorInfo.first_name)
         form.append('last_name', donorInfo.last_name)
@@ -106,9 +112,8 @@ const CreateDonorProfile = (props) => {
         }
         const response = await dispatch(updateProfileAction(form));
         if (response.status < 300) {
-            console.log("woohooo", response)
-            const restaurantId = response.data.id
-            history.push(`/restaurants/${restaurantId}`)
+            console.log("success!!")
+            push(`/dashboard/donor`)
         }
 
     }
@@ -141,9 +146,9 @@ const CreateDonorProfile = (props) => {
                         <div>
                             <InputTitle>Gender</InputTitle>
                             <Select onChange={(e) => onChangeHandler(e, "gender")} required>
-                                <option value="male">male</option>
-                                <option value="female">female</option>
-                                <option value="other">other</option>
+                                <option value="M">male</option>
+                                <option value="F">female</option>
+                                <option value="O">other</option>
                             </Select>
                         </div>
 
@@ -172,7 +177,7 @@ const CreateDonorProfile = (props) => {
                         <div>
                             <InputTitle>Phone Number</InputTitle>
                             <SmallInput type="text" placeholder="+44 20 7224 3688"
-                                        onChange={(e) => onChangeHandler(e, "phone_number")} required/>
+                                        onChange={(e) => onChangeHandler(e, "phone")} required/>
                         </div>
                     </InputPairContainer>
 
@@ -185,16 +190,18 @@ const CreateDonorProfile = (props) => {
                         </div>
 
                         <div>
+                                               {/*Replace this input with an avatar upload Please*/}
                             <InputTitle>Nr.</InputTitle>
                             <HouseNumberInput type="text" placeholder="221B"
-                                              onChange={(e) => onChangeHandler(e, "house_number")} required/>
+                                               required/>
+                                               {/*Replace this input with an avatar upload Please*/}
                         </div>
                     </InputPairContainer>
 
                     <InputPairContainer>
                         <div>
                             <InputTitle>Zip code</InputTitle>
-                            <SmallInput type="text" placeholder="NW1 London" onChange={(e) => onChangeHandler(e, "zip")}
+                            <SmallInput type="text" placeholder="NW1 London" onChange={(e) => onChangeHandler(e, "zip_code")}
                                         required/>
                         </div>
 
