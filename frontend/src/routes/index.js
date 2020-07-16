@@ -21,8 +21,9 @@ const Routes = () => {
                         <Route path="/login" component={Login}/>
                         <Route path="/offer" component={DonorDashboard}/>
                         <Route path="/dashboard/donor" component={DonorDashboard}/>
+                        <Route path="/offered-tests" component={DonorDashboard}/>
                         <Route path="/templates" component={Template}/>
-                        <Route path="/home" component={LandingPage}/>
+                        <Route path="/" component={LandingPage}/>
                         <Route path="/auth" component={Credentials}/>
                         {/* <Route path="/donorbartest" component={GenericDonorRequestBar} /> */}
                         {/*<Route path="/auth" component={Credentials} />*/}
