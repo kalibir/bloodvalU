@@ -49,8 +49,12 @@ const InputTitle = styled(SmallTitle)`
   font-weight: 500;
 `;
 
+const FullWidthInputContainer = styled.div`
+  width: 100%;
+`;
+
 const AddressInput = styled(BigInput)`
-  width: ${rem("256px")};
+  width: 100%;
 `;
 
 const HouseNumberInput = styled(BigInput)`
@@ -76,12 +80,12 @@ const ChooseFileButton = styled.label`
   border: 1px solid #121232;
   margin-bottom: ${rem("24px")};
   outline: none;
-  width: ${rem("141px")};
+  width: 100%;
   height: ${rem("32px")};
   cursor: pointer;
   font-style: normal;
   font-weight: normal;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.5px;
   color: #ffffff;
   display: flex;
@@ -253,7 +257,7 @@ export const DonorEditProfile = (props) => {
           </InputPairContainer>
 
           <InputPairContainer>
-            <div>
+            <FullWidthInputContainer>
               <InputTitle>Address</InputTitle>
               <AddressInput
                 type="text"
@@ -261,17 +265,7 @@ export const DonorEditProfile = (props) => {
                 onChange={(e) => onChangeHandler(e, "street")}
                 required
               />
-            </div>
-
-            <div>
-              <InputTitle>Nr.</InputTitle>
-              <HouseNumberInput
-                type="text"
-                placeholder="221B"
-                onChange={(e) => onChangeHandler(e, "house_number")}
-                required
-              />
-            </div>
+            </FullWidthInputContainer>
           </InputPairContainer>
 
           <InputPairContainer>

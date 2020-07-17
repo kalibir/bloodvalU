@@ -1,7 +1,6 @@
 import {
-    SET_APPLIED_REQUESTS,
     SET_REQUESTS, SET_TESTS,
-    SET_USER_PROFILE_USER
+    SET_USER_PROFILE_USER, UPDATE_REQUEST_IN_ALL_REQUESTS
 
 } from "../actionTypes";
 
@@ -10,7 +9,6 @@ const initialState = {
     userObj: null,
     requests: null,
     offeredTests: null,
-    appliedRequests: null,
 };
 
 export const userProfileReducer = (state = initialState, action) => {
@@ -22,11 +20,15 @@ export const userProfileReducer = (state = initialState, action) => {
         case SET_REQUESTS: {
             return {...newState, requests: action.payload};
         }
-        case SET_APPLIED_REQUESTS: {
-            return {...newState, appliedRequests: action.payload};
-        }
         case SET_TESTS: {
             return {...newState, offeredTests: action.payload};
+        }
+        case UPDATE_REQUEST_IN_ALL_REQUESTS: {
+            let index = newState.requests.findIndex(
+                (request) => request.id === action.payload.id
+            );
+            newState.requests[index] = action.payload;
+            return {...newState, requests: newState.requests}
         }
         default:
             return state;

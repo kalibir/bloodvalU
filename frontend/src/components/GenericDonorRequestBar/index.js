@@ -3,6 +3,8 @@ import {useState} from "react";
 import styled from "styled-components";
 import {BaseStatusButton} from "../../style/GlobalButtons/";
 import {rem} from "polished";
+import {useDispatch} from "react-redux";
+import {applyToRequestActionInAll} from "../../store/actions/bloodRequestActions";
 
 const BarWrapper = styled.div`
   //width: 445px;
@@ -24,6 +26,10 @@ const RequestBar = styled.div`
 
 const GreenButton = styled(BaseStatusButton)`
   background-color: #43a047;
+`;
+
+const RedButton = styled(BaseStatusButton)`
+  background-color: #D33449;
 `;
 
 const BarArrowRight = styled.i`
@@ -109,21 +115,25 @@ const GenericDonorRequestBar = ({
 
                                     }
                                 }) => {
+    const dispatch = useDispatch()
     const [showSeeker, setSeekerInfo] = useState(false);
 
     const showSeekerHandler = (event) => {
         setSeekerInfo(!showSeeker);
     };
 
+    const handleApply = e => {
+        console.log("in the apply handler")
+        dispatch(applyToRequestActionInAll(id))
+    }
+
     return (
         <BarWrapper>
-            <RequestBar onClick={showSeekerHandler}>
+            <RequestBar >
                 {/*Request 10*/}
                 <TextWrapper> Request {id}</TextWrapper>
-                <GreenButton onClick={() => {
-                    console.log("Clicked")
-                }}>Apply</GreenButton>
-                <BarArrowRight></BarArrowRight>
+                {logged_in_donor_applied? <RedButton onClick={handleApply}>Cancel</RedButton>: <GreenButton onClick={handleApply}>Apply</GreenButton>}
+                <BarArrowRight onClick={showSeekerHandler}/>
             </RequestBar>
             {showSeeker ? (
                 <>

@@ -160,6 +160,7 @@ const DonorDashboard = ({
     const [active, setActive] = useState("requests");
     const handleClick = (e) => {
         const value = e.target.id;
+        dispatch(searchAllRequestsAndTestsAction("", `${value}`))
         setActive(value);
     };
 
@@ -170,10 +171,8 @@ const DonorDashboard = ({
     console.log("userObj", userObj)
 
     const handleSearch = (event) => {
-        if (active === "requests" || active === "tests") {
-            dispatch(searchAllRequestsAndTestsAction(searchParams, active));
-            setSearchParams("");
-        }
+        dispatch(searchAllRequestsAndTestsAction(searchParams, active));
+        setSearchParams("");
     };
 
     const handleSearchInput = (e) => {
@@ -182,10 +181,8 @@ const DonorDashboard = ({
     };
 
     useEffect(() => {
-        console.log("in the hook of getting requests")
         // get Requests
-        dispatch(getAllAppliedToRequestsAction())
-        dispatch(getAllRequestsAction())
+        dispatch(getAllRequestsAction()) // This gets all requests
         dispatch(searchAllRequestsAndTestsAction("", "tests")) //This gets all offered tests
 
     }, [dispatch])
@@ -203,9 +200,9 @@ const DonorDashboard = ({
                                 All requests
                             </SideButton>
                             <MiddleButton
-                                id="Applied"
+                                id="applied"
                                 onClick={handleClick}
-                                active={active === "Applied"}>
+                                active={active === "applied"}>
                                 Applied
                             </MiddleButton>
                             <SideButton
@@ -244,16 +241,16 @@ const DonorDashboard = ({
                                         return (<GenericDonorRequestBar key={index} request={request}/>)
                                     }) : null}
                                 </RequestContainer>
-                                : <div>{appliedRequests ? appliedRequests.map((request, index) => {
-                            return (<GenericDonorRequestBar key={index} request={request}/>)
-                        }) : null}</div>
+                                : <div>{requests ? requests.map((request, index) => {
+                                    return (<GenericDonorRequestBar key={index} request={request}/>)
+                                }) : null}</div>
 
                         }
 
                     </DashboardContentContainer>
                 </LeftSide>
                 <RightSide>
-                    {userObj? <DonorProfileCardWide userObj={userObj}/> : null}
+                    {userObj ? <DonorProfileCardWide userObj={userObj}/> : null}
                 </RightSide>
             </PageWrapper>
         </PageContainer>
