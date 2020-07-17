@@ -6,6 +6,7 @@ import {rem} from "polished";
 import {connect, useDispatch} from "react-redux";
 import {Select} from "../../style/GlobalInputs";
 import {createBloodRequestAction} from "../../store/actions/bloodRequestActions";
+import {useHistory} from "react-router";
 
 const ModalWrapper = styled.div`
   width: 100%;
@@ -85,8 +86,9 @@ const CustomDarkBlueButton = styled(DarkBlueButton)`
   margin-left: 16px;
 `;
 
-const RequestModal = ({handleCloseModal}) => {
+const RequestModal = ({closeModal}) => {
     const dispatch = useDispatch()
+    const {push} = useHistory()
     const [requestData, setRequestData] = useState({
         blood_group: "",
         is_for_covid: false,
@@ -102,18 +104,16 @@ const RequestModal = ({handleCloseModal}) => {
     const handleCheckBox = (event, property) => {
         setRequestData({...requestData, [property]: !requestData[property]});
     };
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault()
-        console.log("in the submit")
-        dispatch(createBloodRequestAction(requestData))
+        const response = await dispatch(createBloodRequestAction(requestData))
+        if (response.status < 300) closeModal()
     }
-
-    console.log("req data", requestData)
 
     return (
         <ModalWrapper>
             <ModalForm onSubmit={handleSubmit}>
-                <BloodGroupDropDown required onChange={(e) => onChangeHandler(e, "blood_group")}>
+                <BloodGroupDropDown defaultValue={"O-"} placeholder={"choose a blood type"} required onChange={(e) => onChangeHandler(e, "blood_group")}>
                     <option value="O-">O-</option>
                     <option value="O+">O+</option>
                     <option value="A-">A-</option>
@@ -142,7 +142,7 @@ const RequestModal = ({handleCloseModal}) => {
                     Is for Covid
                 </CheckboxWrapper>
                 <ModalBtnWrapper>
-                    <CustomWhiteButton onClick={handleCloseModal}>Cancel</CustomWhiteButton>
+                    <CustomWhiteButton onClick={closeModal}>Cancel</CustomWhiteButton>
                     <CustomDarkBlueButton>Confirm</CustomDarkBlueButton>
                 </ModalBtnWrapper>
             </ModalForm>

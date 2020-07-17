@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
 import {PageContainer} from "../../style/GlobalWrappers";
@@ -10,6 +10,7 @@ import {DarkBlueButton, WhiteButton} from "../../style/GlobalButtons";
 import RequestModal from "../RequestModal";
 import {connect} from "react-redux";
 import {SeekerEditProfile} from "../SeekerEditProfile";
+import {getSeekerBloodRequestsAction} from "../../store/actions/bloodRequestActions";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -218,11 +219,28 @@ const NewRequestButton = styled(DarkBlueButton)`
   width: ${rem("194px")};
 `;
 
-const SeekerDashboard = () => {
+const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
+
     const [active, setActive] = useState("Open");
     const [activeProfile, setActiveProfile] = useState(null);
+    const [activeRequest, setActiveRequest] = useState(null);
     const [modalActive, setModalActive] = useState(false);
     const [status, setStatus] = useState("OP");
+
+    console.log("active Profile", activeProfile)
+    console.log("active Request", activeRequest)
+
+    const handleSetActiveProfile = (profileObj) => {
+        setActiveProfile(profileObj)
+    }
+
+    const handleSetActiveRequest = (requestObj) => {
+        setActiveRequest(requestObj)
+    }
+
+    useEffect(() => {
+        dispatch(getSeekerBloodRequestsAction())
+    }, [dispatch])
 
     const handleClick = (e) => {
         const value = e.target.id;
@@ -241,7 +259,8 @@ const SeekerDashboard = () => {
         setStatus("OP");
     };
 
-    const handleCloseModal = e => {
+    const closeModal = () => {
+        console.log("in the close modal")
         setModalActive(false)
     }
 
@@ -249,7 +268,7 @@ const SeekerDashboard = () => {
     return (
         <PageContainer>
             <PageWrapper>
-                {modalActive ? <RequestModal handleCloseModal={handleCloseModal}/> : null}
+                {modalActive ? <RequestModal closeModal={closeModal}/> : null}
                 <LeftSide>
                     <DashboardContentContainer>
                         <MenuContainer>
@@ -263,7 +282,11 @@ const SeekerDashboard = () => {
                                 Closed
                             </SideButton>
                         </MenuContainer>
-                        <GenericSeekerRequestBar status={status} func={handleComplete}/>
+                        {/*<GenericSeekerRequestBar status={status} func={handleComplete}/>*/}
+                        {requests ? requests.map((request, index) => {
+                            return (<GenericSeekerRequestBar handleSetActiveRequest={handleSetActiveRequest} handleSetActiveProfile={handleSetActiveProfile} key={index}
+                                                             request={request}/>)
+                        }) : null}
                     </DashboardContentContainer>
                     <NewRequestButton onClick={() => setModalActive(true)}>
                         <PlusSignButton/>+ Create Request
@@ -273,11 +296,11 @@ const SeekerDashboard = () => {
                     <ProfileWrapper>
                         <UpperContainer>
                             <BigTitle>donor profile</BigTitle>
-                            {status === "OP" ? (
+                            {activeRequest.status === "OP" ? (
                                 <ProfilePicPlaceholder>
                                     <img src={profilePic} alt={"avatar"}/>
                                 </ProfilePicPlaceholder>
-                            ) : status === "CL" ? (
+                            ) : activeRequest.status === "CL" ? (
                                 <SelectedTitle>Selected</SelectedTitle>
                             ) : status === "COM" ? (
                                 <ProfilePicPlaceholder>
@@ -311,11 +334,11 @@ const SeekerDashboard = () => {
                         <ButtonContainer>
                             {status === "OP" ? (
                                 <SelectButton onClick={handleSelectButton}>
-                                    <PlusSignButton></PlusSignButton>+ Select Donor
+                                    <PlusSignButton/>+ Select Donor
                                 </SelectButton>
                             ) : status === "CL" ? (
                                 <CancelButton onClick={handleUnSelectButton}>
-                                    <MinusSignButton></MinusSignButton>X Cancel Select
+                                    <MinusSignButton/>X Cancel Select
                                 </CancelButton>
                             ) : status === "COM" ? null : null}
                         </ButtonContainer>

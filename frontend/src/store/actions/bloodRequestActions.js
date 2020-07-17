@@ -44,8 +44,9 @@ export const getAllRequestsAction = () => async (dispatch) => {
 }
 
 export const createBloodRequestAction = (requestData) => async (dispatch) => {
+    console.log("data in create action", requestData)
     try {
-        const response = await Axios.post(`request/new`);
+        const response = await Axios.post(`request/new/`, requestData);
         const {data} = response
         console.log("in the action data", data)
         dispatch(addRequestToAll(data))
@@ -85,3 +86,32 @@ export const applyToRequestActionInAll = (request_id) => async (dispatch) => {
         return error
     }
 }
+
+export const getSeekerBloodRequestsAction = () => async (dispatch) => {
+    try {
+        const response = await Axios.get(`seeker/search/?request_status=`);
+        const {data} = response
+        console.log("seeker's requests", data)
+        dispatch(setAllRequests(data))
+        return response
+    } catch (error) {
+        console.log("error message", error.response);
+        console.log("error ", error);
+        return error
+    }
+}
+
+export const getApplicantsOfRequestAction = (requestID) => async (dispatch) => {
+    console.log("getting applicants")
+    try {
+        const response = await Axios.get(`request/applicants/${requestID}/`);
+        console.log("applicants of request", response.data)
+        return response
+    } catch (error) {
+        console.log("error message", error.response);
+        console.log("error ", error);
+        return error
+    }
+}
+
+

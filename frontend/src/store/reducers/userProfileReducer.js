@@ -25,7 +25,8 @@ export const userProfileReducer = (state = initialState, action) => {
             return {...newState, offeredTests: action.payload};
         }
         case ADD_REQUEST_TO_LIST: {
-            return {...newState, requests: [action.payload.post,...newState.requests]};
+            if (newState.requests) return {...newState, requests: [action.payload,...newState.requests]};
+            else return {...newState, requests: [action.payload]};
         }
         case UPDATE_REQUEST_IN_ALL_REQUESTS: {
             let index = newState.requests.findIndex(
