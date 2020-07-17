@@ -1,7 +1,8 @@
 import React, {useEffect} from "react";
-import {rem} from "polished";
+import { rem } from "polished";
 import styled from "styled-components";
 import profilePic from "../../assets/images/default-profile-pic.jpg"
+
 
 const ProfileWrapper = styled.div`
     width: ${rem("544px")};
@@ -64,12 +65,15 @@ const BottomContainer = styled.div`
     width: ${rem("544px")};
     height: ${rem("328px")};
     display: flex;
+    justify-content: center;
+    //background-color: deepskyblue;
 `;
 
 const DetailTitlesContainer = styled.div`
     height: ${rem("328px")};
-    width: ${rem("25px")};
-    margin-left: ${rem("158px")};
+    //width: ${rem("425px")};
+    //margin-left: ${rem("158px")};
+    //background-color: lightgreen;
 `;
 const DetailTitle = styled.p`
     font-style: normal;
@@ -80,6 +84,7 @@ const DetailTitle = styled.p`
     align-items: center;
     color: #000000;
     margin-bottom: ${rem("16px")};
+    width: ${rem("72px")};
 `;
 
 const DetailsContainer = styled.div`
@@ -88,7 +93,13 @@ const DetailsContainer = styled.div`
     margin-left: ${rem("64px")};
 `;
 
-const Details = styled.p`
+const Test = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+`
+
+const Details = styled.div`
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -100,8 +111,14 @@ const Details = styled.p`
 `;
 
 const AddressTitle = styled(DetailTitle)`
-    margin-bottom: ${rem("64px")};
+    margin-bottom: ${rem("8px")};
 `;
+
+const AddressDetails = styled(Details)`
+    margin-bottom: ${rem("8px")};
+`;
+
+
 
 const DonorProfileCardWide = ({
                                   userObj: {
@@ -121,7 +138,6 @@ const DonorProfileCardWide = ({
                                   }
                               }) => {
 
-
     return (
         <ProfileWrapper>
             <UpperContainer>
@@ -132,25 +148,58 @@ const DonorProfileCardWide = ({
                     {`${first_name} ${last_name}`}
                 </NameContainer>
                 <CityContainer>
-                    {zip_code}, {country.name}
+                    {zip_code}, {country}
                 </CityContainer>
             </UpperContainer>
             <BottomContainer>
                 <DetailTitlesContainer>
-                    <DetailTitle>Gender: </DetailTitle>
-                    <DetailTitle>Birthday: </DetailTitle>
-                    <AddressTitle>Address:</AddressTitle>
-                    <DetailTitle>Phone:</DetailTitle>
-                    <DetailTitle>Email:</DetailTitle>
+                    <Test>
+                        <DetailTitle>Gender: </DetailTitle>
+                        <Details>{gender==="M" ? "Male" : gender==="F" ? "Female" : "Other"}</Details>
+                    </Test>
+                    <Test>
+                        <DetailTitle>Birthday: </DetailTitle>
+                        <Details>{birthday}</Details>
+                    </Test>
+                    <Test>
+                        <AddressTitle>Address:</AddressTitle>
+                        <AddressDetails>{street}</AddressDetails>
+                    </Test>
+                    <Test>
+                        <AddressTitle></AddressTitle>
+                        <AddressDetails>{zip_code}</AddressDetails>
+                    </Test>
+                    <Test>
+                        <DetailTitle></DetailTitle>
+                        <Details>{country}</Details>
+                    </Test>
+                    <Test>
+                        <DetailTitle>Phone:</DetailTitle>
+                        <Details>{phone.length ? phone : "please add a number"}</Details>
+                    </Test>
+                    <Test>
+                        <DetailTitle>Email:</DetailTitle>
+                        <Details>{email}</Details>
+                    </Test>
                 </DetailTitlesContainer>
-                <DetailsContainer>
-                    <Details>{gender}</Details>
-                    <Details>{birthday}</Details>
-                    <Details>{street}<br/> {zip_code}<br/>{country.name}</Details>
-                    <Details>{phone.length ? phone : "please add a number"}</Details>
-                    <Details>{email}</Details>
-                </DetailsContainer>
+
             </BottomContainer>
+            {/*<BottomContainer>*/}
+            {/*    <DetailTitlesContainer>*/}
+            {/*        <DetailTitle>Gender: </DetailTitle>*/}
+            {/*        <DetailTitle>Birthday: </DetailTitle>*/}
+            {/*        <AddressTitle>Address:</AddressTitle>*/}
+            {/*        <DetailTitle>Phone:</DetailTitle>*/}
+            {/*        <DetailTitle>Email:</DetailTitle>*/}
+            {/*    </DetailTitlesContainer>*/}
+            {/*    <DetailsContainer>*/}
+            {/*        <Details>{gender==="M" ? "Male" : gender==="F" ? "Female" : "Other"}</Details>*/}
+            {/*        <Details>{birthday}</Details>*/}
+            {/*        <Details>{street}<br/> {zip_code}<br/>{country.name}</Details>*/}
+            {/*        <Details>{phone.length ? phone : "please add a number"}</Details>*/}
+            {/*        <Details>{email}</Details>*/}
+            {/*    </DetailsContainer>*/}
+            {/*</BottomContainer>*/}
         </ProfileWrapper>
     )
 }

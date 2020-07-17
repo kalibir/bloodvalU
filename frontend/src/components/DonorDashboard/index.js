@@ -147,38 +147,6 @@ const RequestContainer = styled.div`
 
 //TEST variables
 let points = 100000;
-let offeredTest = {
-    "test_type": "Blood Amount check",
-    "seeker_name": "Buche GmBh",
-    "is_bought": false,
-    "points_cost": 7000,
-    "expiry_date": "2020-08-01",
-    "is_expired": false,
-}
-let offeredTest2 = {
-    "test_type": "Blood Amount check",
-    "seeker_name": "Buche GmBh",
-    "is_bought": true,
-    "points_cost": 7000,
-    "expiry_date": "2020-08-01",
-    "is_expired": false,
-}
-let offeredTest3 = {
-    "test_type": "Blood Amount check",
-    "seeker_name": "Buche GmBh",
-    "is_bought": true,
-    "points_cost": 7000,
-    "expiry_date": "2020-08-01",
-    "is_expired": true,
-}
-let offeredTest4 = {
-    "test_type": "Blood Amount check",
-    "seeker_name": "Buche GmBh",
-    "is_bought": false,
-    "points_cost": 7000,
-    "expiry_date": "2020-08-01",
-    "is_expired": true,
-}
 
 
 const DonorDashboard = ({
@@ -197,7 +165,10 @@ const DonorDashboard = ({
     };
 
     const [searchParams, setSearchParams] = useState("");
-
+    // console.log('searchParams', searchParams);
+    // console.log('active', active);
+    console.log("requests", requests)
+    console.log("userObj", userObj)
 
     const handleSearch = (event) => {
         dispatch(searchAllRequestsAndTestsAction(searchParams, active));
