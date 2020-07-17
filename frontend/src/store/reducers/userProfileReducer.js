@@ -33,6 +33,7 @@ export const userProfileReducer = (state = initialState, action) => {
                 (request) => request.id === action.payload.id
             );
             newState.requests[index] = action.payload;
+            console.log("updated request in reducer", newState.requests[index])
             return {...newState, requests: newState.requests}
         }
         default:

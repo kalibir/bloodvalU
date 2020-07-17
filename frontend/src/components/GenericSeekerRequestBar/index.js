@@ -83,18 +83,9 @@ const GenericSeekerRequestBar = ({  handleSetActiveRequest,
         const index = e.currentTarget.id
         const targetProfile = applicantsData.applicants[index]
         handleSetActiveProfile(targetProfile)
+        handleSetActiveRequest(request)
     }
 
-
-    // const [status, setStatus] = useState("OP");
-    //
-    //   const handleSelectButton = (e) => {
-    //       setStatus("CL")
-    //   }
-    //
-    //   const handleUnSelectButton = (e) => {
-    //       setStatus("OP")
-    //   }
 
     return (
         <BarWrapper>

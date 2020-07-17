@@ -10,7 +10,7 @@ import {DarkBlueButton, WhiteButton} from "../../style/GlobalButtons";
 import RequestModal from "../RequestModal";
 import {connect} from "react-redux";
 import {SeekerEditProfile} from "../SeekerEditProfile";
-import {getSeekerBloodRequestsAction} from "../../store/actions/bloodRequestActions";
+import {assignApplicantAsSelectedDonor, getSeekerBloodRequestsAction} from "../../store/actions/bloodRequestActions";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -65,7 +65,7 @@ const SideButton = styled(MiddleButton)`
 
 const DashboardContentContainer = styled.div`
     //width: ${rem("445px")};
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-flow: column;
     justify-content: flex-start;
@@ -225,7 +225,6 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
     const [activeProfile, setActiveProfile] = useState(null);
     const [activeRequest, setActiveRequest] = useState(null);
     const [modalActive, setModalActive] = useState(false);
-    const [status, setStatus] = useState("OP");
 
     console.log("active Profile", activeProfile)
     console.log("active Request", activeRequest)
@@ -238,6 +237,13 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
         setActiveRequest(requestObj)
     }
 
+    const handleSelectApplicant = async e => {
+        const response = await dispatch(assignApplicantAsSelectedDonor(activeRequest.id, activeProfile.id))
+        if (response.status < 300) setActiveRequest(response.data)
+        console.log("data to be set as active req", response.data)
+
+    }
+
     useEffect(() => {
         dispatch(getSeekerBloodRequestsAction())
     }, [dispatch])
@@ -247,17 +253,6 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
         setActive(value);
     };
 
-    const handleSelectButton = (e) => {
-        setStatus("CL");
-    };
-
-    const handleComplete = (e) => {
-        setStatus("COM");
-    };
-
-    const handleUnSelectButton = (e) => {
-        setStatus("OP");
-    };
 
     const closeModal = () => {
         console.log("in the close modal")
@@ -282,9 +277,9 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
                                 Closed
                             </SideButton>
                         </MenuContainer>
-                        {/*<GenericSeekerRequestBar status={status} func={handleComplete}/>*/}
                         {requests ? requests.map((request, index) => {
-                            return (<GenericSeekerRequestBar handleSetActiveRequest={handleSetActiveRequest} handleSetActiveProfile={handleSetActiveProfile} key={index}
+                            return (<GenericSeekerRequestBar handleSetActiveRequest={handleSetActiveRequest}
+                                                             handleSetActiveProfile={handleSetActiveProfile} key={index}
                                                              request={request}/>)
                         }) : null}
                     </DashboardContentContainer>
@@ -293,24 +288,24 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
                     </NewRequestButton>
                 </LeftSide>
                 <RightSide>
-                    <ProfileWrapper>
+                    {activeRequest ? <ProfileWrapper>
                         <UpperContainer>
                             <BigTitle>donor profile</BigTitle>
                             {activeRequest.status === "OP" ? (
                                 <ProfilePicPlaceholder>
-                                    <img src={profilePic} alt={"avatar"}/>
+                                    <img src={activeProfile ? activeProfile.avatar : profilePic} alt={"avatar"}/>
                                 </ProfilePicPlaceholder>
-                            ) : activeRequest.status === "CL" ? (
+                            ) : activeProfile ? activeRequest.status === "CL" && activeProfile.id === activeRequest.selected_donor.id ? (
                                 <SelectedTitle>Selected</SelectedTitle>
-                            ) : status === "COM" ? (
+                            ) : activeRequest.status === "COM" ? (
                                 <ProfilePicPlaceholder>
                                     <img src={success} alt={"should be antonios pic"}/>
                                 </ProfilePicPlaceholder>
                             ) : (
                                 <p>Sorry, we are confused a little bit.</p>
-                            )}
-                            <NameContainer>Name Name Name</NameContainer>
-                            <CityContainer>City, Country</CityContainer>
+                            ) : null}
+                            <NameContainer>{activeProfile ? activeProfile.first_name + " " + activeProfile.last_name : null}</NameContainer>
+                            <CityContainer>{activeProfile ? `${activeProfile.street} ${activeProfile.zip_code}, ${activeProfile.country}` : null}</CityContainer>
                         </UpperContainer>
                         <BottomContainer>
                             <DetailTitlesContainer>
@@ -321,28 +316,28 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
                                 <DetailTitle>Email:</DetailTitle>
                             </DetailTitlesContainer>
                             <DetailsContainer>
-                                <Details>Female</Details>
-                                <Details>25.07.1999</Details>
+                                <Details>{activeProfile ? activeProfile.gender : null}</Details>
+                                <Details>{activeProfile ? activeProfile.birthday : null}</Details>
                                 <Details>
-                                    Technoparkstrasse 1<br/> 8999 Zürich
-                                    <br/> Schweiz
+                                    {activeProfile ? activeProfile.zip_code : null}<br/> {activeProfile ? activeProfile.city : null}
+                                    <br/> {activeProfile ? activeProfile.country : null}
                                 </Details>
-                                <Details>0781111111</Details>
-                                <Details>example@email.com</Details>
+                                <Details>{activeProfile ? activeProfile.phone : null}</Details>
+                                <Details>{activeProfile ? activeProfile.email : null}</Details>
                             </DetailsContainer>
                         </BottomContainer>
                         <ButtonContainer>
-                            {status === "OP" ? (
-                                <SelectButton onClick={handleSelectButton}>
+                            {activeRequest.status === "OP" ? (
+                                <SelectButton onClick={handleSelectApplicant}> {/*needs a onclick*/}
                                     <PlusSignButton/>+ Select Donor
                                 </SelectButton>
-                            ) : status === "CL" ? (
-                                <CancelButton onClick={handleUnSelectButton}>
+                            ) : activeProfile ? activeRequest.selected_donor.id === activeProfile.id ? (
+                                <CancelButton>
                                     <MinusSignButton/>X Cancel Select
                                 </CancelButton>
-                            ) : status === "COM" ? null : null}
+                            ) : activeRequest.status === "COM" ? null : null : null}
                         </ButtonContainer>
-                    </ProfileWrapper>
+                    </ProfileWrapper> : null}
                 </RightSide>
             </PageWrapper>
         </PageContainer>
