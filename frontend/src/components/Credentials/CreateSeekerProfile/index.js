@@ -143,15 +143,16 @@ const CreateSeekerProfile = ({ authReducer }) => {
     street: "",
     phone: "",
     website: "",
+    logo: null,
     certificate: null,
   });
 
-  const avatarSelectHandler = (e) => {
+  const logoSelectHandler = (e) => {
     // dispatch(resetError());
     if (e.target.files[0]) {
       setSeekerInfo({
         ...seekerInfo,
-        avatar: e.target.files[0],
+        logo: e.target.files[0],
       });
     }
   };
@@ -169,9 +170,9 @@ const CreateSeekerProfile = ({ authReducer }) => {
     if (seekerInfo.certificate) {
       form.append("certificate", seekerInfo.certificate);
     }
-    // if (seekerInfo.logo) {
-    //     form.append('logo', seekerInfo.logo)
-    // }
+    if (seekerInfo.logo) {
+      form.append("logo", seekerInfo.logo);
+    }
     const response = await dispatch(updateProfileAction(form));
     if (response.status < 300) {
       console.log("woohooo, success!");
@@ -183,12 +184,6 @@ const CreateSeekerProfile = ({ authReducer }) => {
   const onChangeHandler = (event, property) => {
     const value = event.currentTarget.value;
     setSeekerInfo({ ...seekerInfo, [property]: value });
-  };
-
-  const logoSelectHandler = (e) => {
-    if (e.target.files[0]) {
-      setSeekerInfo({ ...seekerInfo, logo: e.target.files[0] });
-    }
   };
 
   const certificateSelectHandler = (e) => {
@@ -261,7 +256,7 @@ const CreateSeekerProfile = ({ authReducer }) => {
 
       <InputPairContainer>
         <ImgInput
-          onChange={avatarSelectHandler}
+          onChange={logoSelectHandler}
           type="file"
           name="logo"
           id="logo"
@@ -271,7 +266,7 @@ const CreateSeekerProfile = ({ authReducer }) => {
           UPLOAD YOUR LOGO
         </ChooseFileButton>
         <ImgInput
-          onChange={avatarSelectHandler}
+          onChange={certificateSelectHandler}
           type="file"
           name="file"
           id="file"

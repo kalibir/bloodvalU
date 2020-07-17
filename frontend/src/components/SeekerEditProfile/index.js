@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
+import { connect, useDispatch } from "react-redux";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
 import { MiddleTitle, SmallTitle } from "../../style/GlobalTitles";
 import { BigInput, Select, SmallInput } from "../../style/GlobalInputs";
 import { DarkBlueButton, WhiteButton } from "../../style/GlobalButtons";
 import { PageContainer } from "../../style/GlobalWrappers";
-import { connect } from "react-redux";
+import { updateProfileAction } from "../../store/actions/userActions";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -98,11 +100,8 @@ const ChooseFileButton = styled.label`
 `;
 
 export const SeekerEditProfile = (props) => {
-  const [image, setImage] = useState(null);
-
-  const imageHandler = (e) => {
-    setImage(e.target.files[0]);
-  };
+  const history = useHistory();
+  const dispatch = useDispatch();
 
   //   const {
   //     dispatch,
@@ -139,35 +138,43 @@ export const SeekerEditProfile = (props) => {
     setSeekerInfo({ ...seekerInfo, [property]: value });
   };
 
-  const avatarSelectHandler = (e) => {
+  const logoSelectHandler = (e) => {
     // dispatch(resetError());
     if (e.target.files[0]) {
       setSeekerInfo({
         ...seekerInfo,
-        avatar: e.target.files[0],
+        logo: e.target.files[0],
       });
+    }
+  };
+
+  const certificateSelectHandler = (e) => {
+    if (e.target.files[0]) {
+      setSeekerInfo({ ...seekerInfo, certificate: e.target.files[0] });
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // dispatch(resetError());
     const form = new FormData();
     form.append("name", seekerInfo.name);
     form.append("country", seekerInfo.country);
     form.append("zip_code", seekerInfo.zip_code);
     form.append("street", seekerInfo.street);
+    form.append("zip", seekerInfo.country);
     form.append("phone", seekerInfo.phone);
     form.append("website", seekerInfo.website);
-    form.append("email", seekerInfo.email);
-    if (seekerInfo.logo) {
-      form.append("avatar", seekerInfo.logo);
+    if (seekerInfo.certificate) {
+      form.append("certificate", seekerInfo.certificate);
     }
-
-    // const response = await dispatch(updateUserAction(form));
-    // if (response.status === 200) {
-    //   dispatch(setUserProfileObj(response.data));
-    // }
+    if (seekerInfo.logo) {
+      form.append("logo", seekerInfo.logo);
+    }
+    const response = await dispatch(updateProfileAction(form));
+    if (response.status < 300) {
+      console.log("woohooo, success!");
+      history.push(`/dashboard/seeker`);
+    }
   };
 
   return (
@@ -246,7 +253,7 @@ export const SeekerEditProfile = (props) => {
 
           <InputPairContainer>
             <ImgInput
-              onChange={avatarSelectHandler}
+              onChange={logoSelectHandler}
               type="file"
               name="logo"
               id="logo"
@@ -256,7 +263,7 @@ export const SeekerEditProfile = (props) => {
               CHOOSE YOUR LOGO
             </ChooseFileButton>
             <ImgInput
-              onChange={avatarSelectHandler}
+              onChange={certificateSelectHandler}
               type="file"
               name="file"
               id="file"
