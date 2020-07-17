@@ -1,6 +1,6 @@
 import React from "react";
 import {useState} from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import {BaseStatusButton, CompleteButton} from "../../style/GlobalButtons/";
 import {rem} from "polished";
 import {useDispatch} from "react-redux";
@@ -57,7 +57,17 @@ export const DonorSubBar = styled.div`
   padding-right: 27px;
   cursor: pointer;
   color: white;
+  
 `;
+
+const SlidingContainer = styled.div`
+  @keyframes breath-animation {
+ 0% { height: 100px; width: 100px; }
+ 30% { height: 400px; width: 400px; opacity: 1 }
+ 40% { height: 405px; width: 405px; opacity: 0.3; }
+ 100% { height: 100px; width: 100px; opacity: 0.6; }
+}
+`
 
 const DonorSelectedBar = styled(DonorSubBar)`
     background: #43A047;
@@ -81,7 +91,6 @@ const GenericSeekerRequestBar = ({
 
     const handleRenderApplicants = async (e) => {
         const response = await dispatch(getApplicantsOfRequestAction(request.id))
-        console.log("applicants", applicantsData.applicants)
         handleSetActiveRequest(request)
         setApplicantsData({
             ...applicantsData,
@@ -110,20 +119,20 @@ const GenericSeekerRequestBar = ({
                         ? <CompleteButton>Complete request</CompleteButton>
                         : <CompleteButton>Complete</CompleteButton>}
                 {request.no_of_applicants ?
-                    <ArrowWrapper onClick={handleRenderApplicants}><BarArrowRight/></ArrowWrapper> : <EmptyArrowWrapper/>}
+                    <ArrowWrapper onClick={handleRenderApplicants}><BarArrowRight/></ArrowWrapper> :
+                    <EmptyArrowWrapper/>}
             </RequestBar>
-            {applicantsData.showApplicants ? applicantsData.applicants.map((applicant, index) => {
-                    return (<DonorSubBar onClick={handleClickApplicant} key={index} id={index}
-                                         active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSubBar>)
-                })
 
-                // <>
-                //     {props.status === "OP"
-                //         ? <DonorSubBar active={false}>donorObj.name</DonorSubBar>
-                //         : props.status === "CL" && selected_donor_id === donorObj_id
-                //             ? <DonorSelectedBar>donorObj.name</DonorSelectedBar>
-                //             : <DonorNotSelected>donorObj.name</DonorNotSelected>}
-                // </>
+            {applicantsData.showApplicants ? applicantsData.applicants.map((applicant, index) => {
+                    if(request.selected_donor) {
+                        if(request.selected_donor.id === applicant.id) {
+                            return (<DonorSelectedBar onClick={handleClickApplicant} key={index} id={index}
+                                                           active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSelectedBar>)
+                        }
+                    }
+                    return (<DonorSubBar onClick={handleClickApplicant} key={index} id={index}
+                                                           active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSubBar>)
+                })
                 : null}
         </BarWrapper>
     );

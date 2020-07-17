@@ -14,6 +14,7 @@ const initialState = {
 
 export const userProfileReducer = (state = initialState, action) => {
     const newState = {...state};
+    console.log("payload data", action.payload)
     switch (action.type) {
         case SET_USER_PROFILE_USER: {
             return {...newState, userObj: action.payload};
@@ -33,7 +34,6 @@ export const userProfileReducer = (state = initialState, action) => {
                 (request) => request.id === action.payload.id
             );
             newState.requests[index] = action.payload;
-            console.log("updated request in reducer", newState.requests[index])
             return {...newState, requests: newState.requests}
         }
         default:

@@ -90,9 +90,6 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
     const [activeRequest, setActiveRequest] = useState(null);
     const [modalActive, setModalActive] = useState(false);
 
-    console.log("active Profile", activeProfile)
-    console.log("active Request", activeRequest)
-
     const handleSetActiveProfile = (profileObj) => {
         setActiveProfile(profileObj)
     }
@@ -102,10 +99,10 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
     }
 
     const handleSelectApplicant = async e => {
-        const response = await dispatch(assignApplicantAsSelectedDonor(activeRequest.id, activeProfile.id))
-        if (response.status < 300) setActiveRequest(response.data)
-        console.log("data to be set as active req", response.data)
-
+        if (activeRequest.id) {
+            const response = await dispatch(assignApplicantAsSelectedDonor(activeRequest.id, activeProfile.id))
+            if (response.status < 300) setActiveRequest(response.data)
+        }
     }
 
     useEffect(() => {
@@ -152,7 +149,9 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
                     </NewRequestButton>
                 </LeftSide>
                 <RightSide>
-                    {activeRequest ? <ActiveProfileCard handleSelectApplicant={handleSelectApplicant} activeRequest={activeRequest} activeProfile={activeProfile}/> : null}
+                    {activeRequest ?
+                        <ActiveProfileCard handleSelectApplicant={handleSelectApplicant} activeRequest={activeRequest}
+                                           activeProfile={activeProfile}/> : null}
                 </RightSide>
             </PageWrapper>
         </PageContainer>
@@ -160,7 +159,6 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
 };
 
 const mapStateToProps = (state) => {
-    console.log("state", state);
     return {
         userProfileReducer: state.userProfileReducer,
     };

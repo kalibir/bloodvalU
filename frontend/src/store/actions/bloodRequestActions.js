@@ -20,6 +20,7 @@ export const updateRequestInAll = (request) => {
         payload: request
     }
 }
+
 export const addRequestToAll = (request) => {
     return {
         type: ADD_REQUEST_TO_LIST,
@@ -109,7 +110,6 @@ export const getApplicantsOfRequestAction = (requestID) => async (dispatch) => {
 export const assignApplicantAsSelectedDonor = (requestID, donorID) => async (dispatch) => {
     try {
         const response = await Axios.post(`request/${requestID}/assign/${donorID}/`);
-        console.log("selected applicant response", response.data)
         updateRequestInAll(response.data)
         return response
     } catch (error) {
