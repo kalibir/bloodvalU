@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import  EmailMessage
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, UpdateAPIView
 from rest_framework.response import Response
@@ -27,13 +27,11 @@ class RequestForRegistration(CreateAPIView):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         target_profile = Registration.objects.get(email=request.data['email'])
-        send_mail(
-            'Thanks for registering',
-            f'See your account creation code: {target_profile.code}',
-            'students@propulsionacademy.com',
-            [request.data['email']],
-            fail_silently=False,
-        )
+        email = EmailMessage()
+        email.subject = 'Thanks for registering'
+        email.body = 'See your account creation code: {code}'.format(code=target_profile.code)
+        email.to = [request.data['email']]
+        email.send(fail_silently=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
