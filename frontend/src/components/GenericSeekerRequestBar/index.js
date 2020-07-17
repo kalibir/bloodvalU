@@ -19,12 +19,22 @@ const RequestBar = styled.div`
   justify-content: space-between;
   padding-left: 23px;
   padding-right: 27px;
-  cursor: pointer;
 `;
 
 const BlueButton = styled(BaseStatusButton)`
   background-color: #2196f3;
 `;
+
+const ArrowWrapper = styled.div`
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+`
+
+const EmptyArrowWrapper = styled.div`
+  width: 20px;
+  height: 20px;
+`
 
 const BarArrowRight = styled.i`
   border: solid #757575;
@@ -57,7 +67,8 @@ const DonorNotSelected = styled(DonorSubBar)`
     background: #C6C6C6;
 `;
 
-const GenericSeekerRequestBar = ({  handleSetActiveRequest,
+const GenericSeekerRequestBar = ({
+                                     handleSetActiveRequest,
                                      handleSetActiveProfile,
                                      request
                                  }) => {
@@ -80,23 +91,26 @@ const GenericSeekerRequestBar = ({  handleSetActiveRequest,
     }
 
     const handleClickApplicant = e => {
-        const index = e.currentTarget.id
+        const index = Number(e.currentTarget.id)
         const targetProfile = applicantsData.applicants[index]
         handleSetActiveProfile(targetProfile)
-        handleSetActiveRequest(request)
+        // handleSetActiveRequest(request)
     }
+
+    console.log("the status of the request in the request CARD", request.status)
 
 
     return (
         <BarWrapper>
-            <RequestBar onClick={handleRenderApplicants}>
+            <RequestBar>
                 Request {request.id}
                 {request.status === "OP"
                     ? <BlueButton>Open</BlueButton>
                     : request.status === "CL"
                         ? <CompleteButton>Complete request</CompleteButton>
                         : <CompleteButton>Complete</CompleteButton>}
-                <BarArrowRight/>
+                {request.no_of_applicants ?
+                    <ArrowWrapper onClick={handleRenderApplicants}><BarArrowRight/></ArrowWrapper> : <EmptyArrowWrapper/>}
             </RequestBar>
             {applicantsData.showApplicants ? applicantsData.applicants.map((applicant, index) => {
                     return (<DonorSubBar onClick={handleClickApplicant} key={index} id={index}
