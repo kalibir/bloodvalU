@@ -1,5 +1,8 @@
 import Axios from "../../axios";
-import {SET_APPLIED_REQUESTS, SET_REQUESTS} from "../actionTypes";
+import {
+    SET_REQUESTS,
+    UPDATE_REQUEST_IN_ALL_REQUESTS,
+} from "../actionTypes";
 
 
 export const setAllRequests = (arrayOfRequests) => {
@@ -9,10 +12,11 @@ export const setAllRequests = (arrayOfRequests) => {
     }
 }
 
-export const setAppliedRequests = (arrayOfAppliedRequests) => {
+
+export const updateRequestInAll = (request) => {
     return{
-        type: SET_APPLIED_REQUESTS,
-        payload: arrayOfAppliedRequests
+        type: UPDATE_REQUEST_IN_ALL_REQUESTS,
+        payload: request
     }
 }
 
@@ -35,10 +39,25 @@ export const getAllRequestsAction = () => async (dispatch) => {
 
 export const getAllAppliedToRequestsAction = () => async (dispatch) => {
     try {
-        const response = await Axios.get(`donor/requests/applied/`);
+        const response = await Axios.get(`donor/search/?search_param=&type=applied`);
         const {data} = response
         console.log("Applied requests", data)
-        dispatch(setAppliedRequests(data))
+        dispatch(setAllRequests(data))
+        return response
+    } catch (error) {
+        console.log("error message", error.response);
+        console.log("error", error)
+        return error
+    }
+}
+
+
+export const applyToRequestActionInAll = (request_id) => async (dispatch) => {
+    try {
+        const response = await Axios.post(`request/apply/${request_id}/`);
+        const {data} = response
+        console.log("Applied request", data)
+        dispatch(updateRequestInAll(data))
         return response
     } catch (error) {
         console.log("error message", error.response);

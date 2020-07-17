@@ -9,9 +9,8 @@ export const searchAllRequestsAndTestsAction = (searchString, searchType) => asy
         const response = await Axios.get(`donor/search/?search_param=${searchString}&type=${searchType}`);
         const {data} = response
         console.log(`data for ${searchType}`, data)
-        if (searchType=== 'requests') dispatch(setAllRequests(data))
+        if (searchType=== 'requests' || searchType=== 'applied') dispatch(setAllRequests(data))
         if (searchType=== 'tests') dispatch(setAllTests(data))
-        console.log('in the action')
         return response
     } catch (error) {
         console.log("error message", error.response);
