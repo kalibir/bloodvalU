@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
-import { PageContainer } from "../../style/GlobalWrappers";
-import GenericSeekerRequestBar, { DonorSubBar } from "../GenericSeekerRequestBar";
+import {PageContainer} from "../../style/GlobalWrappers";
+import GenericSeekerRequestBar, {DonorSubBar} from "../GenericSeekerRequestBar";
 import profilePic from "../../assets/images/default-profile-pic.jpg";
 import success from "../../assets/icons/success.png";
-import { BigTitle } from "../../style/GlobalTitles";
-import { DarkBlueButton, WhiteButton } from "../../style/GlobalButtons";
+import {BigTitle} from "../../style/GlobalTitles";
+import {DarkBlueButton, WhiteButton} from "../../style/GlobalButtons";
 import RequestModal from "../RequestModal";
+import {connect} from "react-redux";
+import {SeekerEditProfile} from "../SeekerEditProfile";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -217,106 +219,119 @@ const NewRequestButton = styled(DarkBlueButton)`
 `;
 
 const SeekerDashboard = () => {
-  const [active, setActive] = useState("Open");
-  const [activeProfile, setActiveProfile] = useState(null);
-  const [modalActive, setModalActive] = useState(false);
-  const [status, setStatus] = useState("OP");
+    const [active, setActive] = useState("Open");
+    const [activeProfile, setActiveProfile] = useState(null);
+    const [modalActive, setModalActive] = useState(false);
+    const [status, setStatus] = useState("OP");
 
-  const handleClick = (e) => {
-    const value = e.target.id;
-    setActive(value);
-  };
+    const handleClick = (e) => {
+        const value = e.target.id;
+        setActive(value);
+    };
 
-  const handleSelectButton = (e) => {
-    setStatus("CL");
-  };
+    const handleSelectButton = (e) => {
+        setStatus("CL");
+    };
 
-  const handleComplete = (e) => {
-    setStatus("COM");
-  };
+    const handleComplete = (e) => {
+        setStatus("COM");
+    };
 
-  const handleUnSelectButton = (e) => {
-    setStatus("OP");
-  };
+    const handleUnSelectButton = (e) => {
+        setStatus("OP");
+    };
 
-  return (
-    <PageContainer>
-      <PageWrapper>
-        {modalActive ? <RequestModal></RequestModal> : null}
-        <LeftSide>
-          <DashboardContentContainer>
-            <MenuContainer>
-              <SideButton id="Open" onClick={handleClick} active={active === "Open"}>
-                Open
-              </SideButton>
-              <MiddleButton id="Complete" onClick={handleClick} active={active === "Complete"}>
-                Complete
-              </MiddleButton>
-              <SideButton id="Closed" onClick={handleClick} active={active === "Closed"}>
-                Closed
-              </SideButton>
-            </MenuContainer>
-            <GenericSeekerRequestBar status={status} func={handleComplete} />
-          </DashboardContentContainer>
-          <NewRequestButton onClick={() => setModalActive(true)}>
-            <PlusSignButton></PlusSignButton>+ Create Request
-          </NewRequestButton>
-        </LeftSide>
-        <RightSide>
-          <ProfileWrapper>
-            <UpperContainer>
-              <BigTitle>donor profile</BigTitle>
-              {status === "OP" ? (
-                <ProfilePicPlaceholder>
-                  <img src={profilePic} alt={"avatar"} />
-                </ProfilePicPlaceholder>
-              ) : status === "CL" ? (
-                <SelectedTitle>Selected</SelectedTitle>
-              ) : status === "COM" ? (
-                <ProfilePicPlaceholder>
-                  <img src={success} alt={"should be antonios pic"} />
-                </ProfilePicPlaceholder>
-              ) : (
-                <p>Sorry, we are confused a little bit.</p>
-              )}
-              <NameContainer>Name Name Name</NameContainer>
-              <CityContainer>City, Country</CityContainer>
-            </UpperContainer>
-            <BottomContainer>
-              <DetailTitlesContainer>
-                <DetailTitle>Gender:</DetailTitle>
-                <DetailTitle>Birthday:</DetailTitle>
-                <AddressTitle>Address:</AddressTitle>
-                <DetailTitle>Phone:</DetailTitle>
-                <DetailTitle>Email:</DetailTitle>
-              </DetailTitlesContainer>
-              <DetailsContainer>
-                <Details>Female</Details>
-                <Details>25.07.1999</Details>
-                <Details>
-                  Technoparkstrasse 1<br /> 8999 Zürich
-                  <br /> Schweiz
-                </Details>
-                <Details>0781111111</Details>
-                <Details>example@email.com</Details>
-              </DetailsContainer>
-            </BottomContainer>
-            <ButtonContainer>
-              {status === "OP" ? (
-                <SelectButton onClick={handleSelectButton}>
-                  <PlusSignButton></PlusSignButton>+ Select Donor
-                </SelectButton>
-              ) : status === "CL" ? (
-                <CancelButton onClick={handleUnSelectButton}>
-                  <MinusSignButton></MinusSignButton>X Cancel Select
-                </CancelButton>
-              ) : status === "COM" ? null : null}
-            </ButtonContainer>
-          </ProfileWrapper>
-        </RightSide>
-      </PageWrapper>
-    </PageContainer>
-  );
+    const handleCloseModal = e => {
+        setModalActive(false)
+    }
+
+
+    return (
+        <PageContainer>
+            <PageWrapper>
+                {modalActive ? <RequestModal handleCloseModal={handleCloseModal}/> : null}
+                <LeftSide>
+                    <DashboardContentContainer>
+                        <MenuContainer>
+                            <SideButton id="Open" onClick={handleClick} active={active === "Open"}>
+                                Open
+                            </SideButton>
+                            <MiddleButton id="Complete" onClick={handleClick} active={active === "Complete"}>
+                                Complete
+                            </MiddleButton>
+                            <SideButton id="Closed" onClick={handleClick} active={active === "Closed"}>
+                                Closed
+                            </SideButton>
+                        </MenuContainer>
+                        <GenericSeekerRequestBar status={status} func={handleComplete}/>
+                    </DashboardContentContainer>
+                    <NewRequestButton onClick={() => setModalActive(true)}>
+                        <PlusSignButton/>+ Create Request
+                    </NewRequestButton>
+                </LeftSide>
+                <RightSide>
+                    <ProfileWrapper>
+                        <UpperContainer>
+                            <BigTitle>donor profile</BigTitle>
+                            {status === "OP" ? (
+                                <ProfilePicPlaceholder>
+                                    <img src={profilePic} alt={"avatar"}/>
+                                </ProfilePicPlaceholder>
+                            ) : status === "CL" ? (
+                                <SelectedTitle>Selected</SelectedTitle>
+                            ) : status === "COM" ? (
+                                <ProfilePicPlaceholder>
+                                    <img src={success} alt={"should be antonios pic"}/>
+                                </ProfilePicPlaceholder>
+                            ) : (
+                                <p>Sorry, we are confused a little bit.</p>
+                            )}
+                            <NameContainer>Name Name Name</NameContainer>
+                            <CityContainer>City, Country</CityContainer>
+                        </UpperContainer>
+                        <BottomContainer>
+                            <DetailTitlesContainer>
+                                <DetailTitle>Gender:</DetailTitle>
+                                <DetailTitle>Birthday:</DetailTitle>
+                                <AddressTitle>Address:</AddressTitle>
+                                <DetailTitle>Phone:</DetailTitle>
+                                <DetailTitle>Email:</DetailTitle>
+                            </DetailTitlesContainer>
+                            <DetailsContainer>
+                                <Details>Female</Details>
+                                <Details>25.07.1999</Details>
+                                <Details>
+                                    Technoparkstrasse 1<br/> 8999 Zürich
+                                    <br/> Schweiz
+                                </Details>
+                                <Details>0781111111</Details>
+                                <Details>example@email.com</Details>
+                            </DetailsContainer>
+                        </BottomContainer>
+                        <ButtonContainer>
+                            {status === "OP" ? (
+                                <SelectButton onClick={handleSelectButton}>
+                                    <PlusSignButton></PlusSignButton>+ Select Donor
+                                </SelectButton>
+                            ) : status === "CL" ? (
+                                <CancelButton onClick={handleUnSelectButton}>
+                                    <MinusSignButton></MinusSignButton>X Cancel Select
+                                </CancelButton>
+                            ) : status === "COM" ? null : null}
+                        </ButtonContainer>
+                    </ProfileWrapper>
+                </RightSide>
+            </PageWrapper>
+        </PageContainer>
+    );
 };
 
-export default SeekerDashboard;
+const mapStateToProps = (state) => {
+    console.log("state", state);
+    return {
+        userProfileReducer: state.userProfileReducer,
+    };
+};
+
+export default connect(mapStateToProps)(SeekerDashboard);
+

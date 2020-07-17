@@ -1,21 +1,25 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
-import { BaseStatusButton } from "../../style/GlobalButtons/";
-import { DarkBlueButton, WhiteButton } from "../../style/GlobalButtons/";
-import { rem } from "polished";
+import {BaseStatusButton} from "../../style/GlobalButtons/";
+import {DarkBlueButton, WhiteButton} from "../../style/GlobalButtons/";
+import {rem} from "polished";
+import {connect, useDispatch} from "react-redux";
+import {Select} from "../../style/GlobalInputs";
+import {createBloodRequestAction} from "../../store/actions/bloodRequestActions";
 
 const ModalWrapper = styled.div`
   width: 100%;
-  height: calc(100vh - 64px);
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
+  top: 0;
   z-index: 999;
 `;
 
-const Modal = styled.div`
+const ModalForm = styled.form`
   width: 352px;
   height: 240px;
   background: white;
@@ -42,7 +46,7 @@ const ValidityWrapper = styled.div`
 `;
 
 const RequestValidity = styled.input`
-  width: 57px;
+  width: 60%;
   height: 17px;
   border-radius: 4px;
   border: 1px solid #a1a4b1;
@@ -67,7 +71,6 @@ const ModalBtnWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 24px;
   margin-top: 16px;
 `;
 
@@ -82,40 +85,71 @@ const CustomDarkBlueButton = styled(DarkBlueButton)`
   margin-left: 16px;
 `;
 
-const RequestModal = () => {
-  return (
-    <ModalWrapper>
-      <Modal>
-        <BloodGroupDropDown>
-          <option defaultValue={true}>Blood Group</option>
-          <option value={null}>A</option>
-          <option value={null}>B</option>
-          <option value={null}>AB</option>
-          <option>O</option>
-        </BloodGroupDropDown>
-        <ValidityWrapper>
-          Valid until:
-          <RequestValidity type="date"></RequestValidity>
-        </ValidityWrapper>
-        <CheckboxWrapper>
-          <RequestCheckBoxInput type="checkbox" />
-          Urgent
-        </CheckboxWrapper>
-        <CheckboxWrapper>
-          <RequestCheckBoxInput type="checkbox" />
-          Renewable
-        </CheckboxWrapper>
-        <CheckboxWrapper>
-          <RequestCheckBoxInput type="checkbox" />
-          Is for Covid
-        </CheckboxWrapper>
-        <ModalBtnWrapper>
-          <CustomWhiteButton>Cancel</CustomWhiteButton>
-          <CustomDarkBlueButton>Confirm</CustomDarkBlueButton>
-        </ModalBtnWrapper>
-      </Modal>
-    </ModalWrapper>
-  );
+const RequestModal = ({handleCloseModal}) => {
+    const dispatch = useDispatch()
+    const [requestData, setRequestData] = useState({
+        blood_group: "",
+        is_for_covid: false,
+        is_urgent: false,
+        is_renewable: false,
+        valid_until: ""
+    })
+
+    const onChangeHandler = (event, property) => {
+        const value = event.currentTarget.value;
+        setRequestData({...requestData, [property]: value});
+    };
+    const handleCheckBox = (event, property) => {
+        setRequestData({...requestData, [property]: !requestData[property]});
+    };
+    const handleSubmit = e => {
+        e.preventDefault()
+        console.log("in the submit")
+        dispatch(createBloodRequestAction(requestData))
+    }
+
+    console.log("req data", requestData)
+
+    return (
+        <ModalWrapper>
+            <ModalForm onSubmit={handleSubmit}>
+                <BloodGroupDropDown required onChange={(e) => onChangeHandler(e, "blood_group")}>
+                    <option value="O-">O-</option>
+                    <option value="O+">O+</option>
+                    <option value="A-">A-</option>
+                    <option value="A+">A+</option>
+                    <option value="B-">B-</option>
+                    <option value="B+">B+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="AB+">AB+</option>
+                </BloodGroupDropDown>
+                <ValidityWrapper>
+                    Valid until:
+                    <RequestValidity required onChange={(e) => onChangeHandler(e, "valid_until")} type="date"/>
+                </ValidityWrapper>
+                <CheckboxWrapper>
+                    <RequestCheckBoxInput  onChange={(e) => handleCheckBox(e, "is_urgent")} type="checkbox"/>
+                    Urgent
+                </CheckboxWrapper>
+                <CheckboxWrapper>
+                    <RequestCheckBoxInput  onChange={(e) => handleCheckBox(e, "is_renewable")}
+                                          type="checkbox"/>
+                    Renewable
+                </CheckboxWrapper>
+                <CheckboxWrapper>
+                    <RequestCheckBoxInput  onChange={(e) => handleCheckBox(e, "is_for_covid")}
+                                          type="checkbox"/>
+                    Is for Covid
+                </CheckboxWrapper>
+                <ModalBtnWrapper>
+                    <CustomWhiteButton onClick={handleCloseModal}>Cancel</CustomWhiteButton>
+                    <CustomDarkBlueButton>Confirm</CustomDarkBlueButton>
+                </ModalBtnWrapper>
+            </ModalForm>
+        </ModalWrapper>
+    );
 };
 
-export default RequestModal;
+export default RequestModal
+
+

@@ -1,4 +1,5 @@
 import {
+    ADD_REQUEST_TO_LIST,
     SET_REQUESTS, SET_TESTS,
     SET_USER_PROFILE_USER, UPDATE_REQUEST_IN_ALL_REQUESTS
 
@@ -22,6 +23,9 @@ export const userProfileReducer = (state = initialState, action) => {
         }
         case SET_TESTS: {
             return {...newState, offeredTests: action.payload};
+        }
+        case ADD_REQUEST_TO_LIST: {
+            return {...newState, requests: [action.payload.post,...newState.requests]};
         }
         case UPDATE_REQUEST_IN_ALL_REQUESTS: {
             let index = newState.requests.findIndex(

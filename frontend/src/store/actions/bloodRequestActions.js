@@ -1,12 +1,13 @@
 import Axios from "../../axios";
 import {
+    ADD_REQUEST_TO_LIST,
     SET_REQUESTS,
     UPDATE_REQUEST_IN_ALL_REQUESTS,
 } from "../actionTypes";
 
 
 export const setAllRequests = (arrayOfRequests) => {
-    return{
+    return {
         type: SET_REQUESTS,
         payload: arrayOfRequests
     }
@@ -14,12 +15,17 @@ export const setAllRequests = (arrayOfRequests) => {
 
 
 export const updateRequestInAll = (request) => {
-    return{
+    return {
         type: UPDATE_REQUEST_IN_ALL_REQUESTS,
         payload: request
     }
 }
-
+export const addRequestToAll = (request) => {
+    return {
+        type: ADD_REQUEST_TO_LIST,
+        payload: request
+    }
+}
 
 
 export const getAllRequestsAction = () => async (dispatch) => {
@@ -33,6 +39,20 @@ export const getAllRequestsAction = () => async (dispatch) => {
     } catch (error) {
         console.log("error message", error.response);
         console.log("error", error)
+        return error
+    }
+}
+
+export const createBloodRequestAction = (requestData) => async (dispatch) => {
+    try {
+        const response = await Axios.post(`request/new`);
+        const {data} = response
+        console.log("in the action data", data)
+        dispatch(addRequestToAll(data))
+        return response
+    } catch (error) {
+        console.log("error message", error.response);
+        console.log("error ", error);
         return error
     }
 }
