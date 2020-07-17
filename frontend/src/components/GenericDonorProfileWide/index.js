@@ -3,6 +3,8 @@ import { rem } from "polished";
 import styled from "styled-components";
 import profilePic from "../../assets/images/default-profile-pic.jpg"
 
+//delete this ;-)
+
 const ProfileWrapper = styled.div`
     width: ${rem("544px")};
     height: ${rem("628px")};
