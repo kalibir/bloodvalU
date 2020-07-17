@@ -5,7 +5,7 @@ import { MiddleTitle, SmallTitle } from "../../style/GlobalTitles";
 import { BigInput, Select, SmallInput } from "../../style/GlobalInputs";
 import { DarkBlueButton, WhiteButton } from "../../style/GlobalButtons";
 import { PageContainer } from "../../style/GlobalWrappers";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -49,9 +49,11 @@ const InputTitle = styled(SmallTitle)`
   margin-bottom: ${rem("8px")};
   font-weight: 500;
 `;
-
+const FullWidthInputContainer = styled.div`
+  width: 100%;
+`;
 const AddressInput = styled(BigInput)`
-  width: ${rem("256px")};
+  width: 100%;
 `;
 
 const NameInput = styled(BigInput)`
@@ -209,7 +211,7 @@ export const SeekerEditProfile = (props) => {
           </InputPairContainer>
 
           <InputPairContainer>
-            <div>
+            <FullWidthInputContainer>
               <InputTitle>Address</InputTitle>
               <AddressInput
                 type="text"
@@ -217,17 +219,7 @@ export const SeekerEditProfile = (props) => {
                 onChange={(e) => onChangeHandler(e, "street")}
                 required
               />
-            </div>
-
-            <div>
-              <InputTitle>Nr.</InputTitle>
-              <HouseNumberInput
-                type="text"
-                placeholder="221B"
-                onChange={(e) => onChangeHandler(e, "house_number")}
-                required
-              />
-            </div>
+            </FullWidthInputContainer>
           </InputPairContainer>
 
           <InputPairContainer>
@@ -256,11 +248,11 @@ export const SeekerEditProfile = (props) => {
             <ImgInput
               onChange={avatarSelectHandler}
               type="file"
-              name="img_file"
-              id="file"
+              name="logo"
+              id="logo"
               className="inputfile"
             />
-            <ChooseFileButton className="file_btn" htmlFor="img_file">
+            <ChooseFileButton className="file_btn" htmlFor="logo">
               CHOOSE YOUR LOGO
             </ChooseFileButton>
             <ImgInput
