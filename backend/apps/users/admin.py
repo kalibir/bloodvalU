@@ -28,4 +28,5 @@ class CustomUserAdmin(UserAdmin):
     )
     readonly_fields = ('date_joined', 'last_login')
     list_display = ('pk', 'username', 'email', 'is_staff')
-    ordering = ('-email',)
+    # ordering = ('-email',)
+    ordering = ('pk',)
