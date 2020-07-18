@@ -6,12 +6,14 @@ import profilePic from "../../assets/images/default-profile-pic.jpg"
 
 const ProfileWrapper = styled.div`
     width: ${rem("544px")};
-    height: ${rem("628px")};
+    //height: ${rem("628px")};
+    height: 100%;
     background: #FFFFFF;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: column;
+    align-items: center;
 `;
 
 const UpperContainer = styled.div`
@@ -138,6 +140,7 @@ const DonorProfileCardWide = ({
                                   }
                               }) => {
 
+    console.log("avatar", avatar)
     return (
         <ProfileWrapper>
             <UpperContainer>
