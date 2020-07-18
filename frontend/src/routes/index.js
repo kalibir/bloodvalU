@@ -12,6 +12,7 @@ import CreateDonorProfile from "../components/Credentials/CreateSeekerProfile/";
 import authComponent from '../HOCs/AuthComponent'
 import DonorEditProfile from "../components/DonorEditProfile";
 import SeekerEditProfile from "../components/SeekerEditProfile";
+import GeoMap from "../components/GeoMap";
 
 const Routes = () => {
   return (
@@ -30,6 +31,7 @@ const Routes = () => {
             <Route path="/editdonor" component={DonorEditProfile} />
             <Route path="/registertest" component={CreateDonorProfile} />
             <Route path="/seekerprofilepage" component={SeekerProfilePage} />
+            <Route path="/map" component={GeoMap} />
           </Navigation>
         </Switch>
       </Router>
