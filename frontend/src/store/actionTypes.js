@@ -34,6 +34,7 @@ export const SET_REQUESTS = 'SET_REQUESTS'
 export const SET_TESTS = 'SET_TESTS'
 export const SET_USER_PROFILE_USER = 'SET_USER_PROFILE_USER'
 export const UPDATE_REQUEST_IN_ALL_REQUESTS = 'UPDATE_REQUEST_IN_ALL_REQUESTS'
+export const BUY_TEST = 'BUY_TEST'
 
 
 // Seeker Dashboard types

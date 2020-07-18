@@ -1,16 +1,18 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
+import NumberFormat from "react-number-format";
 import {PageContainer} from "../../style/GlobalWrappers";
 import {BigInput} from "../../style/GlobalInputs";
 import {DarkBlueButton} from "../../style/GlobalButtons";
 import {SmallTitle} from "../../style/GlobalTitles";
-import {GenericDonorTestCard} from "../GenericDonorTestCard";
+import GenericDonorTestCard from "../GenericDonorTestCard";
 import GenericDonorRequestBar from "../GenericDonorRequestBar";
 import {connect} from "react-redux";
 import DonorProfileCardWide from "../GenericDonorProfileWide";
 import {getAllAppliedToRequestsAction, getAllRequestsAction} from "../../store/actions/bloodRequestActions";
 import {searchAllRequestsAndTestsAction} from "../../store/actions/searchActions";
+import {getLoggedInUserAction} from "../../store/actions/userActions";
 
 const ColorDebug = false;  //at true all element get colored background for checking
 
@@ -115,7 +117,7 @@ const PointsText = styled.div`
     font-size: ${rem("24px")};
     font-weight: 600;
     color: #43A047;
-    margin-right: ${rem("24px")};
+    margin-right: ${rem("8px")};
 `
 const OfferTitle = styled(SmallTitle)`
     font-size: ${rem("24px")};
@@ -144,20 +146,14 @@ const RequestContainer = styled.div`
     background-color: ${ColorDebug ? "lightslategrey" : ""};
 `
 
-
-//TEST variables
-let points = 100000;
-
-
 const DonorDashboard = ({
                             dispatch,
                             userProfileReducer: {offeredTests, requests, appliedRequests},
-                            authReducer: {
-                                userObj
-                            }
+                            authReducer: { userObj }
                         }) => {
 
-    const [active, setActive] = useState("requests");
+    // const [active, setActive] = useState("requests");
+    const [active, setActive] = useState("tests");
     const handleClick = (e) => {
         const value = e.target.id;
         dispatch(searchAllRequestsAndTestsAction("", `${value}`))
@@ -169,6 +165,7 @@ const DonorDashboard = ({
     // console.log('active', active);
     console.log("requests", requests)
     console.log("userObj", userObj)
+    console.log("offeredTests", offeredTests);
 
     const handleSearch = (event) => {
         dispatch(searchAllRequestsAndTestsAction(searchParams, active));
@@ -184,8 +181,10 @@ const DonorDashboard = ({
         // get Requests
         dispatch(getAllRequestsAction()) // This gets all requests
         dispatch(searchAllRequestsAndTestsAction("", "tests")) //This gets all offered tests
+        dispatch(getLoggedInUserAction())
 
     }, [dispatch])
+
 
     return (
         <PageContainer>
@@ -223,20 +222,19 @@ const DonorDashboard = ({
                             <>
                                 <PointsHeader>
                                     <OfferTitle>Offers</OfferTitle>
-                                    <PointsText>Your total points: {points} pts</PointsText>
+                                    <NumberFormat isNumericString={true} renderText={value => <PointsText>Your total points: {value} pts</PointsText>} value={userObj.total_points} displayType={'text'} thousandSeparator={" "} />
                                 </PointsHeader>
+
                                 <UnderLine/>
+
                                 <OfferContainer>
                                     {offeredTests ? offeredTests.map((test, index) => {
                                         return (<GenericDonorTestCard key={index} test={test}/>)
                                     }) : null}
-
-
                                 </OfferContainer>
                             </>
                             : active === "requests" ?
                                 <RequestContainer>
-                                    <div>All requests should be here</div>
                                     {requests ? requests.map((request, index) => {
                                         return (<GenericDonorRequestBar key={index} request={request}/>)
                                     }) : null}
@@ -244,14 +242,15 @@ const DonorDashboard = ({
                                 : <div>{requests ? requests.map((request, index) => {
                                     return (<GenericDonorRequestBar key={index} request={request}/>)
                                 }) : null}</div>
-
                         }
 
                     </DashboardContentContainer>
                 </LeftSide>
+
                 <RightSide>
                     {userObj ? <DonorProfileCardWide userObj={userObj}/> : null}
                 </RightSide>
+
             </PageWrapper>
         </PageContainer>
     )

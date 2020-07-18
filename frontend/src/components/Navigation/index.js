@@ -22,7 +22,6 @@ const Header = styled.div`
   top: 0;
   background-color: #FFFFFF;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-  //background: #E57373;
   padding: 0 ${rem("160px")} 0 ${rem("160px")};
   position: fixed;
   z-index: 999;
@@ -30,21 +29,6 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-
-/* -----------LOGO------------------ */
-const Bloodval = styled.span`
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  font-size: ${rem("24px")};
-  line-height: ${rem("24px")};
-  color: #262541;
-`
-
-const U = styled(Bloodval)`
-  font-size: ${rem("36px")};
-  font-weight: 600;
-  color: #D33449;
-`
 
 /* -----------BUTTONS------------------ */
 const HeaderButtonUser = styled(WhiteButton)`
@@ -70,7 +54,17 @@ const HeaderButtonLogin = styled(HeaderButtonUser)`
   }
 `
 
-// TODO delete them
+const WelcomeText = styled.div`
+  font-family: Roboto;
+  font-size: ${rem("16px")};
+  line-height: ${rem("16px")};
+  height: 100%;
+  color: #3E465F;
+  display: flex;
+  text-align: center;
+  align-items: center;
+`
+
 
 
 /* -----------FOOTER------------------ */
@@ -93,8 +87,12 @@ const NavLink = styled(Link)`
   text-decoration: none;
 `
 
-const Navigation = ({children, authReducer: {authenticated}, dispatch}) => {
+const Navigation = ({
+                        children,
+                        authReducer: {authenticated, userObj}, dispatch
+                    }) => {
     const {push} = useHistory()
+    console.log("userObj", userObj)
     const handleClickLogo = e => {
         console.log("in the click")
         push("/")
@@ -117,7 +115,10 @@ const Navigation = ({children, authReducer: {authenticated}, dispatch}) => {
                     <NavLink to={"/"}><BloodValU onClick={handleClickLogo} text="bloodval" black={24}
                                                  red={36}/></NavLink>
 
-                    {authenticated ? <> <HeaderButtonUser>Edina M.</HeaderButtonUser> <HeaderButtonUser
+                    {authenticated ? <> <WelcomeText>{userObj.is_donor ?
+                        userObj.first_name === "" ? `Welcome, ${userObj.email}` : `Welcome, ${userObj.first_name}.`
+                        : "Welcome."
+                    }</WelcomeText> <HeaderButtonUser
                         onClick={handleLogout}>Logout</HeaderButtonUser>
                     </> : <HeaderButtonUser onClick={handClickLogin}>Login</HeaderButtonUser>
 

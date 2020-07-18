@@ -5,6 +5,11 @@ import {BaseStatusButton} from "../../style/GlobalButtons/";
 import {rem} from "polished";
 import {useDispatch} from "react-redux";
 import {applyToRequestActionInAll} from "../../store/actions/bloodRequestActions";
+import acceptedIcon from "../../assets/icons/accepted.png"
+import expiredIcon from "../../assets/icons/expired.png"
+import urgentIcon from "../../assets/icons/urgent.png"
+import onProgressIcon from "../../assets/icons/on_progress.png"
+import {PointContainer} from "../GenericDonorTestCard";
 
 const BarWrapper = styled.div`
   //width: 445px;
@@ -31,6 +36,36 @@ const GreenButton = styled(BaseStatusButton)`
 const RedButton = styled(BaseStatusButton)`
   background-color: #D33449;
 `;
+
+const TextWrapper = styled.div`
+  display: flex;
+  text-align: left;
+  align-items: center;
+  width: 35%;
+  height: 100%;
+`
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25%;
+  height: 100%;
+`
+
+const IconWrapper = styled(ButtonWrapper)`
+  width: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`
+
+const BarArrowWrapper = styled(ButtonWrapper)`
+  width: 10%;
+  justify-content: flex-end;
+  height: 100%;
+`
 
 const BarArrowRight = styled.i`
   border: solid #757575;
@@ -89,13 +124,21 @@ const SeekerInfoBodyLine = styled.li`
   font-size: 13px;
 `;
 
-const TextWrapper = styled.div`
-  text-align: left;
-  width: 30%;
-  margin-right: -8%;
+const InfoIcons = styled.img`
+    width: ${rem("30px")};
+    height: ${rem("30px")};
 `
 
-// const GenericDonorRequestBar = () => {
+const RequestIsActiveSign = styled(PointContainer)`
+    width: ${rem("82px")};
+    height: ${rem("28px")};
+    font-size: ${rem("12px")};
+    border-radius: 100px;
+    border: 3px solid #71B774;
+    justify-content: center;
+`
+
+
 const GenericDonorRequestBar = ({
                                     request: {
                                         id,
@@ -111,7 +154,7 @@ const GenericDonorRequestBar = ({
                                         created,
                                         points_value,
                                         no_of_applicants,
-                                        seeker:{name, phone, email, website, street, zip_code, logo, country}
+                                        seeker: {name, phone, email, website, street, zip_code, logo, country}
 
                                     }
                                 }) => {
@@ -129,28 +172,49 @@ const GenericDonorRequestBar = ({
 
     return (
         <BarWrapper>
-            <RequestBar >
-                {/*Request 10*/}
-                <TextWrapper> Request {id}</TextWrapper>
-                {logged_in_donor_applied? <RedButton onClick={handleApply}>Cancel</RedButton>: <GreenButton onClick={handleApply}>Apply</GreenButton>}
-                <BarArrowRight onClick={showSeekerHandler}/>
+            <RequestBar>
+                <TextWrapper onClick={showSeekerHandler}> Request {id}</TextWrapper>
+
+                <IconWrapper onClick={showSeekerHandler}>{
+                    status === "CL" & logged_in_donor_applied === true & logged_in_donor_is_selected === false ?
+                        <InfoIcons src={onProgressIcon}/>
+                        : logged_in_donor_is_selected ?
+                        <InfoIcons src={acceptedIcon}/>
+                        : null}</IconWrapper>
+
+                <IconWrapper onClick={showSeekerHandler}>{is_urgent ?
+                    <InfoIcons src={urgentIcon}/> : null}</IconWrapper>
+
+                <ButtonWrapper> {logged_in_donor_applied ?
+                    is_valid ? <RedButton onClick={handleApply}>Cancel</RedButton> :
+                        <RequestIsActiveSign  onClick={showSeekerHandler}>Active</RequestIsActiveSign>
+                    : <GreenButton onClick={handleApply}>Apply</GreenButton>
+                }
+                </ButtonWrapper>
+
+                <IconWrapper onClick={showSeekerHandler}>{is_valid ? null :
+                    <InfoIcons src={expiredIcon}/>}</IconWrapper>
+
+                <BarArrowWrapper onClick={showSeekerHandler}> <BarArrowRight/> </BarArrowWrapper>
             </RequestBar>
             {showSeeker ? (
                 <>
                     <SeekerInfo name={"wrapper"}>
                         <SeekerInfoHeader>
-                            <CompanyName>MediLab Inc AG</CompanyName>
-                            <RequestPoints>7000 pts</RequestPoints>
+                            <CompanyName>{name}</CompanyName>
+                            <RequestPoints>{points_value} pts</RequestPoints>
                         </SeekerInfoHeader>
                         <SeekerInfoBodyWrapper>
                             <SeekerInfoBody>
-                                <SeekerInfoBodyLine>Phone: 079 345 7689</SeekerInfoBodyLine>
-                                <SeekerInfoBodyLine>City: Zurich</SeekerInfoBodyLine>
-                                <SeekerInfoBodyLine>Zip Code: 8005</SeekerInfoBodyLine>
+                                <SeekerInfoBodyLine>Address: {street}</SeekerInfoBodyLine>
+                                <SeekerInfoBodyLine>Phone: {phone}</SeekerInfoBodyLine>
+                                <SeekerInfoBodyLine>Requested group: {blood_group}</SeekerInfoBodyLine>
+                                <SeekerInfoBodyLine>For Covid: {is_for_covid ? "Yes" : "No"}</SeekerInfoBodyLine>
                             </SeekerInfoBody>
                             <SeekerInfoBody>
-                                <SeekerInfoBodyLine>Phone: 079 345 7689</SeekerInfoBodyLine>
-                                <SeekerInfoBodyLine>City: Zurich</SeekerInfoBodyLine>
+                                <SeekerInfoBodyLine>City: {zip_code}</SeekerInfoBodyLine>
+                                <SeekerInfoBodyLine>E-mail: {email}</SeekerInfoBodyLine>
+                                <SeekerInfoBodyLine>Valid until: {valid_until}</SeekerInfoBodyLine>
                             </SeekerInfoBody>
                         </SeekerInfoBodyWrapper>
                     </SeekerInfo>
