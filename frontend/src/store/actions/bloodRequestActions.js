@@ -1,6 +1,6 @@
 import Axios from "../../axios";
 import {
-    ADD_REQUEST_TO_LIST,
+    ADD_REQUEST_TO_LIST, REMOVE_REQUEST_FROM_LIST,
     SET_REQUESTS,
     UPDATE_REQUEST_IN_ALL_REQUESTS,
 } from "../actionTypes";
@@ -25,6 +25,13 @@ export const addRequestToAll = (request) => {
     return {
         type: ADD_REQUEST_TO_LIST,
         payload: request
+    }
+}
+
+export const removeRequest = (requestID) => {
+    return {
+        type: REMOVE_REQUEST_FROM_LIST,
+        payload: requestID
     }
 }
 
@@ -121,6 +128,28 @@ export const assignApplicantAsSelectedDonor = (requestID, donorID) => async (dis
 export const markRequestAsCompleteAction = (requestID) => async (dispatch) => {
     try {
         const response = await Axios.post(`request/complete/${requestID}/`);
+        dispatch(updateRequestInAll(response.data))
+        return response
+    } catch (error) {
+        console.log("error message", error.response);
+        return error
+    }
+}
+
+export const deleteRequestAction = (requestID) => async (dispatch) => {
+    try {
+        const response = await Axios.delete(`request/${requestID}/`);
+        dispatch(removeRequest(Number(requestID)))
+        return response
+    } catch (error) {
+        console.log("error message", error.response);
+        return error
+    }
+}
+
+export const editRequestAction = (requestID, data) => async (dispatch) => {
+    try {
+        const response = await Axios.patch(`request/${requestID}/`, data);
         dispatch(updateRequestInAll(response.data))
         return response
     } catch (error) {

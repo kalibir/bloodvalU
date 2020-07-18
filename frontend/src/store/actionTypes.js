@@ -40,3 +40,4 @@ export const BUY_TEST = 'BUY_TEST'
 // Seeker Dashboard types
 
 export const ADD_REQUEST_TO_LIST = 'ADD_REQUEST_TO_LIST'
+export const REMOVE_REQUEST_FROM_LIST = 'REMOVE_REQUEST_FROM_LIST'
