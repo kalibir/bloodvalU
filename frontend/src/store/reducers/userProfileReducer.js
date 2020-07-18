@@ -1,4 +1,5 @@
 import {
+    BUY_TEST,
     SET_REQUESTS, SET_TESTS,
     SET_USER_PROFILE_USER, UPDATE_REQUEST_IN_ALL_REQUESTS
 
@@ -29,6 +30,13 @@ export const userProfileReducer = (state = initialState, action) => {
             );
             newState.requests[index] = action.payload;
             return {...newState, requests: newState.requests}
+        }
+        case BUY_TEST: {
+            let index = newState.offeredTests.findIndex(
+                (request) => request.id === action.payload.id
+            );
+            newState.offeredTests[index] = action.payload;
+            return {...newState, offeredTests: newState.offeredTests}
         }
         default:
             return state;
