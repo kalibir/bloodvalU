@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
-import { MiddleTitle, SmallTitle } from "../../style/GlobalTitles";
-import { BigInput, Select, SmallInput } from "../../style/GlobalInputs";
-import { DarkBlueButton, WhiteButton } from "../../style/GlobalButtons";
-import { PageContainer } from "../../style/GlobalWrappers";
+import {MiddleTitle, SmallTitle} from "../../style/GlobalTitles";
+import {BigInput, Select, SmallInput} from "../../style/GlobalInputs";
+import {DarkBlueButton, WhiteButton} from "../../style/GlobalButtons";
+import {PageContainer} from "../../style/GlobalWrappers";
+import {connect} from "react-redux";
+import {resetError} from "../../store/actions/errorActions";
+import {updateProfileAction} from "../../store/actions/userActions";
+import {setLoggedInUser} from "../../store/actions/loginActions";
+import {Link, useHistory} from "react-router-dom";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -65,6 +70,7 @@ const WhiteButtonWithMargin = styled(WhiteButton)`
   margin-right: ${rem("16px")};
 `;
 
+
 const ImgInput = styled.input`
   width: 0.1px;
   height: 0.1px;
@@ -93,219 +99,244 @@ const ChooseFileButton = styled.label`
   justify-content: center;
 `;
 
-export const DonorEditProfile = (props) => {
-  //   const {
-  //     dispatch,
-  //     profileObj: {
-  //       first_name,
-  //       last_name,
-  //       email,
-  //       country,
-  //       zip_code,
-  //       street,
-  //       avatar,
-  //       blood_group,
-  //       gender,
-  //       phone,
-  //       birthday,
-  //     },
-  //   } = props;
-
-  //   const [donorInfo, setDonorInfo] = useState({
-  //     first_name: `${first_name}`,
-  //     last_name: `${last_name}`,
-  //     country: `${country}`,
-  //     zip_code: `${zip_code}`,
-  //     street: `${street}`,
-  //     avatar: null,
-  //     blood_group: `${blood_group}`,
-  //     gender: `${gender}`,
-  //     phone: `${phone}`,
-  //     birthday: `${birthday}`,
-  //     email: `${email}`,
-  //   });
-
-  const [donorInfo, setDonorInfo] = useState({
-    first_name: ``,
-    last_name: ``,
-    country: ``,
-    zip_code: ``,
-    street: ``,
-    avatar: null,
-    blood_group: ``,
-    gender: ``,
-    phone: ``,
-    birthday: ``,
-    email: ``,
-  });
-  console.log(donorInfo);
-
-  const onChangeHandler = (event, property) => {
-    const value = event.currentTarget.value;
-    setDonorInfo({ ...donorInfo, [property]: value });
-  };
-
-  const avatarSelectHandler = (e) => {
-    // dispatch(resetError());
-    if (e.target.files[0]) {
-      setDonorInfo({
-        ...donorInfo,
-        avatar: e.target.files[0],
-      });
+const ErrorMsg = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    p {
+      color: red;
+      text-align: center;
     }
-  };
+`
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // dispatch(resetError());
-    const form = new FormData();
-    form.append("first_name", donorInfo.first_name);
-    form.append("last_name", donorInfo.last_name);
-    form.append("country", donorInfo.country);
-    form.append("zip_code", donorInfo.zip_code);
-    form.append("street", donorInfo.street);
-    form.append("phone", donorInfo.phone);
-    form.append("blood_group", donorInfo.blood_group);
-    form.append("gender", donorInfo.gender);
-    form.append("birthday", donorInfo.birthday);
-    form.append("email", donorInfo.email);
-    if (donorInfo.avatar) {
-      form.append("avatar", donorInfo.avatar);
+const DonorEditProfile = ({
+                              dispatch,
+                              errorReducer: {error},
+                              authReducer: {
+                                  userObj:
+                                      {
+                                          first_name,
+                                          last_name,
+                                          email,
+                                          country,
+                                          zip_code,
+                                          street,
+                                          blood_group,
+                                          gender,
+                                          phone,
+                                          birthday,
+                                      }
+                              },
+                          }) => {
+
+    const {push} = useHistory()
+
+
+    const [donorInfo, setDonorInfo] = useState({
+        first_name: `${first_name}`,
+        last_name: `${last_name}`,
+        country: `${country}`,
+        zip_code: `${zip_code}`,
+        street: `${street}`,
+        avatar: null,
+        blood_group: `${blood_group}`,
+        gender: `${gender}`,
+        phone: `${phone}`,
+        birthday: `${birthday}`,
+        email: `${email}`,
+    });
+
+
+    const onChangeHandler = (event, property) => {
+        const value = event.currentTarget.value;
+        setDonorInfo({...donorInfo, [property]: value});
+    };
+
+    const avatarSelectHandler = (e) => {
+        dispatch(resetError());
+        if (e.target.files[0]) {
+            setDonorInfo({
+                ...donorInfo,
+                avatar: e.target.files[0],
+            });
+        }
+    };
+
+    const handleCancel = e => {
+        dispatch(resetError());
+        push("dashboard/donor")
     }
 
-    // const response = await dispatch(updateUserAction(form));
-    // if (response.status === 200) {
-    //   dispatch(setUserProfileObj(response.data));
-    // }
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        dispatch(resetError());
+        const form = new FormData();
+        form.append("first_name", donorInfo.first_name);
+        form.append("last_name", donorInfo.last_name);
+        form.append("country", donorInfo.country);
+        form.append("zip_code", donorInfo.zip_code);
+        form.append("street", donorInfo.street);
+        form.append("phone", donorInfo.phone);
+        form.append("blood_group", donorInfo.blood_group);
+        form.append("gender", donorInfo.gender);
+        form.append("birthday", donorInfo.birthday);
+        form.append("email", donorInfo.email);
+        if (donorInfo.avatar) {
+            form.append("avatar", donorInfo.avatar);
+        }
+        const response = await dispatch(updateProfileAction(form));
+        if (response.status < 300) {
+            dispatch(setLoggedInUser(response.data));
+            push("dashboard/donor")
+        }
+    };
 
-  return (
-    <PageContainer>
-      <FormWrapper onSubmit={handleSubmit}>
-        <FormContainer>
-          <TitleContainer>
-            <MiddleTitle500>Edit Profile</MiddleTitle500>
-          </TitleContainer>
+    return (
+        <PageContainer>
+            <FormWrapper onSubmit={handleSubmit}>
+                <FormContainer>
+                    <TitleContainer>
+                        <MiddleTitle500>Edit Profile</MiddleTitle500>
+                    </TitleContainer>
 
-          <InputPairContainer>
-            <div>
-              <InputTitle>First Name</InputTitle>
-              <SmallInput
-                type="text"
-                placeholder="Sherlock"
-                onChange={(e) => onChangeHandler(e, "first_name")}
-                required
-              />
-            </div>
+                    <InputPairContainer>
+                        <div>
+                            <InputTitle>First Name</InputTitle>
+                            <SmallInput
+                                type="text"
+                                placeholder="Sherlock"
+                                onChange={(e) => onChangeHandler(e, "first_name")}
+                                defaultValue={first_name}
+                                required
+                            />
+                        </div>
 
-            <div>
-              <InputTitle>Last Name</InputTitle>
-              <SmallInput
-                type="text"
-                placeholder="Holmes"
-                onChange={(e) => onChangeHandler(e, "last_name")}
-                required
-              />
-            </div>
-          </InputPairContainer>
+                        <div>
+                            <InputTitle>Last Name</InputTitle>
+                            <SmallInput
+                                type="text"
+                                placeholder="Holmes"
+                                onChange={(e) => onChangeHandler(e, "last_name")}
+                                defaultValue={first_name}
+                                required
+                            />
+                        </div>
+                    </InputPairContainer>
 
-          <InputPairContainer>
-            <div>
-              <InputTitle>Gender</InputTitle>
-              <Select onChange={(e) => onChangeHandler(e, "gender")} required>
-                <option value="male">male</option>
-                <option value="female">female</option>
-                <option value="other">other</option>
-              </Select>
-            </div>
+                    <InputPairContainer>
+                        <div>
+                            <InputTitle>Gender</InputTitle>
+                            <Select defaultValue={gender} onChange={(e) => onChangeHandler(e, "gender")} required>
+                                <option value="M">male</option>
+                                <option value="F">female</option>
+                                <option value="O">other</option>
+                            </Select>
+                        </div>
 
-            <div>
-              <InputTitle>Birthday</InputTitle>
-              <SmallInput
-                type="date"
-                value="1854-01-06"
-                onChange={(e) => onChangeHandler(e, "birthday")}
-                required
-              />
-            </div>
-          </InputPairContainer>
+                        <div>
+                            <InputTitle>Birthday</InputTitle>
+                            <SmallInput
+                                type="date"
+                                onChange={(e) => onChangeHandler(e, "birthday")}
+                                defaultValue={birthday}
+                                required
+                            />
+                        </div>
+                    </InputPairContainer>
 
-          <InputPairContainer>
-            <div>
-              <InputTitle>Blood Group</InputTitle>
-              <Select onChange={(e) => onChangeHandler(e, "blood_group")} required>
-                <option value="O-">O-</option>
-                <option value="O+">O+</option>
-                <option value="A-">A-</option>
-                <option value="A+">A+</option>
-                <option value="B-">B-</option>
-                <option value="B+">B+</option>
-                <option value="AB-">AB-</option>
-                <option value="AB+">AB+</option>
-              </Select>
-            </div>
+                    <InputPairContainer>
+                        <div>
+                            <InputTitle>Blood Group</InputTitle>
+                            <Select defaultValue={blood_group} onChange={(e) => onChangeHandler(e, "blood_group")}
+                                    required>
+                                <option value="O-">O-</option>
+                                <option value="O+">O+</option>
+                                <option value="A-">A-</option>
+                                <option value="A+">A+</option>
+                                <option value="B-">B-</option>
+                                <option value="B+">B+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="AB+">AB+</option>
+                            </Select>
+                        </div>
 
-            <div>
-              <InputTitle>Phone Number</InputTitle>
-              <SmallInput
-                type="text"
-                placeholder="+44 20 7224 3688"
-                onChange={(e) => onChangeHandler(e, "phone_number")}
-                required
-              />
-            </div>
-          </InputPairContainer>
+                        <div>
+                            <InputTitle>Phone Number</InputTitle>
+                            <SmallInput
+                                type="text"
+                                placeholder="+44 20 7224 3688"
+                                onChange={(e) => onChangeHandler(e, "phone")}
+                                defaultValue={phone}
+                                required
+                            />
+                        </div>
+                    </InputPairContainer>
 
-          <InputPairContainer>
-            <FullWidthInputContainer>
-              <InputTitle>Address</InputTitle>
-              <AddressInput
-                type="text"
-                placeholder="Baker Street"
-                onChange={(e) => onChangeHandler(e, "street")}
-                required
-              />
-            </FullWidthInputContainer>
-          </InputPairContainer>
+                    <InputPairContainer>
+                        <FullWidthInputContainer>
+                            <InputTitle>Address</InputTitle>
+                            <AddressInput
+                                type="text"
+                                placeholder="Baker Street"
+                                onChange={(e) => onChangeHandler(e, "street")}
+                                defaultValue={street}
+                                required
+                            />
+                        </FullWidthInputContainer>
+                    </InputPairContainer>
 
-          <InputPairContainer>
-            <div>
-              <InputTitle>Zip code</InputTitle>
-              <SmallInput
-                type="text"
-                placeholder="NW1 London"
-                onChange={(e) => onChangeHandler(e, "zip")}
-                required
-              />
-            </div>
+                    <InputPairContainer>
+                        <div>
+                            <InputTitle>Zip code</InputTitle>
+                            <SmallInput
+                                type="text"
+                                placeholder="NW1 London"
+                                onChange={(e) => onChangeHandler(e, "zip_code")}
+                                defaultValue={zip_code}
+                                required
+                            />
+                        </div>
 
-            <div>
-              <InputTitle>Country</InputTitle>
-              <SmallInput
-                type="text"
-                placeholder="England"
-                onChange={(e) => onChangeHandler(e, "country")}
-                required
-              />
-            </div>
-          </InputPairContainer>
-          <ImgInput
-            onChange={avatarSelectHandler}
-            type="file"
-            name="file"
-            id="file"
-            className="inputfile"
-          />
-          <ChooseFileButton className="file_btn" htmlFor="file">
-            CHOOSE YOUR PROFILE PICTURE
-          </ChooseFileButton>
+                        <div>
+                            <InputTitle>Country</InputTitle>
+                            <SmallInput
+                                type="text"
+                                placeholder="England"
+                                onChange={(e) => onChangeHandler(e, "country")}
+                                defaultValue={country}
+                                required
+                            />
+                        </div>
+                    </InputPairContainer>
+                    <ErrorMsg>
+                        <p>{error === "avatar" ? "The uploaded file is not an image." : null}</p>
+                    </ErrorMsg>
+                    <ImgInput
+                        onChange={avatarSelectHandler}
+                        type="file"
+                        name="file"
+                        id="file"
+                        className="inputfile"
+                    />
+                    <ChooseFileButton className="file_btn" htmlFor="file">
+                        {donorInfo.avatar ? "FILE UPLOADED" : "CHOOSE YOUR PROFILE PICTURE"}
+                    </ChooseFileButton>
 
-          <ButtonContainer>
-            <WhiteButtonWithMargin>Cancel</WhiteButtonWithMargin>
-            <DarkBlueButton>Save</DarkBlueButton>
-          </ButtonContainer>
-        </FormContainer>
-      </FormWrapper>
-    </PageContainer>
-  );
+                    <ButtonContainer>
+                        <WhiteButtonWithMargin onClick={handleCancel}>Cancel</WhiteButtonWithMargin>
+                        <DarkBlueButton>Save</DarkBlueButton>
+                    </ButtonContainer>
+                </FormContainer>
+            </FormWrapper>
+        </PageContainer>
+    );
 };
+
+const mapStateToProps = (state) => {
+    return {
+        authReducer: state.authReducer,
+        errorReducer: state.errorReducer,
+    };
+};
+
+export default connect(mapStateToProps)(DonorEditProfile);

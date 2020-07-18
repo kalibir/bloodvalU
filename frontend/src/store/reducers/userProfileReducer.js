@@ -15,7 +15,6 @@ const initialState = {
 
 export const userProfileReducer = (state = initialState, action) => {
     const newState = {...state};
-    console.log("payload data", action.payload)
     switch (action.type) {
         case SET_USER_PROFILE_USER: {
             return {...newState, userObj: action.payload};

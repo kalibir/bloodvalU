@@ -96,6 +96,7 @@ const RequestModal = ({closeModal}) => {
         is_renewable: false,
         valid_until: ""
     })
+    console.log("req data", requestData)
 
     const onChangeHandler = (event, property) => {
         const value = event.currentTarget.value;
