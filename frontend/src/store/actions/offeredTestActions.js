@@ -15,18 +15,34 @@ export const updateTestInAll = (request) => {
         type: BUY_TEST,
         payload: request
     }
-}
+};
 
 export const buyTestAction = (request_id) => async (dispatch) => {
     try {
         const response = await Axios.post(`tests/buy/${request_id}/`);
-        const {data} = response
-        console.log("Buy test response", data)
-        dispatch(updateTestInAll(data))
-        return response
+        const {data} = response;
+        console.log("Buy test response", data);
+        dispatch(updateTestInAll(data));
+        return response;
     } catch (error) {
         console.log("error message", error.response);
         console.log("error", error)
         return error
     }
 }
+
+
+export const getRequestsOfSeekerAction = () => async (dispatch) => {
+  try {
+    const response = await Axios.get(`seeker/tests/me/`);
+    const { data } = response;
+    console.log("data", data);
+    dispatch(setAllTests(data));
+    console.log("in the action");
+    return response;
+  } catch (error) {
+    console.log("error message", error.response);
+    console.log("error", error);
+    return error;
+  }
+};

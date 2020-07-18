@@ -1,8 +1,10 @@
 import React from "react";
-import { useState } from "react";
-import styled from "styled-components";
+import {useState} from "react";
+import styled, { keyframes } from "styled-components";
 import {BaseStatusButton, CompleteButton} from "../../style/GlobalButtons/";
-import { rem } from "polished";
+import {rem} from "polished";
+import {useDispatch} from "react-redux";
+import {getApplicantsOfRequestAction, markRequestAsCompleteAction} from "../../store/actions/bloodRequestActions";
 
 const BarWrapper = styled.div`
   width: 100%;
@@ -17,12 +19,22 @@ const RequestBar = styled.div`
   justify-content: space-between;
   padding-left: 23px;
   padding-right: 27px;
-  cursor: pointer;
 `;
 
 const BlueButton = styled(BaseStatusButton)`
   background-color: #2196f3;
 `;
+
+const ArrowWrapper = styled.div`
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+`
+
+const EmptyArrowWrapper = styled.div`
+  width: 20px;
+  height: 20px;
+`
 
 const BarArrowRight = styled.i`
   border: solid #757575;
@@ -45,7 +57,17 @@ export const DonorSubBar = styled.div`
   padding-right: 27px;
   cursor: pointer;
   color: white;
+  
 `;
+
+const SlidingContainer = styled.div`
+  @keyframes breath-animation {
+ 0% { height: 100px; width: 100px; }
+ 30% { height: 400px; width: 400px; opacity: 1 }
+ 40% { height: 405px; width: 405px; opacity: 0.3; }
+ 100% { height: 100px; width: 100px; opacity: 0.6; }
+}
+`
 
 const DonorSelectedBar = styled(DonorSubBar)`
     background: #43A047;
@@ -55,50 +77,69 @@ const DonorNotSelected = styled(DonorSubBar)`
     background: #C6C6C6;
 `;
 
-const GenericSeekerRequestBar = (props) => {
-    console.log("status", props.status)
-  const [showDonor, setDonorBar] = useState(false);
+const GenericSeekerRequestBar = ({
+                                     handleSetActiveRequest,
+                                     handleSetActiveProfile,
+                                     request
+                                 }) => {
+    const dispatch = useDispatch()
 
-  const showDonorHandler = (event) => {
-    setDonorBar(!showDonor);
-  };
+    const [applicantsData, setApplicantsData] = useState({
+        showApplicants: false,
+        applicants: null,
+    })
 
-  let selected_donor_id = 1
-    let donorObj_id = 2
+    const handleRenderApplicants = async (e) => {
+        const response = await dispatch(getApplicantsOfRequestAction(request.id))
+        handleSetActiveRequest(request)
+        setApplicantsData({
+            ...applicantsData,
+            applicants: response.data,
+            showApplicants: !applicantsData.showApplicants
+        })
+    }
+
+    const handleClickApplicant = e => {
+        const index = Number(e.currentTarget.id)
+        const targetProfile = applicantsData.applicants[index]
+        handleSetActiveProfile(targetProfile)
+        // handleSetActiveRequest(request)
+    }
+
+    const handleCompleteRequest = e => {
+        dispatch(markRequestAsCompleteAction(request.id))
+    }
+
+    console.log("the status of the request in the request CARD", request.status)
 
 
-  // const [status, setStatus] = useState("OP");
-  //
-  //   const handleSelectButton = (e) => {
-  //       setStatus("CL")
-  //   }
-  //
-  //   const handleUnSelectButton = (e) => {
-  //       setStatus("OP")
-  //   }
+    return (
+        <BarWrapper>
+            <RequestBar>
+                Request {request.id}
+                {request.status === "OP"
+                    ? <BlueButton>Open</BlueButton>
+                    : request.status === "CL"
+                        ? <CompleteButton onClick={handleCompleteRequest}>Complete request</CompleteButton>
+                        : <CompleteButton>Complete</CompleteButton>}
+                {request.no_of_applicants ?
+                    <ArrowWrapper onClick={handleRenderApplicants}><BarArrowRight/></ArrowWrapper> :
+                    <EmptyArrowWrapper/>}
+            </RequestBar>
 
-  return (
-    <BarWrapper>
-      <RequestBar onClick={showDonorHandler}>
-        Request 10
-          {props.status === "OP"
-          ? <BlueButton>Open</BlueButton>
-          : props.status === "CL"
-              ? <CompleteButton onClick={props.func}>Complete request</CompleteButton>
-          : <CompleteButton>Complete</CompleteButton>}
-        <BarArrowRight></BarArrowRight>
-      </RequestBar>
-      {showDonor ? (
-        <>
-            {props.status === "OP"
-            ? <DonorSubBar active={false}>donorObj.name</DonorSubBar>
-            : props.status === "CL" && selected_donor_id === donorObj_id
-                ? <DonorSelectedBar>donorObj.name</DonorSelectedBar>
-            : <DonorNotSelected>donorObj.name</DonorNotSelected>}
-        </>
-      ) : null}
-    </BarWrapper>
-  );
+            {applicantsData.showApplicants ? applicantsData.applicants.map((applicant, index) => {
+                    if(request.selected_donor) {
+                        if(request.selected_donor.id === applicant.id) {
+                            return (<DonorSelectedBar onClick={handleClickApplicant} key={index} id={index}
+                                                           active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSelectedBar>)
+                        }
+                    }
+                    return (<DonorSubBar onClick={request.status === "COM" ? null : handleClickApplicant} key={index} id={index}
+                                                           active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSubBar>)
+                })
+                : null}
+        </BarWrapper>
+    );
 };
 
 export default GenericSeekerRequestBar;

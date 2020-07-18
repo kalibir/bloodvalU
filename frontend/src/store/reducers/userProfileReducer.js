@@ -1,5 +1,6 @@
 import {
     BUY_TEST,
+    ADD_REQUEST_TO_LIST,
     SET_REQUESTS, SET_TESTS,
     SET_USER_PROFILE_USER, UPDATE_REQUEST_IN_ALL_REQUESTS
 
@@ -14,6 +15,7 @@ const initialState = {
 
 export const userProfileReducer = (state = initialState, action) => {
     const newState = {...state};
+    console.log("payload data", action.payload)
     switch (action.type) {
         case SET_USER_PROFILE_USER: {
             return {...newState, userObj: action.payload};
@@ -23,6 +25,10 @@ export const userProfileReducer = (state = initialState, action) => {
         }
         case SET_TESTS: {
             return {...newState, offeredTests: action.payload};
+        }
+        case ADD_REQUEST_TO_LIST: {
+            if (newState.requests) return {...newState, requests: [action.payload,...newState.requests]};
+            else return {...newState, requests: [action.payload]};
         }
         case UPDATE_REQUEST_IN_ALL_REQUESTS: {
             let index = newState.requests.findIndex(

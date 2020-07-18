@@ -37,3 +37,6 @@ export const UPDATE_REQUEST_IN_ALL_REQUESTS = 'UPDATE_REQUEST_IN_ALL_REQUESTS'
 export const BUY_TEST = 'BUY_TEST'
 
 
+// Seeker Dashboard types
+
+export const ADD_REQUEST_TO_LIST = 'ADD_REQUEST_TO_LIST'
