@@ -2,6 +2,9 @@ import React from "react";
 import { rem } from "polished";
 import styled from "styled-components";
 import profilePic from "../../assets/images/default-profile-pic.jpg";
+import { connect } from "react-redux";
+import { useEffect } from "react";
+import { getLoggedInUserAction } from "../../store/actions/userActions";
 
 const ProfileWrapper = styled.div`
   width: ${rem("544px")};
@@ -104,35 +107,50 @@ const AddressTitle = styled(DetailTitle)`
   margin-bottom: ${rem("88px")};
 `;
 
-const SeekerProfileCard = (props) => {
+const SeekerProfileCard = ({ authReducer: { userObj }, dispatch }) => {
+  useEffect(() => {
+    dispatch(getLoggedInUserAction());
+  }, [dispatch]);
   return (
-    <ProfileWrapper>
-      <UpperContainer>
-        <ProfilePicPlaceholder>
-          <img src={profilePic} alt={"avatar"} />
-        </ProfilePicPlaceholder>
-        <NameContainer>Company</NameContainer>
-        <CityContainer>City, Country</CityContainer>
-      </UpperContainer>
-      <BottomContainer>
-        <DetailTitlesContainer>
-          <AddressTitle>Address:</AddressTitle>
-          <DetailTitle>Website:</DetailTitle>
-          <DetailTitle>Phone:</DetailTitle>
-          <DetailTitle>Email:</DetailTitle>
-        </DetailTitlesContainer>
-        <DetailsContainer>
-          <Details>
-            Technoparkstrasse 1<br /> 8999 Zürich
-            <br /> Schweiz
-          </Details>
-          <Details>www.example.com</Details>
-          <Details>0781111111</Details>
-          <Details>example@email.com</Details>
-        </DetailsContainer>
-      </BottomContainer>
-    </ProfileWrapper>
+    <>
+      {userObj ? (
+        <ProfileWrapper>
+          <UpperContainer>
+            <ProfilePicPlaceholder>
+              <img src={userObj.logo} alt={"logo"} />
+            </ProfilePicPlaceholder>
+            <NameContainer>{userObj.name}</NameContainer>
+            <CityContainer> {userObj.country}</CityContainer>
+          </UpperContainer>
+          <BottomContainer>
+            <DetailTitlesContainer>
+              <AddressTitle>Address:</AddressTitle>
+              <DetailTitle>Website:</DetailTitle>
+              <DetailTitle>Phone:</DetailTitle>
+              <DetailTitle>Email:</DetailTitle>
+            </DetailTitlesContainer>
+            <DetailsContainer>
+              <Details>
+                {userObj.street}
+                <br />
+                <br /> {userObj.country}
+              </Details>
+              <Details>{userObj.website}</Details>
+              <Details>{userObj.phone}</Details>
+              <Details>{userObj.email}</Details>
+            </DetailsContainer>
+          </BottomContainer>
+        </ProfileWrapper>
+      ) : null}
+    </>
   );
 };
 
-export default SeekerProfileCard;
+const mapStateToProps = (state) => {
+  console.log("state", state);
+  return {
+    authReducer: state.authReducer,
+  };
+};
+
+export default connect(mapStateToProps)(SeekerProfileCard);
