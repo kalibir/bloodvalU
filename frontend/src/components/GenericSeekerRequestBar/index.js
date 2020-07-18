@@ -1,6 +1,6 @@
 import React from "react";
 import {useState} from "react";
-import styled, { keyframes } from "styled-components";
+import styled, {keyframes} from "styled-components";
 import {BaseStatusButton, CompleteButton} from "../../style/GlobalButtons/";
 import {rem} from "polished";
 import {useDispatch} from "react-redux";
@@ -24,6 +24,21 @@ const RequestBar = styled.div`
 const BlueButton = styled(BaseStatusButton)`
   background-color: #2196f3;
 `;
+
+const IconButton = styled.button`
+  border: 1px solid black;
+  padding: 3px;
+  width: 30px;
+  background-color: black;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  
+  :hover {
+    background-color: white;
+    color: black;
+  }
+`
 
 const ArrowWrapper = styled.div`
   width: 20px;
@@ -78,6 +93,8 @@ const DonorNotSelected = styled(DonorSubBar)`
 `;
 
 const GenericSeekerRequestBar = ({
+                                     handleShowEditModal,
+                                     handleDeleteRequest,
                                      handleSetActiveRequest,
                                      handleSetActiveProfile,
                                      request
@@ -110,9 +127,6 @@ const GenericSeekerRequestBar = ({
         dispatch(markRequestAsCompleteAction(request.id))
     }
 
-    console.log("the status of the request in the request CARD", request.status)
-
-
     return (
         <BarWrapper>
             <RequestBar>
@@ -122,20 +136,23 @@ const GenericSeekerRequestBar = ({
                     : request.status === "CL"
                         ? <CompleteButton onClick={handleCompleteRequest}>Complete request</CompleteButton>
                         : <CompleteButton>Complete</CompleteButton>}
+                <IconButton onClick={e => handleDeleteRequest(e, request.id)}>&#10006;</IconButton>
+                <IconButton onClick={e => handleShowEditModal(e, request)}>&#9998;</IconButton>
                 {request.no_of_applicants ?
                     <ArrowWrapper onClick={handleRenderApplicants}><BarArrowRight/></ArrowWrapper> :
                     <EmptyArrowWrapper/>}
             </RequestBar>
 
             {applicantsData.showApplicants ? applicantsData.applicants.map((applicant, index) => {
-                    if(request.selected_donor) {
-                        if(request.selected_donor.id === applicant.id) {
+                    if (request.selected_donor) {
+                        if (request.selected_donor.id === applicant.id) {
                             return (<DonorSelectedBar onClick={handleClickApplicant} key={index} id={index}
-                                                           active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSelectedBar>)
+                                                      active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSelectedBar>)
                         }
                     }
-                    return (<DonorSubBar onClick={request.status === "COM" ? null : handleClickApplicant} key={index} id={index}
-                                                           active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSubBar>)
+                    return (
+                        <DonorSubBar onClick={request.status === "COM" ? null : handleClickApplicant} key={index} id={index}
+                                     active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSubBar>)
                 })
                 : null}
         </BarWrapper>

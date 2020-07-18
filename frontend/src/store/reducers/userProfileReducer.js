@@ -2,7 +2,7 @@ import {
     BUY_TEST,
     ADD_REQUEST_TO_LIST,
     SET_REQUESTS, SET_TESTS,
-    SET_USER_PROFILE_USER, UPDATE_REQUEST_IN_ALL_REQUESTS
+    SET_USER_PROFILE_USER, UPDATE_REQUEST_IN_ALL_REQUESTS, REMOVE_REQUEST_FROM_LIST
 
 } from "../actionTypes";
 
@@ -26,10 +26,11 @@ export const userProfileReducer = (state = initialState, action) => {
             return {...newState, offeredTests: action.payload};
         }
         case ADD_REQUEST_TO_LIST: {
-            if (newState.requests) return {...newState, requests: [action.payload,...newState.requests]};
+            if (newState.requests) return {...newState, requests: [action.payload, ...newState.requests]};
             else return {...newState, requests: [action.payload]};
         }
         case UPDATE_REQUEST_IN_ALL_REQUESTS: {
+            console.log("in da reducer", action.payload)
             let index = newState.requests.findIndex(
                 (request) => request.id === action.payload.id
             );
@@ -42,6 +43,12 @@ export const userProfileReducer = (state = initialState, action) => {
             );
             newState.offeredTests[index] = action.payload;
             return {...newState, offeredTests: newState.offeredTests}
+        }
+        case REMOVE_REQUEST_FROM_LIST: {
+            const newRequests = newState.requests.filter(
+                request => request.id !== action.payload
+            );
+            return {...newState, requests: newRequests};
         }
         default:
             return state;
