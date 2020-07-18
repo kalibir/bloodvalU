@@ -4,7 +4,7 @@ import styled, { keyframes } from "styled-components";
 import {BaseStatusButton, CompleteButton} from "../../style/GlobalButtons/";
 import {rem} from "polished";
 import {useDispatch} from "react-redux";
-import {getApplicantsOfRequestAction} from "../../store/actions/bloodRequestActions";
+import {getApplicantsOfRequestAction, markRequestAsCompleteAction} from "../../store/actions/bloodRequestActions";
 
 const BarWrapper = styled.div`
   width: 100%;
@@ -106,6 +106,10 @@ const GenericSeekerRequestBar = ({
         // handleSetActiveRequest(request)
     }
 
+    const handleCompleteRequest = e => {
+        dispatch(markRequestAsCompleteAction(request.id))
+    }
+
     console.log("the status of the request in the request CARD", request.status)
 
 
@@ -116,7 +120,7 @@ const GenericSeekerRequestBar = ({
                 {request.status === "OP"
                     ? <BlueButton>Open</BlueButton>
                     : request.status === "CL"
-                        ? <CompleteButton>Complete request</CompleteButton>
+                        ? <CompleteButton onClick={handleCompleteRequest}>Complete request</CompleteButton>
                         : <CompleteButton>Complete</CompleteButton>}
                 {request.no_of_applicants ?
                     <ArrowWrapper onClick={handleRenderApplicants}><BarArrowRight/></ArrowWrapper> :
@@ -130,7 +134,7 @@ const GenericSeekerRequestBar = ({
                                                            active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSelectedBar>)
                         }
                     }
-                    return (<DonorSubBar onClick={handleClickApplicant} key={index} id={index}
+                    return (<DonorSubBar onClick={request.status === "COM" ? null : handleClickApplicant} key={index} id={index}
                                                            active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSubBar>)
                 })
                 : null}

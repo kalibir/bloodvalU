@@ -6,7 +6,11 @@ import GenericSeekerRequestBar from "../GenericSeekerRequestBar";
 import {DarkBlueButton} from "../../style/GlobalButtons";
 import RequestModal from "../RequestModal";
 import {connect} from "react-redux";
-import {assignApplicantAsSelectedDonor, getSeekerBloodRequestsAction} from "../../store/actions/bloodRequestActions";
+import {
+    assignApplicantAsSelectedDonor,
+    getSeekerBloodRequestsAction,
+    updateRequestInAll
+} from "../../store/actions/bloodRequestActions";
 import ActiveProfileCard from "./ActiveProfileCard";
 
 const PageWrapper = styled.div`

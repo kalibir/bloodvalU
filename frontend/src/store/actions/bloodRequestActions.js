@@ -110,7 +110,18 @@ export const getApplicantsOfRequestAction = (requestID) => async (dispatch) => {
 export const assignApplicantAsSelectedDonor = (requestID, donorID) => async (dispatch) => {
     try {
         const response = await Axios.post(`request/${requestID}/assign/${donorID}/`);
-        updateRequestInAll(response.data)
+        dispatch(updateRequestInAll(response.data))
+        return response
+    } catch (error) {
+        console.log("error message", error.response);
+        return error
+    }
+}
+
+export const markRequestAsCompleteAction = (requestID) => async (dispatch) => {
+    try {
+        const response = await Axios.post(`request/complete/${requestID}/`);
+        dispatch(updateRequestInAll(response.data))
         return response
     } catch (error) {
         console.log("error message", error.response);

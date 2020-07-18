@@ -194,7 +194,7 @@ const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant}
                                 <SelectButton onClick={handleSelectApplicant}> {/*needs a onclick*/}
                                     <PlusSignButton/>+ Select Donor
                                 </SelectButton>
-                            ) : activeProfile ? activeRequest.selected_donor.id === activeProfile.id ? (
+                            ) : activeProfile ? activeRequest.selected_donor.id === activeProfile.id && activeRequest.status !== "COM" ? (
                                 <CancelButton onClick={handleSelectApplicant}>
                                     <MinusSignButton/>X Cancel Select
                                 </CancelButton>
