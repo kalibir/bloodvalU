@@ -12,6 +12,7 @@ import {
     updateRequestInAll
 } from "../../store/actions/bloodRequestActions";
 import ActiveProfileCard from "./ActiveProfileCard";
+import {searchAllRequestsAndTestsAction} from "../../store/actions/searchActions";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -115,12 +116,13 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
     }
 
     useEffect(() => {
-        dispatch(getSeekerBloodRequestsAction())
+        dispatch(getSeekerBloodRequestsAction("OP"))
     }, [dispatch])
 
     const handleClick = (e) => {
         const value = e.target.id;
         setActive(value);
+        dispatch(getSeekerBloodRequestsAction(value))
     };
 
 
@@ -147,13 +149,14 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
                                 Closed
                             </SideButton>
                         </MenuContainer>
-                        <Requests>{requests ? requests.map((request, index) => {
-                            return (<GenericSeekerRequestBar handleSetActiveRequest={handleSetActiveRequest}
-                                                             handleSetActiveProfile={handleSetActiveProfile} key={index}
-                                                             request={request}/>)
-                        }) : null}</Requests>
-
-
+                        <Requests>
+                            {requests ? requests.map((request, index) => {
+                                return (<GenericSeekerRequestBar handleSetActiveRequest={handleSetActiveRequest}
+                                                                 handleSetActiveProfile={handleSetActiveProfile}
+                                                                 key={index}
+                                                                 request={request}/>)
+                            }) : null}
+                        </Requests>
                     </DashboardContentContainer>
                     <NewRequestButton onClick={() => setModalActive(true)}>
                         <PlusSignButton/>+ Create Request

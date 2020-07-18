@@ -82,9 +82,9 @@ export const applyToRequestActionInAll = (request_id) => async (dispatch) => {
     }
 }
 
-export const getSeekerBloodRequestsAction = () => async (dispatch) => {
+export const getSeekerBloodRequestsAction = (status) => async (dispatch) => {
     try {
-        const response = await Axios.get(`seeker/search/?request_status=`);
+        const response = await Axios.get(`seeker/search/?request_status=${status}`);
         const {data} = response
         dispatch(setAllRequests(data))
         return response
