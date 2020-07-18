@@ -4,10 +4,11 @@ import rem from "polished/lib/helpers/rem";
 import {connect, useDispatch} from "react-redux";
 import {PageContainer} from "../../../style/GlobalWrappers";
 import {BigInput, SmallInput} from "../../../style/GlobalInputs";
-import {MiddleTitle, SmallTitle} from "../../../style/GlobalTitles";
+import {ErrorPlaceholder, MiddleTitle, SmallTitle} from "../../../style/GlobalTitles";
 import {DarkBlueButton} from "../../../style/GlobalButtons";
 import {sendLoginAction} from "../../../store/actions/loginActions";
 import {useHistory} from "react-router";
+import {resetError} from "../../../store/actions/errorActions";
 
 const PageWrapper = styled(PageContainer)`
     height: 78.2vh;
@@ -50,8 +51,11 @@ const ButtonWrapper = styled.div`
     height: ${rem("97px")};
 `
 
+const Error = styled(ErrorPlaceholder)`
+`
 
-const Login = (props) => {
+
+const Login = ({errorReducer: {error}}) => {
     // const {authReducer} = props;
     // console.log("authReducer", authReducer);
     const {push} = useHistory();
@@ -80,6 +84,7 @@ const Login = (props) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        dispatch(resetError())
         console.log("in the submit");
         const response = await dispatch(sendLoginAction(loginInfo));
         if (response.status < 300) {
@@ -94,6 +99,7 @@ const Login = (props) => {
         <PageWrapper>
             <FormWrapper onSubmit={handleSubmit}>
                 <RegistrationTitle>Login</RegistrationTitle>
+                {error ? <Error><p>{error}</p></Error> : null}
                 <SmallTitle>Email</SmallTitle>
                 <EmailInput onChange={handleEmail} placeholder="example@email.com" type="email" required/>
                 <SmallTitle>Password</SmallTitle>
@@ -114,6 +120,7 @@ const mapStateToProps = (state) => {
     console.log("state", state);
     return {
         authReducer: state.authReducer,
+        errorReducer: state.errorReducer,
     };
 };
 

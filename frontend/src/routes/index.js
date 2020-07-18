@@ -10,6 +10,7 @@ import { DonorEditProfile } from "../components/DonorEditProfile";
 import DonorDashboard from "../components/DonorDashboard";
 import SeekerDashboard from "../components/SeekerRequestPage";
 import CreateDonorProfile from "../components/Credentials/CreateSeekerProfile/";
+import authComponent from '../HOCs/AuthComponent'
 
 const Routes = () => {
   return (
@@ -23,7 +24,7 @@ const Routes = () => {
             <Route path="/dashboard/seeker" component={SeekerDashboard} />
             <Route path="/offered-tests" component={DonorDashboard} />
             <Route path="/templates" component={Template} />
-            <Route exact path="/" component={LandingPage} />
+            <Route exact path="/" component={authComponent(LandingPage)} />
             <Route path="/auth" component={Credentials} />
             {/* <Route path="/donorbartest" component={GenericDonorRequestBar} /> */}
             {/*<Route path="/auth" component={Credentials} />*/}

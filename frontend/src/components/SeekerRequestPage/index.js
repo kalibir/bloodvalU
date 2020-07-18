@@ -75,6 +75,11 @@ const DashboardContentContainer = styled.div`
     margin-bottom: ${rem("32px")};
 `;
 
+const Requests = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const PlusSignButton = styled.span`
   color: #ffffff;
@@ -89,7 +94,7 @@ const NewRequestButton = styled(DarkBlueButton)`
 
 const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
 
-    const [active, setActive] = useState("Open");
+    const [active, setActive] = useState("OP");
     const [activeProfile, setActiveProfile] = useState(null);
     const [activeRequest, setActiveRequest] = useState(null);
     const [modalActive, setModalActive] = useState(false);
@@ -132,21 +137,23 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
                 <LeftSide>
                     <DashboardContentContainer>
                         <MenuContainer>
-                            <SideButton id="Open" onClick={handleClick} active={active === "Open"}>
+                            <SideButton id="OP" onClick={handleClick} active={active === "OP"}>
                                 Open
                             </SideButton>
-                            <MiddleButton id="Complete" onClick={handleClick} active={active === "Complete"}>
+                            <MiddleButton id="COM" onClick={handleClick} active={active === "COM"}>
                                 Complete
                             </MiddleButton>
-                            <SideButton id="Closed" onClick={handleClick} active={active === "Closed"}>
+                            <SideButton id="CL" onClick={handleClick} active={active === "CL"}>
                                 Closed
                             </SideButton>
                         </MenuContainer>
-                        {requests ? requests.map((request, index) => {
+                        <Requests>{requests ? requests.map((request, index) => {
                             return (<GenericSeekerRequestBar handleSetActiveRequest={handleSetActiveRequest}
                                                              handleSetActiveProfile={handleSetActiveProfile} key={index}
                                                              request={request}/>)
-                        }) : null}
+                        }) : null}</Requests>
+
+
                     </DashboardContentContainer>
                     <NewRequestButton onClick={() => setModalActive(true)}>
                         <PlusSignButton/>+ Create Request
