@@ -115,9 +115,9 @@ const Navigation = ({
                     <NavLink to={"/"}><BloodValU onClick={handleClickLogo} text="bloodval" black={24}
                                                  red={36}/></NavLink>
 
-                    {authenticated ? <> <WelcomeText>{userObj.is_donor ?
+                    {authenticated ? <> <WelcomeText>{userObj ? userObj.is_donor ?
                         userObj.first_name === "" ? `Welcome, ${userObj.email}` : `Welcome, ${userObj.first_name}.`
-                        : "Welcome."
+                        : "Welcome.": null
                     }</WelcomeText> <HeaderButtonUser
                         onClick={handleLogout}>Logout</HeaderButtonUser>
                     </> : <HeaderButtonUser onClick={handClickLogin}>Login</HeaderButtonUser>

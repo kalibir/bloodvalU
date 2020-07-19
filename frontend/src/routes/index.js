@@ -12,6 +12,7 @@ import CreateDonorProfile from "../components/Credentials/CreateSeekerProfile/";
 import authComponent from '../HOCs/AuthComponent'
 import DonorEditProfile from "../components/DonorEditProfile";
 import SeekerEditProfile from "../components/SeekerEditProfile";
+import GeoMap from "../components/GeoMap";
 
 const Routes = () => {
   return (
@@ -19,17 +20,15 @@ const Routes = () => {
       <Router>
         <Switch>
           <Navigation>
-            <Route path="/dashboard/donor" component={DonorDashboard} />
-            <Route path="/dashboard/seeker" component={SeekerDashboard} />
+            <Route path="/dashboard/donor" component={authComponent(DonorDashboard)} />
+            <Route path="/dashboard/seeker" component={authComponent(SeekerDashboard)} />
             <Route path="/templates" component={Template} />
             <Route exact path="/" component={authComponent(LandingPage)} />
             <Route path="/auth" component={Credentials} />
-            {/* <Route path="/donorbartest" component={GenericDonorRequestBar} /> */}
-            {/*<Route path="/auth" component={Credentials} />*/}
-            <Route path="/editseeker" component={SeekerEditProfile} />
-            <Route path="/editdonor" component={DonorEditProfile} />
-            <Route path="/registertest" component={CreateDonorProfile} />
-            <Route path="/seekerprofilepage" component={SeekerProfilePage} />
+            <Route path="/editseeker" component={authComponent(SeekerEditProfile)} />
+            <Route path="/editdonor" component={authComponent(DonorEditProfile)} />
+            <Route path="/seekerprofilepage" component={authComponent(SeekerProfilePage)} />
+            <Route path="/map" component={GeoMap} />
           </Navigation>
         </Switch>
       </Router>

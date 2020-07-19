@@ -27,6 +27,7 @@ const ModalForm = styled.form`
   border-radius: 4px;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   padding-left: 32px;
 `;
 
@@ -115,8 +116,8 @@ const RequestModal = ({closeModal, modalData, handleEditRequest}) => {
     return (
         <ModalWrapper>
             <ModalForm onSubmit={modalData ? e=> handleEditRequest(e, modalData.id, requestData) : handleSubmit}>
-                <BloodGroupDropDown required defaultValue={requestData.blood_group}
-                                    onChange={(e) => onChangeHandler(e, "blood_group")}>
+                {modalData ? null :<BloodGroupDropDown required defaultValue={requestData.blood_group}
+                                     onChange={(e) => onChangeHandler(e, "blood_group")}>
                     <option value={requestData.blood_group} disabled>Select Blood Type</option>
                     <option value="O-">O-</option>
                     <option value="O+">O+</option>
@@ -126,12 +127,12 @@ const RequestModal = ({closeModal, modalData, handleEditRequest}) => {
                     <option value="B+">B+</option>
                     <option value="AB-">AB-</option>
                     <option value="AB+">AB+</option>
-                </BloodGroupDropDown>
-                <ValidityWrapper>
+                </BloodGroupDropDown>}
+                {modalData ? null :<ValidityWrapper>
                     Valid until:
                     <RequestValidity required defaultValue={requestData.valid_until}
                                      onChange={(e) => onChangeHandler(e, "valid_until")} type="date"/>
-                </ValidityWrapper>
+                </ValidityWrapper>}
                 <CheckboxWrapper>
                     <RequestCheckBoxInput defaultChecked={requestData.is_urgent}
                                           onChange={(e) => handleCheckBox(e, "is_urgent")} type="checkbox"/>
