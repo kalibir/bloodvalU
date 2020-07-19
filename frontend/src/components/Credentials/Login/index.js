@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
 import {connect, useDispatch} from "react-redux";
@@ -55,7 +55,7 @@ const Error = styled(ErrorPlaceholder)`
 `
 
 
-const Login = ({errorReducer: {error}}) => {
+const Login = ({errorReducer: {error}, authReducer: {authenticated, userObj}}) => {
     // const {authReducer} = props;
     // console.log("authReducer", authReducer);
     const {push} = useHistory();
@@ -64,6 +64,11 @@ const Login = ({errorReducer: {error}}) => {
         email: "",
         password: "",
     });
+
+    useEffect(() => {
+        if (authenticated && userObj && userObj.is_donor) push("/dashboard/donor")
+        else if (authenticated && userObj && !userObj.is_donor) push("/dashboard/seeker")
+    })
 
     console.log("loginInfo", loginInfo);
     const handleEmail = (e) => {
@@ -90,7 +95,15 @@ const Login = ({errorReducer: {error}}) => {
         if (response.status < 300) {
             const profile = response.data.profile
             console.log("profile", profile)
-            push(`${profile.is_donor ? "/dashboard/donor" : "/dashboard/seeker"}`);
+            if (profile.is_donor) {
+                profile.first_name === "" ?
+                    push("/auth/signup/donor-profile/")
+                    : push("/dashboard/donor")
+            } else {
+                profile.name === "" ?
+                    push("/auth/signup/seeker-profile/")
+                    : push("/dashboard/seeker")
+            }
         }
     };
 

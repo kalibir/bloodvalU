@@ -16,7 +16,7 @@ class SeekerProfile(models.Model):
 
     is_valid = models.BooleanField(default=True)
 
-    name = models.CharField(max_length=100, default="name")
+    name = models.CharField(max_length=100, blank=True)
 
     website = models.CharField(max_length=150, blank=True, null=True)
 
