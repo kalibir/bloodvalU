@@ -5,6 +5,8 @@ import profilePic from "../../assets/images/default-profile-pic.jpg";
 import { connect } from "react-redux";
 import { useEffect } from "react";
 import { getLoggedInUserAction } from "../../store/actions/userActions";
+import { DarkBlueButton } from "../../style/GlobalButtons";
+import { useHistory } from "react-router";
 
 const ProfileWrapper = styled.div`
   width: ${rem("544px")};
@@ -71,11 +73,13 @@ const BottomContainer = styled.div`
 
 const DetailTitlesContainer = styled.div`
   height: ${rem("328px")};
-  width: ${rem("25px")};
+  width: 100%;
   margin-left: ${rem("158px")};
 `;
 
-const DetailTitle = styled.p`
+const DetailTitle = styled.div`
+  display: flex;
+  width: fit-content;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -86,31 +90,21 @@ const DetailTitle = styled.p`
   margin-bottom: ${rem("40px")};
 `;
 
-const DetailsContainer = styled.div`
-  height: ${rem("328px")};
-  width: ${rem("204px")};
-  margin-left: ${rem("64px")};
-`;
-
-const Details = styled.p`
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 24px;
-  display: flex;
-  align-items: center;
-  color: #4e4e5a;
-  margin-bottom: ${rem("40px")};
-`;
-
-const AddressTitle = styled(DetailTitle)`
-  margin-bottom: ${rem("88px")};
+const EditProfileBtn = styled(DarkBlueButton)`
+  align-self: center;
 `;
 
 const SeekerProfileCard = ({ authReducer: { userObj }, dispatch }) => {
+  const { push } = useHistory();
   useEffect(() => {
     dispatch(getLoggedInUserAction());
   }, [dispatch]);
+
+  const onClickHandler = (event) => {
+    console.log("clicked");
+    push("/editseeker");
+  };
+
   return (
     <>
       {userObj ? (
@@ -124,22 +118,15 @@ const SeekerProfileCard = ({ authReducer: { userObj }, dispatch }) => {
           </UpperContainer>
           <BottomContainer>
             <DetailTitlesContainer>
-              <AddressTitle>Address:</AddressTitle>
-              <DetailTitle>Website:</DetailTitle>
-              <DetailTitle>Phone:</DetailTitle>
-              <DetailTitle>Email:</DetailTitle>
+              <DetailTitle>
+                Address: {userObj.street}, {userObj.country}
+              </DetailTitle>
+              <DetailTitle>Website: {userObj.website}</DetailTitle>
+              <DetailTitle>Phone: {userObj.phone}</DetailTitle>
+              <DetailTitle>Email: {userObj.email}</DetailTitle>
             </DetailTitlesContainer>
-            <DetailsContainer>
-              <Details>
-                {userObj.street}
-                <br />
-                <br /> {userObj.country}
-              </Details>
-              <Details>{userObj.website}</Details>
-              <Details>{userObj.phone}</Details>
-              <Details>{userObj.email}</Details>
-            </DetailsContainer>
           </BottomContainer>
+          <EditProfileBtn onClick={onClickHandler}>Edit Profile</EditProfileBtn>
         </ProfileWrapper>
       ) : null}
     </>
