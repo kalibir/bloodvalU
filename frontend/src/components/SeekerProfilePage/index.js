@@ -7,6 +7,7 @@ import GenericSeekerTestCard from "../GenericSeekerTestCard";
 import SeekerProfileCard from "../GenericSeekerProfileCard";
 import { connect } from "react-redux";
 import { getRequestsOfSeekerAction } from "../../store/actions/offeredTestActions";
+import CreateTestModal from "../CreateTestModal";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -65,7 +66,7 @@ const MiddleButton = styled.button`
 `;
 
 const TestWrapper = styled.div`
-  width: 80%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap; //DO NOT REMOVE THIS
@@ -94,15 +95,23 @@ const SeekerProfilePage = ({ userProfileReducer: { offeredTests }, dispatch }) =
   useEffect(() => {
     dispatch(getRequestsOfSeekerAction());
   }, []);
+
+  const [modalActive, setModalActive] = useState(false);
+
+  const closeModal = () => {
+    console.log("in the close modal");
+    setModalActive(false);
+  };
   return (
     <PageWrapper>
+      {modalActive ? <CreateTestModal closeModal={closeModal} /> : null}
       <DashboardPageContainer>
         <LeftSide>
           <DashboardContentContainer>
             <MenuContainer>
               <SideButton id="requests">Offered Tests</SideButton>
             </MenuContainer>
-            <CreateTestButton>+ Create Test</CreateTestButton>
+            <CreateTestButton onClick={() => setModalActive(true)}>+ Create Test</CreateTestButton>
             <TestWrapper>
               {offeredTests
                 ? offeredTests.map((test, index) => {

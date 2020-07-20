@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { BaseStatusButton } from "../../style/GlobalButtons/";
 import { DarkBlueButton, WhiteButton } from "../../style/GlobalButtons/";
+import { connect, useDispatch } from "react-redux";
 import { rem } from "polished";
+import { useHistory } from "react-router";
+import { createTestRequestAction } from "../../store/actions/offeredTestActions";
 
 const ModalWrapper = styled.div`
   width: 100%;
@@ -56,14 +59,14 @@ const PointsInput = styled.input`
   font-size: 9pt;
 `;
 
-const ExpidryDateInputWrapper = styled.div`
+const ExpiryDateInputWrapper = styled.div`
   width: 100%;
   margin-top: 16px;
   display: flex;
   align-items: center;
 `;
 
-const ExpidryDateInput = styled.input`
+const ExpiryDateInput = styled.input`
   width: 160px;
   height: 30px;
   border-radius: 4px;
@@ -91,28 +94,52 @@ const CustomDarkBlueButton = styled(DarkBlueButton)`
   margin-left: 16px;
 `;
 
-const CreateTestModal = () => {
+const CreateTestModal = ({ closeModal }) => {
+  const dispatch = useDispatch();
+  const { push } = useHistory();
+  const [testData, settestData] = useState({
+    test_type: "",
+    expiry_date: "",
+    points_cost: "",
+  });
+
+  const onChangeHandler = (event, property) => {
+    const value = event.currentTarget.value;
+    settestData({ ...testData, [property]: value });
+    console.log(testData);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await dispatch(createTestRequestAction(testData));
+    if (response.status < 300) closeModal();
+  };
+
   return (
     <ModalWrapper>
       <Modal>
         <TitleInputWrapper>
           Title:
-          <TitleInput />
+          <TitleInput onChange={(e) => onChangeHandler(e, "test_type")} />
         </TitleInputWrapper>
+
+        <ExpiryDateInputWrapper>
+          Expiry Date:
+          <ExpiryDateInput
+            required
+            onChange={(e) => onChangeHandler(e, "expiry_date")}
+            type="date"
+          />
+        </ExpiryDateInputWrapper>
 
         <PointsInputWrapper>
           Points:
-          <PointsInput type="number" />
+          <PointsInput required onChange={(e) => onChangeHandler(e, "points_cost")} type="number" />
         </PointsInputWrapper>
 
-        <ExpidryDateInputWrapper>
-          Expiry Date:
-          <ExpidryDateInput type="date" />
-        </ExpidryDateInputWrapper>
-
         <ModalBtnWrapper>
-          <CustomWhiteButton>Cancel</CustomWhiteButton>
-          <CustomDarkBlueButton>Confirm</CustomDarkBlueButton>
+          <CustomWhiteButton onClick={closeModal}>Cancel</CustomWhiteButton>
+          <CustomDarkBlueButton onClick={handleSubmit}>Confirm</CustomDarkBlueButton>
         </ModalBtnWrapper>
       </Modal>
     </ModalWrapper>
