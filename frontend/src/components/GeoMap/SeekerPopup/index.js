@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import styled, {keyframes} from "styled-components";
 import {useDispatch} from "react-redux";
-import {getRequestsOfSingleSeeker} from "../../../store/actions/mapActions";
+import {applyToRequestOnMap, getRequestsOfSingleSeeker} from "../../../store/actions/mapActions";
 import GenericMiniDonorRequestBar from "./GenericMiniDonorRequestBar";
 
 
@@ -18,16 +18,30 @@ const SeekerInfo = ({selectedSeeker}) => {
         }
 
         getRequests()
-    }, [])
+    }, [selectedSeeker.id, dispatch])
+
+    const handleApply = async (e, reqID) => {
+        console.log("in the apply handler")
+        const response = await dispatch(applyToRequestOnMap(reqID))
+        if (response.status < 300) {
+            const {data} = response
+            const newRequests = [...requests]
+            const index = requests.findIndex(
+                (request) => request.id === data.id
+            )
+            newRequests[index] = data
+            setRequests(newRequests)
+        }
+    }
 
     return (
         <Wrapper>
             <h3>{selectedSeeker.name}</h3>
-            {requests? requests.map((request, index) => {
+            {requests ? requests.map((request, index) => {
                 return (
-                    <GenericMiniDonorRequestBar key={request.id} request={request}/>
+                    <GenericMiniDonorRequestBar handleApply={handleApply} key={request.id} request={request}/>
                 )
-                }): null}
+            }) : null}
         </Wrapper>
     )
 }

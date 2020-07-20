@@ -1,5 +1,6 @@
 import axios from "axios";
 import Axios from "../../axios";
+import {updateRequestInAll} from "./bloodRequestActions";
 
 
 
@@ -19,6 +20,16 @@ export const getRequestsOfSingleSeeker = (seekerID) => async (dispatch) => {
         return response
     } catch (error) {
         console.log("error message", error.response)
+        return error
+    }
+}
+
+export const applyToRequestOnMap = (request_id) => async (dispatch) => {
+    try {
+        return await Axios.post(`request/apply/${request_id}/`);
+    } catch (error) {
+        console.log("error message", error.response);
+        console.log("error", error)
         return error
     }
 }

@@ -81,7 +81,7 @@ const GeoMap = ({profilesReducer: {profiles}, dispatch}) => {
                     <Popup
                         latitude={selectedSeeker.latitude}
                         longitude={selectedSeeker.longitude}
-                        onClose={() => setSelectedSeeker(null)}
+                        //onClose={() => setSelectedSeeker(null)}
                     >
                         <SeekerInfo selectedSeeker={selectedSeeker}/>
                     </Popup>

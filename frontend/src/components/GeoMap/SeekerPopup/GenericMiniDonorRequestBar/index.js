@@ -12,7 +12,6 @@ import urgentIcon from "../../../../assets/icons/urgent.png"
 import onProgressIcon from "../../../../assets/icons/on_progress.png"
 
 const BarWrapper = styled.div`
-  //width: 445px;
   width: 100%;
 `;
 
@@ -24,8 +23,6 @@ const RequestBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 23px;
-  padding-right: 27px;
   cursor: pointer;
 `;
 
@@ -61,69 +58,6 @@ const IconWrapper = styled(ButtonWrapper)`
   height: 100%;
 `
 
-const BarArrowWrapper = styled(ButtonWrapper)`
-  width: 10%;
-  justify-content: flex-end;
-  height: 100%;
-`
-
-const BarArrowRight = styled.i`
-  border: solid #757575;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
-  transform: rotate(-45deg);
-`;
-
-const SeekerInfo = styled.div`
-  width: 100%;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-left: 23px;
-  padding-right: 27px;
-  color: #121232;
-  border: 1px solid #d3d4d8;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-`;
-
-const SeekerInfoHeader = styled.div`
-  width: 100%;
-  margin-top: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-`;
-
-const CompanyName = styled.p`
-  font-size: 18px;
-`;
-
-const RequestPoints = styled.p`
-  font-size: 13px;
-  color: #43a047;
-`;
-
-const SeekerInfoBodyWrapper = styled.div`
-  width: 100%;
-  display: flex;
-`;
-
-const SeekerInfoBody = styled.ul`
-  width: 100%;
-  margin-top: 16px;
-`;
-
-const SeekerInfoBodyLine = styled.li`
-  width: 100%;
-  margin-bottom: 8px;
-  list-style: none;
-  font-size: 13px;
-`;
-
 const InfoIcons = styled.img`
     width: ${rem("30px")};
     height: ${rem("30px")};
@@ -139,7 +73,7 @@ const RequestIsActiveSign = styled(PointContainer)`
 `
 
 
-const GenericMiniDonorRequestBar = ({
+const GenericMiniDonorRequestBar = ({ handleApply,
                                     request: {
                                         id,
                                         status,
@@ -160,10 +94,8 @@ const GenericMiniDonorRequestBar = ({
                                 }) => {
     const dispatch = useDispatch()
 
-    const handleApply = e => {
-        console.log("in the apply handler")
-        dispatch(applyToRequestActionInAll(id))
-    }
+
+
 
     return (
         <BarWrapper>
@@ -181,16 +113,14 @@ const GenericMiniDonorRequestBar = ({
                     <InfoIcons src={urgentIcon}/> : null}</IconWrapper>
 
                 <ButtonWrapper> {logged_in_donor_applied ?
-                    is_valid ? <RedButton onClick={handleApply}>Cancel</RedButton> :
+                    is_valid ? <RedButton onClick={e => handleApply(e, id)}>Cancel</RedButton> :
                         <RequestIsActiveSign >Active</RequestIsActiveSign>
-                    : <GreenButton onClick={handleApply}>Apply</GreenButton>
+                    : <GreenButton onClick={e => handleApply(e, id)}>Apply</GreenButton>
                 }
                 </ButtonWrapper>
 
                 <IconWrapper>{is_valid ? null :
                     <InfoIcons src={expiredIcon}/>}</IconWrapper>
-
-                <BarArrowWrapper> <BarArrowRight/> </BarArrowWrapper>
             </RequestBar>
         </BarWrapper>
     );
