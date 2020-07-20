@@ -2,19 +2,18 @@ import {
     BUY_TEST,
     ADD_REQUEST_TO_LIST,
     SET_REQUESTS, SET_TESTS,
-    SET_USER_PROFILE_USER, UPDATE_REQUEST_IN_ALL_REQUESTS, REMOVE_REQUEST_FROM_LIST
+    SET_USER_PROFILE_USER, UPDATE_REQUEST_IN_ALL_REQUESTS, REMOVE_REQUEST_FROM_LIST,ADD_TEST_TO_LIST
 
 } from "../actionTypes";
 
-
 const initialState = {
-    userObj: null,
-    requests: null,
-    offeredTests: null,
+  userObj: null,
+  requests: null,
+  offeredTests: null,
 };
 
 export const userProfileReducer = (state = initialState, action) => {
-    const newState = {...state};
+  const newState = { ...state };
     switch (action.type) {
         case SET_USER_PROFILE_USER: {
             return {...newState, userObj: action.payload};
@@ -50,7 +49,12 @@ export const userProfileReducer = (state = initialState, action) => {
             );
             return {...newState, requests: newRequests};
         }
-        default:
-            return state;
-    }
+        case ADD_TEST_TO_LIST: {
+            if (newState.offeredTests)
+                return { ...newState, offeredTests: [action.payload, ...newState.offeredTests] };
+            else return { ...newState, offeredTests: [action.payload] };
+        }
+    default:
+      return state;
+  }
 };
