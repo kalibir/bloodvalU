@@ -6,6 +6,7 @@ import {MiddleTitle} from "../../../style/GlobalTitles";
 import {DarkBlueButton} from "../../../style/GlobalButtons";
 import {useHistory} from "react-router";
 import {connect} from "react-redux";
+import hearts from "../../../assets/icons/success_register.svg"
 
 const PageWrapper = styled(PageContainer)`
     height: 78.2vh;
@@ -16,13 +17,18 @@ const PageWrapper = styled(PageContainer)`
 
 const Title = styled(MiddleTitle)`
     margin-bottom: 24px;
-`
+`;
 
-const NiceImage = styled.div`
-    height: 100px;
-    width: 100px;
+const ImageContainer = styled.div`
+    height: 120px;
+    width: 120px;
     color: black;
-    border: 1px solid mediumpurple;
+`;
+
+const Image = styled.img`
+    height: 100%;
+    width: 100%;
+    background: none;
 `
 
 const CodeSent = ({registrationReducer: {isDonor}, dispatch, errorReducer: {error}}) => {
@@ -30,7 +36,7 @@ const CodeSent = ({registrationReducer: {isDonor}, dispatch, errorReducer: {erro
 
     return (
         <PageWrapper>
-            <NiceImage>Some hearts</NiceImage>
+            <ImageContainer><Image src={hearts} alt="hearts"/></ImageContainer>
             <Title>
                 Thanks for your registration. Please check your email for the validation code.
             </Title>

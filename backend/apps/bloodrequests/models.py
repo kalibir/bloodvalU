@@ -23,7 +23,7 @@ class BloodRequest(models.Model):
     status = models.CharField(max_length=4, choices=STATUS_CHOICES, default='OP')
 
     BLOOD_GROUP_CHOICES = [
-        ('O', 'O'),
+        ('O-', 'O-'),
         ('O+', 'O+'),
         ('A-', 'A-'),
         ('A+', 'A+'),
