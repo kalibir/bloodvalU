@@ -1,39 +1,88 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
-import {useDispatch} from "react-redux";
-import {getCoordinatesAction} from "../../store/actions/mapActions";
+import {connect} from "react-redux";
+import ReactMapGL, {Marker, Popup} from 'react-map-gl'
+import styled, {keyframes} from "styled-components";
+import {getAllSeekersAction} from "../../store/actions/userActions";
+import droplet from '../../assets/images/blood-icon.png'
+const Div = styled.div``
 
-const url = "https://api.mapbox.com/geocoding/v5/mapbox.places/technoparkstrasse%201.json?access_token=pk.eyJ1IjoiZ3lzZW4iLCJhIjoiY2tjczdwZmx0MWx2czJ5czZ4YmRwY2N3MiJ9.gG6Fwsh2FHbveiQAiBb1bg"
+
+const rotate = keyframes`
+	0% {
+		transform: translatey(0px);
+	}
+	50% {
+		transform: translatey(-10px);
+	}
+	100% {
+		transform: translatey(0px);
+	}
+
+`;
+const Img = styled.img`
+  animation: ${rotate} 2s linear infinite;
+  width: 40px;
+  height: 40px;
+  border: none;
+  cursor: pointer;
+`
 
 
-const GeoMap = props => {
-    const [mapData, setMapData] = useState({
-        coordinates: ""
+const GeoMap = ({profilesReducer: {profiles}, dispatch}) => {
+
+    const [viewPort, setViewport] = useState({
+        latitude: 47.36667,
+        longitude: 8.55,
+        zoom: 12,
+        width: "100vw",
+        height: "100vh"
     })
-    const dispatch = useDispatch()
-    console.log("mapdata  :", mapData)
 
-    // useEffect(() => {
-    // fetch(url)
-    //     .then(response => response.json())
-    //     .then(data => setMapData({...mapData, coordinates: data}));
+    const [selectedSeeker, setSelectedSeeker] = useState(null)
 
-    // }, [])
+    console.log("selected profile", selectedSeeker)
 
-    const handleFetch = async e => {
-        const response = await dispatch(getCoordinatesAction("chemmin des cornillons", "genthod", "Switzerland"))
-        console.log("response", response);
-        const coordinates = response.data.features[0].geometry.coordinates
-        setMapData({...mapData, coordinates: coordinates})
-    }
+    useEffect(() => {
+        console.log("in the dispatch")
+        dispatch(getAllSeekersAction())
+    },[])
 
 
     return (
-        <>
-            <h1>maps</h1>
-            <button onClick={handleFetch}>FETCH</button>
-        </>
+        <Div>
+            <ReactMapGL
+                {...viewPort}
+                mapboxApiAccessToken={"pk.eyJ1IjoiZ3lzZW4iLCJhIjoiY2tjczdzcXJuMGZ5azJ3cDR6N2Jqcm00cyJ9.mkv2PJA7gpy9-ddtprFKXA"}
+                onViewportChange={viewport => {
+                    setViewport(viewport);
+                }}
+            >{profiles ? profiles.map((profile, index) => {
+                if (profile.latitude) {
+                    return (
+                        <Marker key={profile.id} latitude={profile.latitude} longitude={profile.longitude}>
+                            <Img onClick={(e)=>{
+                                e.preventDefault()
+                                setSelectedSeeker(profile)
+                            }} src={droplet}/>
+                        </Marker>
+                    )
+                }
+            }) : null}
+                {selectedSeeker ? (
+                    <Popup
+                        latitude={selectedSeeker.latitude} longitude={selectedSeeker.longitude}
+                    ><div>Seeker</div></Popup>
+                ) : null}
+            </ReactMapGL>
+        </Div>
     )
 }
 
-export default GeoMap
+const mapStateToProps = (state) => {
+    console.log("state", state);
+    return {
+        profilesReducer: state.profilesReducer,
+    };
+};
+
+export default connect(mapStateToProps)(GeoMap);

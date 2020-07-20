@@ -20,7 +20,8 @@ class SeekerProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SeekerProfile
-        fields = ['id', 'name', 'phone', 'is_donor', 'email', 'certificate', 'no_of_requests', 'is_valid', 'website',
+        fields = ['id', 'name', 'phone', 'is_donor', 'email', 'certificate', 'longitude', 'latitude',
+                  'no_of_requests', 'is_valid', 'website',
                   'street',
                   'zip_code',
                   'country',

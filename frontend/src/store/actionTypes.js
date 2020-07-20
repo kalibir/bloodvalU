@@ -42,3 +42,8 @@ export const REMOVE_REQUEST_FROM_LIST = 'REMOVE_REQUEST_FROM_LIST'
 
 export const ADD_TEST_TO_LIST = "ADD_TEST_TO_LIST";
 
+// Map Types
+
+export const SET_ALL_PROFILES = "SET_ALL_PROFILES";
+
+
