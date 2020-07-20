@@ -41,11 +41,9 @@ const GeoMap = ({profilesReducer: {profiles}, dispatch}) => {
     })
 
     const [selectedSeeker, setSelectedSeeker] = useState(null)
-
-    console.log("selected profile", selectedSeeker)
+    console.log("selectedSeeker", selectedSeeker);
 
     useEffect(() => {
-        console.log("in the dispatch")
         dispatch(getAllSeekersAction())
         const listener = e => {
             if (e.key === "Escape") {
@@ -54,7 +52,7 @@ const GeoMap = ({profilesReducer: {profiles}, dispatch}) => {
         }
         window.addEventListener("keydown", listener)
         return () => {
-            window.removeEventListener("keydown")
+            window.removeEventListener("keydown", listener)
         }
     }, [])
 
@@ -85,7 +83,7 @@ const GeoMap = ({profilesReducer: {profiles}, dispatch}) => {
                         longitude={selectedSeeker.longitude}
                         onClose={() => setSelectedSeeker(null)}
                     >
-                        <SeekerInfo/>
+                        <SeekerInfo selectedSeeker={selectedSeeker}/>
                     </Popup>
                 ) : null}
             </ReactMapGL>

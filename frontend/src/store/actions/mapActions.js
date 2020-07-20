@@ -1,4 +1,5 @@
 import axios from "axios";
+import Axios from "../../axios";
 
 
 
@@ -8,6 +9,16 @@ export const getCoordinatesAction = (street, zip, country) => async (dispatch) =
         return response
     } catch (error) {
         console.log("error message", error);
+        return error
+    }
+}
+
+export const getRequestsOfSingleSeeker = (seekerID) => async (dispatch) => {
+    try {
+        const response = await Axios.get(`request/seeker/${seekerID}/`)
+        return response
+    } catch (error) {
+        console.log("error message", error.response)
         return error
     }
 }

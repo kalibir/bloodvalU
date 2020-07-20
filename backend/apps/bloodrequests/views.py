@@ -70,6 +70,7 @@ class ListAllBloodRequestsView(ListAPIView):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+
 class ListAllRequestsOfSpecificSeeker(ListAPIView):
     """
     GET:
