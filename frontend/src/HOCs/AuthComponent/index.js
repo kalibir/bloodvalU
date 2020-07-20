@@ -11,14 +11,10 @@ const authComponent = (WrappedComponent) => (props) => {
 
     useEffect(() => {
         if (!token) push("/");
-        else if (userObj && userObj.is_donor ) {
-            userObj.first_name === "" ?
-                push("/auth/signup/donor-profile/")
-                : push("/dashboard/donor")
+        else if (userObj && userObj.is_donor) {
+            if (userObj.first_name === "") push("/auth/signup/donor-profile/")
         } else if (userObj && !userObj.is_donor) {
-            userObj.name === "" ?
-                push("/auth/signup/seeker-profile/")
-                : push("/dashboard/seeker")
+            if (userObj.name === "") push("/auth/signup/seeker-profile/")
         }
 
     }, [userObj]);
