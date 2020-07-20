@@ -14,5 +14,6 @@ urlpatterns = [
     path('<int:request_id>/assign/<int:donor_id>/', SelectDonorFromApplicantsView.as_view(),
          name='assign-an-applicant-as-selected-donor'),
     path('open/<int:request_id>/', MarkRequestAsOpenView.as_view(), name='mark-request-as-open'),
+    #path('seeker/<int:request_id>/', MarkRequestAsOpenView.as_view(), name='get-requests-of-specific-seeker'),
     path('complete/<int:request_id>/', MarkRequestAsCompletedView.as_view(), name='mark-request-as-complete'),
 ]

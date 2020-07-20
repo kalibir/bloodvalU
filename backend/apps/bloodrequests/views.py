@@ -15,6 +15,7 @@ from apps.bloodrequests.permissions import IsRequesterOrAdminOrReadOnly, IsDonor
 from apps.bloodrequests.serializers import BloodRequestSerializer
 from apps.donorprofiles.models import DonorProfile
 from apps.donorprofiles.serializers import DonorProfileSerializer
+from apps.seekerprofiles.models import SeekerProfile
 from apps.users.permissions import ReadOnly
 
 
@@ -66,6 +67,22 @@ class ListAllBloodRequestsView(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         queryset = BloodRequest.objects.all().order_by('-created')
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+class ListAllRequestsOfSpecificSeeker(ListAPIView):
+    """
+    GET:
+    List all Blood Requests of a specific seeker.
+    """
+    serializer_class = BloodRequestSerializer
+    queryset = SeekerProfile
+    permission_classes = [IsAuthenticated | ReadOnly]
+    lookup_url_kwarg = 'seeker_id'
+
+    def list(self, request, *args, **kwargs):
+        target_seeker = self.get_object()
+        queryset = target_seeker.made_requests.all().order_by('-created')
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 

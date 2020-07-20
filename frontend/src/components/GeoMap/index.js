@@ -4,6 +4,8 @@ import ReactMapGL, {Marker, Popup} from 'react-map-gl'
 import styled, {keyframes} from "styled-components";
 import {getAllSeekersAction} from "../../store/actions/userActions";
 import droplet from '../../assets/images/blood-icon.png'
+import SeekerInfo from "./SeekerPopup";
+
 const Div = styled.div``
 
 
@@ -45,7 +47,16 @@ const GeoMap = ({profilesReducer: {profiles}, dispatch}) => {
     useEffect(() => {
         console.log("in the dispatch")
         dispatch(getAllSeekersAction())
-    },[])
+        const listener = e => {
+            if (e.key === "Escape") {
+                setSelectedSeeker(null)
+            }
+        }
+        window.addEventListener("keydown", listener)
+        return () => {
+            window.removeEventListener("keydown")
+        }
+    }, [])
 
 
     return (
@@ -60,7 +71,7 @@ const GeoMap = ({profilesReducer: {profiles}, dispatch}) => {
                 if (profile.latitude) {
                     return (
                         <Marker key={profile.id} latitude={profile.latitude} longitude={profile.longitude}>
-                            <Img onClick={(e)=>{
+                            <Img onClick={(e) => {
                                 e.preventDefault()
                                 setSelectedSeeker(profile)
                             }} src={droplet}/>
@@ -70,8 +81,12 @@ const GeoMap = ({profilesReducer: {profiles}, dispatch}) => {
             }) : null}
                 {selectedSeeker ? (
                     <Popup
-                        latitude={selectedSeeker.latitude} longitude={selectedSeeker.longitude}
-                    ><div>Seeker</div></Popup>
+                        latitude={selectedSeeker.latitude}
+                        longitude={selectedSeeker.longitude}
+                        onClose={() => setSelectedSeeker(null)}
+                    >
+                        <SeekerInfo/>
+                    </Popup>
                 ) : null}
             </ReactMapGL>
         </Div>
