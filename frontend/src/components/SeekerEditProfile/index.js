@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router";
-import { connect, useDispatch } from "react-redux";
+import React, {useState} from "react";
+import {useHistory} from "react-router";
+import {connect, useDispatch} from "react-redux";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
-import { MiddleTitle, SmallTitle } from "../../style/GlobalTitles";
-import { BigInput, Select, SmallInput } from "../../style/GlobalInputs";
-import { DarkBlueButton, WhiteButton } from "../../style/GlobalButtons";
-import { PageContainer } from "../../style/GlobalWrappers";
-import { updateProfileAction } from "../../store/actions/userActions";
+import {MiddleTitle, SmallTitle} from "../../style/GlobalTitles";
+import {BigInput, Select, SmallInput} from "../../style/GlobalInputs";
+import {DarkBlueButton, WhiteButton} from "../../style/GlobalButtons";
+import {PageContainer} from "../../style/GlobalWrappers";
+import {updateProfileAction} from "../../store/actions/userActions";
+import {resetError} from "../../store/actions/errorActions";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -79,6 +80,15 @@ const ImgInput = styled.input`
   position: absolute;
   z-index: -1;
 `;
+const ErrorMsg = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    p {
+      color: red;
+      text-align: center;
+    }
+`
 
 const ChooseFileButton = styled.label`
   background: #121232;
@@ -99,195 +109,191 @@ const ChooseFileButton = styled.label`
   justify-content: center;
 `;
 
-export const SeekerEditProfile = (props) => {
-  const history = useHistory();
-  const dispatch = useDispatch();
+const SeekerEditProfile = ({
+                               authReducer: {userObj: {name, email, country, zip_code, street, logo, certificate, website, phone}},
+                               dispatch,
+                               errorReducer: {error},
+                           }) => {
+    const {push} = useHistory();
 
-  //   const {
-  //     dispatch,
-  //     profileObj: { name, email, country, zip_code, street, logo, certificate, website, phone },
-  //   } = props;
 
-  //   const [seekerInfo, setSeekerInfo] = useState({
-  //     name: `${name}`,
-  //     country: `${country}`,
-  //     zip_code: `${zip_code}`,
-  //     street: `${street}`,
-  //     logo: null,
-  //     certificate: `${certificate}`,
-  //     phone: `${phone}`,
-  //     website: `${website}`,
-  //     email: `${email}`,
-  //   });
+    const [seekerInfo, setSeekerInfo] = useState({
+        name: `${name}`,
+        country: `${country}`,
+        zip_code: `${zip_code}`,
+        street: `${street}`,
+        logo: null,
+        certificate: null,
+        phone: `${phone}`,
+        website: `${website}`,
+        email: `${email}`,
+    });
 
-  const [seekerInfo, setSeekerInfo] = useState({
-    name: ``,
-    country: ``,
-    zip_code: ``,
-    street: ``,
-    logo: null,
-    certificate: ``,
-    phone: ``,
-    website: ``,
-    email: ``,
-  });
-  console.log(seekerInfo);
+    console.log(seekerInfo);
 
-  const onChangeHandler = (event, property) => {
-    const value = event.currentTarget.value;
-    setSeekerInfo({ ...seekerInfo, [property]: value });
-  };
+    const onChangeHandler = (event, property) => {
+        const value = event.currentTarget.value;
+        setSeekerInfo({...seekerInfo, [property]: value});
+    };
 
-  const logoSelectHandler = (e) => {
-    // dispatch(resetError());
-    if (e.target.files[0]) {
-      setSeekerInfo({
-        ...seekerInfo,
-        logo: e.target.files[0],
-      });
-    }
-  };
+    const logoSelectHandler = (e) => {
+        dispatch(resetError());
+        if (e.target.files[0]) {
+            setSeekerInfo({
+                ...seekerInfo,
+                logo: e.target.files[0],
+            });
+        }
+    };
 
-  const certificateSelectHandler = (e) => {
-    if (e.target.files[0]) {
-      setSeekerInfo({ ...seekerInfo, certificate: e.target.files[0] });
-    }
-  };
+    const certificateSelectHandler = (e) => {
+        if (e.target.files[0]) {
+            setSeekerInfo({...seekerInfo, certificate: e.target.files[0]});
+        }
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const form = new FormData();
-    form.append("name", seekerInfo.name);
-    form.append("country", seekerInfo.country);
-    form.append("zip_code", seekerInfo.zip_code);
-    form.append("street", seekerInfo.street);
-    form.append("zip", seekerInfo.country);
-    form.append("phone", seekerInfo.phone);
-    form.append("website", seekerInfo.website);
-    if (seekerInfo.certificate) {
-      form.append("certificate", seekerInfo.certificate);
-    }
-    if (seekerInfo.logo) {
-      form.append("logo", seekerInfo.logo);
-    }
-    const response = await dispatch(updateProfileAction(form));
-    if (response.status < 300) {
-      console.log("woohooo, success!");
-      history.push(`/dashboard/seeker`);
-    }
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const form = new FormData();
+        form.append("name", seekerInfo.name);
+        form.append("country", seekerInfo.country);
+        form.append("zip_code", seekerInfo.zip_code);
+        form.append("street", seekerInfo.street);
+        form.append("zip_code", seekerInfo.zip_code);
+        form.append("phone", seekerInfo.phone);
+        form.append("website", seekerInfo.website);
+        if (seekerInfo.certificate) {
+            form.append("certificate", seekerInfo.certificate);
+        }
+        if (seekerInfo.logo) {
+            form.append("logo", seekerInfo.logo);
+        }
+        const response = await dispatch(updateProfileAction(form));
+        if (response.status < 300) {
+            push(`/dashboard/seeker`);
+        }
+    };
 
-  return (
-    <PageContainer>
-      <FormWrapper onSubmit={handleSubmit}>
-        <FormContainer>
-          <TitleContainer>
-            <MiddleTitle500>Edit Profile</MiddleTitle500>
-          </TitleContainer>
+    return (
+        <PageContainer>
+            <FormWrapper onSubmit={handleSubmit}>
+                <FormContainer>
+                    <TitleContainer>
+                        <MiddleTitle500>Edit Profile</MiddleTitle500>
+                    </TitleContainer>
 
-          <div>
-            <InputTitle>Name</InputTitle>
-            <NameInput
-              type="text"
-              placeholder="Sherlock"
-              onChange={(e) => onChangeHandler(e, "name")}
-              required
-            />
-          </div>
+                    <div>
+                        <InputTitle>Name</InputTitle>
+                        <NameInput
+                            type="text"
+                            placeholder="Sherlock"
+                            onChange={(e) => onChangeHandler(e, "name")}
+                            defaultValue={name}
+                            required
+                        />
+                    </div>
 
-          <InputPairContainer>
-            <div>
-              <InputTitle>Zip code</InputTitle>
-              <SmallInput
-                type="text"
-                placeholder="NW1 London"
-                onChange={(e) => onChangeHandler(e, "zip")}
-                required
-              />
-            </div>
+                    <InputPairContainer>
+                        <div>
+                            <InputTitle>Zip code</InputTitle>
+                            <SmallInput
+                                type="text"
+                                placeholder="NW1 London"
+                                onChange={(e) => onChangeHandler(e, "zip_code")}
+                                defaultValue={zip_code}
+                                required
+                            />
+                        </div>
 
-            <div>
-              <InputTitle>Country</InputTitle>
-              <SmallInput
-                type="text"
-                placeholder="England"
-                onChange={(e) => onChangeHandler(e, "country")}
-                required
-              />
-            </div>
-          </InputPairContainer>
+                        <div>
+                            <InputTitle>Country</InputTitle>
+                            <SmallInput
+                                type="text"
+                                placeholder="England"
+                                onChange={(e) => onChangeHandler(e, "country")}
+                                defaultValue={country}
+                                required
+                            />
+                        </div>
+                    </InputPairContainer>
 
-          <InputPairContainer>
-            <FullWidthInputContainer>
-              <InputTitle>Address</InputTitle>
-              <AddressInput
-                type="text"
-                placeholder="Baker Street"
-                onChange={(e) => onChangeHandler(e, "street")}
-                required
-              />
-            </FullWidthInputContainer>
-          </InputPairContainer>
+                    <InputPairContainer>
+                        <FullWidthInputContainer>
+                            <InputTitle>Address</InputTitle>
+                            <AddressInput
+                                type="text"
+                                placeholder="Baker Street"
+                                onChange={(e) => onChangeHandler(e, "street")}
+                                defaultValue={street}
+                                required
+                            />
+                        </FullWidthInputContainer>
+                    </InputPairContainer>
 
-          <InputPairContainer>
-            <div>
-              <InputTitle>Website</InputTitle>
-              <SmallInput
-                type="text"
-                value="1854-01-06"
-                onChange={(e) => onChangeHandler(e, "website")}
-                required
-              />
-            </div>
+                    <InputPairContainer>
+                        <div>
+                            <InputTitle>Website</InputTitle>
+                            <SmallInput
+                                type="text"
+                                onChange={(e) => onChangeHandler(e, "website")}
+                                defaultValue={website}
+                                required
+                            />
+                        </div>
 
-            <div>
-              <InputTitle>Phone Number</InputTitle>
-              <SmallInput
-                type="text"
-                placeholder="+44 20 7224 3688"
-                onChange={(e) => onChangeHandler(e, "phone")}
-                required
-              />
-            </div>
-          </InputPairContainer>
+                        <div>
+                            <InputTitle>Phone Number</InputTitle>
+                            <SmallInput
+                                type="text"
+                                placeholder="+44 20 7224 3688"
+                                onChange={(e) => onChangeHandler(e, "phone")}
+                                defaultValue={phone}
+                                required
+                            />
+                        </div>
+                    </InputPairContainer>
 
-          <InputPairContainer>
-            <ImgInput
-              onChange={logoSelectHandler}
-              type="file"
-              name="logo"
-              id="logo"
-              className="inputfile"
-            />
-            <ChooseFileButton className="file_btn" htmlFor="logo">
-              CHOOSE YOUR LOGO
-            </ChooseFileButton>
-            <ImgInput
-              onChange={certificateSelectHandler}
-              type="file"
-              name="file"
-              id="file"
-              className="inputfile"
-            />
-            <ChooseFileButton className="file_btn" htmlFor="file">
-              UPLOAD YOUR CERTICATE
-            </ChooseFileButton>
-          </InputPairContainer>
-          <ButtonContainer>
-            <WhiteButtonWithMargin>Cancel</WhiteButtonWithMargin>
-            <DarkBlueButton>Save</DarkBlueButton>
-          </ButtonContainer>
-        </FormContainer>
-      </FormWrapper>
-    </PageContainer>
-  );
+                    <ErrorMsg><p>{error === "certificate" ? "The uploaded file is not a PDF." : null}</p></ErrorMsg>
+                    <ErrorMsg><p>{error === "logo" ? "The uploaded file is not an image." : null}</p></ErrorMsg>
+                    <InputPairContainer>
+                        <ImgInput
+                            onChange={logoSelectHandler}
+                            type="file"
+                            accept={"image/*"}
+                            name="logo"
+                            id="logo"
+                            className="inputfile"
+                        />
+                        <ChooseFileButton className="file_btn" htmlFor="logo">
+                            {seekerInfo.logo ? "FILE UPLOADED" : "CHOOSE YOUR LOGO"}
+                        </ChooseFileButton>
+                        <ImgInput
+                            onChange={certificateSelectHandler}
+                            type="file"
+                            accept="application/pdf"
+                            name="file"
+                            id="file"
+                            className="inputfile"
+                        />
+                        <ChooseFileButton className="file_btn" htmlFor="file">
+                            {seekerInfo.certificate ? "FILE UPLOADED" : "UPLOAD YOUR CERTIFICATE"}
+                        </ChooseFileButton>
+                    </InputPairContainer>
+                    <ButtonContainer>
+                        <WhiteButtonWithMargin>Cancel</WhiteButtonWithMargin>
+                        <DarkBlueButton>Save</DarkBlueButton>
+                    </ButtonContainer>
+                </FormContainer>
+            </FormWrapper>
+        </PageContainer>
+    );
 };
 
 const mapStateToProps = (state) => {
-  console.log("state", state);
-  return {
-    userProfileReducer: state.userProfileReducer,
-  };
+    return {
+        authReducer: state.authReducer,
+        errorReducer: state.errorReducer,
+    };
 };
 
 export default connect(mapStateToProps)(SeekerEditProfile);

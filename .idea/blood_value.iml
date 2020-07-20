@@ -4,7 +4,7 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/backend" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.6 (bloodv_backend)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Remote Python 3.6.10 Docker Compose (backend at [E:\Full_Stack\Week_10\blood_value\docker-compose.yml])" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

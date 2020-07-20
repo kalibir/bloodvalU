@@ -27,6 +27,7 @@ const ModalForm = styled.form`
   border-radius: 4px;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   padding-left: 32px;
 `;
 
@@ -86,16 +87,18 @@ const CustomDarkBlueButton = styled(DarkBlueButton)`
   margin-left: 16px;
 `;
 
-const RequestModal = ({closeModal}) => {
+const RequestModal = ({closeModal, modalData, handleEditRequest}) => {
     const dispatch = useDispatch()
     const {push} = useHistory()
     const [requestData, setRequestData] = useState({
-        blood_group: "",
-        is_for_covid: false,
-        is_urgent: false,
-        is_renewable: false,
-        valid_until: ""
+        blood_group: modalData ? modalData.blood_group : "",
+        is_for_covid: modalData ? modalData.is_for_covid : false,
+        is_urgent: modalData ? modalData.is_urgent : false,
+        is_renewable: modalData ? modalData.is_renewable : false,
+        valid_until: modalData ? modalData.valid_until : "",
     })
+
+    console.log("req data", requestData)
 
     const onChangeHandler = (event, property) => {
         const value = event.currentTarget.value;
@@ -112,8 +115,10 @@ const RequestModal = ({closeModal}) => {
 
     return (
         <ModalWrapper>
-            <ModalForm onSubmit={handleSubmit}>
-                <BloodGroupDropDown defaultValue={"O-"} placeholder={"choose a blood type"} required onChange={(e) => onChangeHandler(e, "blood_group")}>
+            <ModalForm onSubmit={modalData ? e=> handleEditRequest(e, modalData.id, requestData) : handleSubmit}>
+                {modalData ? null :<BloodGroupDropDown required defaultValue={requestData.blood_group}
+                                     onChange={(e) => onChangeHandler(e, "blood_group")}>
+                    <option value={requestData.blood_group} disabled>Select Blood Type</option>
                     <option value="O-">O-</option>
                     <option value="O+">O+</option>
                     <option value="A-">A-</option>
@@ -122,22 +127,26 @@ const RequestModal = ({closeModal}) => {
                     <option value="B+">B+</option>
                     <option value="AB-">AB-</option>
                     <option value="AB+">AB+</option>
-                </BloodGroupDropDown>
-                <ValidityWrapper>
+                </BloodGroupDropDown>}
+                {modalData ? null :<ValidityWrapper>
                     Valid until:
-                    <RequestValidity required onChange={(e) => onChangeHandler(e, "valid_until")} type="date"/>
-                </ValidityWrapper>
+                    <RequestValidity required defaultValue={requestData.valid_until}
+                                     onChange={(e) => onChangeHandler(e, "valid_until")} type="date"/>
+                </ValidityWrapper>}
                 <CheckboxWrapper>
-                    <RequestCheckBoxInput  onChange={(e) => handleCheckBox(e, "is_urgent")} type="checkbox"/>
+                    <RequestCheckBoxInput defaultChecked={requestData.is_urgent}
+                                          onChange={(e) => handleCheckBox(e, "is_urgent")} type="checkbox"/>
                     Urgent
                 </CheckboxWrapper>
                 <CheckboxWrapper>
-                    <RequestCheckBoxInput  onChange={(e) => handleCheckBox(e, "is_renewable")}
+                    <RequestCheckBoxInput defaultChecked={requestData.is_renewable}
+                                          onChange={(e) => handleCheckBox(e, "is_renewable")}
                                           type="checkbox"/>
                     Renewable
                 </CheckboxWrapper>
                 <CheckboxWrapper>
-                    <RequestCheckBoxInput  onChange={(e) => handleCheckBox(e, "is_for_covid")}
+                    <RequestCheckBoxInput defaultChecked={requestData.is_for_covid}
+                                          onChange={(e) => handleCheckBox(e, "is_for_covid")}
                                           type="checkbox"/>
                     Is for Covid
                 </CheckboxWrapper>

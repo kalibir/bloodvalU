@@ -222,7 +222,7 @@ const DonorDashboard = ({
                             <>
                                 <PointsHeader>
                                     <OfferTitle>Offers</OfferTitle>
-                                    <NumberFormat isNumericString={true} renderText={value => <PointsText>Your total points: {value} pts</PointsText>} value={userObj.total_points} displayType={'text'} thousandSeparator={" "} />
+                                    <NumberFormat isNumericString={true} renderText={value => <PointsText>Your total points: {value} pts</PointsText>} value={userObj? userObj.total_points: 0} displayType={'text'} thousandSeparator={" "} />
                                 </PointsHeader>
 
                                 <UnderLine/>
