@@ -24,7 +24,9 @@ export const sendCode = data => async (dispatch) => {
         return response
     } catch (error) {
         console.log("error message", error.response)
-        dispatch(setError(error.response.data.email[0]))
+        if (error.response.data.email)dispatch(setError(error.response.data.email[0]))
+        else console.log("error ", error.response)
+
         return error
     }
 }
