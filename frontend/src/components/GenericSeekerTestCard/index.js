@@ -26,8 +26,10 @@ const Text = styled.p`
   color: #121232;
 `;
 
-const PointContainer = styled.div`
-  width: ${rem("84px")};
+const PointContainer = styled.span`
+  min-width: ${rem("84px")};
+  max-width: fit-content;
+  padding: 5px;
   height: ${rem("30px")};
   font-weight: 500;
   font-size: 16px;

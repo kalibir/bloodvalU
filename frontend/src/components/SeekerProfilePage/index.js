@@ -66,7 +66,7 @@ const MiddleButton = styled.button`
 `;
 
 const TestWrapper = styled.div`
-  width: 80%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap; //DO NOT REMOVE THIS
