@@ -7,11 +7,12 @@ import {DarkBlueButton} from "../../style/GlobalButtons";
 import RequestModal from "../RequestModal";
 import {connect} from "react-redux";
 import {
-    assignApplicantAsSelectedDonor,
+    assignApplicantAsSelectedDonor, deleteRequestAction, editRequestAction,
     getSeekerBloodRequestsAction,
     updateRequestInAll
 } from "../../store/actions/bloodRequestActions";
 import ActiveProfileCard from "./ActiveProfileCard";
+import {searchAllRequestsAndTestsAction} from "../../store/actions/searchActions";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -75,6 +76,11 @@ const DashboardContentContainer = styled.div`
     margin-bottom: ${rem("32px")};
 `;
 
+const Requests = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const PlusSignButton = styled.span`
   color: #ffffff;
@@ -89,10 +95,13 @@ const NewRequestButton = styled(DarkBlueButton)`
 
 const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
 
-    const [active, setActive] = useState("Open");
+    const [active, setActive] = useState("OP");
     const [activeProfile, setActiveProfile] = useState(null);
     const [activeRequest, setActiveRequest] = useState(null);
-    const [modalActive, setModalActive] = useState(false);
+    const [modal, setModal] = useState({
+        showModal: false,
+        modalData: null,
+    });
 
     const handleSetActiveProfile = (profileObj) => {
         setActiveProfile(profileObj)
@@ -110,45 +119,66 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
     }
 
     useEffect(() => {
-        dispatch(getSeekerBloodRequestsAction())
+        dispatch(getSeekerBloodRequestsAction("OP"))
     }, [dispatch])
 
     const handleClick = (e) => {
         const value = e.target.id;
         setActive(value);
+        dispatch(getSeekerBloodRequestsAction(value))
     };
 
 
     const closeModal = () => {
         console.log("in the close modal")
-        setModalActive(false)
+        setModal({...modal, showModal: false})
+    }
+
+    const handleDeleteRequest = (event, requestID) => {
+        dispatch(deleteRequestAction(requestID))
+    }
+
+    const handleShowEditModal = (event, requestObj) => {
+        setModal({showModal: true, modalData: requestObj})
+    }
+
+    const handleEditRequest = (event, requestID, requestData) => {
+        dispatch(editRequestAction(requestID, requestData))
+        setModal({...modal, showModal: false})
     }
 
 
     return (
         <PageContainer>
             <PageWrapper>
-                {modalActive ? <RequestModal closeModal={closeModal}/> : null}
+                {modal.showModal ? <RequestModal handleEditRequest={handleEditRequest} modalData={modal.modalData} closeModal={closeModal}/> : null}
                 <LeftSide>
                     <DashboardContentContainer>
                         <MenuContainer>
-                            <SideButton id="Open" onClick={handleClick} active={active === "Open"}>
+                            <SideButton id="OP" onClick={handleClick} active={active === "OP"}>
                                 Open
                             </SideButton>
-                            <MiddleButton id="Complete" onClick={handleClick} active={active === "Complete"}>
+                            <MiddleButton id="COM" onClick={handleClick} active={active === "COM"}>
                                 Complete
                             </MiddleButton>
-                            <SideButton id="Closed" onClick={handleClick} active={active === "Closed"}>
+                            <SideButton id="CL" onClick={handleClick} active={active === "CL"}>
                                 Closed
                             </SideButton>
                         </MenuContainer>
-                        {requests ? requests.map((request, index) => {
-                            return (<GenericSeekerRequestBar handleSetActiveRequest={handleSetActiveRequest}
-                                                             handleSetActiveProfile={handleSetActiveProfile} key={index}
-                                                             request={request}/>)
-                        }) : null}
+                        <Requests>
+                            {requests ? requests.map((request, index) => {
+                                return (<GenericSeekerRequestBar
+                                    handleShowEditModal={handleShowEditModal}
+                                    handleEditRequest={handleEditRequest}
+                                    handleDeleteRequest={handleDeleteRequest}
+                                    handleSetActiveRequest={handleSetActiveRequest}
+                                    handleSetActiveProfile={handleSetActiveProfile}
+                                    key={index}
+                                    request={request}/>)
+                            }) : null}
+                        </Requests>
                     </DashboardContentContainer>
-                    <NewRequestButton onClick={() => setModalActive(true)}>
+                    <NewRequestButton onClick={() => setModal({...modal, showModal: true})}>
                         <PlusSignButton/>+ Create Request
                     </NewRequestButton>
                 </LeftSide>
