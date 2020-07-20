@@ -2,6 +2,7 @@ import Axios from "../../axios";
 import {setLoggedInUser} from "./loginActions";
 import {userLogout} from "./logoutActions";
 import {resetError, setError} from "./errorActions";
+import {SET_ALL_PROFILES, USER_LOGIN} from "../actionTypes";
 
 
 export const getLoggedInUserAction = () => async (dispatch) => {
@@ -41,6 +42,27 @@ export const deleteUserAction = () => async (dispatch) => {
     } catch (error) {
         console.log('error', error.response.data)
 
+        return error
+    }
+}
+
+
+
+export const setProfiles = (profiles) => {
+    return {
+        type: SET_ALL_PROFILES,
+        payload: profiles,
+    };
+};
+
+
+export const getAllSeekersAction = () => async (dispatch) => {
+    try {
+        const response = await Axios.get(`seeker/list/`)
+        dispatch(setProfiles(response.data))
+        return response
+    } catch (error) {
+        console.log('error', error.response)
         return error
     }
 }

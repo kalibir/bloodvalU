@@ -2,7 +2,7 @@ from django.urls import path
 
 from apps.bloodrequests.views import CreateBloodRequestView, ListAllBloodRequestsView, \
     RetrieveUpdateDestroyBloodRequestView, ToggleApplyToRequestView, ListApplicantsOfSpecificRequestView, \
-    SelectDonorFromApplicantsView, MarkRequestAsOpenView, MarkRequestAsCompletedView
+    SelectDonorFromApplicantsView, MarkRequestAsOpenView, MarkRequestAsCompletedView, ListAllRequestsOfSpecificSeeker
 
 urlpatterns = [
     path('new/', CreateBloodRequestView.as_view(), name='create-a-blood-request'),
@@ -14,5 +14,6 @@ urlpatterns = [
     path('<int:request_id>/assign/<int:donor_id>/', SelectDonorFromApplicantsView.as_view(),
          name='assign-an-applicant-as-selected-donor'),
     path('open/<int:request_id>/', MarkRequestAsOpenView.as_view(), name='mark-request-as-open'),
+    path('seeker/<int:seeker_id>/', ListAllRequestsOfSpecificSeeker.as_view(), name='get-requests-of-specific-seeker'),
     path('complete/<int:request_id>/', MarkRequestAsCompletedView.as_view(), name='mark-request-as-complete'),
 ]
