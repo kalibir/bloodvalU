@@ -5,9 +5,11 @@ import { BaseStatusButton, CompleteButton } from "../../style/GlobalButtons/";
 import { rem } from "polished";
 import { useDispatch } from "react-redux";
 import {
+  deleteRequestAction,
   getApplicantsOfRequestAction,
   markRequestAsCompleteAction,
 } from "../../store/actions/bloodRequestActions";
+import AreYouSureModal from "../AreYouSure";
 
 const BarWrapper = styled.div`
   width: 100%;
@@ -107,6 +109,11 @@ const GenericSeekerRequestBar = ({
     showApplicants: false,
     applicants: null,
   });
+  const [sureModal, setSureModal] = useState(false);
+
+  // const handleDeleteRequest = (event, requestID) => {
+  //   dispatch(deleteRequestAction(requestID));
+  // };
 
   const handleRenderApplicants = async (e) => {
     const response = await dispatch(getApplicantsOfRequestAction(request.id));
@@ -129,8 +136,20 @@ const GenericSeekerRequestBar = ({
     dispatch(markRequestAsCompleteAction(request.id));
   };
 
+  const closeModal = () => {
+    console.log("in the close modal");
+    setSureModal(false);
+  };
+
   return (
     <BarWrapper>
+      {sureModal ? (
+          <AreYouSureModal
+          handleDeleteRequest={handleDeleteRequest}
+          closeModal={closeModal}
+          request={request}
+          />
+      ) : null}
       <RequestBar>
         Request {request.id}
         {request.status === "OP" ? (
@@ -140,7 +159,7 @@ const GenericSeekerRequestBar = ({
         ) : (
           <CompleteButton>Complete</CompleteButton>
         )}
-        <IconButton onClick={(e) => handleDeleteRequest(e, request.id)}>&#10006;</IconButton>
+        <IconButton onClick={(e) => setSureModal(true) }>&#10006;</IconButton>
         <IconButton onClick={(e) => handleShowEditModal(e, request)}>&#9998;</IconButton>
         {request.no_of_applicants ? (
           <ArrowWrapper onClick={handleRenderApplicants}>

@@ -7,15 +7,18 @@ import { rem } from "polished";
 import { useHistory } from "react-router";
 import { createTestRequestAction } from "../../store/actions/offeredTestActions";
 import {MiddleTitle, SmallTitle} from "../../style/GlobalTitles";
+import {deleteRequestAction} from "../../store/actions/bloodRequestActions";
 
 const ModalWrapper = styled.div`
-  width: 100%;
-  height: calc(100vh - 64px);
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.6);
+  top: 0;
+  left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
 `;
 
 const Modal = styled.div`
@@ -48,9 +51,12 @@ const YesButton = styled(DarkBlueButton)`
 `
 
 
-const AreYouSureModal = ({ closeModal }) => {
+const AreYouSureModal = ({ closeModal, context, handleDeleteRequest, request, id}) => {
   const dispatch = useDispatch();
   const { push } = useHistory();
+
+console.log("request in are you sure", request)
+    console.log("test in are you sure", id)
 
 
   return (
@@ -62,12 +68,15 @@ const AreYouSureModal = ({ closeModal }) => {
             </MiddleTitle>
         </QuestionContainer>
           <ButtonContainer>
-            <WhiteButton>
+            <WhiteButton onClick={closeModal}>
                 Back
             </WhiteButton>
-              <YesButton>
-                  Yes
+              {id ? <YesButton onClick={(e) => handleDeleteRequest(e, id)}>
+                  Delete
               </YesButton>
+              : <YesButton onClick={(e) => handleDeleteRequest(e, request.id)}>
+                  Delete
+              </YesButton>}
           </ButtonContainer>
       </Modal>
     </ModalWrapper>

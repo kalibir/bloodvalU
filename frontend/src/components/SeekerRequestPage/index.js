@@ -180,6 +180,7 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
             closeModal={closeModal}
           />
         ) : null}
+        {}
         <LeftSide>
           <DashboardContentContainer>
             <MenuContainer>

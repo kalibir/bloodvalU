@@ -8,6 +8,8 @@ import SeekerProfileCard from "../GenericSeekerProfileCard";
 import { connect } from "react-redux";
 import { getRequestsOfSeekerAction } from "../../store/actions/offeredTestActions";
 import CreateTestModal from "../CreateTestModal";
+import GenericSeekerRequestBar from "../GenericSeekerRequestBar";
+import {deleteRequestAction, editRequestAction} from "../../store/actions/bloodRequestActions";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -102,6 +104,12 @@ const SeekerProfilePage = ({ userProfileReducer: { offeredTests }, dispatch }) =
     console.log("in the close modal");
     setModalActive(false);
   };
+
+  const handleDeleteRequest = (event, testID) => {
+    dispatch(deleteRequestAction(testID));
+  };
+
+
   return (
     <PageWrapper>
       {modalActive ? <CreateTestModal closeModal={closeModal} /> : null}
@@ -115,7 +123,10 @@ const SeekerProfilePage = ({ userProfileReducer: { offeredTests }, dispatch }) =
             <TestWrapper>
               {offeredTests
                 ? offeredTests.map((test, index) => {
-                    return <GenericSeekerTestCard test={test} key={index} />;
+                    return <GenericSeekerTestCard
+                        test={test}
+                        key={index}
+                        handleDeleteRequest={handleDeleteRequest}/>;
                   })
                 : null}
             </TestWrapper>
