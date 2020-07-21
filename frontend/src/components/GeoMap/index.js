@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import ReactMapGL, { FlyToInterpolator, Marker, Popup, GeolocateControl } from "react-map-gl";
-import styled, { keyframes } from "styled-components";
-import { getAllSeekersAction } from "../../store/actions/userActions";
-import droplet from "../../assets/images/blood-icon.png";
+import React, {useEffect, useState} from "react";
+import {connect} from "react-redux";
+import ReactMapGL, {FlyToInterpolator, Marker, Popup, GeolocateControl} from 'react-map-gl'
+import styled, {keyframes} from "styled-components";
+import {getAllSeekersAction} from "../../store/actions/userActions";
+import droplet from '../../assets/images/blood-icon.png'
 import SeekerInfo from "./SeekerPopup";
 import {PageContainer} from "../../style/GlobalWrappers";
 
 
 const Div = styled.div``
 
-const Div = styled.div``;
 
 const rotate = keyframes`
 	0% {
@@ -30,7 +29,7 @@ const Img = styled.img`
   height: 40px;
   border: none;
   cursor: pointer;
-`;
+`
 
 const CustomLocation = styled(GeolocateControl)`
   position: relative;
@@ -44,53 +43,45 @@ const FlyTo = styled.button`
   position: fixed;
   top: 50%;
   left: 50%;
-`;
+`
 
-const GeoMap = ({ profilesReducer: { profiles }, dispatch }) => {
-  const [showFly, setShowFly] = useState(true);
-  const [viewPort, setViewport] = useState({
-    latitude: 47.36667,
-    longitude: 8.55,
-    zoom: 5,
-    width: "100%",
-    height: "100%",
-  });
 
-  const [selectedSeeker, setSelectedSeeker] = useState(null);
+const GeoMap = ({profilesReducer: {profiles}, dispatch}) => {
+    const [showFly, setShowFly] = useState(true)
+    const [viewPort, setViewport] = useState({
+        latitude: 47.36667,
+        longitude: 8.55,
+        zoom: 5,
+        width: "100%",
+        height: "100%"
+    })
 
-  const handleFly = (e) => {
-    e.preventDefault();
-    const newViewport = {
-      ...viewPort,
-      latitude: 47.36667,
-      longitude: 8.55,
-      zoom: 12,
-      transitionDuration: 2000,
-      transitionInterpolator: new FlyToInterpolator(),
-    };
-    setViewport(newViewport);
-    dispatch(getAllSeekersAction());
-    setShowFly(!showFly);
-  };
+    const [selectedSeeker, setSelectedSeeker] = useState(null)
 
-  useEffect(() => {
-    const listener = (e) => {
-      if (e.key === "Escape") {
-        setSelectedSeeker(null);
-      }
-    };
-    window.addEventListener("keydown", listener);
-    return () => {
-      window.removeEventListener("keydown", listener);
-    };
-  }, []);
+    const handleFly = e => {
+        e.preventDefault()
+        const newViewport = {
+            ...viewPort,
+            latitude: 47.36667,
+            longitude: 8.55,
+            zoom: 12,
+            transitionDuration: 2000,
+            transitionInterpolator: new FlyToInterpolator(),
+        };
+        setViewport(newViewport);
+        dispatch(getAllSeekersAction())
+        setShowFly(!showFly)
+    }
 
-  return (
-    <PageContainer>
-      <ReactMapGL
-        {...viewPort}
-        mapboxApiAccessToken={
-          "pk.eyJ1IjoiZ3lzZW4iLCJhIjoiY2tjczdzcXJuMGZ5azJ3cDR6N2Jqcm00cyJ9.mkv2PJA7gpy9-ddtprFKXA"
+    useEffect(() => {
+        const listener = e => {
+            if (e.key === "Escape") {
+                setSelectedSeeker(null)
+            }
+        }
+        window.addEventListener("keydown", listener)
+        return () => {
+            window.removeEventListener("keydown", listener)
         }
     }, [])
 
@@ -133,10 +124,10 @@ const GeoMap = ({ profilesReducer: { profiles }, dispatch }) => {
 }
 
 const mapStateToProps = (state) => {
-  console.log("state", state);
-  return {
-    profilesReducer: state.profilesReducer,
-  };
+    console.log("state", state);
+    return {
+        profilesReducer: state.profilesReducer,
+    };
 };
 
 export default connect(mapStateToProps)(GeoMap);
