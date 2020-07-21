@@ -5,7 +5,10 @@ import styled, { keyframes } from "styled-components";
 import { getAllSeekersAction } from "../../store/actions/userActions";
 import droplet from "../../assets/images/blood-icon.png";
 import SeekerInfo from "./SeekerPopup";
-import { PageContainer } from "../../style/GlobalWrappers";
+import {PageContainer} from "../../style/GlobalWrappers";
+
+
+const Div = styled.div``
 
 const Div = styled.div``;
 
@@ -28,6 +31,12 @@ const Img = styled.img`
   border: none;
   cursor: pointer;
 `;
+
+const CustomLocation = styled(GeolocateControl)`
+  position: relative;
+  top: 20px;
+  width: 30px;
+`
 
 const FlyTo = styled.button`
   padding: 2rem;
@@ -83,41 +92,45 @@ const GeoMap = ({ profilesReducer: { profiles }, dispatch }) => {
         mapboxApiAccessToken={
           "pk.eyJ1IjoiZ3lzZW4iLCJhIjoiY2tjczdzcXJuMGZ5azJ3cDR6N2Jqcm00cyJ9.mkv2PJA7gpy9-ddtprFKXA"
         }
-        onViewportChange={(viewport) => {
-          setViewport(viewport);
-        }}>
-        {" "}
-        <GeolocateControl positionOptions={{ enableHighAccuracy: true }} trackUserLocation={true} />
-        {showFly ? <FlyTo onClick={handleFly}>Discover</FlyTo> : null}
-        {profiles
-          ? profiles.map((profile, index) => {
-              if (profile.latitude) {
-                return (
-                  <Marker
-                    key={profile.id}
-                    latitude={profile.latitude}
-                    longitude={profile.longitude}>
-                    <Img
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setSelectedSeeker(profile);
-                      }}
-                      src={droplet}
-                    />
-                  </Marker>
-                );
-              }
-            })
-          : null}
-        {selectedSeeker ? (
-          <Popup latitude={selectedSeeker.latitude} longitude={selectedSeeker.longitude}>
-            <SeekerInfo selectedSeeker={selectedSeeker} />
-          </Popup>
-        ) : null}
-      </ReactMapGL>
-    </PageContainer>
-  );
-};
+    }, [])
+
+
+    return (
+        <PageContainer>
+            <ReactMapGL
+                {...viewPort}
+                mapboxApiAccessToken={"pk.eyJ1IjoiZ3lzZW4iLCJhIjoiY2tjczdzcXJuMGZ5azJ3cDR6N2Jqcm00cyJ9.mkv2PJA7gpy9-ddtprFKXA"}
+                onViewportChange={viewport => {
+                    setViewport(viewport);
+                }}
+            > <CustomLocation
+                positionOptions={{enableHighAccuracy: true}}
+                trackUserLocation={true}
+            />{showFly ? <FlyTo onClick={handleFly}>Discover</FlyTo> : null}
+                {profiles ? profiles.map((profile, index) => {
+                    if (profile.latitude) {
+                        return (
+                            <Marker key={profile.id} latitude={profile.latitude} longitude={profile.longitude}>
+                                <Img onClick={(e) => {
+                                    e.preventDefault()
+                                    setSelectedSeeker(profile)
+                                }} src={droplet}/>
+                            </Marker>
+                        )
+                    }
+                }) : null}
+                {selectedSeeker ? (
+                    <Popup
+                        latitude={selectedSeeker.latitude}
+                        longitude={selectedSeeker.longitude}
+                    >
+                        <SeekerInfo selectedSeeker={selectedSeeker}/>
+                    </Popup>
+                ) : null}
+            </ReactMapGL>
+        </PageContainer>
+    )
+}
 
 const mapStateToProps = (state) => {
   console.log("state", state);

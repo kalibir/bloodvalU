@@ -26,7 +26,7 @@ const Routes = () => {
             <Route exact path="/" component={authComponent(LandingPage)} />
             <Route path="/auth" component={Credentials} />
             <Route path="/editseeker" component={authComponent(SeekerEditProfile)} />
-            <Route path="/edit/:userId" component={authComponent(DonorEditProfile)} />
+            <Route path="/editdonor" component={authComponent(DonorEditProfile)} />
             <Route path="/seekerprofilepage" component={authComponent(SeekerProfilePage)} />
             <Route path="/map" component={GeoMap} />
           </Navigation>

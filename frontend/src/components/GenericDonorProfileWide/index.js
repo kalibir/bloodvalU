@@ -192,7 +192,7 @@ const DonorProfileCardWide = ({
                 </DetailTitlesContainer>
 
             </BottomContainer>
-            <Link to={`/edit/${id}`}>
+            <Link to={`/editdonor`}>
                 <EditButton>Edit Profile</EditButton>
             </Link>
             {/*<BottomContainer>*/}
