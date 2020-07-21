@@ -190,7 +190,6 @@ const CreateDonorProfile = (props) => {
               <InputTitle>Birthday</InputTitle>
               <SmallInput
                 type="date"
-                value="1854-01-06"
                 onChange={(e) => onChangeHandler(e, "birthday")}
                 required
               />
