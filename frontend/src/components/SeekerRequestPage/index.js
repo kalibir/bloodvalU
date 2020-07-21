@@ -41,13 +41,15 @@ const RightSide = styled.div`
 const MenuContainer = styled.div`
     //width: ${rem("445px")};
     width: 100%;
-    height: ${rem("48px")};
+    display: flex;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
     margin-bottom: ${rem("32px")};
 `;
 
 const MiddleButton = styled.button`
-  height: 100%;
+cursor: pointer;
+  height: ${rem("48px")};
+  position: relative;
   width: 34%;
   background-color: #ffffff;
   font-weight: 500;
@@ -70,7 +72,10 @@ const MiddleButton = styled.button`
     width: 0;
     height: 2px;
     background: #121213;
+    position: absolute;
+    bottom: 0;
     transition: width 0.3s;
+
   }
 
   :hover {
@@ -78,8 +83,11 @@ const MiddleButton = styled.button`
   }
 
   :focus::after {
+    position: absolute;
+    bottom: 0;
     color: #121213;
     width: 100%;
+    margin-top: 12px;
     transition: width 0.3s;
   }
 `;
