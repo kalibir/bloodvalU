@@ -217,7 +217,7 @@ const DonorEditProfile = ({
                                 type="text"
                                 placeholder="Holmes"
                                 onChange={(e) => onChangeHandler(e, "last_name")}
-                                defaultValue={first_name}
+                                defaultValue={last_name}
                                 required
                             />
                         </div>
