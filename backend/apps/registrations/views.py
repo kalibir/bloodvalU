@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.core.mail import  EmailMessage
+from django.core.mail import EmailMessage
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, UpdateAPIView
 from rest_framework.response import Response
@@ -50,7 +50,12 @@ class CreateUserView(CreateAPIView):
         target_profile.user = user
         target_profile.save()
         if request.data['is_donor'] == "True":
-            DonorProfile.objects.create(user=user)
+            # v Attila
+            unique_donor_id = code_generator(length=8)
+            while DonorProfile.objects.filter(unique_donor_id=unique_donor_id).count() > 0:
+                unique_donor_id = code_generator(length=8)
+            DonorProfile.objects.create(user=user, unique_donor_id=unique_donor_id)
+            # ^ Attila
             user.donor_profile.save()
         else:
             SeekerProfile.objects.create(user=user)
