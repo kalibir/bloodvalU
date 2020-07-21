@@ -12,6 +12,7 @@ import GenericSeekerTestCard from "../GenericSeekerTestCard";
 import DonorProfileCardWide from "../GenericDonorProfileWide";
 import DonorProfileSelected from "../GenericDonorSelected";
 import GenericSeekerRequestBar from "../GenericSeekerRequestBar";
+import AreYouSureModal from "../AreYouSure";
 
 const TestWrapper = styled(PageContainer)`
     height: 100%;
@@ -21,7 +22,7 @@ const TestWrapper = styled(PageContainer)`
 
 function Template(props) {
   return (
-      <TestWrapper>
+      <AreYouSureModal>
           <br></br>
           <CompleteButton>Complete</CompleteButton>
           <DonorProfileCardWide/>
@@ -39,7 +40,7 @@ function Template(props) {
           <br></br>
           <ChooseRoleButton>Becoming a donor</ChooseRoleButton>
           <MiddleTitle>Your registration is now complete!</MiddleTitle>
-      </TestWrapper>
+      </AreYouSureModal>
   );
 }
 

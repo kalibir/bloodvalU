@@ -2,7 +2,8 @@ import React, {useEffect} from "react";
 import { rem } from "polished";
 import styled from "styled-components";
 import profilePic from "../../assets/images/default-profile-pic.jpg"
-
+import {DarkBlueButton} from "../../style/GlobalButtons";
+import { Link } from "react-router-dom";
 
 const ProfileWrapper = styled.div`
     width: ${rem("544px")};
@@ -65,10 +66,9 @@ const CityContainer = styled.div`
 
 const BottomContainer = styled.div`
     width: ${rem("544px")};
-    height: ${rem("328px")};
+    height: ${rem("315px")};
     display: flex;
     justify-content: center;
-    //background-color: deepskyblue;
 `;
 
 const DetailTitlesContainer = styled.div`
@@ -120,10 +120,15 @@ const AddressDetails = styled(Details)`
     margin-bottom: ${rem("8px")};
 `;
 
+const EditButton = styled(DarkBlueButton)`
+    margin-bottom: ${rem("16px")};
+`;
+
 
 
 const DonorProfileCardWide = ({
                                   userObj: {
+                                      id,
                                       phone,
                                       is_donor,
                                       email,
@@ -187,6 +192,9 @@ const DonorProfileCardWide = ({
                 </DetailTitlesContainer>
 
             </BottomContainer>
+            <Link to={`/edit/${id}`}>
+                <EditButton>Edit Profile</EditButton>
+            </Link>
             {/*<BottomContainer>*/}
             {/*    <DetailTitlesContainer>*/}
             {/*        <DetailTitle>Gender: </DetailTitle>*/}

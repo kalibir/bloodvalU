@@ -9,6 +9,7 @@ import {DarkBlueButton} from "../../../style/GlobalButtons";
 import {sendLoginAction} from "../../../store/actions/loginActions";
 import {useHistory} from "react-router";
 import {resetError} from "../../../store/actions/errorActions";
+import {Link} from "react-router-dom";
 
 const PageWrapper = styled(PageContainer)`
     height: 78.2vh;
@@ -36,7 +37,7 @@ const ForgotContainer = styled.div`
     align-items: center;
 `;
 
-const ForgotPassword = styled.p`
+const ForgotPassword = styled(Link)`
     font-weight: 600;
     font-size: 16px;
     line-height: 32px;
@@ -87,6 +88,7 @@ const Login = ({errorReducer: {error}, authReducer: {authenticated, userObj}}) =
         });
     };
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         dispatch(resetError())
@@ -120,7 +122,7 @@ const Login = ({errorReducer: {error}, authReducer: {authenticated, userObj}}) =
                 <ButtonWrapper>
                     <DarkBlueButton>Login</DarkBlueButton>
                     <ForgotContainer>
-                        <ForgotPassword>Forgot password</ForgotPassword>
+                        <ForgotPassword to={`/auth/password/reset/email`}>Forgot password</ForgotPassword>
                     </ForgotContainer>
                 </ButtonWrapper>
             </FormWrapper>
