@@ -6,7 +6,6 @@ import {getAllSeekersAction} from "../../store/actions/userActions";
 import droplet from '../../assets/images/blood-icon.png'
 import SeekerInfo from "./SeekerPopup";
 import {PageContainer} from "../../style/GlobalWrappers";
-import d3 from 'd3-ease';
 
 
 const Div = styled.div``
