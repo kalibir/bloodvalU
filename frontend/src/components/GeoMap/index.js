@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
-import ReactMapGL, {FlyToInterpolator, Marker, Popup,} from 'react-map-gl'
+import ReactMapGL, {FlyToInterpolator, Marker, Popup, GeolocateControl} from 'react-map-gl'
 import styled, {keyframes} from "styled-components";
 import {getAllSeekersAction} from "../../store/actions/userActions";
 import droplet from '../../assets/images/blood-icon.png'
@@ -52,7 +52,6 @@ const GeoMap = ({profilesReducer: {profiles}, dispatch}) => {
     })
 
     const [selectedSeeker, setSelectedSeeker] = useState(null)
-    console.log("selectedSeeker", selectedSeeker);
 
     const handleFly = e => {
         e.preventDefault()
@@ -90,7 +89,10 @@ const GeoMap = ({profilesReducer: {profiles}, dispatch}) => {
                 onViewportChange={viewport => {
                     setViewport(viewport);
                 }}
-            >{showFly ? <FlyTo onClick={handleFly}>Discover</FlyTo> : null}
+            > <GeolocateControl
+                positionOptions={{enableHighAccuracy: true}}
+                trackUserLocation={true}
+            />{showFly ? <FlyTo onClick={handleFly}>Discover</FlyTo> : null}
                 {profiles ? profiles.map((profile, index) => {
                     if (profile.latitude) {
                         return (
