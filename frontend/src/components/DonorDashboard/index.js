@@ -153,7 +153,7 @@ const DonorDashboard = ({
                         }) => {
 
     // const [active, setActive] = useState("requests");
-    const [active, setActive] = useState("tests");
+    const [active, setActive] = useState("requests");
     const handleClick = (e) => {
         const value = e.target.id;
         dispatch(searchAllRequestsAndTestsAction("", `${value}`))
@@ -236,6 +236,8 @@ const DonorDashboard = ({
                             : active === "requests" ?
                                 <RequestContainer>
                                     {requests ? requests.map((request, index) => {
+                                        console.log("in request map, request blood group: ", request.blood_group)
+                                        console.log("donor's blood group: ", userObj.blood_group)
                                         return (<GenericDonorRequestBar key={index} request={request}/>)
                                     }) : null}
                                 </RequestContainer>

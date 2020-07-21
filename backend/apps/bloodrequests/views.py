@@ -10,6 +10,8 @@ from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDe
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from apps.registrations.models import code_generator
+
 from apps.bloodrequests.models import BloodRequest
 from apps.bloodrequests.permissions import IsRequesterOrAdminOrReadOnly, IsDonorOrReadOnly
 from apps.bloodrequests.serializers import BloodRequestSerializer
@@ -40,7 +42,12 @@ class CreateBloodRequestView(CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(seeker=self.request.user.seeker_profile)
+        # v Attila
+        unique_request_id = code_generator(length=8)
+        while BloodRequest.objects.filter(unique_request_id=unique_request_id).count() > 0:
+            unique_request_id = code_generator(length=8)
+        # ^ Attila
+        serializer.save(seeker=self.request.user.seeker_profile, unique_request_id=unique_request_id)
         target_emails = self.get_target_blood_type_emails(serializer.validated_data.get('blood_group'))
         if target_emails:
             email = EmailMessage()
@@ -177,10 +184,16 @@ class SelectDonorFromApplicantsView(CreateAPIView):
             target_blood_request.status = "CL"
             target_blood_request.save()
             email = EmailMessage()
+            code1 = target_blood_request.unique_request_id
+            code2 = target_applicant.unique_donor_id
+            code = '{code1}.{code2}'.format(code1=code1, code2=code2)
             email.subject = 'Congratulations you have been Selected for a Blood Donation!'
-            email.body = '{seeker_name} would like you to come and donate blood at their site at {seeker_street}, {seeker_zip_code}!'.format(
-                seeker_name=request.user.seeker_profile.name,
-                seeker_street=request.user.seeker_profile.street, seeker_zip_code=request.user.seeker_profile.zip_code)
+            # email.body = '{seeker_name} would like you to come and donate blood at their site at {seeker_street}, {seeker_zip_code}!'.format(
+            #     seeker_name=request.user.seeker_profile.name,
+            #     seeker_street=request.user.seeker_profile.street, seeker_zip_code=request.user.seeker_profile.zip_code)
+            email.body = 'At {seeker_name}, we are happy for that, you are choose us for donation. /n' \
+                         'Our colleagues soon will make contact you, to discuss the followings. /n' \
+                         'Your code for this donation is: {code}'.format(seeker_name=request.user.seeker_profile.name, code=code)
             email.to = [target_applicant.user.email]
             email.send(fail_silently=False)
             return Response(self.get_serializer(target_blood_request).data)

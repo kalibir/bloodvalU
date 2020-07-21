@@ -1,5 +1,13 @@
 from datetime import date
 
+
+from django.core.mail import EmailMessage
+
+# Attila test
+from django.core.mail import send_mail
+# import qrcode as qrcode
+
+
 from django.shortcuts import render
 
 # Create your views here.
@@ -59,10 +67,11 @@ class BuyOfferedTestView(CreateAPIView):
     def post(self, request, *args, **kwargs):
         target_offered_test = self.get_object()
         donor = self.request.user.donor_profile
-        if donor in target_offered_test.donors_who_bought.all():
-            return Response(
-                {"detail": "You already bought this Offered Test"},
-                status=status.HTTP_400_BAD_REQUEST)
+        email_address = self.request.user.email
+        # if donor in target_offered_test.donors_who_bought.all():
+        #     return Response(
+        #         {"detail": "You already bought this Offered Test"},
+        #         status=status.HTTP_400_BAD_REQUEST)
         if date.today() > target_offered_test.expiry_date:
             return Response(
                 {"detail": "Sorry this offered test is expired"},
@@ -71,11 +80,49 @@ class BuyOfferedTestView(CreateAPIView):
             return Response(
                 {"detail": "Sorry you insufficient points :("},
                 status=status.HTTP_400_BAD_REQUEST)
+        elif donor in target_offered_test.donors_who_bought.all():
+            pass
         else:
             donor.total_points -= int(target_offered_test.points_cost)
             donor.save()
             target_offered_test.donors_who_bought.add(donor)
-            return Response(self.get_serializer(target_offered_test).data)
+        # v Attila
+        test_code = "{test_code}.{donor_id}".format(test_code=target_offered_test.secret_code, donor_id=donor.unique_donor_id)
+        email = EmailMessage()
+        email.subject = 'Validation code for your blood test'
+        email.body = f'Here is your test code: {test_code}'
+        email.to = [email_address]
+        email.send(fail_silently=False)
+        # ^ Attila
+
+        #Attila2  It is working, except the QR code image
+        # dog_img = "https://www.sciencemag.org/sites/default/files/styles/article_main_image_-_1280w__no_aspect_/public/dogs_1280p_0.jpg?itok=6jQzdNB8"
+        # subject = 'Validation code for your blood test'
+        # message = f'Here is your test code: {test_code}'
+        # to = [email_address]
+        # qr_img = qrcode.make(test_code)
+        #
+        #
+        # sender = 'students@propulsionacademy.com'
+        # html_message = f"""<!doctype html>
+        # <html lang=en>
+        #     <head>
+        #         <meta charset=utf-8>
+        #         <title>Some title.</title>
+        #     </head>
+        #     <body>
+        #         <h1>{subject}</h1>
+        #         <p>
+        #         {message}<br>
+        #         Here is my nice image.<br>
+        #         <img src='{dog_img}'/>
+        #         </p>
+        #     </body>
+        # </html>"""
+        # send_mail(subject=subject, message=message, html_message=html_message, from_email=sender, recipient_list=to, fail_silently=False)
+        # Attila2
+
+        return Response(self.get_serializer(target_offered_test).data)
 
 
 class ListAllSeekersOfferedTestsView(ListAPIView):
