@@ -1,62 +1,95 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
-import {connect, useDispatch} from "react-redux";
+import { connect, useDispatch } from "react-redux";
+import { BigInput, SmallInput } from "../../../style/GlobalInputs";
+import { MiddleTitle, SmallTitle } from "../../../style/GlobalTitles";
+import { DarkBlueButton } from "../../../style/GlobalButtons";
 
 const FormWrapper = styled.form`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 95%;
-    height: 95%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 95%;
+  height: 95%;
+  margin-top: 48px;
 `;
 
-const FormContainer = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    gap: 0px 34px;
+const CostumizedBigInput = styled(BigInput)`
+  margin-top: 9px;
+  margin-bottom: 32px;
 `;
 
+const CostumizedSmallInput = styled(SmallInput)`
+  margin-top: 9px;
+`;
 
-const InputContainer = styled.div`
-    height: ${rem("140px")};
-    width: ${rem("370px")};
-    display: flex;
-    flex-direction: column;
+const StreetInput = styled(SmallInput)`
+  margin-top: 9px;
+  width: ${rem("256px")};
+`;
+
+const NrInput = styled(SmallInput)`
+  margin-top: 9px;
+  width: ${rem("64px")};
+`;
+
+const ValidationTitle = styled(MiddleTitle)`
+  margin-bottom: 23px;
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  width: ${rem("352px")};
+  height: ${rem("97px")};
+  justify-content: space-between;
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  width: ${rem("352px")};
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: ${rem("352px")};
 `;
 
 const InputLabel = styled.label`
-      border-radius: ${rem("30px")};
-      border: none;
-      width: ${rem("216px")};
-      height: ${rem("38px")};
-      background: #de3341;
-      cursor: pointer;
-      font-style: normal;
-      font-weight: normal;
-      line-height: ${rem("18px")};
-      text-align: center;
-      padding-top: ${rem("10px")};
-      color: #ffffff;
-      margin-top: ${rem("12px")};
+  background: #121232;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  width: ${rem("141px")};
+  height: ${rem("48px")};
+  cursor: pointer;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  margin-top: ${rem("9px")};
 
-      :hover {
-          background-color: #de3360;
-      }
-      :active {
-          background-color: #de3360;
-      }
-`
+  :hover {
+    color: #121232;
+    background: #fff;
+    border: 1px solid #121232;
+  }
+  :active {
+    color: #121232;
+    background: #fff;
+    border: 1px solid #121232;
+  }
+`;
 
 const InputFile = styled.input`
-      display: none;
-      
-`
-
+  display: none;
+`;
 
 const ValidationSeeker = (props) => {
-    /*const {authReducer} = props
+  /*const {authReducer} = props
     console.log("authReducer", authReducer)
     const history = useHistory()
     const dispatch = useDispatch()
@@ -112,59 +145,64 @@ const ValidationSeeker = (props) => {
         }
     };*/
 
-
-    return (
-            <FormWrapper>
-                <div>Validation</div>
-                <FormContainer >
-                    <InputContainer>
-                        <input placeholder="email" type="email" required/>
-                    </InputContainer>
-                    <InputContainer>
-                        <input placeholder="validation code" type="number" required/>
-                    </InputContainer>
-                    <InputContainer>
-                        <input placeholder="password"type="password" required/>
-                    </InputContainer>
-                    <InputContainer>
-                        <input placeholder="repeat password" required/>
-                    </InputContainer>
-                    <InputContainer>
-                        <input placeholder="company name" required/>
-                    </InputContainer>
-                    <InputContainer>
-                        <select>
-                            <option>country</option>
-                        </select >
-                    </InputContainer>
-                    <InputContainer>
-                        <input placeholder="city"/>
-                    </InputContainer>
-                    <InputContainer>
-                        <input placeholder="zip"/>
-                    </InputContainer>
-                    <InputContainer>
-                        <input placeholder="street" required/>
-                    </InputContainer>
-                    <InputContainer>
-                        <input placeholder="phone" required/>
-                    </InputContainer>
-                    <InputContainer>
-                        <input placeholder="website" required/>
-                    </InputContainer>
-                    <InputContainer>
-                        <InputLabel htmlFor="restaurant_image">Certificate</InputLabel>
-                        <InputFile id="restaurant_image" accept="application/pdf"
-                                   type="file"/>
-                    </InputContainer>
-                </FormContainer>
-                <button>Submit</button>
-            </FormWrapper>
-    )
-}
+  return (
+    <FormWrapper>
+      <TitleWrapper>
+        <ValidationTitle>Create an account</ValidationTitle>
+      </TitleWrapper>
+      <InputWrapper>
+        <div>
+          <SmallTitle>Company name</SmallTitle>
+          <CostumizedBigInput placeholder="Company name" required />
+        </div>
+      </InputWrapper>
+      <InputWrapper>
+        <div>
+          <SmallTitle>Street</SmallTitle>
+          <StreetInput placeholder="Longstreet" required />
+        </div>
+        <div>
+          <SmallTitle>Nr.</SmallTitle>
+          <NrInput placeholder="30" required />
+        </div>
+      </InputWrapper>
+      <InputWrapper>
+        <div>
+          <SmallTitle>Zip</SmallTitle>
+          <CostumizedSmallInput placeholder="8000 Zurich" required />
+        </div>
+        <div>
+          <SmallTitle>Country</SmallTitle>
+          <CostumizedSmallInput placeholder="Switzerland" required />
+        </div>
+      </InputWrapper>
+      <InputWrapper>
+        <div>
+          <SmallTitle>Phone</SmallTitle>
+          <CostumizedSmallInput placeholder="044 123 45 67" required />
+        </div>
+        <div>
+          <SmallTitle>Website</SmallTitle>
+          <CostumizedSmallInput placeholder="www.example.ch" required />
+        </div>
+      </InputWrapper>
+      <ButtonWrapper>
+        <div>
+          <SmallTitle>Licence</SmallTitle>
+          <InputLabel htmlFor="restaurant_image">Choose a file...</InputLabel>
+          <div>
+            <p></p>
+          </div>
+          <InputFile id="restaurant_image" accept="application/pdf" type="file" />
+        </div>
+        <DarkBlueButton>Continue</DarkBlueButton>
+      </ButtonWrapper>
+    </FormWrapper>
+  );
+};
 
 const mapStateToProps = (state) => {
-    console.log("state", state)
+  console.log("state", state);
   return {
     authReducer: state.authReducer,
   };

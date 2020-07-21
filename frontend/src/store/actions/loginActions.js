@@ -13,7 +13,7 @@ export const sendLogin = (token) => {
 
 
 export const setLoggedInUser = (userObj) => {
-    localStorage.setItem("user", JSON.stringify(userObj));
+    localStorage.setItem("profile", JSON.stringify(userObj));
     return {
         type: SET_LOGGED_IN_USER,
         payload: userObj,
@@ -25,6 +25,7 @@ export const sendLoginAction = data => async (dispatch) => {
     try {
         const response = await Axios.post('/auth/token/', data);
         const {data: {access: token},} = response
+
         dispatch(getLoggedInUserAction())
         dispatch(sendLogin(token));
         dispatch(resetError())
@@ -32,9 +33,10 @@ export const sendLoginAction = data => async (dispatch) => {
         localStorage.setItem("token", token);
         return response
     } catch (error) {
+        debugger
         console.log("error message", error.response);
-        dispatch(setError(error.response.data.detail))
-        console.log("error", error)
+        if(error.response.data.detail)dispatch(setError(error.response.data.detail))
+        console.log("error", error.response)
         return error
     }
 }
