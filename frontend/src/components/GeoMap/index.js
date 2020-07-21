@@ -1,15 +1,19 @@
 import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
-import ReactMapGL, {FlyToInterpolator, Marker, Popup, GeolocateControl} from 'react-map-gl'
+import ReactMapGL, {
+    FlyToInterpolator,
+    Marker,
+    Popup,
+    GeolocateControl,
+    NavigationControl,
+    FullscreenControl,
+    ScaleControl
+} from 'react-map-gl'
 import styled, {keyframes} from "styled-components";
 import {getAllSeekersAction} from "../../store/actions/userActions";
 import droplet from '../../assets/images/blood-icon.png'
 import SeekerInfo from "./SeekerPopup";
 import {PageContainer} from "../../style/GlobalWrappers";
-
-
-const Div = styled.div``
-
 
 const rotate = keyframes`
 	0% {
@@ -21,20 +25,48 @@ const rotate = keyframes`
 	100% {
 		transform: translatey(0px);
 	}
-
 `;
 const Img = styled.img`
   animation: ${rotate} 2s linear infinite;
   width: 40px;
   height: 40px;
+  background-color: transparent;
   border: none;
   cursor: pointer;
+  border-radius: 50%;
 `
 
 const CustomLocation = styled(GeolocateControl)`
-  position: relative;
-  top: 20px;
+  position: fixed;
+  top: 10%;
+`
+const CustomScaler = styled(ScaleControl)`
+  bottom: 0;
+
+`
+
+const CustomNavigator = styled(NavigationControl)`
+  position: fixed;
+  right: 0;
+  bottom: 10%;
   width: 30px;
+`
+
+const CustomFullScreen = styled(FullscreenControl)`
+  position: fixed;
+  width: 30px;
+  top: 15%;
+`
+
+const CustomPopup = styled(Popup)`
+  display: flex;
+  width: 300px;
+`
+
+const CustomMarker = styled(Marker)``
+
+const AlertWrapper = styled.div`
+  animation: ${rotate} 2s linear infinite;
 `
 
 const FlyTo = styled.button`
@@ -73,6 +105,10 @@ const GeoMap = ({profilesReducer: {profiles}, dispatch}) => {
         setShowFly(!showFly)
     }
 
+    const handleClosePopup = () => {
+        setSelectedSeeker(null)
+    }
+
     useEffect(() => {
         const listener = e => {
             if (e.key === "Escape") {
@@ -101,23 +137,30 @@ const GeoMap = ({profilesReducer: {profiles}, dispatch}) => {
                 {profiles ? profiles.map((profile, index) => {
                     if (profile.latitude) {
                         return (
-                            <Marker key={profile.id} latitude={profile.latitude} longitude={profile.longitude}>
+                            <CustomMarker key={profile.id} latitude={profile.latitude} longitude={profile.longitude}>
+                                {profile.no_of_requests && !selectedSeeker  ?<AlertWrapper>
+                                    <span role={"img"}>&#10071;</span>{profile.no_of_requests}
+                                </AlertWrapper>: null}
                                 <Img onClick={(e) => {
                                     e.preventDefault()
                                     setSelectedSeeker(profile)
                                 }} src={droplet}/>
-                            </Marker>
+                            </CustomMarker>
                         )
                     }
                 }) : null}
                 {selectedSeeker ? (
-                    <Popup
+                    <CustomPopup
+                        closeButton={false}
                         latitude={selectedSeeker.latitude}
                         longitude={selectedSeeker.longitude}
                     >
-                        <SeekerInfo selectedSeeker={selectedSeeker}/>
-                    </Popup>
+                        <SeekerInfo handleClosePopup={handleClosePopup} selectedSeeker={selectedSeeker}/>
+                    </CustomPopup>
                 ) : null}
+                <CustomScaler/>
+                <CustomFullScreen/>
+                <CustomNavigator/>
             </ReactMapGL>
         </PageContainer>
     )

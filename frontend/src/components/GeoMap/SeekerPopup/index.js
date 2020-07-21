@@ -4,9 +4,30 @@ import {useDispatch} from "react-redux";
 import {applyToRequestOnMap, getRequestsOfSingleSeeker} from "../../../store/actions/mapActions";
 import GenericMiniDonorRequestBar from "./GenericMiniDonorRequestBar";
 
-
-const Wrapper = styled.div``
-const SeekerInfo = ({selectedSeeker}) => {
+const CloseWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  background-color: white;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  border: 1px solid black;
+  
+  :hover {
+    color: white;
+    background-color: black;
+  }
+`
+const Close = styled.p`
+  cursor: pointer;
+`
+const Wrapper = styled.div`
+`
+const SeekerInfo = ({selectedSeeker, handleClosePopup}) => {
     const dispatch = useDispatch()
     const [requests, setRequests] = useState(null)
     console.log("seeker local data", requests)
@@ -38,7 +59,10 @@ const SeekerInfo = ({selectedSeeker}) => {
 
     return (
         <Wrapper>
+            <CloseWrapper><Close onClick={handleClosePopup}>&#9932;</Close></CloseWrapper>
+
             <h3>{selectedSeeker.name}</h3>
+            <p>Phone: {selectedSeeker.phone}</p>
             {requests ? requests.map((request, index) => {
                 return (
                     <GenericMiniDonorRequestBar handleApply={handleApply} key={request.id} request={request}/>
