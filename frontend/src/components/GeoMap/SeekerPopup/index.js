@@ -16,8 +16,10 @@ const SeekerInfo = ({selectedSeeker}) => {
             const response = await dispatch(getRequestsOfSingleSeeker(selectedSeeker.id))
             setRequests(response.data)
         }
-
         getRequests()
+        return () => {
+            setRequests(null)
+        }
     }, [selectedSeeker.id, dispatch])
 
     const handleApply = async (e, reqID) => {
