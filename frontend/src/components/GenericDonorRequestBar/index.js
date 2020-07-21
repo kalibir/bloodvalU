@@ -1,19 +1,25 @@
 import React from "react";
-import {useState} from "react";
-import styled from "styled-components";
-import {BaseStatusButton} from "../../style/GlobalButtons/";
-import {rem} from "polished";
-import {useDispatch} from "react-redux";
-import {applyToRequestActionInAll} from "../../store/actions/bloodRequestActions";
-import acceptedIcon from "../../assets/icons/accepted.png"
-import expiredIcon from "../../assets/icons/expired.png"
-import urgentIcon from "../../assets/icons/urgent.png"
-import onProgressIcon from "../../assets/icons/on_progress.png"
-import {PointContainer} from "../GenericDonorTestCard";
+import { useState } from "react";
+import styled, { keyframes } from "styled-components";
+import { BaseStatusButton } from "../../style/GlobalButtons/";
+import { rem } from "polished";
+import { useDispatch } from "react-redux";
+import { applyToRequestActionInAll } from "../../store/actions/bloodRequestActions";
+import acceptedIcon from "../../assets/icons/accepted.png";
+import expiredIcon from "../../assets/icons/expired.png";
+import urgentIcon from "../../assets/icons/urgent.png";
+import onProgressIcon from "../../assets/icons/on_progress.png";
+import { PointContainer } from "../GenericDonorTestCard";
 
 const BarWrapper = styled.div`
   //width: 445px;
   width: 100%;
+`;
+
+// STYLES FOR ANIMATION
+const heightAnimation = keyframes`
+  from { max-height: 0; overflow: hidden;}
+  to{ max-height: 300px; transition: max-height 5s;}
 `;
 
 const RequestBar = styled.div`
@@ -34,7 +40,7 @@ const GreenButton = styled(BaseStatusButton)`
 `;
 
 const RedButton = styled(BaseStatusButton)`
-  background-color: #D33449;
+  background-color: #d33449;
 `;
 
 const TextWrapper = styled.div`
@@ -43,7 +49,7 @@ const TextWrapper = styled.div`
   align-items: center;
   width: 35%;
   height: 100%;
-`
+`;
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -51,7 +57,7 @@ const ButtonWrapper = styled.div`
   justify-content: center;
   width: 25%;
   height: 100%;
-`
+`;
 
 const IconWrapper = styled(ButtonWrapper)`
   width: 10%;
@@ -59,13 +65,13 @@ const IconWrapper = styled(ButtonWrapper)`
   justify-content: center;
   align-items: center;
   height: 100%;
-`
+`;
 
 const BarArrowWrapper = styled(ButtonWrapper)`
   width: 10%;
   justify-content: flex-end;
   height: 100%;
-`
+`;
 
 const BarArrowRight = styled.i`
   border: solid #757575;
@@ -87,6 +93,7 @@ const SeekerInfo = styled.div`
   border: 1px solid #d3d4d8;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
+  animation: 1s ${heightAnimation};
 `;
 
 const SeekerInfoHeader = styled.div`
@@ -125,103 +132,121 @@ const SeekerInfoBodyLine = styled.li`
 `;
 
 const InfoIcons = styled.img`
-    width: ${rem("30px")};
-    height: ${rem("30px")};
-`
+  width: ${rem("30px")};
+  height: ${rem("30px")};
+`;
 
 const RequestIsActiveSign = styled(PointContainer)`
-    width: ${rem("82px")};
-    height: ${rem("28px")};
-    font-size: ${rem("12px")};
-    border-radius: 100px;
-    border: 3px solid #71B774;
-    justify-content: center;
-`
-
+  width: ${rem("82px")};
+  height: ${rem("28px")};
+  font-size: ${rem("12px")};
+  border-radius: 100px;
+  border: 3px solid #71b774;
+  justify-content: center;
+`;
 
 const GenericDonorRequestBar = ({
-                                    request: {
-                                        id,
-                                        status,
-                                        blood_group,
-                                        valid_until,
-                                        is_valid,
-                                        is_for_covid,
-                                        is_urgent,
-                                        logged_in_donor_is_selected,
-                                        logged_in_donor_applied,
-                                        is_renewable,
-                                        created,
-                                        points_value,
-                                        no_of_applicants,
-                                        seeker: {name, phone, email, website, street, zip_code, logo, country}
+  request: {
+    id,
+    status,
+    blood_group,
+    valid_until,
+    is_valid,
+    is_for_covid,
+    is_urgent,
+    logged_in_donor_is_selected,
+    logged_in_donor_applied,
+    is_renewable,
+    created,
+    points_value,
+    no_of_applicants,
+    seeker: { name, phone, email, website, street, zip_code, logo, country },
+  },
+}) => {
+  const dispatch = useDispatch();
+  const [showSeeker, setSeekerInfo] = useState(false);
 
-                                    }
-                                }) => {
-    const dispatch = useDispatch()
-    const [showSeeker, setSeekerInfo] = useState(false);
+  const showSeekerHandler = (event) => {
+    setSeekerInfo(!showSeeker);
+  };
 
-    const showSeekerHandler = (event) => {
-        setSeekerInfo(!showSeeker);
-    };
+  const handleApply = (e) => {
+    console.log("in the apply handler");
+    dispatch(applyToRequestActionInAll(id));
+  };
 
-    const handleApply = e => {
-        console.log("in the apply handler")
-        dispatch(applyToRequestActionInAll(id))
-    }
+  return (
+    <BarWrapper>
+      <RequestBar>
+        <TextWrapper onClick={showSeekerHandler}> Request {id}</TextWrapper>
 
-    return (
-        <BarWrapper>
-            <RequestBar>
-                <TextWrapper onClick={showSeekerHandler}> Request {id}</TextWrapper>
+        <IconWrapper onClick={showSeekerHandler}>
+          {(status === "CL") &
+          (logged_in_donor_applied === true) &
+          (logged_in_donor_is_selected === false) ? (
+            <InfoIcons src={onProgressIcon} />
+          ) : logged_in_donor_is_selected ? (
+            <InfoIcons src={acceptedIcon} />
+          ) : null}
+        </IconWrapper>
 
-                <IconWrapper onClick={showSeekerHandler}>{
-                    status === "CL" & logged_in_donor_applied === true & logged_in_donor_is_selected === false ?
-                        <InfoIcons src={onProgressIcon}/>
-                        : logged_in_donor_is_selected ?
-                        <InfoIcons src={acceptedIcon}/>
-                        : null}</IconWrapper>
+        <IconWrapper onClick={showSeekerHandler}>
+          {is_urgent ? <InfoIcons src={urgentIcon} /> : null}
+        </IconWrapper>
 
-                <IconWrapper onClick={showSeekerHandler}>{is_urgent ?
-                    <InfoIcons src={urgentIcon}/> : null}</IconWrapper>
+        <ButtonWrapper>
+          {" "}
+          {logged_in_donor_applied ? (
+            is_valid ? (
+              <RedButton onClick={handleApply}>Cancel</RedButton>
+            ) : (
+              <RequestIsActiveSign onClick={showSeekerHandler}>Active</RequestIsActiveSign>
+            )
+          ) : (
+            <GreenButton onClick={handleApply}>Apply</GreenButton>
+          )}
+        </ButtonWrapper>
 
-                <ButtonWrapper> {logged_in_donor_applied ?
-                    is_valid ? <RedButton onClick={handleApply}>Cancel</RedButton> :
-                        <RequestIsActiveSign  onClick={showSeekerHandler}>Active</RequestIsActiveSign>
-                    : <GreenButton onClick={handleApply}>Apply</GreenButton>
-                }
-                </ButtonWrapper>
+        <IconWrapper onClick={showSeekerHandler}>
+          {is_valid ? null : <InfoIcons src={expiredIcon} />}
+        </IconWrapper>
 
-                <IconWrapper onClick={showSeekerHandler}>{is_valid ? null :
-                    <InfoIcons src={expiredIcon}/>}</IconWrapper>
-
-                <BarArrowWrapper onClick={showSeekerHandler}> <BarArrowRight/> </BarArrowWrapper>
-            </RequestBar>
-            {showSeeker ? (
-                <>
-                    <SeekerInfo name={"wrapper"}>
-                        <SeekerInfoHeader>
-                            <CompanyName>{name}</CompanyName>
-                            <RequestPoints>{points_value} pts</RequestPoints>
-                        </SeekerInfoHeader>
-                        <SeekerInfoBodyWrapper>
-                            <SeekerInfoBody>
-                                <SeekerInfoBodyLine>Address: {street}</SeekerInfoBodyLine>
-                                <SeekerInfoBodyLine>Phone: {phone}</SeekerInfoBodyLine>
-                                <SeekerInfoBodyLine>Requested group: {blood_group}</SeekerInfoBodyLine>
-                                <SeekerInfoBodyLine>For Covid: {is_for_covid ? "Yes" : "No"}</SeekerInfoBodyLine>
-                            </SeekerInfoBody>
-                            <SeekerInfoBody>
-                                <SeekerInfoBodyLine>City: {zip_code}</SeekerInfoBodyLine>
-                                <SeekerInfoBodyLine>E-mail: {email}</SeekerInfoBodyLine>
-                                <SeekerInfoBodyLine>Valid until: {valid_until}</SeekerInfoBodyLine>
-                            </SeekerInfoBody>
-                        </SeekerInfoBodyWrapper>
-                    </SeekerInfo>
-                </>
-            ) : null}
-        </BarWrapper>
-    );
+        <BarArrowWrapper onClick={showSeekerHandler}>
+          {" "}
+          <BarArrowRight
+            style={showSeeker ? { transform: "rotate(45deg)" } : { transform: "rotate(-45deg)" }}
+          />{" "}
+        </BarArrowWrapper>
+      </RequestBar>
+      {showSeeker ? (
+        <>
+          <SeekerInfo
+            name={"wrapper"}
+            style={
+              showSeeker ? { animationDirection: "normal" } : { animationDirection: "reverse" }
+            }>
+            <SeekerInfoHeader>
+              <CompanyName>{name}</CompanyName>
+              <RequestPoints>{points_value} pts</RequestPoints>
+            </SeekerInfoHeader>
+            <SeekerInfoBodyWrapper>
+              <SeekerInfoBody>
+                <SeekerInfoBodyLine>Address: {street}</SeekerInfoBodyLine>
+                <SeekerInfoBodyLine>Phone: {phone}</SeekerInfoBodyLine>
+                <SeekerInfoBodyLine>Requested group: {blood_group}</SeekerInfoBodyLine>
+                <SeekerInfoBodyLine>For Covid: {is_for_covid ? "Yes" : "No"}</SeekerInfoBodyLine>
+              </SeekerInfoBody>
+              <SeekerInfoBody>
+                <SeekerInfoBodyLine>City: {zip_code}</SeekerInfoBodyLine>
+                <SeekerInfoBodyLine>E-mail: {email}</SeekerInfoBodyLine>
+                <SeekerInfoBodyLine>Valid until: {valid_until}</SeekerInfoBodyLine>
+              </SeekerInfoBody>
+            </SeekerInfoBodyWrapper>
+          </SeekerInfo>
+        </>
+      ) : null}
+    </BarWrapper>
+  );
 };
 
 export default GenericDonorRequestBar;

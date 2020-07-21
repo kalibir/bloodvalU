@@ -1,11 +1,16 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { BaseStatusButton } from "../../style/GlobalButtons/";
 import { DarkBlueButton, WhiteButton } from "../../style/GlobalButtons/";
 import { connect, useDispatch } from "react-redux";
 import { rem } from "polished";
 import { useHistory } from "react-router";
 import { createTestRequestAction } from "../../store/actions/offeredTestActions";
+
+const modalFade = keyframes`
+  from{opacity: 0}
+  to{opacity: 1}
+`;
 
 const ModalWrapper = styled.div`
   width: 100%;
@@ -15,6 +20,7 @@ const ModalWrapper = styled.div`
   justify-content: center;
   align-items: center;
   position: fixed;
+  animation: 0.3s ${modalFade};
 `;
 
 const Modal = styled.div`
@@ -85,12 +91,12 @@ const ModalBtnWrapper = styled.div`
 
 const CustomWhiteButton = styled(WhiteButton)`
   width: 63px;
-  height: 28px;
+  height: 32px;
 `;
 
 const CustomDarkBlueButton = styled(DarkBlueButton)`
   width: 82px;
-  height: 28px;
+  height: 32px;
   margin-left: 16px;
 `;
 

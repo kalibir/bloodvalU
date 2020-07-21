@@ -1,18 +1,20 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
-import {PageContainer} from "../../style/GlobalWrappers";
+import { PageContainer } from "../../style/GlobalWrappers";
 import GenericSeekerRequestBar from "../GenericSeekerRequestBar";
-import {DarkBlueButton} from "../../style/GlobalButtons";
+import { DarkBlueButton } from "../../style/GlobalButtons";
 import RequestModal from "../RequestModal";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import {
-    assignApplicantAsSelectedDonor, deleteRequestAction, editRequestAction,
-    getSeekerBloodRequestsAction,
-    updateRequestInAll
+  assignApplicantAsSelectedDonor,
+  deleteRequestAction,
+  editRequestAction,
+  getSeekerBloodRequestsAction,
+  updateRequestInAll,
 } from "../../store/actions/bloodRequestActions";
 import ActiveProfileCard from "./ActiveProfileCard";
-import {searchAllRequestsAndTestsAction} from "../../store/actions/searchActions";
+import { searchAllRequestsAndTestsAction } from "../../store/actions/searchActions";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -53,11 +55,32 @@ const MiddleButton = styled.button`
   color: ${(props) => (props.active ? "#121213" : "#A1A4B1")};
   border: none;
   border-top: 2px solid #ffffff;
-  border-bottom: ${(props) => (props.active ? "2px solid #121213" : "2px solid #FFFFFF")};
+  /* border-bottom: ${(props) => (props.active ? "2px solid #121213" : "2px solid #FFFFFF")}; */
   text-transform: capitalize;
+
+  /********************
+  
+  **************************** DON'T COMMIT BEFORE SHOWING******************************
+  
+  ********************* */
+
+  ::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #121213;
+    transition: width 0.3s;
+  }
 
   :hover {
     color: #121213;
+  }
+
+  :focus::after {
+    color: #121213;
+    width: 100%;
+    transition: width 0.3s;
   }
 `;
 
@@ -93,110 +116,123 @@ const NewRequestButton = styled(DarkBlueButton)`
   width: ${rem("194px")};
 `;
 
-const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
+const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
+  const [active, setActive] = useState("OP");
+  const [activeProfile, setActiveProfile] = useState(null);
+  const [activeRequest, setActiveRequest] = useState(null);
+  const [modal, setModal] = useState({
+    showModal: false,
+    modalData: null,
+  });
 
-    const [active, setActive] = useState("OP");
-    const [activeProfile, setActiveProfile] = useState(null);
-    const [activeRequest, setActiveRequest] = useState(null);
-    const [modal, setModal] = useState({
-        showModal: false,
-        modalData: null,
-    });
+  const handleSetActiveProfile = (profileObj) => {
+    setActiveProfile(profileObj);
+  };
 
-    const handleSetActiveProfile = (profileObj) => {
-        setActiveProfile(profileObj)
+  const handleSetActiveRequest = (requestObj) => {
+    setActiveRequest(requestObj);
+  };
+
+  const handleSelectApplicant = async (e) => {
+    if (activeRequest.id) {
+      const response = await dispatch(
+        assignApplicantAsSelectedDonor(activeRequest.id, activeProfile.id)
+      );
+      if (response.status < 300) setActiveRequest(response.data);
     }
+  };
 
-    const handleSetActiveRequest = (requestObj) => {
-        setActiveRequest(requestObj)
-    }
+  useEffect(() => {
+    dispatch(getSeekerBloodRequestsAction("OP"));
+  }, [dispatch]);
 
-    const handleSelectApplicant = async e => {
-        if (activeRequest.id) {
-            const response = await dispatch(assignApplicantAsSelectedDonor(activeRequest.id, activeProfile.id))
-            if (response.status < 300) setActiveRequest(response.data)
-        }
-    }
+  const handleClick = (e) => {
+    const value = e.target.id;
+    setActive(value);
+    dispatch(getSeekerBloodRequestsAction(value));
+  };
 
-    useEffect(() => {
-        dispatch(getSeekerBloodRequestsAction("OP"))
-    }, [dispatch])
+  const closeModal = () => {
+    console.log("in the close modal");
+    setModal({ ...modal, showModal: false });
+  };
 
-    const handleClick = (e) => {
-        const value = e.target.id;
-        setActive(value);
-        dispatch(getSeekerBloodRequestsAction(value))
-    };
+  const handleDeleteRequest = (event, requestID) => {
+    dispatch(deleteRequestAction(requestID));
+  };
 
+  const handleShowEditModal = (event, requestObj) => {
+    setModal({ showModal: true, modalData: requestObj });
+  };
 
-    const closeModal = () => {
-        console.log("in the close modal")
-        setModal({...modal, showModal: false})
-    }
+  const handleEditRequest = (event, requestID, requestData) => {
+    dispatch(editRequestAction(requestID, requestData));
+    setModal({ ...modal, showModal: false });
+  };
 
-    const handleDeleteRequest = (event, requestID) => {
-        dispatch(deleteRequestAction(requestID))
-    }
-
-    const handleShowEditModal = (event, requestObj) => {
-        setModal({showModal: true, modalData: requestObj})
-    }
-
-    const handleEditRequest = (event, requestID, requestData) => {
-        dispatch(editRequestAction(requestID, requestData))
-        setModal({...modal, showModal: false})
-    }
-
-
-    return (
-        <PageContainer>
-            <PageWrapper>
-                {modal.showModal ? <RequestModal handleEditRequest={handleEditRequest} modalData={modal.modalData} closeModal={closeModal}/> : null}
-                <LeftSide>
-                    <DashboardContentContainer>
-                        <MenuContainer>
-                            <SideButton id="OP" onClick={handleClick} active={active === "OP"}>
-                                Open
-                            </SideButton>
-                            <MiddleButton id="COM" onClick={handleClick} active={active === "COM"}>
-                                Complete
-                            </MiddleButton>
-                            <SideButton id="CL" onClick={handleClick} active={active === "CL"}>
-                                Closed
-                            </SideButton>
-                        </MenuContainer>
-                        <Requests>
-                            {requests ? requests.map((request, index) => {
-                                return (<GenericSeekerRequestBar
-                                    handleShowEditModal={handleShowEditModal}
-                                    handleEditRequest={handleEditRequest}
-                                    handleDeleteRequest={handleDeleteRequest}
-                                    handleSetActiveRequest={handleSetActiveRequest}
-                                    handleSetActiveProfile={handleSetActiveProfile}
-                                    key={index}
-                                    request={request}/>)
-                            }) : null}
-                        </Requests>
-                    </DashboardContentContainer>
-                    <NewRequestButton onClick={() => setModal({...modal, showModal: true})}>
-                        <PlusSignButton/>+ Create Request
-                    </NewRequestButton>
-                </LeftSide>
-                <RightSide>
-                    {activeRequest ?
-                        <ActiveProfileCard handleSelectApplicant={handleSelectApplicant} activeRequest={activeRequest}
-                                           activeProfile={activeProfile}/> : null}
-                </RightSide>
-            </PageWrapper>
-        </PageContainer>
-    );
+  return (
+    <PageContainer>
+      <PageWrapper>
+        {modal.showModal ? (
+          <RequestModal
+            handleEditRequest={handleEditRequest}
+            modalData={modal.modalData}
+            closeModal={closeModal}
+          />
+        ) : null}
+        <LeftSide>
+          <DashboardContentContainer>
+            <MenuContainer>
+              <SideButton id="OP" onClick={handleClick} active={active === "OP"}>
+                Open
+              </SideButton>
+              <MiddleButton id="COM" onClick={handleClick} active={active === "COM"}>
+                Complete
+              </MiddleButton>
+              <SideButton id="CL" onClick={handleClick} active={active === "CL"}>
+                Closed
+              </SideButton>
+            </MenuContainer>
+            <Requests>
+              {requests
+                ? requests.map((request, index) => {
+                    return (
+                      <GenericSeekerRequestBar
+                        handleShowEditModal={handleShowEditModal}
+                        handleEditRequest={handleEditRequest}
+                        handleDeleteRequest={handleDeleteRequest}
+                        handleSetActiveRequest={handleSetActiveRequest}
+                        handleSetActiveProfile={handleSetActiveProfile}
+                        key={index}
+                        request={request}
+                      />
+                    );
+                  })
+                : null}
+            </Requests>
+          </DashboardContentContainer>
+          <NewRequestButton onClick={() => setModal({ ...modal, showModal: true })}>
+            <PlusSignButton />+ Create Request
+          </NewRequestButton>
+        </LeftSide>
+        <RightSide>
+          {activeRequest ? (
+            <ActiveProfileCard
+              handleSelectApplicant={handleSelectApplicant}
+              activeRequest={activeRequest}
+              activeProfile={activeProfile}
+            />
+          ) : null}
+        </RightSide>
+      </PageWrapper>
+    </PageContainer>
+  );
 };
 
 const mapStateToProps = (state) => {
-    return {
-        userProfileReducer: state.userProfileReducer,
-    };
+  return {
+    userProfileReducer: state.userProfileReducer,
+  };
 };
 
 export default connect(mapStateToProps)(SeekerDashboard);
-
