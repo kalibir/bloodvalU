@@ -13,7 +13,7 @@ const FormWrapper = styled.form`
   flex-direction: column;
   align-items: center;
   width: 95%;
-  height: 95%;
+  height: calc(100vh - 136px);
   margin-top: 48px;
 `;
 

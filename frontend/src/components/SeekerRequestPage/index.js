@@ -49,25 +49,21 @@ const MenuContainer = styled.div`
 const MiddleButton = styled.button`
   height: 100%;
   width: 34%;
+  position: relative;
   background-color: #ffffff;
   font-weight: 500;
   font-size: ${rem("14px")};
   color: ${(props) => (props.active ? "#121213" : "#A1A4B1")};
   border: none;
   border-top: 2px solid #ffffff;
-  /* border-bottom: ${(props) => (props.active ? "2px solid #121213" : "2px solid #FFFFFF")}; */
   text-transform: capitalize;
 
-  /********************
-  
-  **************************** DON'T COMMIT BEFORE SHOWING******************************
-  
-  ********************* */
-
   ::after {
+    position: absolute;
+    bottom: 0;
     content: "";
     display: block;
-    width: 0;
+    width: ${(props) => (props.active ? "100%" : "0")};
     height: 2px;
     background: #121213;
     transition: width 0.3s;
