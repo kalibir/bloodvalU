@@ -62,6 +62,7 @@ const SeekerInfo = ({selectedSeeker, handleClosePopup}) => {
             <CloseWrapper><Close onClick={handleClosePopup}>&#9932;</Close></CloseWrapper>
 
             <h3>{selectedSeeker.name}</h3>
+            <p>Phone: {selectedSeeker.phone}</p>
             {requests ? requests.map((request, index) => {
                 return (
                     <GenericMiniDonorRequestBar handleApply={handleApply} key={request.id} request={request}/>
