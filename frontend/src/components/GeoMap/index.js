@@ -31,6 +31,12 @@ const Img = styled.img`
   cursor: pointer;
 `
 
+const CustomLocation = styled(GeolocateControl)`
+  position: relative;
+  top: 20px;
+  width: 30px;
+`
+
 const FlyTo = styled.button`
   padding: 2rem;
   display: flex;
@@ -88,7 +94,7 @@ const GeoMap = ({profilesReducer: {profiles}, dispatch}) => {
                 onViewportChange={viewport => {
                     setViewport(viewport);
                 }}
-            > <GeolocateControl
+            > <CustomLocation
                 positionOptions={{enableHighAccuracy: true}}
                 trackUserLocation={true}
             />{showFly ? <FlyTo onClick={handleFly}>Discover</FlyTo> : null}

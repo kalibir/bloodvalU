@@ -1,22 +1,22 @@
 import React from "react";
 import styled from "styled-components";
-import { rem } from "polished";
-import { Link } from "react-router-dom";
-import { useHistory } from "react-router";
-import { connect } from "react-redux";
+import {rem} from "polished";
+import {Link} from "react-router-dom";
+import {useHistory} from "react-router";
+import {connect} from "react-redux";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-import { WhiteButton } from "../../style/GlobalButtons";
-import { BloodValU } from "../../style/GlobalTitles";
-import { userLogout } from "../../store/actions/logoutActions";
-import SeekerProfilePage from "../SeekerProfilePage";
-import { SeekerNavigation } from "../../style/Functions";
+import {WhiteButton} from "../../style/GlobalButtons";
+import {BloodValU} from "../../style/GlobalTitles";
+import {userLogout} from "../../store/actions/logoutActions";
+import {SeekerNavigation, DonorNavigation} from "../../style/Functions";
+
 
 const Wrapper = styled.div`
   padding-top: 72px; /* Needs to be exactly the same height as the Header, offsets content because it's fixed */
   padding-bottom: 64px; /* Needs to be exactly the same height as the Footer, offsets content because it's fixed */
-  background-color: #fafafc;
+  background-color: #FAFAFC;
 `;
 
 /* -----------HEADER------------------ */
@@ -25,7 +25,7 @@ const Header = styled.div`
   height: 72px;
   left: 0;
   top: 0;
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
   padding: 0 ${rem("160px")} 0 ${rem("160px")};
   position: fixed;
@@ -40,37 +40,36 @@ const HeaderButtonUser = styled(WhiteButton)`
   font-family: Roboto;
   font-size: ${rem("14px")};
   line-height: ${rem("16px")};
-  width: ${rem("144px")};
-  color: #3e465f;
-  transition-duration: initial; //to remove base button
+  width:  ${rem("144px")};
+  color: #3E465F;
+  transition-duration: initial;  //to remove base button
+    
+  :hover, :active{
+  color: #3E465F;
+  background-color: #FFFFFF;
+  border: 1px solid #121232;
+  }  
+`
 
-  :hover,
-  :active {
-    color: #3e465f;
-    background-color: #ffffff;
-    border: 1px solid #121232;
-  }
-`;
-
-const HeaderButtonLogin = styled(HeaderButtonUser)`
+const HeaderButtonLogin = styled(HeaderButtonUser)`  
   border: none;
-
-  :hover,
-  :active {
+  
+  :hover, :active{
     border: none;
   }
-`;
+`
 
 const WelcomeText = styled.div`
   font-family: Roboto;
   font-size: ${rem("16px")};
   line-height: ${rem("16px")};
   height: 100%;
-  color: #3e465f;
+  color: #3E465F;
   display: flex;
   text-align: center;
   align-items: center;
-`;
+`
+
 
 /* -----------FOOTER------------------ */
 const Footer = styled.div`
@@ -90,7 +89,7 @@ const Footer = styled.div`
 
 const NavLink = styled(Link)`
   text-decoration: none;
-`;
+`
 
 const TopFooter = styled.div`
   border-bottom: solid 1px rgba(221, 221, 221, 0.67);
@@ -193,147 +192,105 @@ const FooterLinkTitle = styled.h2`
   text-decoration: none;
 `;
 
-const activeClassName = "nav-item-active";
-
-const StyledNavLink = styled(NavLink).attrs({ activeClassName })`
-  &.${activeClassName} {
-    margin-top: 1px;
-    h2 {
-      font-weight: bold;
+const Navigation = ({
+                        children,
+                        authReducer: {authenticated, userObj}, dispatch
+                    }) => {
+    const {push} = useHistory()
+    console.log("userObj", userObj)
+    const handleClickLogo = e => {
+        console.log("in the click")
+        push("/")
     }
-    &:after {
-      content: "";
-      position: relative;
-      bottom: ${rem("-23px")};
-      width: ${rem("45px")};
-      border-bottom: 3px solid #e47d31;
+
+    const handleLogout = () => {
+        dispatch(userLogout())
+        push("/")
     }
-  }
-  width: ${rem("85px")};
-  height: 100%;
-  padding: 0 ${rem("3px")} 0 ${rem("3px")};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  cursor: pointer;
-  :hover {
-    margin-top: 1px;
-  }
 
-  :hover:after {
-    content: "";
-    position: relative;
-    bottom: ${rem("-23px")};
-    width: ${rem("45px")};
-    border-bottom: 3px solid #e47d31;
-  }
-`;
+    const handClickLogin = () => {
+        push("/auth/login")
+    }
 
-const Navigation = ({ children, authReducer: { authenticated, userObj }, dispatch }) => {
-  const { push } = useHistory();
-  console.log("userObj", userObj);
-  const handleClickLogo = (e) => {
-    console.log("in the click");
-    push("/");
-  };
 
-  const handleLogout = () => {
-    dispatch(userLogout());
-    push("/");
-  };
+    return (
+        <div>
+            <Wrapper>
+                <Header>
+                    <NavLink to={"/"}><BloodValU onClick={handleClickLogo} text="bloodval" black={24} red={36}/></NavLink>
+                    {authenticated ?
+                        <>
+                            {userObj ? userObj.is_donor ?
+                                <DonorNavigation email={userObj.email} first_name={userObj.first_name}/>
+                                : <SeekerNavigation/> : null
+                            }
+                            <HeaderButtonUser onClick={handleLogout}>Logout</HeaderButtonUser>
+                        </>
+                        : <HeaderButtonUser onClick={handClickLogin}>Login</HeaderButtonUser>
+                    }
+                </Header>
+                {children}
+                <Footer>
+                    <TopFooter>
+                        <FooterSectionLeft to="/feed">
+                            <Link to="/about">
+                                <FooterLink>
+                                    <FooterLinkTitle>About Us</FooterLinkTitle>
+                                </FooterLink>
+                            </Link>
+                            <Link to="/press">
+                                <FooterLink>
+                                    <FooterLinkTitle>Press</FooterLinkTitle>
+                                </FooterLink>
+                            </Link>
+                            <Link to="/blog">
+                                <FooterLink>
+                                    <FooterLinkTitle>Blog</FooterLinkTitle>
+                                </FooterLink>
+                            </Link>
+                            <Link to="/ios">
+                                <FooterLink>
+                                    <FooterLinkTitle>IOS</FooterLinkTitle>
+                                </FooterLink>
+                            </Link>
+                            <Link to="/android">
+                                <FooterLink>
+                                    <FooterLinkTitle>Android</FooterLinkTitle>
+                                </FooterLink>
+                            </Link>
+                        </FooterSectionLeft>
+                        <FooterSectionRight>
+                            <SocialsContainer>
+                                <SocialButton>
+                                    <FontAwesomeIcon icon={["fab", "facebook-f"]}/>
+                                </SocialButton>
+                                <SocialButton>
+                                    <FontAwesomeIcon icon={["fab", "twitter"]}/>
+                                </SocialButton>
+                                <SocialButton>
+                                    <FontAwesomeIcon icon={["fab", "google-plus-g"]}/>
+                                </SocialButton>
+                                <SocialButton>
+                                    <FontAwesomeIcon icon={["fab", "instagram"]}/>
+                                </SocialButton>
+                            </SocialsContainer>
+                        </FooterSectionRight>
+                    </TopFooter>
+                    <BottomFooter>
+                        <p>© Copyright BloodvalU 2020</p>
+                    </BottomFooter>
 
-  const handClickLogin = () => {
-    push("/auth/login");
-  };
-
-  return (
-    <div>
-      <Wrapper>
-        <Header>
-          <NavLink to={"/"}>
-            <BloodValU onClick={handleClickLogo} text="bloodval" black={24} red={36} />
-          </NavLink>
-
-          {authenticated ? (
-            <>
-              {" "}
-              <WelcomeText>
-                {userObj
-                  ? userObj.is_donor
-                    ? userObj.first_name === ""
-                      ? `Welcome, ${userObj.email}`
-                      : `Welcome, ${userObj.first_name}.`
-                    : "Welcome."
-                  : null}
-              </WelcomeText>{" "}
-              <HeaderButtonUser onClick={handleLogout}>Logout</HeaderButtonUser>
-            </>
-          ) : (
-            <HeaderButtonUser onClick={handClickLogin}>Login</HeaderButtonUser>
-          )}
-        </Header>
-        {children}
-        <Footer>
-          <TopFooter>
-            <FooterSectionLeft to="/feed">
-              <Link to="/about">
-                <FooterLink>
-                  <FooterLinkTitle>About Us</FooterLinkTitle>
-                </FooterLink>
-              </Link>
-              <Link to="/press">
-                <FooterLink>
-                  <FooterLinkTitle>Press</FooterLinkTitle>
-                </FooterLink>
-              </Link>
-              <Link to="/blog">
-                <FooterLink>
-                  <FooterLinkTitle>Blog</FooterLinkTitle>
-                </FooterLink>
-              </Link>
-              <Link to="/ios">
-                <FooterLink>
-                  <FooterLinkTitle>IOS</FooterLinkTitle>
-                </FooterLink>
-              </Link>
-              <Link to="/android">
-                <FooterLink>
-                  <FooterLinkTitle>Android</FooterLinkTitle>
-                </FooterLink>
-              </Link>
-            </FooterSectionLeft>
-            <FooterSectionRight>
-              <SocialsContainer>
-                <SocialButton>
-                  <FontAwesomeIcon icon={["fab", "facebook-f"]} />
-                </SocialButton>
-                <SocialButton>
-                  <FontAwesomeIcon icon={["fab", "twitter"]} />
-                </SocialButton>
-                <SocialButton>
-                  <FontAwesomeIcon icon={["fab", "google-plus-g"]} />
-                </SocialButton>
-                <SocialButton>
-                  <FontAwesomeIcon icon={["fab", "instagram"]} />
-                </SocialButton>
-              </SocialsContainer>
-            </FooterSectionRight>
-          </TopFooter>
-          <BottomFooter>
-            <p>© Copyright BloodvalU 2020</p>
-          </BottomFooter>
-        </Footer>
-      </Wrapper>
-    </div>
-  );
+                </Footer>
+            </Wrapper>
+        </div>
+    );
 };
 
 const mapStateToProps = (state) => {
-  console.log("state", state);
-  return {
-    authReducer: state.authReducer,
-  };
+    console.log("state", state);
+    return {
+        authReducer: state.authReducer,
+    };
 };
 
 export default connect(mapStateToProps)(Navigation);
