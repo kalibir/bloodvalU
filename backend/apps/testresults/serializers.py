@@ -33,5 +33,5 @@ class TestResultSerializer(serializers.ModelSerializer):
                                               type_of_test=request.data.get('type_of_test')).exists()
         if duplicate:
             raise serializers.ValidationError(
-                'This result already exists, please update instead of creating a new result')
+                'This result already exists, please update instead of creating a new result for this particular test')
         return data
