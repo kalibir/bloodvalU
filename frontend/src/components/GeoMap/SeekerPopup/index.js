@@ -3,6 +3,7 @@ import styled, {keyframes} from "styled-components";
 import {useDispatch} from "react-redux";
 import {applyToRequestOnMap, getRequestsOfSingleSeeker} from "../../../store/actions/mapActions";
 import GenericMiniDonorRequestBar from "./GenericMiniDonorRequestBar";
+import {bloodGroupTest} from "../../../HelperFunctions";
 
 const CloseWrapper = styled.div`
   display: flex;
@@ -27,7 +28,7 @@ const Close = styled.p`
 `
 const Wrapper = styled.div`
 `
-const SeekerInfo = ({selectedSeeker, handleClosePopup}) => {
+const SeekerInfo = ({selectedSeeker, handleClosePopup, bloodgroup}) => {
     const dispatch = useDispatch()
     const [requests, setRequests] = useState(null)
     console.log("seeker local data", requests)
@@ -64,9 +65,7 @@ const SeekerInfo = ({selectedSeeker, handleClosePopup}) => {
             <h3>{selectedSeeker.name}</h3>
             <p>Phone: {selectedSeeker.phone}</p>
             {requests ? requests.map((request, index) => {
-                return (
-                    <GenericMiniDonorRequestBar handleApply={handleApply} key={request.id} request={request}/>
-                )
+                if (bloodGroupTest(bloodgroup, request)) return ( <GenericMiniDonorRequestBar handleApply={handleApply} key={request.id} request={request}/> )
             }) : null}
         </Wrapper>
     )
