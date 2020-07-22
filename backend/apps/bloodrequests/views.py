@@ -131,17 +131,24 @@ class ToggleApplyToRequestView(CreateAPIView):
         if target_blood_request.selected_donor is None or target_blood_request.status is "OP" or target_blood_request.selected_donor == self.request.user.donor_profile:
             target_donor = self.request.user.donor_profile
             if target_donor.has_been_selected and target_donor != target_blood_request.selected_donor:
-                return Response({"detail": "You have already been selected in another request, you can no longer apply"},
-                                status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {"detail": "You have already been selected in another request, you can no longer apply"},
+                    status=status.HTTP_400_BAD_REQUEST)
             apply_relation = target_donor in target_blood_request.applicants.all()
             if apply_relation and target_blood_request.selected_donor == self.request.user.donor_profile:
                 target_blood_request.applicants.remove(target_donor)
                 target_blood_request.selected_donor = None
+                target_donor.has_been_selected = False
+                target_donor.save()
                 target_blood_request.save()
             elif apply_relation:
                 target_blood_request.applicants.remove(target_donor)
+                target_donor.has_been_selected = False
+                target_donor.save()
             else:
                 target_blood_request.applicants.add(target_donor)
+                target_donor.has_been_selected = True
+                target_donor.save()
             return Response(self.get_serializer(target_blood_request).data)
         else:
             return Response(
@@ -163,7 +170,8 @@ class ListApplicantsOfSpecificRequestView(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         target_blood_request = self.get_object()
-        target_applicants = target_blood_request.applicants.filter((Q(has_been_selected=False) | Q(accepted_requests=target_blood_request.selected_donor)))
+        target_applicants = target_blood_request.applicants.filter(
+            (Q(has_been_selected=False) | Q(accepted_requests=target_blood_request.selected_donor)))
         serializer = self.get_serializer(target_applicants, many=True)
         return Response(serializer.data)
 
@@ -184,14 +192,18 @@ class SelectDonorFromApplicantsView(CreateAPIView):
         target_applicant = DonorProfile.objects.get(id=self.kwargs['donor_id'])
         if target_applicant == target_blood_request.selected_donor:
             target_blood_request.selected_donor = None
+            target_applicant.has_been_selected = False
             target_blood_request.status = "OP"
+            target_applicant.save()
             target_blood_request.save()
             return Response(self.get_serializer(target_blood_request).data)
         elif target_applicant in target_blood_request.applicants.all():
             target_applicant = DonorProfile.objects.get(id=self.kwargs['donor_id'])
             target_blood_request.selected_donor = target_applicant
+            target_applicant.has_been_selected = True
             target_blood_request.status = "CL"
             target_blood_request.save()
+            target_applicant.save()
             email = EmailMessage()
             code1 = target_blood_request.unique_request_id
             code2 = target_applicant.unique_donor_id
