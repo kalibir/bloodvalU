@@ -25,7 +25,7 @@ const Header = styled.div`
   left: 0;
   top: 0;
   background-color: #ffffff;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   padding: 0 ${rem("160px")} 0 ${rem("160px")};
   position: fixed;
   z-index: 999;
@@ -36,7 +36,7 @@ const Header = styled.div`
 
 /* -----------BUTTONS------------------ */
 const HeaderButtonUser = styled(WhiteButton)`
-  font-family: Roboto;
+  font-family: Roboto,serif;
   font-size: ${rem("14px")};
   line-height: ${rem("16px")};
   width: ${rem("144px")};
@@ -222,7 +222,7 @@ const Navigation = ({ children, authReducer: { authenticated, userObj }, dispatc
                 userObj.is_donor ? (
                   <DonorNavigation email={userObj.email} first_name={userObj.first_name} />
                 ) : (
-                  <SeekerNavigation />
+                  <SeekerNavigation name={userObj.name}/>
                 )
               ) : null}
               <HeaderButtonUser onClick={handleLogout}>Logout</HeaderButtonUser>
