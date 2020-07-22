@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { applyToRequestActionInAll } from "../../store/actions/bloodRequestActions";
 import acceptedIcon from "../../assets/icons/accepted.png";
 import expiredIcon from "../../assets/icons/expired.png";
-import urgentIcon from "../../assets/icons/urgent.png";
+import urgentIcon from "../../assets/icons/urgent.svg";
 import onProgressIcon from "../../assets/icons/on_progress.png";
 import { PointContainer } from "../GenericDonorTestCard";
 import O_negative from "../../assets/icons/O_negative.svg";
@@ -39,7 +39,6 @@ const RequestBar = styled.div`
   background-color: #ffffff;
   border-bottom: 1px solid #d9d9d9;
   align-items: center;
-  justify-items: auto;
   grid-gap: 8px;
   cursor: pointer;
 `;
@@ -65,6 +64,10 @@ const ButtonWrapper = styled.div`
 `;
 
 const IconWrapper = styled(ButtonWrapper)`
+  grid-area: status;
+`;
+
+const UrgentWrapper = styled(ButtonWrapper)`
   grid-area: urgent;
 `;
 
@@ -149,6 +152,11 @@ const InfoIcons = styled.img`
   height: ${rem("30px")};
 `;
 
+const UrgentIcon = styled.img`
+  width: ${rem("30px")};
+  height: ${rem("30px")};
+`;
+
 const RequestIsActiveSign = styled(PointContainer)`
   width: ${rem("82px")};
   height: ${rem("28px")};
@@ -212,9 +220,9 @@ const GenericDonorRequestBar = ({
           ) : null}
         </IconWrapper>
 
-        <IconWrapper onClick={showSeekerHandler}>
-          {is_urgent ? <InfoIcons src={urgentIcon} /> : null}
-        </IconWrapper>
+        <UrgentWrapper onClick={showSeekerHandler}>
+          {is_urgent ? <UrgentIcon src={urgentIcon} /> : null}
+        </UrgentWrapper>
         <BloodDiv>
           <Type src={renderBloodType()} alt="blood_type" />
         </BloodDiv>

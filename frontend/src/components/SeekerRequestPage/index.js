@@ -15,6 +15,7 @@ import {
 } from "../../store/actions/bloodRequestActions";
 import ActiveProfileCard from "./ActiveProfileCard";
 import { searchAllRequestsAndTestsAction } from "../../store/actions/searchActions";
+import Spinner from "../../components/GenericSpinner";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -191,21 +192,23 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
               </SideButton>
             </MenuContainer>
             <Requests>
-              {requests
-                ? requests.map((request, index) => {
-                    return (
-                      <GenericSeekerRequestBar
-                        handleShowEditModal={handleShowEditModal}
-                        handleEditRequest={handleEditRequest}
-                        handleDeleteRequest={handleDeleteRequest}
-                        handleSetActiveRequest={handleSetActiveRequest}
-                        handleSetActiveProfile={handleSetActiveProfile}
-                        key={index}
-                        request={request}
-                      />
-                    );
-                  })
-                : null}
+              {requests ? (
+                requests.map((request, index) => {
+                  return (
+                    <GenericSeekerRequestBar
+                      handleShowEditModal={handleShowEditModal}
+                      handleEditRequest={handleEditRequest}
+                      handleDeleteRequest={handleDeleteRequest}
+                      handleSetActiveRequest={handleSetActiveRequest}
+                      handleSetActiveProfile={handleSetActiveProfile}
+                      key={index}
+                      request={request}
+                    />
+                  );
+                })
+              ) : (
+                <Spinner />
+              )}
             </Requests>
           </DashboardContentContainer>
           <NewRequestButton onClick={() => setModal({ ...modal, showModal: true })}>
