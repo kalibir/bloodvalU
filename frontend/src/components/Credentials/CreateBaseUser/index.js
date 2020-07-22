@@ -127,8 +127,8 @@ const CreateBaseUser = ({
                 <p>{error === "3" ? "Passwords do not match!" : null}</p>
               </Error>
               <BigInput
-                title="Password must be at least 4 characters"
-                pattern=".{4,}"
+                title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                 type="password"
                 placeholder="password"
                 onChange={(e) => onChangeHandler(e, "password")}

@@ -158,34 +158,34 @@ const CreateSeekerProfile = ({authReducer}) => {
         }
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const form = new FormData();
-        form.append("name", seekerInfo.name);
-        form.append("country", seekerInfo.country);
-        form.append("zip_code", seekerInfo.zip_code);
-        form.append("street", seekerInfo.street);
-        form.append("zip", seekerInfo.country);
-        form.append("phone", seekerInfo.phone);
-        form.append("website", seekerInfo.website);
-        if (seekerInfo.certificate) {
-            form.append("certificate", seekerInfo.certificate);
-        }
-        if (seekerInfo.logo) {
-            form.append("logo", seekerInfo.logo);
-        }
-        const response = await dispatch(updateProfileAction(form));
-        if (response.status < 300) {
-            console.log("woohooo, success!");
-            history.push(`/dashboard/seeker`);
-        }
-    };
-    console.log("seekerInfo", seekerInfo);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = new FormData();
+    form.append("name", seekerInfo.name);
+    form.append("country", seekerInfo.country);
+    form.append("zip_code", seekerInfo.zip_code);
+    form.append("street", seekerInfo.street);
+    form.append("zip", seekerInfo.country);
+    form.append("phone", seekerInfo.phone);
+    form.append("website", seekerInfo.website);
+    if (seekerInfo.certificate) {
+      form.append("certificate", seekerInfo.certificate);
+    }
+    if (seekerInfo.logo) {
+      form.append("logo", seekerInfo.logo);
+    }
+    const response = await dispatch(updateProfileAction(form));
+    if (response.status < 300) {
+      console.log("woohooo, success!", response);
+      history.push(`/dashboard/seeker`);
+    }
+  };
+  console.log("seekerInfo", seekerInfo);
 
-    const onChangeHandler = (event, property) => {
-        const value = event.currentTarget.value;
-        setSeekerInfo({...seekerInfo, [property]: value});
-    };
+  const onChangeHandler = (event, property) => {
+    const value = event.currentTarget.value;
+    setSeekerInfo({ ...seekerInfo, [property]: value.replace(/,/g, '') });
+  };
 
     const certificateSelectHandler = (e) => {
         if (e.target.files[0]) {
