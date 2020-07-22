@@ -11,6 +11,7 @@ import {deleteUserAction, updateProfileAction} from "../../store/actions/userAct
 import {setLoggedInUser} from "../../store/actions/loginActions";
 import {Link, useHistory} from "react-router-dom";
 import AreYouSureModal from "../AreYouSure";
+import CountrySelect from "../CountrySelect";
 
 const FormWrapper = styled.div`
   display: flex;
@@ -282,6 +283,7 @@ const DonorEditProfile = ({
                                 type="date"
                                 onChange={(e) => onChangeHandler(e, "birthday")}
                                 defaultValue={birthday}
+                                max="2002-07-22"
                                 required
                             />
                         </div>
@@ -342,13 +344,7 @@ const DonorEditProfile = ({
 
                         <div>
                             <InputTitle>Country</InputTitle>
-                            <SmallInput
-                                type="text"
-                                placeholder="England"
-                                onChange={(e) => onChangeHandler(e, "country")}
-                                defaultValue={country}
-                                required
-                            />
+                            <CountrySelect/>
                         </div>
                     </InputPairContainer>
                     <ErrorMsg>
