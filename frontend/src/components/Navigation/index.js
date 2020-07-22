@@ -10,8 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { WhiteButton } from "../../style/GlobalButtons";
 import { BloodValU } from "../../style/GlobalTitles";
 import { userLogout } from "../../store/actions/logoutActions";
-import SeekerProfilePage from "../SeekerProfilePage";
-import { SeekerNavigation } from "../../style/Functions";
+import { SeekerNavigation, DonorNavigation } from "../../style/Functions";
 
 const Wrapper = styled.div`
   padding-top: 72px; /* Needs to be exactly the same height as the Header, offsets content because it's fixed */
@@ -26,7 +25,7 @@ const Header = styled.div`
   left: 0;
   top: 0;
   background-color: #ffffff;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   padding: 0 ${rem("160px")} 0 ${rem("160px")};
   position: fixed;
   z-index: 999;
@@ -37,7 +36,7 @@ const Header = styled.div`
 
 /* -----------BUTTONS------------------ */
 const HeaderButtonUser = styled(WhiteButton)`
-  font-family: Roboto;
+  font-family: Roboto,serif;
   font-size: ${rem("14px")};
   line-height: ${rem("16px")};
   width: ${rem("144px")};
@@ -193,43 +192,6 @@ const FooterLinkTitle = styled.h2`
   text-decoration: none;
 `;
 
-const activeClassName = "nav-item-active";
-
-const StyledNavLink = styled(NavLink).attrs({ activeClassName })`
-  &.${activeClassName} {
-    margin-top: 1px;
-    h2 {
-      font-weight: bold;
-    }
-    &:after {
-      content: "";
-      position: relative;
-      bottom: ${rem("-23px")};
-      width: ${rem("45px")};
-      border-bottom: 3px solid #e47d31;
-    }
-  }
-  width: ${rem("85px")};
-  height: 100%;
-  padding: 0 ${rem("3px")} 0 ${rem("3px")};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  cursor: pointer;
-  :hover {
-    margin-top: 1px;
-  }
-
-  :hover:after {
-    content: "";
-    position: relative;
-    bottom: ${rem("-23px")};
-    width: ${rem("45px")};
-    border-bottom: 3px solid #e47d31;
-  }
-`;
-
 const Navigation = ({ children, authReducer: { authenticated, userObj }, dispatch }) => {
   const { push } = useHistory();
   console.log("userObj", userObj);
@@ -254,19 +216,15 @@ const Navigation = ({ children, authReducer: { authenticated, userObj }, dispatc
           <NavLink to={"/"}>
             <BloodValU onClick={handleClickLogo} text="bloodval" black={24} red={36} />
           </NavLink>
-
           {authenticated ? (
             <>
-              {" "}
-              <WelcomeText>
-                {userObj
-                  ? userObj.is_donor
-                    ? userObj.first_name === ""
-                      ? `Welcome, ${userObj.email}`
-                      : `Welcome, ${userObj.first_name}.`
-                    : "Welcome."
-                  : null}
-              </WelcomeText>{" "}
+              {userObj ? (
+                userObj.is_donor ? (
+                  <DonorNavigation email={userObj.email} first_name={userObj.first_name} />
+                ) : (
+                  <SeekerNavigation name={userObj.name}/>
+                )
+              ) : null}
               <HeaderButtonUser onClick={handleLogout}>Logout</HeaderButtonUser>
             </>
           ) : (

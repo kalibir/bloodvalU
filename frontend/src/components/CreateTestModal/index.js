@@ -23,7 +23,7 @@ const ModalWrapper = styled.div`
   animation: 0.3s ${modalFade};
 `;
 
-const Modal = styled.div`
+const Modal = styled.form`
   width: 352px;
   background: white;
   border-radius: 4px;
@@ -123,7 +123,7 @@ const CreateTestModal = ({ closeModal }) => {
 
   return (
     <ModalWrapper>
-      <Modal>
+      <Modal onSubmit={handleSubmit}>
         <TitleInputWrapper>
           Title:
           <TitleInput onChange={(e) => onChangeHandler(e, "test_type")} />
@@ -145,7 +145,7 @@ const CreateTestModal = ({ closeModal }) => {
 
         <ModalBtnWrapper>
           <CustomWhiteButton onClick={closeModal}>Cancel</CustomWhiteButton>
-          <CustomDarkBlueButton onClick={handleSubmit}>Confirm</CustomDarkBlueButton>
+          <CustomDarkBlueButton >Confirm</CustomDarkBlueButton>
         </ModalBtnWrapper>
       </Modal>
     </ModalWrapper>
