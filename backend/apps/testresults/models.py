@@ -8,14 +8,15 @@ from apps.registrations.models import code_generator
 
 
 class TestResult(models.Model):
-    donor = models.ForeignKey(to=DonorProfile, on_delete=models.CASCADE, related_name='test_results')
 
-    type_of_test = models.ForeignKey(to=OfferedTest, on_delete=models.CASCADE, related_name='test_results')
+    type_of_test = models.ForeignKey(to=OfferedTest, null=True, on_delete=models.CASCADE, related_name='test_results')
 
+    donor = models.ForeignKey(to=DonorProfile, null=True, on_delete=models.CASCADE, related_name='test_results')
     result_code = models.CharField(
         max_length=5,
         null=False,
         default=code_generator,
     )
 
-    results = models.FileField(null=True, blank=True, validators=[FileExtensionValidator(['pdf'])])
+    results = models.FileField(validators=[FileExtensionValidator(['pdf'])])
+

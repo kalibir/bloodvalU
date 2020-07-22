@@ -25,9 +25,9 @@ class CreateTestResultView(CreateAPIView):
         serializer.save(donor=target_donor, type_of_test=target_test)
         email = EmailMessage()
         email.subject = 'Your test Results are available!'
-        email.body = 'Hey {donor_name},/nYour test results are now available for download on your profile page.'.format(
-            donor_name=target_donor.frist_name)
-        email.to = [target_donor.email]
+        email.body = 'Hey {donor_name}, /n Your test results are now available for download on your profile page.'.format(
+            donor_name=target_donor.first_name)
+        email.to = [target_donor.user.email]
         email.send(fail_silently=False)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 
 from apps.donorprofiles.models import DonorProfile
 from apps.donorprofiles.serializers import DonorProfileSerializer
@@ -8,11 +9,18 @@ from apps.testresults.models import TestResult
 
 
 class TestResultSerializer(serializers.ModelSerializer):
-    donor = DonorProfileSerializer(required=False)
+    donor = DonorProfileSerializer(required=False, read_only=True)
 
     class Meta:
         model = TestResult
         fields = ['id', 'donor', 'type_of_test', 'result_code', 'results']
+        validators = [
+            UniqueTogetherValidator(
+                queryset=model.objects.all(),
+                fields=('donor', 'type_of_test'),
+                message="The results for this test already exist, you must update instead"
+            )
+        ]
 
     def validate(self, data):
         request = self.context.get('request')
