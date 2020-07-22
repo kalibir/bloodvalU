@@ -125,10 +125,13 @@ class ToggleApplyToRequestView(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         target_blood_request = self.get_object()
-        if target_blood_request.selected_donor is None or target_blood_request.status is "OP":
+        if target_blood_request.selected_donor is None or target_blood_request.status is "OP" or target_blood_request.selected_donor == self.request.user.donor_profile:
             requester = self.request.user.donor_profile
             apply_relation = requester in target_blood_request.applicants.all()
-            if apply_relation:
+            if apply_relation and target_blood_request.selected_donor == self.request.user.donor_profile:
+                target_blood_request.applicants.remove(requester)
+                target_blood_request.selected_donor = None
+            elif apply_relation:
                 target_blood_request.applicants.remove(requester)
             else:
                 target_blood_request.applicants.add(requester)
