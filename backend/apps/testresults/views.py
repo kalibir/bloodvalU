@@ -22,6 +22,7 @@ class CreateTestResultView(CreateAPIView):
         target_donor = DonorProfile.objects.get(id=int(request.data['donor']))
         target_test = OfferedTest.objects.get(id=int(request.data['type_of_test']))
         serializer.save(donor=target_donor, type_of_test=target_test)
+        seeker = self.request.user.seeker_profile
         email = EmailMessage()
         email.subject = 'Your test Results are available!'
         email.body = 'Hey {donor_name}, /n Your test results are now available for download on your profile page.'.format(

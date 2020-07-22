@@ -32,10 +32,7 @@ class OfferedTestSerializer(serializers.ModelSerializer):
                 target_result = TestResult.objects.filter(type_of_test=obj,
                                                           donor=self.context.get('request').user.donor_profile)
                 target_pdf = target_result[0].results
-                # return "http://localhost:8000/media-files/" + str(target_pdf)
                 return request.scheme + "://" + request.get_host() + target_pdf.url
-                # return settings.MEDIA_URL + str(target_pdf)
-
             else:
                 return None
         else:
