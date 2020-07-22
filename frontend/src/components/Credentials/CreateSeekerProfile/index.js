@@ -175,7 +175,7 @@ const CreateSeekerProfile = ({ authReducer }) => {
     }
     const response = await dispatch(updateProfileAction(form));
     if (response.status < 300) {
-      console.log("woohooo, success!");
+      console.log("woohooo, success!", response);
       history.push(`/dashboard/seeker`);
     }
   };
@@ -183,7 +183,7 @@ const CreateSeekerProfile = ({ authReducer }) => {
 
   const onChangeHandler = (event, property) => {
     const value = event.currentTarget.value;
-    setSeekerInfo({ ...seekerInfo, [property]: value });
+    setSeekerInfo({ ...seekerInfo, [property]: value.replace(/,/g, '') });
   };
 
   const certificateSelectHandler = (e) => {

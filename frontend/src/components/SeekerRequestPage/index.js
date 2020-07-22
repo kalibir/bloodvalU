@@ -15,6 +15,7 @@ import {
 } from "../../store/actions/bloodRequestActions";
 import ActiveProfileCard from "./ActiveProfileCard";
 import { searchAllRequestsAndTestsAction } from "../../store/actions/searchActions";
+import {deleteTestAction} from "../../store/actions/offeredTestActions";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -157,9 +158,12 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
     setModal({ ...modal, showModal: false });
   };
 
-  const handleDeleteRequest = (event, requestID) => {
-    dispatch(deleteRequestAction(requestID));
-  };
+   const handleDeleteRequest = async (e, requestID) => {
+        e.preventDefault();
+        console.log("in da delete test func", requestID)
+        const response = await dispatch(deleteRequestAction(requestID));
+        if (response.status < 300) closeModal();
+    };
 
   const handleShowEditModal = (event, requestObj) => {
     setModal({ showModal: true, modalData: requestObj });

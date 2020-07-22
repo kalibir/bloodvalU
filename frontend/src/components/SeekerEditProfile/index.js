@@ -7,10 +7,13 @@ import {MiddleTitle, SmallTitle} from "../../style/GlobalTitles";
 import {BigInput, Select, SmallInput} from "../../style/GlobalInputs";
 import {DarkBlueButton, WhiteButton} from "../../style/GlobalButtons";
 import {PageContainer} from "../../style/GlobalWrappers";
-import {updateProfileAction} from "../../store/actions/userActions";
+import {deleteUserAction, updateProfileAction} from "../../store/actions/userActions";
 import {resetError} from "../../store/actions/errorActions";
+import {Link} from "react-router-dom";
+import AreYouSureModal from "../AreYouSure";
+import {deleteTestAction} from "../../store/actions/offeredTestActions";
 
-const FormWrapper = styled.form`
+const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,10 +22,9 @@ const FormWrapper = styled.form`
   //background-color: darkorange;
 `;
 
-const FormContainer = styled.div`
+const FormContainer = styled.form`
   display: flex;
   flex-flow: column;
-  //background-color: burlywood;
 `;
 
 const InputPairContainer = styled.div`
@@ -34,8 +36,27 @@ const InputPairContainer = styled.div`
 `;
 
 const TitleContainer = styled(InputPairContainer)`
-  justify-content: flex-start;
+  justify-content: space-between;
   margin-top: ${rem("24px")};
+`;
+
+const DeleteProfile = styled.button`
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 32px;
+    text-decoration-line: underline;
+    color: #FF0000;
+    background: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    
+    :hover {
+    color: #8B0000;
+  }
+  :active {
+    color: #8B0000;
+  }
 `;
 
 const MiddleTitle500 = styled(MiddleTitle)`
@@ -110,7 +131,7 @@ const ChooseFileButton = styled.label`
 `;
 
 const SeekerEditProfile = ({
-                               authReducer: {userObj: {name, email, country, zip_code, street, logo, certificate, website, phone}},
+                               authReducer: {userObj: {id, name, email, country, zip_code, street, logo, certificate, website, phone}},
                                dispatch,
                                errorReducer: {error},
                            }) => {
@@ -128,6 +149,7 @@ const SeekerEditProfile = ({
         website: `${website}`,
         email: `${email}`,
     });
+    const [sureModal, setSureModal] = useState(false);
 
     console.log(seekerInfo);
 
@@ -174,14 +196,35 @@ const SeekerEditProfile = ({
         }
     };
 
+    const closeModal = () => {
+        console.log("in the close modal");
+        setSureModal(false);
+    };
+
+    const handleDeleteSeekerProfile = async (e, seekerID) => {
+        e.preventDefault();
+        console.log("in da delete test func", seekerID)
+        const response = await dispatch(deleteUserAction(seekerID));
+        if (response.status < 300) closeModal();
+    };
+
+
     return (
         <PageContainer>
-            <FormWrapper onSubmit={handleSubmit}>
-                <FormContainer>
-                    <TitleContainer>
+            {sureModal ? (
+                <AreYouSureModal
+                    handleDeleteSeekerProfile={handleDeleteSeekerProfile}
+                    closeModal={closeModal}
+                    context={"seekerprofile"}
+                    id={id}
+                />
+            ) : null}
+            <FormWrapper>
+                <TitleContainer>
                         <MiddleTitle500>Edit Profile</MiddleTitle500>
+                        <DeleteProfile onClick={e => setSureModal(true)}>Delete Profile</DeleteProfile>
                     </TitleContainer>
-
+                <FormContainer onSubmit={handleSubmit}>
                     <div>
                         <InputTitle>Name</InputTitle>
                         <NameInput
@@ -195,7 +238,7 @@ const SeekerEditProfile = ({
 
                     <InputPairContainer>
                         <div>
-                            <InputTitle>Zip code</InputTitle>
+                            <InputTitle>Zip Code</InputTitle>
                             <SmallInput
                                 type="text"
                                 placeholder="NW1 London"
@@ -280,7 +323,7 @@ const SeekerEditProfile = ({
                         </ChooseFileButton>
                     </InputPairContainer>
                     <ButtonContainer>
-                        <WhiteButtonWithMargin>Cancel</WhiteButtonWithMargin>
+                        <WhiteButtonWithMargin>Back</WhiteButtonWithMargin>
                         <DarkBlueButton>Save</DarkBlueButton>
                     </ButtonContainer>
                 </FormContainer>

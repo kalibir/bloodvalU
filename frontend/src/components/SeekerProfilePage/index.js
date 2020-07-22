@@ -6,7 +6,7 @@ import { PageContainer } from "../../style/GlobalWrappers";
 import GenericSeekerTestCard from "../GenericSeekerTestCard";
 import SeekerProfileCard from "../GenericSeekerProfileCard";
 import { connect } from "react-redux";
-import { getRequestsOfSeekerAction } from "../../store/actions/offeredTestActions";
+import {deleteTestAction, getRequestsOfSeekerAction} from "../../store/actions/offeredTestActions";
 import CreateTestModal from "../CreateTestModal";
 import GenericSeekerRequestBar from "../GenericSeekerRequestBar";
 import {deleteRequestAction, editRequestAction} from "../../store/actions/bloodRequestActions";
@@ -105,9 +105,6 @@ const SeekerProfilePage = ({ userProfileReducer: { offeredTests }, dispatch }) =
     setModalActive(false);
   };
 
-  const handleDeleteRequest = (event, testID) => {
-    dispatch(deleteRequestAction(testID));
-  };
 
 
   return (
@@ -126,7 +123,7 @@ const SeekerProfilePage = ({ userProfileReducer: { offeredTests }, dispatch }) =
                     return <GenericSeekerTestCard
                         test={test}
                         key={index}
-                        handleDeleteRequest={handleDeleteRequest}/>;
+                        />;
                   })
                 : null}
             </TestWrapper>

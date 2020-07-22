@@ -147,7 +147,8 @@ const GenericSeekerRequestBar = ({
           <AreYouSureModal
           handleDeleteRequest={handleDeleteRequest}
           closeModal={closeModal}
-          request={request}
+          id={request.id}
+          context={"request"}
           />
       ) : null}
       <RequestBar>
