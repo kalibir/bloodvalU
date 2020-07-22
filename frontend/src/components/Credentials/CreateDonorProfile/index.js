@@ -191,6 +191,8 @@ const CreateDonorProfile = (props) => {
               <SmallInput
                 type="date"
                 onChange={(e) => onChangeHandler(e, "birthday")}
+                value="1990-07-22"
+                max="2002-07-22"
                 required
               />
             </div>
