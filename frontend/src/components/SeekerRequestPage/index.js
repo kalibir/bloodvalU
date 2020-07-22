@@ -47,6 +47,7 @@ const MenuContainer = styled.div`
 `;
 
 const MiddleButton = styled.button`
+  cursor: pointer;
   height: 100%;
   width: 34%;
   position: relative;
