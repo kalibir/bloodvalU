@@ -12,6 +12,7 @@ import {resetError} from "../../store/actions/errorActions";
 import {Link} from "react-router-dom";
 import AreYouSureModal from "../AreYouSure";
 import {deleteTestAction} from "../../store/actions/offeredTestActions";
+import CountrySelect from "../CountrySelect";
 
 const FormWrapper = styled.div`
   display: flex;
@@ -250,13 +251,7 @@ const SeekerEditProfile = ({
 
                         <div>
                             <InputTitle>Country</InputTitle>
-                            <SmallInput
-                                type="text"
-                                placeholder="England"
-                                onChange={(e) => onChangeHandler(e, "country")}
-                                defaultValue={country}
-                                required
-                            />
+                            <CountrySelect/>
                         </div>
                     </InputPairContainer>
 

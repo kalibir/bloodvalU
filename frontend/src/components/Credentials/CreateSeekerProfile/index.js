@@ -8,6 +8,7 @@ import {DarkBlueButton} from "../../../style/GlobalButtons";
 import {useHistory} from "react-router";
 import {updateProfileAction} from "../../../store/actions/userActions";
 import {PageContainer} from "../../../style/GlobalWrappers";
+import CountrySelect from "../../CountrySelect";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -230,11 +231,7 @@ const CreateSeekerProfile = ({authReducer}) => {
                     </div>
                     <div>
                         <InputTitle>Country</InputTitle>
-                        <CostumizedSmallInput
-                            onChange={(e) => onChangeHandler(e, "country")}
-                            placeholder="Switzerland"
-                            required
-                        />
+                        <CountrySelect/>
                     </div>
                 </InputWrapper>
                 <InputWrapper>

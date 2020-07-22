@@ -345,13 +345,6 @@ const DonorEditProfile = ({
                         <div>
                             <InputTitle>Country</InputTitle>
                             <CountrySelect/>
-                            {/*<SmallInput*/}
-                            {/*    type="text"*/}
-                            {/*    placeholder="England"*/}
-                            {/*    onChange={(e) => onChangeHandler(e, "country")}*/}
-                            {/*    defaultValue={country}*/}
-                            {/*    required*/}
-                            {/*/>*/}
                         </div>
                     </InputPairContainer>
                     <ErrorMsg>
