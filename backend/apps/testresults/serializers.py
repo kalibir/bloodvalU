@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from rest_framework.validators import UniqueTogetherValidator
 
 from apps.donorprofiles.models import DonorProfile
 from apps.donorprofiles.serializers import DonorProfileSerializer
@@ -35,3 +34,6 @@ class TestResultSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 'This result already exists, please update instead of creating a new result for this particular test')
         return data
+
+
+
