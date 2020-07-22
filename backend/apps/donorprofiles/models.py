@@ -48,6 +48,8 @@ class DonorProfile(models.Model):
 
     blood_group = models.CharField(max_length=3, choices=BLOOD_GROUP_CHOICES, default='O-')
 
+    has_been_selected = models.BooleanField(default=False)
+
     GENDER_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female'),

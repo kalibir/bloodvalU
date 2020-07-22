@@ -131,6 +131,7 @@ class ToggleApplyToRequestView(CreateAPIView):
             if apply_relation and target_blood_request.selected_donor == self.request.user.donor_profile:
                 target_blood_request.applicants.remove(requester)
                 target_blood_request.selected_donor = None
+                target_blood_request.save()
             elif apply_relation:
                 target_blood_request.applicants.remove(requester)
             else:
