@@ -20,8 +20,8 @@ class CreateTestResultView(CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        target_donor = DonorProfile.objects.get(id=int(request.data['type_of_test']))
-        target_test = OfferedTest.objects.get(id=int(request.data['donor']))
+        target_donor = DonorProfile.objects.get(id=int(request.data['donor']))
+        target_test = OfferedTest.objects.get(id=int(request.data['type_of_test']))
         serializer.save(donor=target_donor, type_of_test=target_test)
         email = EmailMessage()
         email.subject = 'Your test Results are available!'

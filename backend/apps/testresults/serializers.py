@@ -14,13 +14,6 @@ class TestResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestResult
         fields = ['id', 'donor', 'type_of_test', 'result_code', 'results']
-        validators = [
-            UniqueTogetherValidator(
-                queryset=model.objects.all(),
-                fields=('donor', 'type_of_test'),
-                message="The results for this test already exist, you must update instead"
-            )
-        ]
 
     def validate(self, data):
         request = self.context.get('request')
@@ -33,6 +26,12 @@ class TestResultSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"detail": "This donor does not exist!"})
         if not get_or_none(OfferedTest, id=request.data.get('type_of_test')):
             raise serializers.ValidationError({"detail": "This offered test does not exist!"})
-        if not DonorProfile.objects.get(id=request.data.get('donor')) in OfferedTest.objects.get(id=request.data.get('type_of_test')).donors_who_bought.all():
+        if not DonorProfile.objects.get(id=request.data.get('donor')) in OfferedTest.objects.get(
+                id=request.data.get('type_of_test')).donors_who_bought.all():
             raise serializers.ValidationError({"detail": "The selected Donor never bought this test!"})
+        duplicate = TestResult.objects.filter(donor=request.data.get('donor'),
+                                              type_of_test=request.data.get('type_of_test')).exists()
+        if duplicate:
+            raise serializers.ValidationError(
+                'This result already exists, please update instead of creating a new result')
         return data
