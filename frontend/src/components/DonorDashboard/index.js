@@ -16,7 +16,8 @@ import {
 } from "../../store/actions/bloodRequestActions";
 import { searchAllRequestsAndTestsAction } from "../../store/actions/searchActions";
 import { getLoggedInUserAction } from "../../store/actions/userActions";
-import {bloodGroupTest} from "../../HelperFunctions";
+import { bloodGroupTest } from "../../HelperFunctions";
+import Spinner from "../../components/GenericSpinner";
 
 const ColorDebug = false; //at true all element get colored background for checking
 
@@ -167,6 +168,12 @@ const RequestContainer = styled.div`
   background-color: ${ColorDebug ? "lightslategrey" : ""};
 `;
 
+const SpinnerContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const DonorDashboard = ({
   dispatch,
   userProfileReducer: { offeredTests, requests, appliedRequests },
@@ -227,7 +234,7 @@ const DonorDashboard = ({
               <SearchButton onClick={handleSearch}>Search</SearchButton>
             </SearchContainer>
 
-            {active === "tests" ?
+            {active === "tests" ? (
               <>
                 <PointsHeader>
                   <OfferTitle>Offers</OfferTitle>
@@ -243,24 +250,41 @@ const DonorDashboard = ({
                 <UnderLine />
 
                 <OfferContainer>
-                    {offeredTests ? offeredTests.map((test, index) => {
-                        return (<GenericDonorTestCard key={index} test={test}/>)
-                    }) : null}
+                  {offeredTests
+                    ? offeredTests.map((test, index) => {
+                        return <GenericDonorTestCard key={index} test={test} />;
+                      })
+                    : null}
                 </OfferContainer>
               </>
-                            : active === "requests" ?
-                                <RequestContainer>
-                                    {requests ? requests.map((request, index) => {
-                                        if (bloodGroupTest(userObj.blood_group, request)) return (<GenericDonorRequestBar key={index} request={request}/>)
-                                    }) : null}
-                                </RequestContainer>
-                                : <div>{requests ? requests.map((request, index) => {
-                                    return (<GenericDonorRequestBar key={index} request={request}/>)
-                                }) : null}</div>
-                        }
-
-                    </DashboardContentContainer>
-                </LeftSide>
+            ) : active === "requests" ? (
+              <RequestContainer>
+                {requests ? (
+                  requests.map((request, index) => {
+                    if (bloodGroupTest(userObj.blood_group, request))
+                      return <GenericDonorRequestBar key={index} request={request} />;
+                  })
+                ) : (
+                  <SpinnerContainer>
+                    <Spinner />
+                  </SpinnerContainer>
+                )}
+              </RequestContainer>
+            ) : (
+              <div>
+                {requests ? (
+                  requests.map((request, index) => {
+                    return <GenericDonorRequestBar key={index} request={request} />;
+                  })
+                ) : (
+                  <SpinnerContainer>
+                    <Spinner />
+                  </SpinnerContainer>
+                )}
+              </div>
+            )}
+          </DashboardContentContainer>
+        </LeftSide>
 
         <RightSide>{userObj ? <DonorProfileCardWide userObj={userObj} /> : null}</RightSide>
       </PageWrapper>
