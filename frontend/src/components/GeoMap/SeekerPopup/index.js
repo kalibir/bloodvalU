@@ -28,7 +28,7 @@ const Close = styled.p`
 `
 const Wrapper = styled.div`
 `
-const SeekerInfo = ({selectedSeeker, handleClosePopup, bloodgroup}) => {
+const SeekerInfo = ({selectedSeeker, handleClosePopup, userObj}) => {
     const dispatch = useDispatch()
     const [requests, setRequests] = useState(null)
     console.log("seeker local data", requests)
@@ -65,7 +65,7 @@ const SeekerInfo = ({selectedSeeker, handleClosePopup, bloodgroup}) => {
             <h3>{selectedSeeker.name}</h3>
             <p>Phone: {selectedSeeker.phone}</p>
             {requests ? requests.map((request, index) => {
-                if (bloodGroupTest(bloodgroup, request)) return ( <GenericMiniDonorRequestBar handleApply={handleApply} key={request.id} request={request}/> )
+               if (userObj && bloodGroupTest(userObj.blood_group, request)) return ( <GenericMiniDonorRequestBar handleApply={handleApply} key={request.id} request={request}/> )
             }) : null}
         </Wrapper>
     )

@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
 import NumberFormat from "react-number-format";
-import { PageContainer } from "../../style/GlobalWrappers";
-import { BigInput } from "../../style/GlobalInputs";
-import { DarkBlueButton } from "../../style/GlobalButtons";
-import { SmallTitle } from "../../style/GlobalTitles";
+import {PageContainer} from "../../style/GlobalWrappers";
+import {BigInput} from "../../style/GlobalInputs";
+import {DarkBlueButton} from "../../style/GlobalButtons";
+import {SmallTitle} from "../../style/GlobalTitles";
 import GenericDonorTestCard from "../GenericDonorTestCard";
 import GenericDonorRequestBar from "../GenericDonorRequestBar";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import DonorProfileCardWide from "../GenericDonorProfileWide";
 import {
-  getAllAppliedToRequestsAction,
-  getAllRequestsAction,
+    getAllAppliedToRequestsAction,
+    getAllRequestsAction,
 } from "../../store/actions/bloodRequestActions";
-import { searchAllRequestsAndTestsAction } from "../../store/actions/searchActions";
-import { getLoggedInUserAction } from "../../store/actions/userActions";
-import { bloodGroupTest } from "../../HelperFunctions";
+import {searchAllRequestsAndTestsAction} from "../../store/actions/searchActions";
+import {getLoggedInUserAction} from "../../store/actions/userActions";
+import {bloodGroupTest} from "../../HelperFunctions";
 import Spinner from "../../components/GenericSpinner";
 
 const ColorDebug = false; //at true all element get colored background for checking
@@ -102,7 +102,7 @@ const DashboardContentContainer = styled.div`
     background-color: ${ColorDebug ? "deepskyblue" : ""};
 `;
 
-const SearchContainer = styled.div`
+const SearchFormContainer = styled.form`
     //width: ${rem("445px")};
     width: 100%;
     height: ${rem("40px")};
@@ -159,6 +159,7 @@ const UnderLine = styled.div`
 const OfferContainer = styled.div`
   width: 100%;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   background-color: ${ColorDebug ? "greenyellow" : ""};
 `;
@@ -174,130 +175,129 @@ const SpinnerContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+const Content = styled.div`
+  ${(props) => (props.active ? "" : "display:none")}
+`
 const DonorDashboard = ({
-  dispatch,
-  userProfileReducer: { offeredTests, requests, appliedRequests },
-  authReducer: { userObj },
-}) => {
-  // const [active, setActive] = useState("requests");
-  const [active, setActive] = useState("requests");
-  const handleClick = (e) => {
-    const value = e.target.id;
-    dispatch(searchAllRequestsAndTestsAction("", `${value}`));
-    setActive(value);
-  };
+                            dispatch,
+                            userProfileReducer: {offeredTests, requests, appliedRequests},
+                            authReducer: {userObj},
+                        }) => {
+    // const [active, setActive] = useState("requests");
+    const [active, setActive] = useState("requests");
+    const handleClick = (e) => {
+        const value = e.target.id;
+        setActive(value);
+    };
+    console.log("active", active)
 
-  const [searchParams, setSearchParams] = useState("");
-  // console.log('searchParams', searchParams);
-  // console.log('active', active);
-  console.log("requests", requests);
-  console.log("userObj", userObj);
-  console.log("offeredTests", offeredTests);
+    const [searchParams, setSearchParams] = useState("");
 
-  const handleSearch = (event) => {
-    dispatch(searchAllRequestsAndTestsAction(searchParams, active));
-    setSearchParams("");
-  };
+    const handleSearch = (event) => {
+        event.preventDefault()
+        dispatch(searchAllRequestsAndTestsAction(searchParams, active));
+        setSearchParams("");
+    };
 
-  const handleSearchInput = (e) => {
-    const value = e.currentTarget.value;
-    setSearchParams(value);
-  };
+    const handleSearchInput = (e) => {
+        const value = e.currentTarget.value;
+        setSearchParams(value);
+    };
 
-  useEffect(() => {
-    // get Requests
-    dispatch(getAllRequestsAction()); // This gets all requests
-    dispatch(searchAllRequestsAndTestsAction("", "tests")); //This gets all offered tests
-    dispatch(getLoggedInUserAction());
-  }, [dispatch]);
+    useEffect(() => {
+        // get Requests and tests
+        dispatch(getAllRequestsAction()); // This gets all requests
+        dispatch(searchAllRequestsAndTestsAction("", "tests")); //This gets all offered tests
+        dispatch(getLoggedInUserAction());
+    }, [dispatch]);
 
-  return (
-    <PageContainer>
-      <PageWrapper>
-        <LeftSide>
-          <DashboardContentContainer>
-            <MenuContainer>
-              <SideButton id="requests" onClick={handleClick} active={active === "requests"}>
-                All requests
-              </SideButton>
-              <MiddleButton id="applied" onClick={handleClick} active={active === "applied"}>
-                Applied
-              </MiddleButton>
-              <SideButton id="tests" onClick={handleClick} active={active === "tests"}>
-                Points menu
-              </SideButton>
-            </MenuContainer>
+    return (
+        <PageContainer>
+            <PageWrapper>
+                <LeftSide>
+                    <DashboardContentContainer>
+                        <MenuContainer>
+                            <SideButton id="requests" onClick={handleClick} active={active === "requests"}>
+                                All requests
+                            </SideButton>
+                            <MiddleButton id="applied" onClick={handleClick} active={active === "applied"}>
+                                Applied
+                            </MiddleButton>
+                            <SideButton id="tests" onClick={handleClick} active={active === "tests"}>
+                                Points menu
+                            </SideButton>
+                        </MenuContainer>
 
-            <SearchContainer>
-              <SearchInput onChange={handleSearchInput} placeholder="Search..." />{" "}
-              {/*TODO add search on enter*/}
-              <SearchButton onClick={handleSearch}>Search</SearchButton>
-            </SearchContainer>
+                        <SearchFormContainer onSubmit={handleSearch}>
+                            <SearchInput onChange={handleSearchInput} placeholder="Search..."/>{" "}
+                            {/*TODO add search on enter*/}
+                            <SearchButton>Search</SearchButton>
+                        </SearchFormContainer>
+                        <Content active={active === "tests"}>
+                            <PointsHeader>
+                                <OfferTitle>Offers</OfferTitle>
+                                <NumberFormat
+                                    isNumericString={true}
+                                    renderText={(value) => <PointsText>Your total points: {value} pts</PointsText>}
+                                    value={userObj ? userObj.total_points : 0}
+                                    displayType={"text"}
+                                    thousandSeparator={" "}
+                                />
+                            </PointsHeader>
 
-            {active === "tests" ? (
-              <>
-                <PointsHeader>
-                  <OfferTitle>Offers</OfferTitle>
-                  <NumberFormat
-                    isNumericString={true}
-                    renderText={(value) => <PointsText>Your total points: {value} pts</PointsText>}
-                    value={userObj ? userObj.total_points : 0}
-                    displayType={"text"}
-                    thousandSeparator={" "}
-                  />
-                </PointsHeader>
+                            <UnderLine/>
+                            <OfferContainer>
+                                {offeredTests
+                                    ? offeredTests.map((test, index) => {
+                                        return <GenericDonorTestCard key={index} test={test}/>;
+                                    })
+                                    : null}
+                            </OfferContainer>
+                        </Content>
+                        <Content active={active === "requests"}>
+                            <RequestContainer>
+                                {requests ? (
+                                    requests.map((request, index) => {
+                                        if (userObj && bloodGroupTest(userObj.blood_group, request))
+                                            return <GenericDonorRequestBar key={index} request={request}/>;
+                                    })
+                                ) : (
+                                    <SpinnerContainer>
+                                        <Spinner/>
+                                    </SpinnerContainer>
+                                )}
+                            </RequestContainer>
+                        </Content>
+                        <Content active={active === "applied"}>
+                            <div>
+                                {requests ? (
+                                    requests.map((request, index) => {
+                                        if (request.logged_in_donor_applied) return <GenericDonorRequestBar key={index}
+                                                                                                            request={request}/>;
+                                    })
+                                ) : (
+                                    <SpinnerContainer>
+                                        <Spinner/>
+                                    </SpinnerContainer>
+                                )}
+                            </div>
+                        </Content>
+                    </DashboardContentContainer>
+                </LeftSide>
 
-                <UnderLine />
-
-                <OfferContainer>
-                  {offeredTests
-                    ? offeredTests.map((test, index) => {
-                        return <GenericDonorTestCard key={index} test={test} />;
-                      })
-                    : null}
-                </OfferContainer>
-              </>
-            ) : active === "requests" ? (
-              <RequestContainer>
-                {requests ? (
-                  requests.map((request, index) => {
-                    if (userObj && bloodGroupTest(userObj.blood_group, request))
-                      return <GenericDonorRequestBar key={index} request={request} />;
-                  })
-                ) : (
-                  <SpinnerContainer>
-                    <Spinner />
-                  </SpinnerContainer>
-                )}
-              </RequestContainer>
-            ) : (
-              <div>
-                {requests ? (
-                  requests.map((request, index) => {
-                    return <GenericDonorRequestBar key={index} request={request} />;
-                  })
-                ) : (
-                  <SpinnerContainer>
-                    <Spinner />
-                  </SpinnerContainer>
-                )}
-              </div>
-            )}
-          </DashboardContentContainer>
-        </LeftSide>
-
-        <RightSide>{userObj ? <DonorProfileCardWide userObj={userObj} /> : null}</RightSide>
-      </PageWrapper>
-    </PageContainer>
-  );
+                <RightSide>{userObj ? <DonorProfileCardWide userObj={userObj}/> : null}</RightSide>
+            </PageWrapper>
+        </PageContainer>
+    );
 };
 
 const mapStateToProps = (state) => {
-  console.log("state", state);
-  return {
-    userProfileReducer: state.userProfileReducer,
-    authReducer: state.authReducer,
-  };
+    console.log("state", state);
+    return {
+        userProfileReducer: state.userProfileReducer,
+        authReducer: state.authReducer,
+    };
 };
 
 export default connect(mapStateToProps)(DonorDashboard);

@@ -3,12 +3,14 @@ from rest_framework import serializers
 from apps.donorprofiles.models import DonorProfile
 from apps.donorprofiles.serializers import DonorProfileSerializer
 from apps.offeredtests.models import OfferedTest
+from apps.offeredtests.serializers import OfferedTestSerializer
 from apps.registrations.models import get_or_none
 from apps.testresults.models import TestResult
 
 
 class TestResultSerializer(serializers.ModelSerializer):
     donor = DonorProfileSerializer(required=False, read_only=True)
+    offered_test = OfferedTestSerializer(required=False, read_only=True)
 
     class Meta:
         model = TestResult

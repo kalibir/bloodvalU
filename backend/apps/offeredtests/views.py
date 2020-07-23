@@ -16,6 +16,7 @@ from apps.donorprofiles.models import DonorProfile
 from apps.donorprofiles.serializers import DonorProfileSerializer
 from apps.offeredtests.models import OfferedTest
 from apps.offeredtests.serializers import OfferedTestSerializer
+from apps.registrations.models import get_or_none
 from apps.seekerprofiles.models import SeekerProfile
 from apps.users.permissions import ReadOnly
 
@@ -162,3 +163,35 @@ class ListAllOfferedTestsView(ListAPIView):
         queryset = OfferedTest.objects.all().order_by('-created')
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+
+class ValidateQRCodeView(CreateAPIView):
+    """
+    POST:
+    List all Offered Tests in most recently created order.
+    """
+    permission_classes = [IsAuthenticated | ReadOnly]
+    serializer_class = DonorProfileSerializer
+
+    def create(self, request, *args, **kwargs):
+
+        code = request.data.get('code')
+        code_array = code.split(".")
+        unique_test_code = int(code_array[0])
+        unique_donor_id = int(code_array[1])
+        if not get_or_none(OfferedTest, secret_code=unique_test_code):
+            return Response({"detail": "This offered test does not exist"},
+                            status=status.HTTP_400_BAD_REQUEST)
+        if not get_or_none(DonorProfile, unique_donor_id=unique_donor_id):
+            return Response({"detail": "This donor does not exist"},
+                            status=status.HTTP_400_BAD_REQUEST)
+        target_donor = get_or_none(DonorProfile, unique_donor_id=unique_donor_id)
+        target_offered_test = get_or_none(OfferedTest, secret_code=unique_test_code)
+
+        if target_donor in target_offered_test.donors_who_bought.all():
+            return Response({
+                                'detail': f'{target_donor.first_name} {target_donor.last_name} has come for a {target_offered_test.test_type}'},
+                            status=status.HTTP_200_OK)
+        else:
+            return Response({"detail": "Invalid Code"},
+                            status=status.HTTP_400_BAD_REQUEST)
