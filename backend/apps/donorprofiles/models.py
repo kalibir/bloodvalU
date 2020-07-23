@@ -4,6 +4,7 @@ from datetime import date
 from django.contrib.auth import get_user_model
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from django.utils import timezone
 
 from apps.registrations.models import code_generator  # Attila
 
@@ -67,7 +68,7 @@ class DonorProfile(models.Model):
     @property
     def can_donate(self):
         if self.next_donation:
-            return datetime.today() > self.next_donation
+            return timezone.now() > self.next_donation
         else:
             return True
 
