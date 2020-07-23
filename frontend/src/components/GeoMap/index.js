@@ -93,6 +93,7 @@ const GeoMap = ({
 
     const [selectedSeeker, setSelectedSeeker] = useState(null)
 
+
     const handleFly = e => {
         e.preventDefault()
         const newViewport = {

@@ -32,6 +32,10 @@ class RequestForRegistration(CreateAPIView):
         email.body = 'See your account creation code: {code}'.format(code=target_profile.code)
         email.to = [request.data['email']]
         email.send(fail_silently=False)
+
+
+
+
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
@@ -73,11 +77,13 @@ class CreateValidationCodeForPasswordReset(CreateAPIView):
             target_profile = Registration.objects.get(email=request.data['email'])
             target_profile.code = code_generator()
             target_profile.save()
+
             email = EmailMessage()
             email.subject = 'Your password Reset code'
             email.body = f'See your password reset code:{target_profile.code}'
             email.to = [target_profile.email]
             email.send(fail_silently=False)
+
             return Response(status=status.HTTP_201_CREATED)
         except Registration.DoesNotExist:
             return Response({"detail": "Your email isn't valid."}, status=status.HTTP_400_BAD_REQUEST)
