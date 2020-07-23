@@ -8,6 +8,7 @@ from apps.seekerprofiles.models import SeekerProfile
 
 from apps.registrations.models import code_generator  # Attila
 
+
 class BloodRequest(models.Model):
     seeker = models.ForeignKey(to=SeekerProfile, on_delete=models.CASCADE, related_name='made_requests')
 
