@@ -40,10 +40,13 @@ const SeekerScanCode = (props) => {
     const refs = useRef()
     const handleSubmitQR = async (e) => {
         if (QRCode) {
-            const data = {code: QRCode}
+            const data = {code: "346564.23435"}
             const response = await dispatch(validateQRCode(data))
             if (response.status < 300) setQRResponse({...QRresponse, message: response.data.detail, isGood: true})
-            else setQRResponse({...QRresponse, message: response.data.detail, isGood: false})
+            else {
+                console.log("response.data", response.data)
+                setQRResponse({...QRresponse, message: response.data.detail, isGood: false})
+            }
         }
     }
 
@@ -51,7 +54,6 @@ const SeekerScanCode = (props) => {
         <PageContainer>
             {QRresponse.message ? QRresponse.isGood ? <SuccessText>{QRresponse.message}</SuccessText> :
                 <ErrorText>{QRresponse.message}</ErrorText> : null}
-            {QRCode ? <SuccessText>Code is {QRCode}!</SuccessText> : <p>Scanning, please hold still...</p>}
             <QrReader
                 ref={refs}
                 delay={data.delay}
@@ -59,7 +61,9 @@ const SeekerScanCode = (props) => {
                 onError={handleError}
                 onScan={handleScan}
             />
-            <input type="button" value="Submit QR Code" onClick={handleSubmitQR}/>
+            {QRCode ? <input type="button" value="Submit QR Code" onClick={handleSubmitQR}/> :
+                <p>Scanning, please hold still...</p>
+            }
         </PageContainer>
     )
 }
