@@ -261,7 +261,7 @@ const DonorDashboard = ({
               <RequestContainer>
                 {requests ? (
                   requests.map((request, index) => {
-                    if (bloodGroupTest(userObj.blood_group, request))
+                    if (userObj && bloodGroupTest(userObj.blood_group, request))
                       return <GenericDonorRequestBar key={index} request={request} />;
                   })
                 ) : (
