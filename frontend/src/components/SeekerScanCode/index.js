@@ -1,7 +1,12 @@
 import React, {useRef, useState} from "react";
 import {PageContainer} from "../../style/GlobalWrappers";
 import QrReader from 'react-qr-scanner'
+import styled from "styled-components";
 
+const SuccessText = styled.h1`
+  color: #3eb33e;
+  font-size: 40px;
+`
 
 const SeekerScanCode = (props) => {
     const [data, setData] = useState({
@@ -9,7 +14,6 @@ const SeekerScanCode = (props) => {
         scan: null,
     });
     const [QRCode, setQRCode] = useState(null)
-    console.log("QRCode", QRCode);
 
     const handleScan = (scannedInfo) => {
         if (data.scan) setQRCode(data.scan)
@@ -24,13 +28,13 @@ const SeekerScanCode = (props) => {
     }
     const refs = useRef()
     const handleSubmitQR = (e) => {
-        console.log("data", data.scan)
-    }
+        if (QRCode) console.log("QRCode", QRCode)
 
-    console.log("local state", data)
+    }
 
     return (
         <PageContainer>
+            {QRCode ? <SuccessText>Your code is {QRCode}!</SuccessText> : <p>Scanning, please hold still...</p>}
             <QrReader
                 ref={refs}
                 delay={data.delay}
@@ -39,7 +43,6 @@ const SeekerScanCode = (props) => {
                 onScan={handleScan}
             />
             <input type="button" value="Submit QR Code" onClick={handleSubmitQR}/>
-            <p>{data.result}</p>
         </PageContainer>
     )
 }
