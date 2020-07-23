@@ -34,7 +34,7 @@ const SeekerScanCode = (props) => {
 
     return (
         <PageContainer>
-            {QRCode ? <SuccessText>Your code is {QRCode}!</SuccessText> : <p>Scanning, please hold still...</p>}
+            {QRCode ? <SuccessText>Code is {QRCode}!</SuccessText> : <p>Scanning, please hold still...</p>}
             <QrReader
                 ref={refs}
                 delay={data.delay}
