@@ -19,7 +19,7 @@ class DonorProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DonorProfile
-        fields = ['id', 'phone', 'is_donor', 'email', 'first_name', 'last_name', 'country', 'zip_code', 'street',
+        fields = ['id', 'phone', 'is_donor', 'email', 'can_donate', 'first_name', 'last_name', 'country', 'zip_code', 'street',
                   'avatar', 'birthday', 'has_been_selected',
-                  'last_donation', 'total_points', 'blood_group', 'gender', 'age', 'bought_tests',
+                  'next_donation', 'total_points', 'blood_group', 'gender', 'age', 'bought_tests',
                   'applied_to_requests', 'accepted_requests', 'test_results']
