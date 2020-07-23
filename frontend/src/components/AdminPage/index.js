@@ -21,24 +21,23 @@ import Spinner from "../../components/GenericSpinner";
 const ColorDebug = false; //at true all element get colored background for checking
 
 const PageWrapper = styled.div`
-  display: flex;
-  align-items: center;
+  margin-top: 32px;
   width: 100%;
   height: 100%;
   background-color: ${ColorDebug ? "darkorange" : ""};
 `;
 
 const DashboardContentContainer = styled.div`
-    //width: ${rem("445px")};
-    width: 70%;   
-    display: flex;
-    flex-flow: column;
-    justify-content: flex-start;
-    background-color: ${ColorDebug ? "deepskyblue" : ""};
+  width: 100%;
+  padding-left: 160px;
+  padding-right: 160px;
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  background-color: ${ColorDebug ? "deepskyblue" : ""};
 `;
 
 const AdminText = styled.p`
-  position: relative;
   margin-bottom: 36px;
   width: 34%;
   color: #121232;
@@ -70,12 +69,6 @@ const SearchButton = styled(DarkBlueButton)`
 const CertificateContainer = styled.div`
   width: 100%;
   background-color: ${ColorDebug ? "lightslategrey" : ""};
-  width: ${rem("480px")};
-  overflow: auto;
-`;
-const BarWrapper = styled.div`
-  //width: 445px;
-  width: 100%;
 `;
 
 // STYLES FOR ANIMATION
@@ -88,8 +81,8 @@ const CertificateBar = styled.div`
   display: grid;
   width: 100%;
   height: 48px;
-  grid-template-areas: "text status urgent blood button valid arrow";
-  grid-template-columns: 2fr 1fr 1fr 35px 1fr 1fr 1fr;
+  grid-template-areas: "text download button arrow";
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   background-color: #ffffff;
   border-bottom: 1px solid #d9d9d9;
   align-items: center;
@@ -97,50 +90,37 @@ const CertificateBar = styled.div`
   cursor: pointer;
 `;
 
-const GreenButton = styled(BaseStatusButton)`
-  background-color: #43a047;
-`;
-
-const RedButton = styled(BaseStatusButton)`
-  background-color: #d33449;
-`;
-
 const TextWrapper = styled.div`
+  grid-area: text;
   display: flex;
   height: 35px;
   grid-area: text;
-  justify-content: center;
+  padding: 24px;
   align-items: center;
+`;
+
+const DownloadButtonWrapper = styled.div`
+  grid-area: download;
+`;
+
+const DownloadButton = styled(BaseStatusButton)`
+  background-color: #121232;
+  width: 100%;
 `;
 
 const ButtonWrapper = styled.div`
   grid-area: button;
-`;
-
-const IconWrapper = styled(ButtonWrapper)`
-  grid-area: status;
-  height: 100%;
   display: flex;
-  align-items: center;
+  justify-content: center;
 `;
 
-const UrgentWrapper = styled(ButtonWrapper)`
-  grid-area: urgent;
-  height: 100%;
-  display: flex;
-  align-items: center;
+const BlueButton = styled(BaseStatusButton)`
+  background-color: #2196f3;
+  width: 82px;
 `;
 
-const BloodDiv = styled(TextWrapper)`
-  grid-area: blood;
-  height: 35px;
-  background-color: darkred;
-  border-radius: 50%;
-  padding: 2px;
-`;
-
-const Type = styled.img`
-  color: white;
+const RedButton = styled(BaseStatusButton)`
+  background-color: #d33449;
 `;
 
 const BarArrowWrapper = styled(ButtonWrapper)`
@@ -156,6 +136,52 @@ const BarArrowRight = styled.i`
   padding: 3px;
   transform: rotate(-45deg);
 `;
+
+const SeekerInfo = styled.div`
+  width: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 23px;
+  padding-right: 27px;
+  color: #121232;
+  border: 1px solid #d3d4d8;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  animation: 1s ${heightAnimation};
+`;
+
+const SeekerInfoHeader = styled.div`
+  width: 100%;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+`;
+
+const CompanyName = styled.p`
+  font-size: 18px;
+`;
+
+const SeekerInfoBodyWrapper = styled.div`
+  width: 100%;
+  display: flex;
+`;
+
+const SeekerInfoBody = styled.ul`
+  width: 100%;
+  margin-top: 16px;
+`;
+
+const SeekerInfoBodyLine = styled.li`
+  width: 100%;
+  margin-bottom: 8px;
+  list-style: none;
+  font-size: 13px;
+`;
+
 const AdminPage = ({ dispatch, authReducer: { userObj } }) => {
   const [showSeeker, setSeekerInfo] = useState(false);
   const [active, setActive] = useState("requests");
@@ -164,13 +190,14 @@ const AdminPage = ({ dispatch, authReducer: { userObj } }) => {
     setSeekerInfo(!showSeeker);
   };
   const [searchParams, setSearchParams] = useState("");
+
   const handleApply = (e) => {
     console.log("in the apply handler");
-    dispatch(getAllSeekersAction(userObj.certificate));
+    dispatch(getAllSeekersAction(userObj));
   };
 
   const handleSearch = (event) => {
-    dispatch(searchAllRequestsAndTestsAction(searchParams, active));
+    dispatch(getAllSeekersAction(searchParams, active));
     setSearchParams("");
   };
 
@@ -189,14 +216,42 @@ const AdminPage = ({ dispatch, authReducer: { userObj } }) => {
             <SearchButton onClick={handleSearch}>Search</SearchButton>
           </SearchContainer>
           <CertificateContainer>
-            <TextWrapper onClick={showSeekerHandler}> Request </TextWrapper>
-            <BarArrowWrapper onClick={showSeekerHandler}>
-              <BarArrowRight
-                style={
-                  showSeeker ? { transform: "rotate(45deg)" } : { transform: "rotate(-45deg)" }
-                }
-              />
-            </BarArrowWrapper>
+            <CertificateBar>
+              <TextWrapper onClick={showSeekerHandler}> {userObj.name} </TextWrapper>
+              <DownloadButtonWrapper>
+                <DownloadButton>Download Certificate</DownloadButton>
+              </DownloadButtonWrapper>
+              <ButtonWrapper>
+                <BlueButton>Verify</BlueButton>
+              </ButtonWrapper>
+              <BarArrowWrapper onClick={showSeekerHandler}>
+                <BarArrowRight
+                  style={
+                    showSeeker ? { transform: "rotate(45deg)" } : { transform: "rotate(-45deg)" }
+                  }
+                />
+              </BarArrowWrapper>
+            </CertificateBar>
+            {showSeeker ? (
+              <>
+                <SeekerInfo>
+                  <SeekerInfoHeader>
+                    <CompanyName>{userObj.name}</CompanyName>
+                  </SeekerInfoHeader>
+                  <SeekerInfoBodyWrapper>
+                    <SeekerInfoBody>
+                      <SeekerInfoBodyLine>Phone: {userObj.phone}</SeekerInfoBodyLine>
+                      <SeekerInfoBodyLine>Address: {userObj.street}</SeekerInfoBodyLine>
+                      <SeekerInfoBodyLine>Zip Code: {userObj.zip_code}</SeekerInfoBodyLine>
+                    </SeekerInfoBody>
+                    <SeekerInfoBody>
+                      <SeekerInfoBodyLine>Address: {userObj.street}</SeekerInfoBodyLine>
+                      <SeekerInfoBodyLine>E-mail: {userObj.email}</SeekerInfoBodyLine>
+                    </SeekerInfoBody>
+                  </SeekerInfoBodyWrapper>
+                </SeekerInfo>
+              </>
+            ) : null}
           </CertificateContainer>
         </DashboardContentContainer>
       </PageWrapper>

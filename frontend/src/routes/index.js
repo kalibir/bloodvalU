@@ -30,7 +30,7 @@ const Routes = () => {
             <Route path="/editdonor" component={authComponent(DonorEditProfile)} />
             <Route path="/seekerprofilepage" component={authComponent(SeekerProfilePage)} />
             <Route path="/map" component={GeoMap} />
-            <Route path="/admin_page" component={authComponent(AdminPage)} />
+            <Route path="/admin_page" component={AdminPage} />
           </Navigation>
         </Switch>
       </Router>
