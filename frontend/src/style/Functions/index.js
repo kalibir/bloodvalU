@@ -5,7 +5,7 @@ import {NavLink} from "react-router-dom";
 
 // const activeClassName = "nav-item-active";
 const StyledNavLink = styled(NavLink)`
-  color: ${(props) => (props.active ? "#d33449" : "#A1A4B1")};
+  color: ${(props) => (props.active === "true" ? "#d33449" : "#A1A4B1")};
   text-decoration: none;
   position: relative;
   text-decoration: none;
@@ -27,7 +27,7 @@ const StyledNavLink = styled(NavLink)`
     bottom: 0;
     content: "";
     display: block;
-    width: ${(props) => (props.active ? "100%" : "0")};
+    width: ${(props) => (props.active === "true" ? "100%" : "0")};
     height: 3px;
     background: #d33449;
     transition: width 0.3s;
@@ -67,14 +67,14 @@ export const SeekerNavigation = (name) => {
                         <StyledNavLink
                             to={"/dashboard/seeker"}
                             onClick={handleClick}
-                            active={active === "dashboard"}
+                            active={active === "dashboard" ? "true" : "false"}
                             id="dashboard">
                             Dashboard
                         </StyledNavLink>
                         <StyledNavLink
                             to={"/seekerprofilepage"}
                             onClick={handleClick}
-                            active={active === "profile"}
+                            active={active === "profile" ? "true" : "false"}
                             id="profile">
                             Profile
                         </StyledNavLink>
@@ -100,11 +100,11 @@ export const DonorNavigation = ({first_name, email}) => {
                         <StyledNavLink
                             to={"/dashboard/donor"}
                             onClick={handleClick}
-                            active={active === "dashboard"}
+                            active={active === "dashboard" ? "true" : "false"}
                             id="dashboard">
                             Dashboard
                         </StyledNavLink>
-                        <StyledNavLink to={"/map"} onClick={handleClick} active={active === "map"} id="map">
+                        <StyledNavLink to={"/map"} onClick={handleClick} active={active === "map" ? "true" : "false"} id="map">
                             Map
                         </StyledNavLink>
                     </>
