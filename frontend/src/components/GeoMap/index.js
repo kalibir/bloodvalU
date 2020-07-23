@@ -159,7 +159,7 @@ const GeoMap = ({
                         latitude={selectedSeeker.latitude}
                         longitude={selectedSeeker.longitude}
                     >
-                        <SeekerInfo handleClosePopup={handleClosePopup} selectedSeeker={selectedSeeker} bloodgroup={userObj.blood_group}/>
+                        <SeekerInfo handleClosePopup={handleClosePopup} selectedSeeker={selectedSeeker} userObj={userObj}/>
                     </CustomPopup>
                 ) : null}
                 <CustomScaler/>

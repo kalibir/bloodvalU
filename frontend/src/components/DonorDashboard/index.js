@@ -102,7 +102,7 @@ const DashboardContentContainer = styled.div`
     background-color: ${ColorDebug ? "deepskyblue" : ""};
 `;
 
-const SearchContainer = styled.div`
+const SearchFormContainer = styled.form`
     //width: ${rem("445px")};
     width: 100%;
     height: ${rem("40px")};
@@ -188,18 +188,14 @@ const DonorDashboard = ({
     const [active, setActive] = useState("requests");
     const handleClick = (e) => {
         const value = e.target.id;
-        // dispatch(searchAllRequestsAndTestsAction("", `${value}`));
         setActive(value);
     };
+    console.log("active", active)
 
     const [searchParams, setSearchParams] = useState("");
-    // console.log('searchParams', searchParams);
-    // console.log('active', active);
-    console.log("requests", requests);
-    console.log("userObj", userObj);
-    console.log("offeredTests", offeredTests);
 
     const handleSearch = (event) => {
+        event.preventDefault()
         dispatch(searchAllRequestsAndTestsAction(searchParams, active));
         setSearchParams("");
     };
@@ -233,11 +229,11 @@ const DonorDashboard = ({
                             </SideButton>
                         </MenuContainer>
 
-                        <SearchContainer>
+                        <SearchFormContainer onSubmit={handleSearch}>
                             <SearchInput onChange={handleSearchInput} placeholder="Search..."/>{" "}
                             {/*TODO add search on enter*/}
-                            <SearchButton onClick={handleSearch}>Search</SearchButton>
-                        </SearchContainer>
+                            <SearchButton>Search</SearchButton>
+                        </SearchFormContainer>
                         <Content active={active === "tests"}>
                             <PointsHeader>
                                 <OfferTitle>Offers</OfferTitle>

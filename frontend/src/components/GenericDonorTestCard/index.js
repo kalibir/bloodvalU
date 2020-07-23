@@ -101,14 +101,11 @@ const RedeemButton = styled(SmallGreenButton)`
 `
 
 const GenericDonorTestCard = (props) => {
-    console.log("Testcard props", props);
     const { test: { id, test_type, seeker_name, is_bought, points_cost, expiry_date, is_expired }, } = props;
 
     const dispatch = useDispatch();
 
     const handleBuy = async e => {
-        console.log("in the test buy")
-        console.log("testcard id", id)
         const response = await dispatch(buyTestAction(id))
         if(response.status < 300) dispatch(getLoggedInUserAction())
     }

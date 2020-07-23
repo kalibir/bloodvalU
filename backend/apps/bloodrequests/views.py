@@ -1,4 +1,6 @@
 import datetime
+from django.utils.datetime_safe import date
+
 
 from django.core.mail import EmailMessage, send_mail
 from django.shortcuts import render
@@ -84,7 +86,7 @@ class ListAllBloodRequestsView(ListAPIView):
 class ListAllRequestsOfSpecificSeeker(ListAPIView):
     """
     GET:
-    List all Blood Requests of a specific seeker.
+    List all Blood Requests of a specific seeker for donor.
     """
     serializer_class = BloodRequestSerializer
     queryset = SeekerProfile
@@ -93,7 +95,7 @@ class ListAllRequestsOfSpecificSeeker(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         target_seeker = self.get_object()
-        queryset = target_seeker.made_requests.all().order_by('-created')
+        queryset = target_seeker.made_requests.filter((Q(valid_until__gt=date.today()) & Q(status="OP")) | Q(selected_donor=self.request.user.donor_profile)).order_by('-created')
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
