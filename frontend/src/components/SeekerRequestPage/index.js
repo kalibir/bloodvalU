@@ -15,6 +15,9 @@ import {
 } from "../../store/actions/bloodRequestActions";
 import ActiveProfileCard from "./ActiveProfileCard";
 import { searchAllRequestsAndTestsAction } from "../../store/actions/searchActions";
+import {deleteTestAction} from "../../store/actions/offeredTestActions";
+
+import Spinner from "../../components/GenericSpinner";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -47,6 +50,7 @@ const MenuContainer = styled.div`
 `;
 
 const MiddleButton = styled.button`
+  cursor: pointer;
   height: 100%;
   width: 34%;
   position: relative;
@@ -153,9 +157,12 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
     setModal({ ...modal, showModal: false });
   };
 
-  const handleDeleteRequest = (event, requestID) => {
-    dispatch(deleteRequestAction(requestID));
-  };
+   const handleDeleteRequest = async (e, requestID) => {
+        e.preventDefault();
+        console.log("in da delete test func", requestID)
+        const response = await dispatch(deleteRequestAction(requestID));
+        if (response.status < 300) closeModal();
+    };
 
   const handleShowEditModal = (event, requestObj) => {
     setModal({ showModal: true, modalData: requestObj });
@@ -176,6 +183,7 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
             closeModal={closeModal}
           />
         ) : null}
+        {}
         <LeftSide>
           <DashboardContentContainer>
             <MenuContainer>
@@ -190,21 +198,23 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
               </SideButton>
             </MenuContainer>
             <Requests>
-              {requests
-                ? requests.map((request, index) => {
-                    return (
-                      <GenericSeekerRequestBar
-                        handleShowEditModal={handleShowEditModal}
-                        handleEditRequest={handleEditRequest}
-                        handleDeleteRequest={handleDeleteRequest}
-                        handleSetActiveRequest={handleSetActiveRequest}
-                        handleSetActiveProfile={handleSetActiveProfile}
-                        key={index}
-                        request={request}
-                      />
-                    );
-                  })
-                : null}
+              {requests ? (
+                requests.map((request, index) => {
+                  return (
+                    <GenericSeekerRequestBar
+                      handleShowEditModal={handleShowEditModal}
+                      handleEditRequest={handleEditRequest}
+                      handleDeleteRequest={handleDeleteRequest}
+                      handleSetActiveRequest={handleSetActiveRequest}
+                      handleSetActiveProfile={handleSetActiveProfile}
+                      key={index}
+                      request={request}
+                    />
+                  );
+                })
+              ) : (
+                <Spinner />
+              )}
             </Requests>
           </DashboardContentContainer>
           <NewRequestButton onClick={() => setModal({ ...modal, showModal: true })}>

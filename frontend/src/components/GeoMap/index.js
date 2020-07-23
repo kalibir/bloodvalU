@@ -77,8 +77,11 @@ const FlyTo = styled.button`
   left: 50%;
 `
 
-
-const GeoMap = ({profilesReducer: {profiles}, dispatch}) => {
+const GeoMap = ({
+                    dispatch,
+                    profilesReducer: {profiles},
+                    authReducer: {userObj},
+                }) => {
     const [showFly, setShowFly] = useState(true)
     const [viewPort, setViewport] = useState({
         latitude: 47.36667,
@@ -89,6 +92,7 @@ const GeoMap = ({profilesReducer: {profiles}, dispatch}) => {
     })
 
     const [selectedSeeker, setSelectedSeeker] = useState(null)
+
 
     const handleFly = e => {
         e.preventDefault()
@@ -155,7 +159,7 @@ const GeoMap = ({profilesReducer: {profiles}, dispatch}) => {
                         latitude={selectedSeeker.latitude}
                         longitude={selectedSeeker.longitude}
                     >
-                        <SeekerInfo handleClosePopup={handleClosePopup} selectedSeeker={selectedSeeker}/>
+                        <SeekerInfo handleClosePopup={handleClosePopup} selectedSeeker={selectedSeeker} bloodgroup={userObj.blood_group}/>
                     </CustomPopup>
                 ) : null}
                 <CustomScaler/>
@@ -170,6 +174,7 @@ const mapStateToProps = (state) => {
     console.log("state", state);
     return {
         profilesReducer: state.profilesReducer,
+        authReducer: state.authReducer,
     };
 };
 

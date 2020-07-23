@@ -7,11 +7,13 @@ import {DarkBlueButton, WhiteButton} from "../../style/GlobalButtons";
 import {PageContainer} from "../../style/GlobalWrappers";
 import {connect} from "react-redux";
 import {resetError} from "../../store/actions/errorActions";
-import {updateProfileAction} from "../../store/actions/userActions";
+import {deleteUserAction, updateProfileAction} from "../../store/actions/userActions";
 import {setLoggedInUser} from "../../store/actions/loginActions";
 import {Link, useHistory} from "react-router-dom";
+import AreYouSureModal from "../AreYouSure";
+import CountrySelect from "../CountrySelect";
 
-const FormWrapper = styled.form`
+const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,7 +22,7 @@ const FormWrapper = styled.form`
   //background-color: darkorange;
 `;
 
-const FormContainer = styled.div`
+const FormContainer = styled.form`
   display: flex;
   flex-flow: column;
   //background-color: burlywood;
@@ -35,8 +37,27 @@ const InputPairContainer = styled.div`
 `;
 
 const TitleContainer = styled(InputPairContainer)`
-  justify-content: flex-start;
+  justify-content: space-between;
   margin-top: ${rem("24px")};
+`;
+
+const DeleteProfile = styled.button`
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 32px;
+    text-decoration-line: underline;
+    color: #FF0000;
+    background: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    
+    :hover {
+    color: #8B0000;
+  }
+  :active {
+    color: #8B0000;
+  }
 `;
 
 const MiddleTitle500 = styled(MiddleTitle)`
@@ -115,6 +136,7 @@ const DonorEditProfile = ({
                               authReducer: {
                                   userObj:
                                       {
+                                          id,
                                           first_name,
                                           last_name,
                                           email,
@@ -145,6 +167,7 @@ const DonorEditProfile = ({
         birthday: `${birthday}`,
         email: `${email}`,
     });
+    const [sureModal, setSureModal] = useState(false);
 
 
     const onChangeHandler = (event, property) => {
@@ -191,13 +214,34 @@ const DonorEditProfile = ({
         }
     };
 
+    const closeModal = () => {
+        console.log("in the close modal");
+        setSureModal(false);
+    };
+
+    const handleDeleteDonorProfile = async (e, donorID) => {
+        e.preventDefault();
+        console.log("in da delete test func", donorID)
+        const response = await dispatch(deleteUserAction(donorID));
+        if (response.status < 300) closeModal();
+    };
+
     return (
         <PageContainer>
-            <FormWrapper onSubmit={handleSubmit}>
-                <FormContainer>
-                    <TitleContainer>
+            {sureModal ? (
+                <AreYouSureModal
+                    handleDeleteDonorProfile={handleDeleteDonorProfile}
+                    closeModal={closeModal}
+                    context={"donorprofile"}
+                    id={id}
+                />
+            ) : null}
+            <FormWrapper>
+                 <TitleContainer>
                         <MiddleTitle500>Edit Profile</MiddleTitle500>
+                        <DeleteProfile onClick={e => setSureModal(true)}>Delete Profile</DeleteProfile>
                     </TitleContainer>
+                <FormContainer onSubmit={handleSubmit}>
 
                     <InputPairContainer>
                         <div>
@@ -239,6 +283,7 @@ const DonorEditProfile = ({
                                 type="date"
                                 onChange={(e) => onChangeHandler(e, "birthday")}
                                 defaultValue={birthday}
+                                max="2002-07-22"
                                 required
                             />
                         </div>
@@ -299,13 +344,7 @@ const DonorEditProfile = ({
 
                         <div>
                             <InputTitle>Country</InputTitle>
-                            <SmallInput
-                                type="text"
-                                placeholder="England"
-                                onChange={(e) => onChangeHandler(e, "country")}
-                                defaultValue={country}
-                                required
-                            />
+                            <CountrySelect/>
                         </div>
                     </InputPairContainer>
                     <ErrorMsg>

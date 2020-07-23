@@ -16,6 +16,8 @@ import {
 } from "../../store/actions/bloodRequestActions";
 import { searchAllRequestsAndTestsAction } from "../../store/actions/searchActions";
 import { getLoggedInUserAction } from "../../store/actions/userActions";
+import { bloodGroupTest } from "../../HelperFunctions";
+import Spinner from "../../components/GenericSpinner";
 
 const ColorDebug = false; //at true all element get colored background for checking
 
@@ -166,6 +168,12 @@ const RequestContainer = styled.div`
   background-color: ${ColorDebug ? "lightslategrey" : ""};
 `;
 
+const SpinnerContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const DonorDashboard = ({
   dispatch,
   userProfileReducer: { offeredTests, requests, appliedRequests },
@@ -251,21 +259,28 @@ const DonorDashboard = ({
               </>
             ) : active === "requests" ? (
               <RequestContainer>
-                {requests
-                  ? requests.map((request, index) => {
-                      console.log("in request map, request blood group: ", request.blood_group);
-                      console.log("donor's blood group: ", userObj.blood_group);
+                {requests ? (
+                  requests.map((request, index) => {
+                    if (userObj && bloodGroupTest(userObj.blood_group, request))
                       return <GenericDonorRequestBar key={index} request={request} />;
-                    })
-                  : null}
+                  })
+                ) : (
+                  <SpinnerContainer>
+                    <Spinner />
+                  </SpinnerContainer>
+                )}
               </RequestContainer>
             ) : (
               <div>
-                {requests
-                  ? requests.map((request, index) => {
-                      return <GenericDonorRequestBar key={index} request={request} />;
-                    })
-                  : null}
+                {requests ? (
+                  requests.map((request, index) => {
+                    return <GenericDonorRequestBar key={index} request={request} />;
+                  })
+                ) : (
+                  <SpinnerContainer>
+                    <Spinner />
+                  </SpinnerContainer>
+                )}
               </div>
             )}
           </DashboardContentContainer>

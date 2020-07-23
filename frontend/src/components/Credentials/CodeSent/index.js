@@ -6,6 +6,7 @@ import { MiddleTitle } from "../../../style/GlobalTitles";
 import { DarkBlueButton } from "../../../style/GlobalButtons";
 import { connect } from "react-redux";
 import registerImg from "../../../assets/icons/success_register.svg";
+import rem from "polished/lib/helpers/rem";
 
 const PageWrapper = styled(PageContainer)`
   height: 78.2vh;
@@ -15,12 +16,12 @@ const PageWrapper = styled(PageContainer)`
 `;
 
 const Title = styled(MiddleTitle)`
-  margin-bottom: 24px;
+  margin-bottom: ${rem("24px")};
 `;
 
 const NiceImage = styled.img`
-  height: 100px;
-  width: 100px;
+  height: ${rem("100px")};
+  width: ${rem("100px")};
   margin-bottom: 16px;
 `;
 
@@ -29,7 +30,7 @@ const CodeSent = ({ registrationReducer: { isDonor }, dispatch, errorReducer: { 
   return (
     <PageWrapper>
       <NiceImage src={registerImg} />
-          <Title>Thanks for your registration. Please check your email for the validation code.</Title>}
+          <Title>Thanks for your registration. Please check your email for the validation code.</Title>
         <Link to={`/auth/signup/validation/`}>
                 <DarkBlueButton>Next</DarkBlueButton>
         </Link>

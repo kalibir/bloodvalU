@@ -1,7 +1,10 @@
-import React from "react";
-import { rem } from "polished";
+import React, {useState} from "react";
+import {rem} from "polished";
 import styled from "styled-components";
-import { SmallBlueButton, SmallRedButton } from "../../style/GlobalButtons";
+import {SmallBlueButton, SmallRedButton} from "../../style/GlobalButtons";
+import AreYouSureModal from "../AreYouSure";
+import {createTestRequestAction, deleteTestAction} from "../../store/actions/offeredTestActions";
+import {useDispatch} from "react-redux";
 
 const TestCard = styled.div`
   width: ${rem("290px")};
@@ -70,44 +73,69 @@ const CardRedButton = styled(SmallRedButton)`
 `;
 
 const GenericSeekerTestCard = ({
-  test: {
-    id,
-    test_type,
-    seeker_name,
-    points_cost,
-    expiry_date,
-    created,
-    is_bought,
-    is_expired,
-    seeker: {
-      id: seeker_id,
-      name,
-      phone,
-      is_donor,
-      email,
-      certificate,
-      no_of_requests,
-      is_valid,
-      website,
-      street,
-      zip_code,
-      country,
-      logo,
-    },
-  },
-}) => {
-  return (
-    <TestCard>
-      <TextContainer>
-        <Text>{test_type}</Text>
-        <PointContainer>{points_cost}</PointContainer>
-      </TextContainer>
-      <BottomContainer>
-        <CardBlueButton>edit</CardBlueButton>
-        <CardRedButton>delete</CardRedButton>
-      </BottomContainer>
-    </TestCard>
-  );
+                                   test: {
+                                       id,
+                                       test_type,
+                                       seeker_name,
+                                       points_cost,
+                                       expiry_date,
+                                       created,
+                                       is_bought,
+                                       is_expired,
+                                       seeker: {
+                                           id: seeker_id,
+                                           name,
+                                           phone,
+                                           is_donor,
+                                           email,
+                                           certificate,
+                                           no_of_requests,
+                                           is_valid,
+                                           website,
+                                           street,
+                                           zip_code,
+                                           country,
+                                           logo,
+                                       },
+                                   },
+                               }) => {
+
+    const [sureModal, setSureModal] = useState(false);
+    const dispatch = useDispatch()
+
+    const closeModal = () => {
+        console.log("in the close modal");
+        setSureModal(false);
+    };
+
+    const handleDeleteTest = async (e, testID) => {
+        e.preventDefault();
+        console.log("in da delete test func", testID)
+        const response = await dispatch(deleteTestAction(testID));
+        if (response.status < 300) closeModal();
+    };
+
+
+    return (
+        <TestCard>
+            {sureModal ? (
+                <AreYouSureModal
+                    handleDeleteTest={handleDeleteTest}
+                    closeModal={closeModal}
+                    context={"test"}
+                    id={id}
+                />
+            ) : null}
+            <TextContainer>
+                <Text>{test_type}</Text>
+                <PointContainer>{points_cost}</PointContainer>
+            </TextContainer>
+            <BottomContainer>
+                <CardBlueButton>edit</CardBlueButton>
+                <CardRedButton onClick={e => setSureModal(true)}>delete</CardRedButton>
+            </BottomContainer>
+        </TestCard>
+    );
 };
 
 export default GenericSeekerTestCard;
