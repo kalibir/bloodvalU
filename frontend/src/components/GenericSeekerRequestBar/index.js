@@ -30,9 +30,8 @@ const RequestBar = styled.div`
 
 const TextWrapper = styled.div`
   display: flex;
-  height: 35px;
+  height: 100%;
   grid-area: text;
-  justify-content: center;
   align-items: center;
 `;
 
@@ -165,17 +164,17 @@ const GenericSeekerRequestBar = ({
   return (
     <BarWrapper>
       {sureModal ? (
-          <AreYouSureModal
+        <AreYouSureModal
           handleDeleteRequest={handleDeleteRequest}
           closeModal={closeModal}
           id={request.id}
           context={"request"}
-          />
+        />
       ) : null}
       <RequestBar>
         <TextWrapper> Request {request.id}</TextWrapper>
         <IconWrapper>
-          <IconButton onClick={(e) => setSureModal(true) }>&#10006;</IconButton>
+          <IconButton onClick={(e) => setSureModal(true)}>&#10006;</IconButton>
           <IconButton onClick={(e) => handleShowEditModal(e, request)}>&#9998;</IconButton>
         </IconWrapper>
         <ButtonWrapper>

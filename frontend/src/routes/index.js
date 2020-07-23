@@ -9,10 +9,11 @@ import SeekerProfilePage from "../components/SeekerProfilePage";
 import DonorDashboard from "../components/DonorDashboard";
 import SeekerDashboard from "../components/SeekerRequestPage";
 import CreateDonorProfile from "../components/Credentials/CreateSeekerProfile/";
-import authComponent from '../HOCs/AuthComponent'
+import authComponent from "../HOCs/AuthComponent";
 import DonorEditProfile from "../components/DonorEditProfile";
 import SeekerEditProfile from "../components/SeekerEditProfile";
 import GeoMap from "../components/GeoMap";
+import AdminPage from "../components/AdminPage";
 
 const Routes = () => {
   return (
@@ -29,6 +30,7 @@ const Routes = () => {
             <Route path="/editdonor" component={authComponent(DonorEditProfile)} />
             <Route path="/seekerprofilepage" component={authComponent(SeekerProfilePage)} />
             <Route path="/map" component={GeoMap} />
+            <Route path="/admin_page" component={authComponent(AdminPage)} />
           </Navigation>
         </Switch>
       </Router>
