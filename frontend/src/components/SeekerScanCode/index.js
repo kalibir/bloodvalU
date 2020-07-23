@@ -2,6 +2,8 @@ import React, {useRef, useState} from "react";
 import {PageContainer} from "../../style/GlobalWrappers";
 import QrReader from 'react-qr-scanner'
 import styled from "styled-components";
+import {useDispatch} from "react-redux";
+import {validateQRCode} from "../../store/actions/QRActions";
 
 const SuccessText = styled.h1`
   color: #3eb33e;
@@ -9,6 +11,7 @@ const SuccessText = styled.h1`
 `
 
 const SeekerScanCode = (props) => {
+    const dispatch = useDispatch()
     const [data, setData] = useState({
         delay: 100,
         scan: null,
@@ -28,7 +31,10 @@ const SeekerScanCode = (props) => {
     }
     const refs = useRef()
     const handleSubmitQR = (e) => {
-        if (QRCode) console.log("QRCode", QRCode)
+        if (QRCode) {
+            const data = {code: QRCode}
+            dispatch(validateQRCode(data))
+        }
 
     }
 
