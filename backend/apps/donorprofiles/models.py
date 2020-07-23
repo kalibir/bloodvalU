@@ -65,8 +65,11 @@ class DonorProfile(models.Model):
         return today.year - self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
 
     @property
-    def count_down(self):
-        return datetime.today() > self.expiry_date
+    def can_donate(self):
+        if self.next_donation:
+            return datetime.today() > self.next_donation
+        else:
+            return True
 
     def __str__(self):
         return f'Donor ID: {self.id} Donor Profile'
