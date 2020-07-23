@@ -38,7 +38,6 @@ const CodeSent = ({ registrationReducer: { isDonor }, dispatch, errorReducer: { 
   );
 };
 const mapStateToProps = (state) => {
-  console.log("state", state);
   return {
     registrationReducer: state.registrationReducer,
     errorReducer: state.errorReducer,

@@ -71,7 +71,6 @@ const Login = ({errorReducer: {error}, authReducer: {authenticated, userObj}}) =
         else if (authenticated && userObj && !userObj.is_donor) push("/dashboard/seeker")
     })
 
-    console.log("loginInfo", loginInfo);
     const handleEmail = (e) => {
         const value = e.currentTarget.value;
         setloginInfo({
@@ -92,11 +91,9 @@ const Login = ({errorReducer: {error}, authReducer: {authenticated, userObj}}) =
     const handleSubmit = async (e) => {
         e.preventDefault();
         dispatch(resetError())
-        console.log("in the submit");
         const response = await dispatch(sendLoginAction(loginInfo));
         if (response.status < 300) {
             const profile = response.data.profile
-            console.log("profile", profile)
             if (profile.is_donor) {
                 profile.first_name === "" ?
                     push("/auth/signup/donor-profile/")
@@ -132,7 +129,6 @@ const Login = ({errorReducer: {error}, authReducer: {authenticated, userObj}}) =
 
 
 const mapStateToProps = (state) => {
-    console.log("state", state);
     return {
         authReducer: state.authReducer,
         errorReducer: state.errorReducer,
