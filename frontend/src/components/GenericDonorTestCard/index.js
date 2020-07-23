@@ -5,6 +5,7 @@ import {SmallBlueButton, SmallGreenButton} from "../../style/GlobalButtons";
 import {applyToRequestActionInAll} from "../../store/actions/bloodRequestActions";
 import {useDispatch} from "react-redux";
 import {buyTestAction} from "../../store/actions/offeredTestActions";
+import {getLoggedInUserAction} from "../../store/actions/userActions";
 
 const ColorDebug = false;  //at true all element get colored background for checking
 
@@ -105,10 +106,11 @@ const GenericDonorTestCard = (props) => {
 
     const dispatch = useDispatch();
 
-    const handleBuy = e => {
+    const handleBuy = async e => {
         console.log("in the test buy")
         console.log("testcard id", id)
-        dispatch(buyTestAction(id))
+        const response = await dispatch(buyTestAction(id))
+        if(response.status < 300) dispatch(getLoggedInUserAction())
     }
 
 
