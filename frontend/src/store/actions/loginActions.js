@@ -33,6 +33,7 @@ export const sendLoginAction = data => async (dispatch) => {
         localStorage.setItem("token", token);
         return response
     } catch (error) {
+        debugger
         console.log("error message", error.response);
         if(error.response.data.detail)dispatch(setError(error.response.data.detail))
         console.log("error", error.response)

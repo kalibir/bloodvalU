@@ -1,24 +1,21 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import {BaseStatusButton} from "../../style/GlobalButtons/";
-import {DarkBlueButton, WhiteButton} from "../../style/GlobalButtons/";
-import {connect, useDispatch} from "react-redux";
-import {rem} from "polished";
-import {useHistory} from "react-router";
-import {createTestRequestAction, deleteTestAction} from "../../store/actions/offeredTestActions";
+import { BaseStatusButton } from "../../style/GlobalButtons/";
+import { DarkBlueButton, WhiteButton } from "../../style/GlobalButtons/";
+import { connect, useDispatch } from "react-redux";
+import { rem } from "polished";
+import { useHistory } from "react-router";
+import { createTestRequestAction } from "../../store/actions/offeredTestActions";
 import {MiddleTitle, SmallTitle} from "../../style/GlobalTitles";
-import {deleteRequestAction} from "../../store/actions/bloodRequestActions";
 
 const ModalWrapper = styled.div`
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: calc(100vh - 64px);
   background-color: rgba(0, 0, 0, 0.6);
-  top: 0;
-  left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: fixed;
 `;
 
 const Modal = styled.div`
@@ -51,55 +48,30 @@ const YesButton = styled(DarkBlueButton)`
 `
 
 
-const AreYouSureModal = ({
-                             closeModal,
-                             context,
-                             handleDeleteTest,
-                             handleDeleteRequest,
-                             handleDeleteSeekerProfile,
-                             handleDeleteDonorProfile,
-                             id}) => {
-    const dispatch = useDispatch();
-    const {push} = useHistory();
-
-    console.log("test in are you sure", id)
-
-    const handleWhichDelete = (e, ID) => {
-        if (context === "request") {
-            handleDeleteRequest(e, ID)
-        }
-        if (context === "test") {
-            console.log("id in da handle which delete", ID)
-            handleDeleteTest(e, ID)
-        }
-        if (context === "seekerprofile") {
-            handleDeleteSeekerProfile(e, ID)
-        }
-        if (context === "donorprofile") {
-            handleDeleteDonorProfile(e, ID)
-        }
-    }
+const AreYouSureModal = ({ closeModal }) => {
+  const dispatch = useDispatch();
+  const { push } = useHistory();
 
 
-    return (
-        <ModalWrapper>
-            <Modal>
-                <QuestionContainer>
-                    <MiddleTitle>
-                        Are you sure?
-                    </MiddleTitle>
-                </QuestionContainer>
-                <ButtonContainer>
-                    <WhiteButton onClick={closeModal}>
-                        Back
-                    </WhiteButton>
-                    <YesButton onClick={e => handleWhichDelete(e, id)}>
-                        Delete
-                    </YesButton>
-                </ButtonContainer>
-            </Modal>
-        </ModalWrapper>
-    );
+  return (
+    <ModalWrapper>
+      <Modal>
+        <QuestionContainer>
+            <MiddleTitle>
+                Are you sure?
+            </MiddleTitle>
+        </QuestionContainer>
+          <ButtonContainer>
+            <WhiteButton>
+                Back
+            </WhiteButton>
+              <YesButton>
+                  Yes
+              </YesButton>
+          </ButtonContainer>
+      </Modal>
+    </ModalWrapper>
+  );
 };
 
 export default AreYouSureModal;

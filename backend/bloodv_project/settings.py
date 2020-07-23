@@ -65,7 +65,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_countries',
     'django_filters',
-
     # Own Apps
     'apps.users',
     'apps.bloodrequests',

@@ -1,6 +1,6 @@
 import datetime
 
-from django.core.mail import EmailMessage, send_mail
+from django.core.mail import EmailMessage
 from django.shortcuts import render
 
 # Create your views here.
@@ -9,8 +9,6 @@ from rest_framework import status
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
-from apps.registrations.models import code_generator
 
 from apps.bloodrequests.models import BloodRequest
 from apps.bloodrequests.permissions import IsRequesterOrAdminOrReadOnly, IsDonorOrReadOnly
@@ -42,12 +40,7 @@ class CreateBloodRequestView(CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        # v Attila
-        unique_request_id = code_generator(length=8)
-        while BloodRequest.objects.filter(unique_request_id=unique_request_id).count() > 0:
-            unique_request_id = code_generator(length=8)
-        # ^ Attila
-        serializer.save(seeker=self.request.user.seeker_profile, unique_request_id=unique_request_id)
+        serializer.save(seeker=self.request.user.seeker_profile)
         target_emails = self.get_target_blood_type_emails(serializer.validated_data.get('blood_group'))
         if target_emails:
             email = EmailMessage()
@@ -183,57 +176,13 @@ class SelectDonorFromApplicantsView(CreateAPIView):
             target_blood_request.selected_donor = target_applicant
             target_blood_request.status = "CL"
             target_blood_request.save()
-
-            # email = EmailMessage()
-            code1 = target_blood_request.unique_request_id
-            code2 = target_applicant.unique_donor_id
-            code = '{code1}.{code2}'.format(code1=code1, code2=code2)
-            # email.subject = 'Congratulations you have been Selected for a Blood Donation!'
-            # # email.body = '{seeker_name} would like you to come and donate blood at their site at {seeker_street}, {seeker_zip_code}!'.format(
-            # #     seeker_name=request.user.seeker_profile.name,
-            # #     seeker_street=request.user.seeker_profile.street, seeker_zip_code=request.user.seeker_profile.zip_code)
-            # email.body = 'At {seeker_name}, we are happy for that, you are choose us for donation. /n' \
-            #              'Our colleagues soon will make contact you, to discuss the followings. /n' \
-            #              'Your code for this donation is: {code}'.format(seeker_name=request.user.seeker_profile.name,
-            #                                                              code=code)
-            # email.to = [target_applicant.user.email]
-            # email.send(fail_silently=False)
-
-            subject = 'Congratulations, you have been selected for a Blood Donation!'
-            message = f'Here is your code for donation: {code}'
-            to = [target_applicant.user.email]
-            qr_img = f'https://qrickit.com/api/qr.php?d={code}&addtext=BloodvalU'
-            donor_name = f'{target_applicant.user.first_name} {target_applicant.user.last_name}'
-            seeker_name = request.user.seeker_profile.name
-            sender = ''
-            html_message = f"""<!doctype html>
-                    <html lang=en>
-                        <head>
-                            <meta charset=utf-8>
-                            <title>Blood test</title>
-                        </head>
-                        <body>
-                            <h2><strong>Thank you very much for applying for Blood Donation.</strong></h2>
-                            <p>&nbsp;</p>
-                            <h3>Dear {donor_name},</h3>
-                            <p>&nbsp;</p>
-                            <p>At {seeker_name}, we are happy for that, you are choose us for donation.</p>
-                            <p>Our colleagues will make contact you soon,
-                                to organize an appointment for the donation.</p>
-                            <p>If you have any questions, please don't hesitate to contact us.</p>
-                            <p>For the identification at donation, you will need the QR above,
-                                so please do not forget to bring it with you,
-                                either in your phone or in printed form. (Mind the environment, please.)</p>
-                            <p><img src='{qr_img}'/></p>
-                            <p>&nbsp;</p>
-                            <p>Best regards,</p>
-                            <p><strong>{seeker_name}</strong></p>
-                            </p>
-                        </body>
-                    </html>"""
-            send_mail(subject=subject, message=message, html_message=html_message, from_email=sender, recipient_list=to,
-                      fail_silently=False)
-
+            email = EmailMessage()
+            email.subject = 'Congratulations you have been Selected for a Blood Donation!'
+            email.body = '{seeker_name} would like you to come and donate blood at their site at {seeker_street}, {seeker_zip_code}!'.format(
+                seeker_name=request.user.seeker_profile.name,
+                seeker_street=request.user.seeker_profile.street, seeker_zip_code=request.user.seeker_profile.zip_code)
+            email.to = [target_applicant.user.email]
+            email.send(fail_silently=False)
             return Response(self.get_serializer(target_blood_request).data)
         else:
             return Response({"detail": "The Donor you selected is not an applicant!"},

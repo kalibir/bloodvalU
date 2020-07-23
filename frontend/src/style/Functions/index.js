@@ -1,115 +1,77 @@
-import React, {useState} from "react";
+import React from "react";
 import styled from "styled-components";
 import {rem} from "polished";
 import {NavLink} from "react-router-dom";
 
-// const activeClassName = "nav-item-active";
-const StyledNavLink = styled(NavLink)`
-  color: ${(props) => (props.active === "true" ? "#d33449" : "#A1A4B1")};
-  text-decoration: none;
-  position: relative;
+const activeClassName = "nav-item-active";
+const StyledNavLink = styled(NavLink).attrs({activeClassName})`
+  &.${activeClassName} {
+    margin-top: 1px;
+    h2 {
+      font-weight: bold;
+    }
+    &:after {
+      content: "";
+      position: relative;
+      bottom: ${rem("-23px")};
+      width: ${rem("45px")};
+      border-bottom: 3px solid #e47d31;
+    }
+  }
   text-decoration: none;
   width: ${rem("85px")};
   height: 100%;
+  padding: 0 ${rem("3px")} 0 ${rem("3px")};
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   cursor: pointer;
-  :visited {
-    color: black;
-  }
   :hover {
-    color: black;
+    margin-top: 1px;
   }
-  ::after {
-    position: absolute;
-    bottom: 0;
+
+  :hover:after {
     content: "";
-    display: block;
-    width: ${(props) => (props.active === "true" ? "100%" : "0")};
-    height: 3px;
-    background: #d33449;
-    transition: width 0.3s;
-  }
-  :focus:after {
-    width: 100%;
-    transition: width 0.3s;
+    position: relative;
+    bottom: ${rem("-23px")};
+    width: ${rem("45px")};
+    border-bottom: 3px solid #e47d31;
   }
 `;
 
 const LinksDiv = styled.div`
   display: flex;
-  height: 100%;
-  position: relative;
-`;
+`
 
 const WrapperDiv = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
   justify-content: space-around;
-  align-items: center;
-`;
+`
 
-export const SeekerNavigation = (name) => {
-    const [active, setActive] = useState("dashboard");
-    const handleClick = (e) => {
-        const value = e.target.id;
-        setActive(value);
-    };
+export const SeekerNavigation = () => {
+
+
     return (
         <WrapperDiv>
-            Welcome!
+            Welcome.
             <LinksDiv>
-                {name === "" ? <></> :
-                    <>
-                        <StyledNavLink
-                            to={"/dashboard/seeker"}
-                            onClick={handleClick}
-                            active={active === "dashboard" ? "true" : "false"}
-                            id="dashboard">
-                            Dashboard
-                        </StyledNavLink>
-                        <StyledNavLink
-                            to={"/seekerprofilepage"}
-                            onClick={handleClick}
-                            active={active === "profile" ? "true" : "false"}
-                            id="profile">
-                            Profile
-                        </StyledNavLink>
-                    </>
-                }
+                <StyledNavLink to={"/dashboard/seeker"}>Dashboard</StyledNavLink>
+                <StyledNavLink to={"/seekerprofilepage"}>Profile</StyledNavLink>
             </LinksDiv>
         </WrapperDiv>
-    );
-};
+    )
+}
 
 export const DonorNavigation = ({first_name, email}) => {
-    const [active, setActive] = useState("dashboard");
-    const handleClick = (e) => {
-        const value = e.target.id;
-        setActive(value);
-    };
     return (
         <WrapperDiv>
             {first_name === "" ? `Welcome, ${email}` : `Welcome, ${first_name}`}
             <LinksDiv>
-                {first_name === "" ? <></>
-                    : <>
-                        <StyledNavLink
-                            to={"/dashboard/donor"}
-                            onClick={handleClick}
-                            active={active === "dashboard" ? "true" : "false"}
-                            id="dashboard">
-                            Dashboard
-                        </StyledNavLink>
-                        <StyledNavLink to={"/map"} onClick={handleClick} active={active === "map" ? "true" : "false"} id="map">
-                            Map
-                        </StyledNavLink>
-                    </>
-                }
+                <StyledNavLink to={"/dashboard/donor"}>Dashboard</StyledNavLink>
+                <StyledNavLink to={"/map"}>Map</StyledNavLink>
             </LinksDiv>
         </WrapperDiv>
-    );
-};
+    )
+}

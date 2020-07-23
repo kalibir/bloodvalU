@@ -37,7 +37,6 @@ export const BUY_TEST = "BUY_TEST";
 
 export const ADD_REQUEST_TO_LIST = 'ADD_REQUEST_TO_LIST'
 export const REMOVE_REQUEST_FROM_LIST = 'REMOVE_REQUEST_FROM_LIST'
-export const REMOVE_TEST_FROM_LIST = 'REMOVE_TEST_FROM_LIST'
 
 // Tests types
 
