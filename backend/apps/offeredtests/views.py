@@ -1,6 +1,5 @@
 from datetime import date
 
-
 from django.core.mail import EmailMessage
 
 # Attila test
@@ -17,6 +16,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from apps.bloodrequests.permissions import IsRequesterOrAdminOrReadOnly, IsDonorOrReadOnly
+from apps.donorprofiles.models import DonorProfile
+from apps.donorprofiles.serializers import DonorProfileSerializer
 from apps.offeredtests.models import OfferedTest
 from apps.offeredtests.serializers import OfferedTestSerializer
 from apps.seekerprofiles.models import SeekerProfile
@@ -87,7 +88,8 @@ class BuyOfferedTestView(CreateAPIView):
             donor.save()
             target_offered_test.donors_who_bought.add(donor)
         # v Attila
-        test_code = "{test_code}.{donor_id}".format(test_code=target_offered_test.secret_code, donor_id=donor.unique_donor_id)
+        test_code = "{test_code}.{donor_id}".format(test_code=target_offered_test.secret_code,
+                                                    donor_id=donor.unique_donor_id)
         email = EmailMessage()
         email.subject = 'Validation code for your blood test'
         email.body = f'Here is your test code: {test_code}'
@@ -95,7 +97,7 @@ class BuyOfferedTestView(CreateAPIView):
         email.send(fail_silently=False)
         # ^ Attila
 
-        #Attila2  It is working, except the QR code image
+        # Attila2  It is working, except the QR code image
         # dog_img = "https://www.sciencemag.org/sites/default/files/styles/article_main_image_-_1280w__no_aspect_/public/dogs_1280p_0.jpg?itok=6jQzdNB8"
         # subject = 'Validation code for your blood test'
         # message = f'Here is your test code: {test_code}'
@@ -142,6 +144,19 @@ class ListAllSeekersOfferedTestsView(ListAPIView):
         return Response(serializer.data)
 
 
+class ListDonorsWhoBoughtOfferedTest(ListAPIView):
+    lookup_url_kwarg = 'test_id'
+    serializer_class = DonorProfileSerializer
+    queryset = OfferedTest
+    permission_classes = [IsAuthenticated | ReadOnly]
+
+    def list(self, request, *args, **kwargs):
+        target_offered_test = self.get_object()
+        customers = target_offered_test.donors_who_bought.all()
+        serializer = self.get_serializer(customers, many=True)
+        return Response(serializer.data)
+
+
 class ListAllOfferedTestsView(ListAPIView):
     """
     GET:
@@ -154,4 +169,3 @@ class ListAllOfferedTestsView(ListAPIView):
         queryset = OfferedTest.objects.all().order_by('-created')
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-

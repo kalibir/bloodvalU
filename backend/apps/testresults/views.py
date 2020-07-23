@@ -38,16 +38,7 @@ class CreateTestResultView(CreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class ListDonorsWhoBoughtOfferedTest(ListAPIView):
-    lookup_url_kwarg = 'test_id'
-    serializer_class = DonorProfile
-    permission_classes = [IsAuthenticated | ReadOnly]
 
-    def list(self, request, *args, **kwargs):
-        target_test = self.get_object()
-        customers = target_test.donors_who_bought.all()
-        serializer = self.get_serializer(customers, many=True)
-        return Response(serializer.data)
 
 
 
