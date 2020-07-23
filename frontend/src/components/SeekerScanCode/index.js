@@ -13,6 +13,18 @@ const ErrorText = styled.h1`
   color: #b33e3e;
   font-size: 40px;
 `
+const SubmitQRBtn = styled.input`
+  background-color: #7c1515;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+`
 
 const SeekerScanCode = (props) => {
     const dispatch = useDispatch()
@@ -40,13 +52,10 @@ const SeekerScanCode = (props) => {
     const refs = useRef()
     const handleSubmitQR = async (e) => {
         if (QRCode) {
-            const data = {code: "346564.23435"}
+            const data = {code: QRCode}
             const response = await dispatch(validateQRCode(data))
             if (response.status < 300) setQRResponse({...QRresponse, message: response.data.detail, isGood: true})
-            else {
-                console.log("response.data", response.data)
-                setQRResponse({...QRresponse, message: response.data.detail, isGood: false})
-            }
+            else setQRResponse({...QRresponse, message: "INVALID CODE", isGood: false})
         }
     }
 
@@ -61,7 +70,7 @@ const SeekerScanCode = (props) => {
                 onError={handleError}
                 onScan={handleScan}
             />
-            {QRCode ? <input type="button" value="Submit QR Code" onClick={handleSubmitQR}/> :
+            {QRCode ? <SubmitQRBtn type="button" value="Submit QR Code" onClick={handleSubmitQR}/> :
                 <p>Scanning, please hold still...</p>
             }
         </PageContainer>
