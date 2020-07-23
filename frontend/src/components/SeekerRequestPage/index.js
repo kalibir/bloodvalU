@@ -15,9 +15,6 @@ import {
 } from "../../store/actions/bloodRequestActions";
 import ActiveProfileCard from "./ActiveProfileCard";
 import { searchAllRequestsAndTestsAction } from "../../store/actions/searchActions";
-import {deleteTestAction} from "../../store/actions/offeredTestActions";
-
-import Spinner from "../../components/GenericSpinner";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -50,24 +47,27 @@ const MenuContainer = styled.div`
 `;
 
 const MiddleButton = styled.button`
-  cursor: pointer;
   height: 100%;
   width: 34%;
-  position: relative;
   background-color: #ffffff;
   font-weight: 500;
   font-size: ${rem("14px")};
   color: ${(props) => (props.active ? "#121213" : "#A1A4B1")};
   border: none;
   border-top: 2px solid #ffffff;
+  /* border-bottom: ${(props) => (props.active ? "2px solid #121213" : "2px solid #FFFFFF")}; */
   text-transform: capitalize;
 
+  /********************
+  
+  **************************** DON'T COMMIT BEFORE SHOWING******************************
+  
+  ********************* */
+
   ::after {
-    position: absolute;
-    bottom: 0;
     content: "";
     display: block;
-    width: ${(props) => (props.active ? "100%" : "0")};
+    width: 0;
     height: 2px;
     background: #121213;
     transition: width 0.3s;
@@ -157,12 +157,9 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
     setModal({ ...modal, showModal: false });
   };
 
-   const handleDeleteRequest = async (e, requestID) => {
-        e.preventDefault();
-        console.log("in da delete test func", requestID)
-        const response = await dispatch(deleteRequestAction(requestID));
-        if (response.status < 300) closeModal();
-    };
+  const handleDeleteRequest = (event, requestID) => {
+    dispatch(deleteRequestAction(requestID));
+  };
 
   const handleShowEditModal = (event, requestObj) => {
     setModal({ showModal: true, modalData: requestObj });
@@ -183,7 +180,6 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
             closeModal={closeModal}
           />
         ) : null}
-        {}
         <LeftSide>
           <DashboardContentContainer>
             <MenuContainer>
@@ -198,23 +194,21 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
               </SideButton>
             </MenuContainer>
             <Requests>
-              {requests ? (
-                requests.map((request, index) => {
-                  return (
-                    <GenericSeekerRequestBar
-                      handleShowEditModal={handleShowEditModal}
-                      handleEditRequest={handleEditRequest}
-                      handleDeleteRequest={handleDeleteRequest}
-                      handleSetActiveRequest={handleSetActiveRequest}
-                      handleSetActiveProfile={handleSetActiveProfile}
-                      key={index}
-                      request={request}
-                    />
-                  );
-                })
-              ) : (
-                <Spinner />
-              )}
+              {requests
+                ? requests.map((request, index) => {
+                    return (
+                      <GenericSeekerRequestBar
+                        handleShowEditModal={handleShowEditModal}
+                        handleEditRequest={handleEditRequest}
+                        handleDeleteRequest={handleDeleteRequest}
+                        handleSetActiveRequest={handleSetActiveRequest}
+                        handleSetActiveProfile={handleSetActiveProfile}
+                        key={index}
+                        request={request}
+                      />
+                    );
+                  })
+                : null}
             </Requests>
           </DashboardContentContainer>
           <NewRequestButton onClick={() => setModal({ ...modal, showModal: true })}>

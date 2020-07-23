@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.core.mail import EmailMessage
+from django.core.mail import  EmailMessage
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, UpdateAPIView
 from rest_framework.response import Response
@@ -32,10 +32,6 @@ class RequestForRegistration(CreateAPIView):
         email.body = 'See your account creation code: {code}'.format(code=target_profile.code)
         email.to = [request.data['email']]
         email.send(fail_silently=False)
-
-
-
-
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
@@ -54,12 +50,7 @@ class CreateUserView(CreateAPIView):
         target_profile.user = user
         target_profile.save()
         if request.data['is_donor'] == "True":
-            # v Attila
-            unique_donor_id = code_generator(length=8)
-            while DonorProfile.objects.filter(unique_donor_id=unique_donor_id).count() > 0:
-                unique_donor_id = code_generator(length=8)
-            DonorProfile.objects.create(user=user, unique_donor_id=unique_donor_id)
-            # ^ Attila
+            DonorProfile.objects.create(user=user)
             user.donor_profile.save()
         else:
             SeekerProfile.objects.create(user=user)
@@ -77,13 +68,11 @@ class CreateValidationCodeForPasswordReset(CreateAPIView):
             target_profile = Registration.objects.get(email=request.data['email'])
             target_profile.code = code_generator()
             target_profile.save()
-
             email = EmailMessage()
             email.subject = 'Your password Reset code'
             email.body = f'See your password reset code:{target_profile.code}'
             email.to = [target_profile.email]
             email.send(fail_silently=False)
-
             return Response(status=status.HTTP_201_CREATED)
         except Registration.DoesNotExist:
             return Response({"detail": "Your email isn't valid."}, status=status.HTTP_400_BAD_REQUEST)

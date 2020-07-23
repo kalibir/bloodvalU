@@ -3,7 +3,7 @@ import {
   BUY_TEST,
   SET_TESTS,
   UPDATE_REQUEST_IN_ALL_REQUESTS,
-  ADD_TEST_TO_LIST, REMOVE_TEST_FROM_LIST,
+  ADD_TEST_TO_LIST,
 } from "../actionTypes";
 import { updateRequestInAll } from "./bloodRequestActions";
 
@@ -21,23 +21,16 @@ export const addTestToAll = (test) => {
   };
 };
 
-export const updateTestInAll = (test) => {
+export const updateTestInAll = (request) => {
   return {
     type: BUY_TEST,
-    payload: test,
+    payload: request,
   };
 };
 
-export const removeTest = (testID) => {
-  return {
-    type: REMOVE_TEST_FROM_LIST,
-    payload: testID
-  };
-};
-
-export const buyTestAction = (test_id) => async (dispatch) => {
+export const buyTestAction = (request_id) => async (dispatch) => {
   try {
-    const response = await Axios.post(`tests/buy/${test_id}/`);
+    const response = await Axios.post(`tests/buy/${request_id}/`);
     const { data } = response;
     console.log("Buy test response", data);
     dispatch(updateTestInAll(data));
@@ -76,14 +69,3 @@ export const createTestRequestAction = (requestData) => async (dispatch) => {
     return error;
   }
 };
-
-export const deleteTestAction = (testID) => async (dispatch) => {
-  try {
-    const response = await Axios.delete(`tests/${testID}/`);
-    dispatch(removeTest(Number(testID)))
-    return response
-  } catch (error) {
-    console.log("error in delete test action", error);
-    return error
-  }
-}

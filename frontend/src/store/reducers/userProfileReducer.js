@@ -1,13 +1,8 @@
 import {
     BUY_TEST,
     ADD_REQUEST_TO_LIST,
-    SET_REQUESTS,
-    SET_TESTS,
-    SET_USER_PROFILE_USER,
-    UPDATE_REQUEST_IN_ALL_REQUESTS,
-    REMOVE_REQUEST_FROM_LIST,
-    ADD_TEST_TO_LIST,
-    REMOVE_TEST_FROM_LIST
+    SET_REQUESTS, SET_TESTS,
+    SET_USER_PROFILE_USER, UPDATE_REQUEST_IN_ALL_REQUESTS, REMOVE_REQUEST_FROM_LIST,ADD_TEST_TO_LIST
 
 } from "../actionTypes";
 
@@ -53,12 +48,6 @@ export const userProfileReducer = (state = initialState, action) => {
                 request => request.id !== action.payload
             );
             return {...newState, requests: newRequests};
-        }
-        case REMOVE_TEST_FROM_LIST: {
-            const newTests = newState.offeredTests.filter(
-                test => test.id !== action.payload
-            );
-            return {...newState, offeredTests: newTests};
         }
         case ADD_TEST_TO_LIST: {
             if (newState.offeredTests)

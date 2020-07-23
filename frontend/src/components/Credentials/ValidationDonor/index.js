@@ -5,9 +5,6 @@ import { MiddleTitle, SmallTitle } from "../../../style/GlobalTitles";
 import { BigInput, Select, SmallInput } from "../../../style/GlobalInputs";
 import { DarkBlueButton, WhiteButton } from "../../../style/GlobalButtons";
 import { PageContainer } from "../../../style/GlobalWrappers";
-import { connect, useDispatch } from "react-redux";
-import { useHistory } from "react-router";
-import { updateProfileAction } from "../../../store/actions/userActions";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -59,91 +56,145 @@ const FullWidthInputContainer = styled.div`
 const AddressInput = styled(BigInput)`
   width: 100%;
 `;
-// const HouseNumberInput = styled(BigInput)`
-//   width: ${rem("64px")};
-// `;
 
-const ImgInput = styled.input`
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
-`;
-
-const ChooseFileButton = styled.label`
-  background: #121232;
-  border-radius: 4px;
-  border: 1px solid #121232;
-  margin-bottom: ${rem("24px")};
-  outline: none;
-  width: 100%;
-  height: ${rem("32px")};
-  cursor: pointer;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  letter-spacing: 0.5px;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const HouseNumberInput = styled(BigInput)`
+  width: ${rem("64px")};
 `;
 
 const WhiteButtonWithMargin = styled(WhiteButton)`
   margin-right: ${rem("16px")};
 `;
 
-const CreateDonorProfile = (props) => {
-  const { push } = useHistory();
-  const dispatch = useDispatch();
-  const [donorInfo, setDonorInfo] = useState({
-    first_name: "",
-    last_name: "",
-    zip_code: "",
-    phone: "",
-    country: "",
-    street: "",
-    avatar: null,
-    birthday: "",
-    blood_group: "",
-    gender: "",
-  });
-
-  console.log("donorInfo", donorInfo);
-
+export const DonorValidationPageOne = (props) => {
   const onChangeHandler = (event, property) => {
     const value = event.currentTarget.value;
-    setDonorInfo({ ...donorInfo, [property]: value });
-  };
-
-  const avatarSelectHandler = (e) => {
-    if (e.target.files[0]) {
-      setDonorInfo({ ...donorInfo, avatar: e.target.files[0] });
-    }
+    // setDonorInfo({...donorInfo, [property]:value})
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = new FormData();
-    form.append("first_name", donorInfo.first_name);
-    form.append("last_name", donorInfo.last_name);
-    form.append("zip_code", donorInfo.zip_code);
-    form.append("street", donorInfo.street);
-    form.append("country", donorInfo.country);
-    form.append("birthday", donorInfo.birthday);
-    form.append("gender", donorInfo.gender);
-    form.append("blood_group", donorInfo.blood_group);
-    form.append("phone", donorInfo.phone);
-    if (donorInfo.avatar) {
-      form.append("avatar", donorInfo.avatar);
-    }
-    const response = await dispatch(updateProfileAction(form));
-    if (response.status < 300) {
-      console.log("success!!");
-      push(`/dashboard/donor`);
-    }
+    console.log("This is a submit function.");
+
+    // from Luna-project
+    //donorInfo is just a name, correct it later!!!
+
+    // const form = new FormData()
+    // form.append('first_name', donorInfo.first_name)
+    // form.append('last_name', donorInfo.last_name)
+    // form.append('gender', donorInfo.gender)
+    // form.append('birthday', donorInfo.birthday)
+    // form.append('blood_group', donorInfo.blood_group)
+    // form.append('phone_number', donorInfo.phone_number)
+    // form.append('email', donorInfo.email)
+
+    // const response = await dispatch(createRestaurantAction(form));
+    // if (response.status < 300) {
+    //     console.log("woohooo", response)
+    //     const restaurantId = response.data.id
+    //     history.push(`/restaurants/${restaurantId}`)
+    // }
+  };
+
+  return (
+    <PageContainer>
+      <FormWrapper onSubmit={handleSubmit}>
+        <FormContainer>
+          <TitleContainer>
+            <MiddleTitle500>Create an Account</MiddleTitle500>
+          </TitleContainer>
+
+          <InputPairContainer>
+            <div>
+              <InputTitle>E-mail</InputTitle>
+              <BigInput
+                type="email"
+                placeholder="sherlock@holmes.com"
+                onChange={(e) => onChangeHandler(e, "email")}
+                required
+              />
+            </div>
+          </InputPairContainer>
+
+          <InputPairContainer>
+            <div>
+              <InputTitle>Password</InputTitle>
+              <BigInput
+                type="password"
+                placeholder="password"
+                onChange={(e) => onChangeHandler(e, "password")}
+                required
+              />
+            </div>
+          </InputPairContainer>
+
+          <InputPairContainer>
+            <div>
+              <InputTitle>Repeat password</InputTitle>
+              <BigInput
+                type="password"
+                placeholder="repeat password"
+                onChange={(e) => onChangeHandler(e, "password2")}
+                required
+              />
+            </div>
+          </InputPairContainer>
+
+          <InputPairContainer>
+            <div>
+              <InputTitle>Verification code</InputTitle>
+              <BigInput
+                type="text"
+                placeholder="123456"
+                onChange={(e) => onChangeHandler(e, "validation_code")}
+                required
+              />
+            </div>
+          </InputPairContainer>
+
+          <ButtonContainer>
+            <DarkBlueButton>Continue</DarkBlueButton>
+          </ButtonContainer>
+        </FormContainer>
+      </FormWrapper>
+    </PageContainer>
+  );
+};
+
+export const DonorValidationPageTwo = (props) => {
+  const onChangeHandler = (event, property) => {
+    const value = event.currentTarget.value;
+    // setDonorInfo({...donorInfo, [property]:value})
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("This is a submit function.");
+
+    // from Luna-project
+    //donorInfo is just a name, correct it later!!!
+
+    // const form = new FormData()
+    // form.append('first_name', donorInfo.first_name)
+    // form.append('last_name', donorInfo.last_name)
+    // form.append('zip', donorInfo.zip)
+    // form.append('street', donorInfo.street)
+    // form.append('city', donorInfo.city)
+    // form.append('country', donorInfo.country)
+    // form.append('birthday', donorInfo.birthday)
+    // form.append('gender', donorInfo.gender)
+    // form.append('blood_group', donorInfo.blood_group)
+    // form.append('phone_number', donorInfo.phone_number)
+    // form.append('email', donorInfo.email)
+    // form.append('validation_code', donorInfo.validation_code)
+    // form.append('password', donorInfo.password)
+    // form.append('password2', donorInfo.password2)
+
+    // const response = await dispatch(createRestaurantAction(form));
+    // if (response.status < 300) {
+    //     console.log("woohooo", response)
+    //     const restaurantId = response.data.id
+    //     history.push(`/restaurants/${restaurantId}`)
+    // }
   };
 
   return (
@@ -180,9 +231,9 @@ const CreateDonorProfile = (props) => {
             <div>
               <InputTitle>Gender</InputTitle>
               <Select onChange={(e) => onChangeHandler(e, "gender")} required>
-                <option value="M">male</option>
-                <option value="F">female</option>
-                <option value="O">other</option>
+                <option value="male">male</option>
+                <option value="female">female</option>
+                <option value="other">other</option>
               </Select>
             </div>
 
@@ -216,8 +267,8 @@ const CreateDonorProfile = (props) => {
               <InputTitle>Phone Number</InputTitle>
               <SmallInput
                 type="text"
-                placeholder="044 123 45 67"
-                onChange={(e) => onChangeHandler(e, "phone")}
+                placeholder="+44 20 7224 3688"
+                onChange={(e) => onChangeHandler(e, "phone_number")}
                 required
               />
             </div>
@@ -241,7 +292,7 @@ const CreateDonorProfile = (props) => {
               <SmallInput
                 type="text"
                 placeholder="NW1 London"
-                onChange={(e) => onChangeHandler(e, "zip_code")}
+                onChange={(e) => onChangeHandler(e, "zip")}
                 required
               />
             </div>
@@ -256,16 +307,6 @@ const CreateDonorProfile = (props) => {
               />
             </div>
           </InputPairContainer>
-          <ImgInput
-            onChange={avatarSelectHandler}
-            type="file"
-            name="file"
-            id="file"
-            className="inputfile"
-          />
-          <ChooseFileButton className="file_btn" htmlFor="file">
-            CHOOSE YOUR PROFILE PICTURE
-          </ChooseFileButton>
 
           <ButtonContainer>
             <WhiteButtonWithMargin>Back</WhiteButtonWithMargin>
@@ -276,14 +317,3 @@ const CreateDonorProfile = (props) => {
     </PageContainer>
   );
 };
-
-const mapStateToProps = (state) => {
-  console.log("state", state);
-  return {
-    registrationReducer: state.registrationReducer,
-    errorReducer: state.errorReducer,
-    authReducer: state.authReducer,
-  };
-};
-
-export default connect(mapStateToProps)(CreateDonorProfile);

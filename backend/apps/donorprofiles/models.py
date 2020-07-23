@@ -4,8 +4,6 @@ from django.contrib.auth import get_user_model
 from django.core.validators import FileExtensionValidator
 from django.db import models
 
-from apps.registrations.models import code_generator  # Attila
-
 # Create your models here.
 User = get_user_model()
 
@@ -18,8 +16,6 @@ class DonorProfile(models.Model):
     first_name = models.CharField(max_length=100, blank=True)
 
     last_name = models.CharField(max_length=100, blank=True)
-
-    unique_donor_id = models.CharField(max_length=8, blank=True)
 
     country = models.CharField(max_length=50, blank=True)
 
@@ -36,7 +32,7 @@ class DonorProfile(models.Model):
     total_points = models.IntegerField(blank=True, default=0)
 
     BLOOD_GROUP_CHOICES = [
-        ('O-', 'O-'),
+        ('O', 'O'),
         ('O+', 'O+'),
         ('A-', 'A-'),
         ('A+', 'A+'),

@@ -121,7 +121,7 @@ const GenericDonorTestCard = (props) => {
                 <ValidText>Valid until: <ValidDate active={is_expired}>{expiry_date}</ValidDate></ValidText>
             </TextContainer>
             <TestCardBottomContainer active={is_bought}>
-                {is_bought ? is_expired ? <ExpiredText>Expired</ExpiredText> : <RedeemButton onClick={handleBuy}>Re-send Code</RedeemButton> : <><SmallBlueButton onClick={handleBuy}>Buy</SmallBlueButton><PointContainer>{points_cost} Points</PointContainer></>}
+                {is_bought ? is_expired ? <ExpiredText>Expired</ExpiredText> : <RedeemButton>Re-send Code</RedeemButton> : <><SmallBlueButton onClick={handleBuy}>Buy</SmallBlueButton><PointContainer>{points_cost} Points</PointContainer></>}
             </TestCardBottomContainer>
         </TestCardContent>
       </TestCard>
@@ -130,4 +130,3 @@ const GenericDonorTestCard = (props) => {
 
 
 export default GenericDonorTestCard;
-
