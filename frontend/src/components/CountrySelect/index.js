@@ -22,10 +22,11 @@ const SelectCountryInput = styled.select`
   }
 `
 
-const CountrySelect = () => {
+const CountrySelect = ({handleChange, country}) => {
     return (
-        <SelectCountryInput id="country" name="country">
-           <option value="Afganistan">Afghanistan</option>
+        <SelectCountryInput defaultValue={country} onChange={handleChange} id="country" name="country">
+           <option value={country} disabled>Select Country</option>
+           <option value="Afghanistan">Afghanistan</option>
            <option value="Albania">Albania</option>
            <option value="Algeria">Algeria</option>
            <option value="American Samoa">American Samoa</option>

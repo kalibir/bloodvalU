@@ -251,7 +251,11 @@ const SeekerEditProfile = ({
 
                         <div>
                             <InputTitle>Country</InputTitle>
-                            <CountrySelect/>
+                            <CountrySelect
+                                handleChange={(e) => onChangeHandler(e, "country")}
+                                required
+                                country={country}
+                            />
                         </div>
                     </InputPairContainer>
 

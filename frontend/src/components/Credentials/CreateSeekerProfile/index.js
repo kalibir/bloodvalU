@@ -215,7 +215,7 @@ const CreateSeekerProfile = ({authReducer}) => {
                         <InputTitle>Street</InputTitle>
                         <StreetInput
                             onChange={(e) => onChangeHandler(e, "street")}
-                            placeholder="Longstreet"
+                            placeholder="Longstreet 7"
                             required
                         />
                     </FullWidthInputContainer>
@@ -231,7 +231,9 @@ const CreateSeekerProfile = ({authReducer}) => {
                     </div>
                     <div>
                         <InputTitle>Country</InputTitle>
-                        <CountrySelect/>
+                        <CountrySelect
+                                handleChange={(e) => onChangeHandler(e, "country")}
+                                required/>
                     </div>
                 </InputWrapper>
                 <InputWrapper>

@@ -14,6 +14,7 @@ import DonorProfileSelected from "../GenericDonorSelected";
 import GenericSeekerRequestBar from "../GenericSeekerRequestBar";
 import AreYouSureModal from "../AreYouSure";
 import SeekerProfileCard from "../GenericSeekerProfileCard";
+import ButtonSpinner from "../ButtonSpinner";
 
 const TestWrapper = styled(PageContainer)`
     height: 100%;
@@ -25,6 +26,7 @@ function Template(props) {
   return (
       <div>
           <br></br>
+          <ButtonSpinner/>
           <CompleteButton>Complete</CompleteButton>
           <SeekerProfileCard/>
           <SmallTitle>RedTitle</SmallTitle>

@@ -120,6 +120,7 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
   const [active, setActive] = useState("OP");
   const [activeProfile, setActiveProfile] = useState(null);
   const [activeRequest, setActiveRequest] = useState(null);
+  const [showSpinner, setShowSpinner] = useState(false);
   const [modal, setModal] = useState({
     showModal: false,
     modalData: null,
@@ -134,11 +135,14 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
   };
 
   const handleSelectApplicant = async (e) => {
-    if (activeRequest.id) {
+    if (activeRequest && activeProfile) {
+      setShowSpinner(true)
       const response = await dispatch(
         assignApplicantAsSelectedDonor(activeRequest.id, activeProfile.id)
       );
-      if (response.status < 300) setActiveRequest(response.data);
+      if (response.status < 300)
+        setShowSpinner(false)
+      setActiveRequest(response.data);
     }
   };
 
@@ -227,6 +231,7 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
               handleSelectApplicant={handleSelectApplicant}
               activeRequest={activeRequest}
               activeProfile={activeProfile}
+              showSpinner={showSpinner}
             />
           ) : null}
         </RightSide>

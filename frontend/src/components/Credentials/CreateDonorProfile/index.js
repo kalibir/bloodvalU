@@ -115,6 +115,8 @@ const CreateDonorProfile = (props) => {
   const onChangeHandler = (event, property) => {
     const value = event.currentTarget.value;
     setDonorInfo({ ...donorInfo, [property]: value });
+        console.log("in da event", event)
+
   };
 
   const avatarSelectHandler = (e) => {
@@ -142,6 +144,7 @@ const CreateDonorProfile = (props) => {
     if (response.status < 300) {
       push(`/dashboard/donor`);
     }
+
   };
 
   return (
@@ -189,7 +192,6 @@ const CreateDonorProfile = (props) => {
               <SmallInput
                 type="date"
                 onChange={(e) => onChangeHandler(e, "birthday")}
-                value="1990-07-22"
                 max="2002-07-22"
                 required
               />
@@ -227,7 +229,7 @@ const CreateDonorProfile = (props) => {
               <InputTitle>Address</InputTitle>
               <AddressInput
                 type="text"
-                placeholder="Baker Street"
+                placeholder="Baker Street 7"
                 onChange={(e) => onChangeHandler(e, "street")}
                 required
               />
@@ -247,7 +249,9 @@ const CreateDonorProfile = (props) => {
 
             <div>
               <InputTitle>Country</InputTitle>
-              <CountrySelect/>
+              <CountrySelect
+                  handleChange={(e) => onChangeHandler(e, "country")}
+                                required/>
             </div>
           </InputPairContainer>
           <ImgInput
