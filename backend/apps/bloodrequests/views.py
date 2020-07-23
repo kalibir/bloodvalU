@@ -9,6 +9,7 @@ from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDe
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from apps.donordata.models import DonorData
 from apps.registrations.models import code_generator
 
 from apps.bloodrequests.models import BloodRequest
@@ -278,6 +279,18 @@ class MarkRequestAsCompletedView(CreateAPIView):
             target_donor.total_points += int(target_blood_request.points_value)
             target_donor.has_been_selected = False
             target_donor.save()
+            for donor in target_blood_request.applicants.all():
+                new_data = DonorData.objects.create(
+                    blood_request=target_blood_request,
+                    zip_code=donor.zip_code,
+                    birthday=donor.birthday,
+                    selected_donor=bool(donor == target_blood_request.selected_donor),
+                    country=donor.country,
+                    street=donor.street,
+                    gender=donor.gender,
+                    blood_group=donor.blood_group,
+                )
+                new_data.save()
             target_blood_request.save()
             if target_blood_request.is_renewable:
                 cloned_blood_request = BloodRequest.objects.get(id=target_blood_request.id)

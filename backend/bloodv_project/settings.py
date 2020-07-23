@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     # Own Apps
     'apps.users',
     'apps.bloodrequests',
+    'apps.donordata',
     'apps.donorprofiles',
     'apps.seekerprofiles',
     'apps.registrations',
