@@ -168,7 +168,7 @@ const DonorEditProfile = ({
         email: `${email}`,
     });
     const [sureModal, setSureModal] = useState(false);
-
+    console.log("donor info", donorInfo)
 
     const onChangeHandler = (event, property) => {
         const value = event.currentTarget.value;
@@ -344,7 +344,11 @@ const DonorEditProfile = ({
 
                         <div>
                             <InputTitle>Country</InputTitle>
-                            <CountrySelect/>
+                            <CountrySelect
+                                handleChange={(e) => onChangeHandler(e, "country")}
+                                required
+                                country={country}
+                            />
                         </div>
                     </InputPairContainer>
                     <ErrorMsg>
