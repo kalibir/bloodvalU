@@ -1,3 +1,4 @@
+import datetime
 from datetime import date
 
 from django.contrib.auth import get_user_model
@@ -31,7 +32,7 @@ class DonorProfile(models.Model):
 
     birthday = models.DateField(auto_now=False, null=True, blank=True)
 
-    last_donation = models.DateTimeField(auto_now=False, null=True, blank=True)
+    next_donation = models.DateTimeField(auto_now=False, null=True, blank=True)
 
     total_points = models.IntegerField(blank=True, default=0)
 
@@ -62,6 +63,10 @@ class DonorProfile(models.Model):
     def age(self):
         today = date.today()
         return today.year - self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
+
+    @property
+    def count_down(self):
+        return datetime.today() > self.expiry_date
 
     def __str__(self):
         return f'Donor ID: {self.id} Donor Profile'

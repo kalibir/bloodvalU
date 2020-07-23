@@ -44,7 +44,7 @@ class OfferedTestSerializer(serializers.ModelSerializer):
             offered_tests_results = obj.test_results.all()
             return bool(set(donor_profile_results) & set(offered_tests_results))
         else:
-            return False
+            return None
 
     def get_seeker_name(self, obj):
         return obj.seeker.name
