@@ -12,7 +12,7 @@ class TestResultSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TestResult
-        fields = ['id', 'donor', 'type_of_test', 'result_code', 'results']
+        fields = ['id', 'donor', 'offered_test', 'result_code', 'results']
 
     def validate(self, data):
         request = self.context.get('request')
@@ -23,13 +23,13 @@ class TestResultSerializer(serializers.ModelSerializer):
                 {"detail": "Only validated Seekers can make upload results, please wait for validation!"})
         if not get_or_none(DonorProfile, id=request.data.get('donor')):
             raise serializers.ValidationError({"detail": "This donor does not exist!"})
-        if not get_or_none(OfferedTest, id=request.data.get('type_of_test')):
+        if not get_or_none(OfferedTest, id=request.data.get('test_id')):
             raise serializers.ValidationError({"detail": "This offered test does not exist!"})
         if not DonorProfile.objects.get(id=request.data.get('donor')) in OfferedTest.objects.get(
-                id=request.data.get('type_of_test')).donors_who_bought.all():
+                id=request.data.get('test_id')).donors_who_bought.all():
             raise serializers.ValidationError({"detail": "The selected Donor never bought this test!"})
         duplicate = TestResult.objects.filter(donor=request.data.get('donor'),
-                                              type_of_test=request.data.get('type_of_test')).exists()
+                                              offered_test=request.data.get('test_id')).exists()
         if duplicate:
             raise serializers.ValidationError(
                 'This result already exists, please update instead of creating a new result for this particular test')

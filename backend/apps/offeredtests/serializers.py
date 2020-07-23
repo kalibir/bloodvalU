@@ -29,7 +29,7 @@ class OfferedTestSerializer(serializers.ModelSerializer):
             donor_profile_results = self.context.get('request').user.donor_profile.test_results.all()
             offered_tests_results = obj.test_results.all()
             if bool(set(donor_profile_results) & set(offered_tests_results)):
-                target_result = TestResult.objects.filter(type_of_test=obj,
+                target_result = TestResult.objects.filter(offered_test=obj,
                                                           donor=self.context.get('request').user.donor_profile)
                 target_pdf = target_result[0].results
                 return request.scheme + "://" + request.get_host() + target_pdf.url

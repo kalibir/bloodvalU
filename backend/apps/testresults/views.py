@@ -2,7 +2,7 @@ from django.core.mail import EmailMessage
 
 # Create your views here.
 from rest_framework import status
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -13,6 +13,11 @@ from apps.users.permissions import ReadOnly
 
 
 class CreateTestResultView(CreateAPIView):
+    """
+    POST:
+    Upload the results of an offered test for a user who bought the tests by
+    making an object with the properties donor and test_id.
+    """
     serializer_class = TestResultSerializer
     permission_classes = [IsAuthenticated | ReadOnly]
 
@@ -20,9 +25,9 @@ class CreateTestResultView(CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         target_donor = DonorProfile.objects.get(id=int(request.data['donor']))
-        target_test = OfferedTest.objects.get(id=int(request.data['type_of_test']))
-        serializer.save(donor=target_donor, type_of_test=target_test)
-        seeker = self.request.user.seeker_profile
+        target_test = OfferedTest.objects.get(id=int(request.data['test_id']))
+        serializer.save(donor=target_donor, offered_test=target_test)
+        seeker = self.request.user.seeker_profile  # TODO To be worked on with HTML and to be made more personal
         email = EmailMessage()
         email.subject = 'Your test Results are available!'
         email.body = 'Hey {donor_name}, /n Your test results are now available for download on your profile page.'.format(
@@ -31,3 +36,18 @@ class CreateTestResultView(CreateAPIView):
         email.send(fail_silently=False)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class ListDonorsWhoBoughtOfferedTest(ListAPIView):
+    lookup_url_kwarg = 'test_id'
+    serializer_class = DonorProfile
+    permission_classes = [IsAuthenticated | ReadOnly]
+
+    def list(self, request, *args, **kwargs):
+        target_test = self.get_object()
+        customers = target_test.donors_who_bought.all()
+        serializer = self.get_serializer(customers, many=True)
+        return Response(serializer.data)
+
+
+

@@ -9,7 +9,7 @@ from apps.registrations.models import code_generator
 
 class TestResult(models.Model):
 
-    type_of_test = models.ForeignKey(to=OfferedTest, on_delete=models.CASCADE, related_name='test_results')
+    offered_test = models.ForeignKey(to=OfferedTest, on_delete=models.CASCADE, related_name='test_results')
 
     donor = models.ForeignKey(to=DonorProfile, on_delete=models.CASCADE, related_name='test_results')
     result_code = models.CharField(

@@ -154,3 +154,4 @@ class ListAllOfferedTestsView(ListAPIView):
         queryset = OfferedTest.objects.all().order_by('-created')
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
