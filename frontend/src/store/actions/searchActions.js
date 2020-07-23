@@ -14,8 +14,6 @@ export const searchAllRequestsAndTestsAction = (searchString, searchType) => asy
         return response
     } catch (error) {
         console.log("error message", error.response);
-        // dispatch(setError(error.response.data.detail))
-        console.log("error", error)
         return error
     }
 }

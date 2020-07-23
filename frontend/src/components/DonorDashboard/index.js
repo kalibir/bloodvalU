@@ -247,7 +247,6 @@ const DonorDashboard = ({
                             </PointsHeader>
 
                             <UnderLine/>
-
                             <OfferContainer>
                                 {offeredTests
                                     ? offeredTests.map((test, index) => {

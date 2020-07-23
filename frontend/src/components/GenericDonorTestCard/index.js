@@ -1,5 +1,5 @@
 import React from "react";
-import { rem } from "polished";
+import {rem} from "polished";
 import styled from "styled-components";
 import {SmallBlueButton, SmallGreenButton} from "../../style/GlobalButtons";
 import {applyToRequestActionInAll} from "../../store/actions/bloodRequestActions";
@@ -99,32 +99,49 @@ const RedeemButton = styled(SmallGreenButton)`
     padding: 0 8px;
     letter-spacing: 3.5px;
 `
+const DownloadLink = styled.a`
+  text-decoration: none;
+`
+
+const DownloadButton = styled(RedeemButton)`
+      background-color: #c60f24;
+      border: none;
+`
 
 const GenericDonorTestCard = (props) => {
-    const { test: { id, test_type, seeker_name, is_bought, points_cost, expiry_date, is_expired }, } = props;
+    const {test: {id, test_type, seeker_name, is_bought, points_cost, expiry_date, is_expired, results},} = props;
 
     const dispatch = useDispatch();
 
     const handleBuy = async e => {
         const response = await dispatch(buyTestAction(id))
-        if(response.status < 300) dispatch(getLoggedInUserAction())
+        if (response.status < 300) dispatch(getLoggedInUserAction())
     }
 
 
-  return (
-      <TestCard>
-        <TestCardContent>
-            <TextContainer>
-                <Text>{test_type}</Text>
-                <Text>From: {seeker_name}</Text>
-                <ValidText>Valid until: <ValidDate active={is_expired}>{expiry_date}</ValidDate></ValidText>
-            </TextContainer>
-            <TestCardBottomContainer active={is_bought}>
-                {is_bought ? is_expired ? <ExpiredText>Expired</ExpiredText> : <RedeemButton onClick={handleBuy}>Re-send Code</RedeemButton> : <><SmallBlueButton onClick={handleBuy}>Buy</SmallBlueButton><PointContainer>{points_cost} Points</PointContainer></>}
-            </TestCardBottomContainer>
-        </TestCardContent>
-      </TestCard>
-  );
+    return (
+        <TestCard>
+            <TestCardContent>
+                <TextContainer>
+                    <Text>{test_type}</Text>
+                    <Text>From: {seeker_name}</Text>
+                    <ValidText>Valid until: <ValidDate active={is_expired}>{expiry_date}</ValidDate></ValidText>
+                </TextContainer>
+
+                <TestCardBottomContainer active={is_bought}>
+                    {results?
+                        <DownloadLink href={results} target={"_blank"} download><DownloadButton>DOWNLOAD</DownloadButton></DownloadLink>
+                        :is_bought ? is_expired ? <ExpiredText>Expired</ExpiredText> :
+                        <RedeemButton onClick={handleBuy}>Re-send Code</RedeemButton> :
+                        <>
+                            <SmallBlueButton onClick={handleBuy}>Buy</SmallBlueButton>
+                            <PointContainer>{points_cost} Points</PointContainer>
+                        </>
+                    }
+                </TestCardBottomContainer>
+            </TestCardContent>
+        </TestCard>
+    );
 };
 
 
