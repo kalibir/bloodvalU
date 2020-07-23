@@ -12,6 +12,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from apps.bloodrequests.permissions import IsRequesterOrAdminOrReadOnly, IsDonorOrReadOnly
+from apps.donorprofiles.models import DonorProfile
+from apps.donorprofiles.serializers import DonorProfileSerializer
 from apps.offeredtests.models import OfferedTest
 from apps.offeredtests.serializers import OfferedTestSerializer
 from apps.seekerprofiles.models import SeekerProfile
@@ -132,6 +134,19 @@ class ListAllSeekersOfferedTestsView(ListAPIView):
         target_seeker = self.get_object()
         seeker_offered_tests = target_seeker.offered_tests.all()
         serializer = self.get_serializer(seeker_offered_tests, many=True)
+        return Response(serializer.data)
+
+
+class ListDonorsWhoBoughtOfferedTest(ListAPIView):
+    lookup_url_kwarg = 'test_id'
+    serializer_class = DonorProfileSerializer
+    queryset = OfferedTest
+    permission_classes = [IsAuthenticated | ReadOnly]
+
+    def list(self, request, *args, **kwargs):
+        target_offered_test = self.get_object()
+        customers = target_offered_test.donors_who_bought.all()
+        serializer = self.get_serializer(customers, many=True)
         return Response(serializer.data)
 
 

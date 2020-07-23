@@ -4,12 +4,15 @@ from django.core.mail import EmailMessage, send_mail
 from django.shortcuts import render
 
 # Create your views here.
+from django.db.models import Q
 
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from apps.donordata.models import DonorData
+from apps.donordata.serializers import DonorDataSerializer
 from apps.registrations.models import code_generator
 
 from apps.bloodrequests.models import BloodRequest
@@ -113,6 +116,15 @@ class RetrieveUpdateDestroyBloodRequestView(RetrieveUpdateDestroyAPIView):
     def perform_update(self, serializer):
         serializer.save(seeker=self.request.user.seeker_profile)
 
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        target_selected_donor = instance.selected_donor
+        if target_selected_donor:
+            target_selected_donor.has_been_selected = False
+            target_selected_donor.save()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class ToggleApplyToRequestView(CreateAPIView):
     """
@@ -127,17 +139,34 @@ class ToggleApplyToRequestView(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         target_blood_request = self.get_object()
-        if target_blood_request.selected_donor is None or target_blood_request.status is "OP":
-            requester = self.request.user.donor_profile
-            apply_relation = requester in target_blood_request.applicants.all()
-            if apply_relation:
-                target_blood_request.applicants.remove(requester)
+        if not self.request.user.is_donor:
+            return Response({"detail": "Only donors can apply to requests"}, status=status.HTTP_400_BAD_REQUEST)
+        if target_blood_request.status == "OP" or target_blood_request.selected_donor == self.request.user.donor_profile:
+            target_donor = self.request.user.donor_profile
+            if target_donor.has_been_selected and target_donor != target_blood_request.selected_donor:
+                return Response(
+                    {"detail": "You have already been selected in another request, you can no longer apply"},
+                    status=status.HTTP_400_BAD_REQUEST)
+            apply_relation = target_donor in target_blood_request.applicants.all()
+            if apply_relation and target_blood_request.selected_donor == target_donor:
+                target_blood_request.applicants.remove(target_donor)
+                target_blood_request.status = 'OP'
+                target_blood_request.selected_donor = None
+                target_donor.has_been_selected = False
+                target_donor.save()
+                target_blood_request.save()
+            elif apply_relation:
+                target_blood_request.applicants.remove(target_donor)
+                target_donor.save()
             else:
-                target_blood_request.applicants.add(requester)
+                target_blood_request.applicants.add(target_donor)
+                target_donor.save()
             return Response(self.get_serializer(target_blood_request).data)
         else:
             return Response(
-                {"detail": "Sorry, you can no longer interact with this blood request as it is closed or completed."},
+                {
+                    "detail": "status: {status} Sorry, you can no longer apply to this request, you are either already selected, or this request is closed/completed.".format(
+                        status=target_blood_request.status)},
                 status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -154,7 +183,8 @@ class ListApplicantsOfSpecificRequestView(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         target_blood_request = self.get_object()
-        target_applicants = target_blood_request.applicants.all()
+        target_applicants = target_blood_request.applicants.filter(
+            (Q(has_been_selected=False) | Q(id=target_blood_request.selected_donor.id)))
         serializer = self.get_serializer(target_applicants, many=True)
         return Response(serializer.data)
 
@@ -175,12 +205,15 @@ class SelectDonorFromApplicantsView(CreateAPIView):
         target_applicant = DonorProfile.objects.get(id=self.kwargs['donor_id'])
         if target_applicant == target_blood_request.selected_donor:
             target_blood_request.selected_donor = None
+            target_applicant.has_been_selected = False
             target_blood_request.status = "OP"
+            target_applicant.save()
             target_blood_request.save()
             return Response(self.get_serializer(target_blood_request).data)
         elif target_applicant in target_blood_request.applicants.all():
             target_applicant = DonorProfile.objects.get(id=self.kwargs['donor_id'])
             target_blood_request.selected_donor = target_applicant
+            target_applicant.has_been_selected = True
             target_blood_request.status = "CL"
             target_blood_request.save()
 
@@ -283,9 +316,22 @@ class MarkRequestAsCompletedView(CreateAPIView):
                             status=status.HTTP_400_BAD_REQUEST)
         else:
             target_blood_request.status = "COM"
-            target_donor.last_donation = datetime.datetime.now()
+            target_donor.next_donation = datetime.datetime.now() + datetime.timedelta(days=90)
             target_donor.total_points += int(target_blood_request.points_value)
+            target_donor.has_been_selected = False
             target_donor.save()
+            for donor in target_blood_request.applicants.all():
+                new_data = DonorData.objects.create(
+                    blood_request=target_blood_request,
+                    zip_code=donor.zip_code,
+                    birthday=donor.birthday,
+                    selected_donor=bool(donor == target_blood_request.selected_donor),
+                    country=donor.country,
+                    street=donor.street,
+                    gender=donor.gender,
+                    blood_group=donor.blood_group,
+                )
+                new_data.save()
             target_blood_request.save()
             if target_blood_request.is_renewable:
                 cloned_blood_request = BloodRequest.objects.get(id=target_blood_request.id)
@@ -302,3 +348,19 @@ class MarkRequestAsCompletedView(CreateAPIView):
             email.to = [target_donor.user.email]
             email.send(fail_silently=False)
             return Response(self.get_serializer(target_blood_request).data)
+
+
+class GetStatisticsOfBloodRequestView(ListAPIView):
+    lookup_url_kwarg = 'request_id'
+    queryset = BloodRequest
+    permission_classes = [IsRequesterOrAdminOrReadOnly]
+    serializer_class = DonorDataSerializer
+
+    def list(self, request, *args, **kwargs):
+        if self.request.user.is_donor:
+            return Response({"detail": "Sorry, you must be a seeker to perform this request"},
+                            status=status.HTTP_400_BAD_REQUEST)
+        target_blood_request = self.get_object()
+        donor_data = target_blood_request.statistics.all()
+        serializer = self.get_serializer(donor_data, many=True)
+        return Response(serializer.data)

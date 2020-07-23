@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
-import React, {useState} from "react";
+import React from "react";
 import styled from "styled-components";
 import { PageContainer } from "../../../style/GlobalWrappers";
 import { MiddleTitle } from "../../../style/GlobalTitles";
 import { DarkBlueButton } from "../../../style/GlobalButtons";
-import { useHistory } from "react-router";
 import { connect } from "react-redux";
 import registerImg from "../../../assets/icons/success_register.svg";
 import rem from "polished/lib/helpers/rem";
@@ -39,7 +38,6 @@ const CodeSent = ({ registrationReducer: { isDonor }, dispatch, errorReducer: { 
   );
 };
 const mapStateToProps = (state) => {
-  console.log("state", state);
   return {
     registrationReducer: state.registrationReducer,
     errorReducer: state.errorReducer,

@@ -20,8 +20,10 @@ urlpatterns = [
     path('backend/api/request/', include('apps.bloodrequests.urls')),
     # Offered Tests Urls
     path('backend/api/tests/', include('apps.offeredtests.urls')),
-    #
-    # path('backend/api/docs/', include_docs_urls(title='BloodValU Endpoints', public=True, permission_classes=[])),
+    # Test Results Urls
+    path('backend/api/results/', include('apps.testresults.urls')),
+    # Docs
+    path('backend/api/docs/', include_docs_urls(title='BloodValU Endpoints', public=True, permission_classes=[])),
 ]
 
 # Images Urls..
