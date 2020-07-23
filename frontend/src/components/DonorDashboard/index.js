@@ -159,6 +159,7 @@ const UnderLine = styled.div`
 const OfferContainer = styled.div`
   width: 100%;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   background-color: ${ColorDebug ? "greenyellow" : ""};
 `;
@@ -174,6 +175,10 @@ const SpinnerContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+const Content = styled.div`
+  ${(props) => (props.active ? "" : "display:none")}
+`
 const DonorDashboard = ({
                             dispatch,
                             userProfileReducer: {offeredTests, requests, appliedRequests},
@@ -183,7 +188,7 @@ const DonorDashboard = ({
     const [active, setActive] = useState("requests");
     const handleClick = (e) => {
         const value = e.target.id;
-        dispatch(searchAllRequestsAndTestsAction("", `${value}`));
+        // dispatch(searchAllRequestsAndTestsAction("", `${value}`));
         setActive(value);
     };
 
@@ -205,7 +210,7 @@ const DonorDashboard = ({
     };
 
     useEffect(() => {
-        // get Requests
+        // get Requests and tests
         dispatch(getAllRequestsAction()); // This gets all requests
         dispatch(searchAllRequestsAndTestsAction("", "tests")); //This gets all offered tests
         dispatch(getLoggedInUserAction());
@@ -233,31 +238,29 @@ const DonorDashboard = ({
                             {/*TODO add search on enter*/}
                             <SearchButton onClick={handleSearch}>Search</SearchButton>
                         </SearchContainer>
+                        <Content active={active === "tests"}>
+                            <PointsHeader>
+                                <OfferTitle>Offers</OfferTitle>
+                                <NumberFormat
+                                    isNumericString={true}
+                                    renderText={(value) => <PointsText>Your total points: {value} pts</PointsText>}
+                                    value={userObj ? userObj.total_points : 0}
+                                    displayType={"text"}
+                                    thousandSeparator={" "}
+                                />
+                            </PointsHeader>
 
-                        {active === "tests" ? (
-                            <>
-                                <PointsHeader>
-                                    <OfferTitle>Offers</OfferTitle>
-                                    <NumberFormat
-                                        isNumericString={true}
-                                        renderText={(value) => <PointsText>Your total points: {value} pts</PointsText>}
-                                        value={userObj ? userObj.total_points : 0}
-                                        displayType={"text"}
-                                        thousandSeparator={" "}
-                                    />
-                                </PointsHeader>
+                            <UnderLine/>
 
-                                <UnderLine/>
-
-                                <OfferContainer>
-                                    {offeredTests
-                                        ? offeredTests.map((test, index) => {
-                                            return <GenericDonorTestCard key={index} test={test}/>;
-                                        })
-                                        : null}
-                                </OfferContainer>
-                            </>
-                        ) : active === "requests" ? (
+                            <OfferContainer>
+                                {offeredTests
+                                    ? offeredTests.map((test, index) => {
+                                        return <GenericDonorTestCard key={index} test={test}/>;
+                                    })
+                                    : null}
+                            </OfferContainer>
+                        </Content>
+                        <Content active={active === "requests"}>
                             <RequestContainer>
                                 {requests ? (
                                     requests.map((request, index) => {
@@ -270,11 +273,13 @@ const DonorDashboard = ({
                                     </SpinnerContainer>
                                 )}
                             </RequestContainer>
-                        ) : (
+                        </Content>
+                        <Content active={active === "applied"}>
                             <div>
                                 {requests ? (
                                     requests.map((request, index) => {
-                                        return <GenericDonorRequestBar key={index} request={request}/>;
+                                        if (request.logged_in_donor_applied) return <GenericDonorRequestBar key={index}
+                                                                                                            request={request}/>;
                                     })
                                 ) : (
                                     <SpinnerContainer>
@@ -282,7 +287,7 @@ const DonorDashboard = ({
                                     </SpinnerContainer>
                                 )}
                             </div>
-                        )}
+                        </Content>
                     </DashboardContentContainer>
                 </LeftSide>
 
