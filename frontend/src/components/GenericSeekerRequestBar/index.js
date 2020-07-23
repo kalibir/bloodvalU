@@ -5,23 +5,45 @@ import { BaseStatusButton, CompleteButton } from "../../style/GlobalButtons/";
 import { rem } from "polished";
 import { useDispatch } from "react-redux";
 import {
+  deleteRequestAction,
   getApplicantsOfRequestAction,
   markRequestAsCompleteAction,
 } from "../../store/actions/bloodRequestActions";
+import AreYouSureModal from "../AreYouSure";
 
 const BarWrapper = styled.div`
   width: 100%;
 `;
 const RequestBar = styled.div`
+  display: grid;
   width: 100%;
   height: 48px;
+  grid-template-areas: "text status urgent blood button valid arrow";
+  grid-template-columns: 2fr 1fr 1fr 35px 30% 1fr 1fr;
   background-color: #ffffff;
   border-bottom: 1px solid #d9d9d9;
-  display: flex;
   align-items: center;
+  justify-items: auto;
+  grid-gap: 8px;
+  cursor: pointer;
+`;
+
+const TextWrapper = styled.div`
+  display: flex;
+  height: 35px;
+  grid-area: text;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ButtonWrapper = styled.div`
+  grid-area: button;
+`;
+
+const IconWrapper = styled(ButtonWrapper)`
+  grid-area: urgent;
+  width: 100px;
   justify-content: space-between;
-  padding-left: 23px;
-  padding-right: 27px;
 `;
 
 const BlueButton = styled(BaseStatusButton)`
@@ -31,6 +53,7 @@ const BlueButton = styled(BaseStatusButton)`
 const IconButton = styled.button`
   border: 1px solid black;
   padding: 3px;
+  margin-right: 8px;
   width: 30px;
   background-color: black;
   border-radius: 50%;
@@ -44,9 +67,9 @@ const IconButton = styled.button`
 `;
 
 const ArrowWrapper = styled.div`
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
+  grid-area: arrow;
+  justify-self: end;
+  margin-right: 24px;
 `;
 
 const EmptyArrowWrapper = styled.div`
@@ -107,6 +130,11 @@ const GenericSeekerRequestBar = ({
     showApplicants: false,
     applicants: null,
   });
+  const [sureModal, setSureModal] = useState(false);
+
+  // const handleDeleteRequest = (event, requestID) => {
+  //   dispatch(deleteRequestAction(requestID));
+  // };
 
   const handleRenderApplicants = async (e) => {
     const response = await dispatch(getApplicantsOfRequestAction(request.id));
@@ -129,19 +157,36 @@ const GenericSeekerRequestBar = ({
     dispatch(markRequestAsCompleteAction(request.id));
   };
 
+  const closeModal = () => {
+    console.log("in the close modal");
+    setSureModal(false);
+  };
+
   return (
     <BarWrapper>
+      {sureModal ? (
+          <AreYouSureModal
+          handleDeleteRequest={handleDeleteRequest}
+          closeModal={closeModal}
+          id={request.id}
+          context={"request"}
+          />
+      ) : null}
       <RequestBar>
-        Request {request.id}
-        {request.status === "OP" ? (
-          <BlueButton>Open</BlueButton>
-        ) : request.status === "CL" ? (
-          <CompleteButton onClick={handleCompleteRequest}>Complete request</CompleteButton>
-        ) : (
-          <CompleteButton>Complete</CompleteButton>
-        )}
-        <IconButton onClick={(e) => handleDeleteRequest(e, request.id)}>&#10006;</IconButton>
-        <IconButton onClick={(e) => handleShowEditModal(e, request)}>&#9998;</IconButton>
+        <TextWrapper> Request {request.id}</TextWrapper>
+        <IconWrapper>
+          <IconButton onClick={(e) => setSureModal(true) }>&#10006;</IconButton>
+          <IconButton onClick={(e) => handleShowEditModal(e, request)}>&#9998;</IconButton>
+        </IconWrapper>
+        <ButtonWrapper>
+          {request.status === "OP" ? (
+            <BlueButton>Open</BlueButton>
+          ) : request.status === "CL" ? (
+            <CompleteButton onClick={handleCompleteRequest}>Complete request</CompleteButton>
+          ) : (
+            <CompleteButton>Complete</CompleteButton>
+          )}
+        </ButtonWrapper>
         {request.no_of_applicants ? (
           <ArrowWrapper onClick={handleRenderApplicants}>
             <BarArrowRight />

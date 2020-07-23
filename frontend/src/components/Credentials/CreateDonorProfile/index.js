@@ -8,6 +8,7 @@ import { PageContainer } from "../../../style/GlobalWrappers";
 import { connect, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { updateProfileAction } from "../../../store/actions/userActions";
+import CountrySelect from "../../CountrySelect";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -190,8 +191,9 @@ const CreateDonorProfile = (props) => {
               <InputTitle>Birthday</InputTitle>
               <SmallInput
                 type="date"
-                value="1854-01-06"
                 onChange={(e) => onChangeHandler(e, "birthday")}
+                value="1990-07-22"
+                max="2002-07-22"
                 required
               />
             </div>
@@ -248,12 +250,7 @@ const CreateDonorProfile = (props) => {
 
             <div>
               <InputTitle>Country</InputTitle>
-              <SmallInput
-                type="text"
-                placeholder="England"
-                onChange={(e) => onChangeHandler(e, "country")}
-                required
-              />
+              <CountrySelect/>
             </div>
           </InputPairContainer>
           <ImgInput
