@@ -121,6 +121,7 @@ const BlueButton = styled(BaseStatusButton)`
 
 const RedButton = styled(BaseStatusButton)`
   background-color: #d33449;
+  width: 82px;
 `;
 
 const BarArrowWrapper = styled(ButtonWrapper)`
@@ -168,6 +169,7 @@ const CompanyName = styled.p`
 const SeekerInfoBodyWrapper = styled.div`
   width: 100%;
   display: flex;
+  align-items: center;
 `;
 
 const SeekerInfoBody = styled.ul`
@@ -182,9 +184,20 @@ const SeekerInfoBodyLine = styled.li`
   font-size: 13px;
 `;
 
+const ProfilePicPlaceholder = styled.div`
+  width: ${rem("100px")};
+  height: 100%;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+  img {
+    width: ${rem("100px")};
+    height: ${rem("100px")};
+  }
+`;
+
 const AdminPage = ({ dispatch, authReducer: { userObj } }) => {
   const [showSeeker, setSeekerInfo] = useState(false);
   const [active, setActive] = useState("requests");
+  const [verified, setVerified] = useState(false);
 
   const showSeekerHandler = (event) => {
     setSeekerInfo(!showSeeker);
@@ -206,6 +219,10 @@ const AdminPage = ({ dispatch, authReducer: { userObj } }) => {
     setSearchParams(value);
   };
 
+  const handleVerifyCertificate = (e) => {
+    setVerified(!userObj.is_valid);
+    console.log(userObj.is_valid);
+  };
   return (
     <PageContainer>
       <PageWrapper>
@@ -222,7 +239,11 @@ const AdminPage = ({ dispatch, authReducer: { userObj } }) => {
                 <DownloadButton>Download Certificate</DownloadButton>
               </DownloadButtonWrapper>
               <ButtonWrapper>
-                <BlueButton>Verify</BlueButton>
+                {userObj.is_valid ? (
+                  <RedButton onClick={handleVerifyCertificate}>Unverify</RedButton>
+                ) : (
+                  <BlueButton onClick={handleVerifyCertificate}>Verify</BlueButton>
+                )}
               </ButtonWrapper>
               <BarArrowWrapper onClick={showSeekerHandler}>
                 <BarArrowRight
@@ -248,6 +269,9 @@ const AdminPage = ({ dispatch, authReducer: { userObj } }) => {
                       <SeekerInfoBodyLine>Address: {userObj.street}</SeekerInfoBodyLine>
                       <SeekerInfoBodyLine>E-mail: {userObj.email}</SeekerInfoBodyLine>
                     </SeekerInfoBody>
+                    <ProfilePicPlaceholder>
+                      <img src={userObj.logo} />
+                    </ProfilePicPlaceholder>
                   </SeekerInfoBodyWrapper>
                 </SeekerInfo>
               </>
