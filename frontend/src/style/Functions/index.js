@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import {rem} from "polished";
-import {NavLink} from "react-router-dom";
+import { rem } from "polished";
+import { NavLink } from "react-router-dom";
 
 // const activeClassName = "nav-item-active";
 const StyledNavLink = styled(NavLink)`

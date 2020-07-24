@@ -167,6 +167,8 @@ const OfferContainer = styled.div`
 const RequestContainer = styled.div`
   width: 100%;
   background-color: ${ColorDebug ? "lightslategrey" : ""};
+  width: ${rem("480px")};
+  overflow: auto;
 `;
 
 const SpinnerContainer = styled.div`
