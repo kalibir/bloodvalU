@@ -148,7 +148,6 @@ const GenericSeekerRequestBar = ({
     setOpenArrow(!openArrow)
   };
 
-  console.log("in da seeker bar", applicantsData.applicants)
 
   const handleClickApplicant = (e) => {
     const index = Number(e.currentTarget.id);
@@ -157,12 +156,13 @@ const GenericSeekerRequestBar = ({
     // handleSetActiveRequest(request)
   };
 
-  const handleCompleteRequest = (e) => {
-    dispatch(markRequestAsCompleteAction(request.id));
+  const handleCompleteRequest = async (e) => {
+    e.preventDefault();
+    const response = dispatch(markRequestAsCompleteAction(request.id));
+     if (response.status < 300) closeModal();
   };
 
   const closeModal = () => {
-    console.log("in the close modal");
     setSureModal(false);
   };
 

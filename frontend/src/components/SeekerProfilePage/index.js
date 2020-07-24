@@ -101,7 +101,6 @@ const SeekerProfilePage = ({ userProfileReducer: { offeredTests }, dispatch }) =
   const [modalActive, setModalActive] = useState(false);
 
   const closeModal = () => {
-    console.log("in the close modal");
     setModalActive(false);
   };
 
@@ -138,7 +137,6 @@ const SeekerProfilePage = ({ userProfileReducer: { offeredTests }, dispatch }) =
 };
 
 const mapStateToProps = (state) => {
-  console.log("state", state);
   return {
     userProfileReducer: state.userProfileReducer,
   };

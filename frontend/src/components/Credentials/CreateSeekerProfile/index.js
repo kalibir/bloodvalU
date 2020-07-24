@@ -177,11 +177,9 @@ const CreateSeekerProfile = ({authReducer}) => {
     }
     const response = await dispatch(updateProfileAction(form));
     if (response.status < 300) {
-      console.log("woohooo, success!", response);
       history.push(`/dashboard/seeker`);
     }
   };
-  console.log("seekerInfo", seekerInfo);
 
   const onChangeHandler = (event, property) => {
     const value = event.currentTarget.value;
@@ -286,7 +284,6 @@ const CreateSeekerProfile = ({authReducer}) => {
 };
 
 const mapStateToProps = (state) => {
-    console.log("state", state);
     return {
         authReducer: state.authReducer,
     };

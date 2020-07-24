@@ -152,7 +152,6 @@ const SeekerEditProfile = ({
     });
     const [sureModal, setSureModal] = useState(false);
 
-    console.log(seekerInfo);
 
     const onChangeHandler = (event, property) => {
         const value = event.currentTarget.value;
@@ -198,13 +197,11 @@ const SeekerEditProfile = ({
     };
 
     const closeModal = () => {
-        console.log("in the close modal");
         setSureModal(false);
     };
 
     const handleDeleteSeekerProfile = async (e, seekerID) => {
         e.preventDefault();
-        console.log("in da delete test func", seekerID)
         const response = await dispatch(deleteUserAction(seekerID));
         if (response.status < 300) closeModal();
     };

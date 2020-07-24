@@ -43,8 +43,6 @@ export const getAllRequestsAction = () => async (dispatch) => {
         dispatch(setAllRequests(data))
         return response
     } catch (error) {
-        console.log("error message", error.response);
-        console.log("error", error)
         return error
     }
 }
@@ -56,8 +54,6 @@ export const createBloodRequestAction = (requestData) => async (dispatch) => {
         dispatch(addRequestToAll(data))
         return response
     } catch (error) {
-        console.log("error message", error.response);
-        console.log("error ", error);
         return error
     }
 }
@@ -69,8 +65,6 @@ export const getAllAppliedToRequestsAction = () => async (dispatch) => {
         dispatch(setAllRequests(data))
         return response
     } catch (error) {
-        console.log("error message", error.response);
-        console.log("error", error)
         return error
     }
 }
@@ -83,8 +77,6 @@ export const applyToRequestActionInAll = (request_id) => async (dispatch) => {
         dispatch(updateRequestInAll(data))
         return response
     } catch (error) {
-        console.log("error message", error.response);
-        console.log("error", error)
         return error
     }
 }
@@ -96,19 +88,15 @@ export const getSeekerBloodRequestsAction = (status) => async (dispatch) => {
         dispatch(setAllRequests(data))
         return response
     } catch (error) {
-        console.log("error message", error.response);
         return error
     }
 }
 
 export const getApplicantsOfRequestAction = (requestID) => async (dispatch) => {
-    console.log("getting applicants")
     try {
         const response = await Axios.get(`request/applicants/${requestID}/`);
-        console.log("applicants of request", response.data)
         return response
     } catch (error) {
-        console.log("error message", error.response);
         return error
     }
 }
@@ -120,7 +108,6 @@ export const assignApplicantAsSelectedDonor = (requestID, donorID) => async (dis
         dispatch(updateRequestInAll(response.data))
         return response
     } catch (error) {
-        console.log("error message", error.response);
         return error
     }
 }
@@ -131,7 +118,6 @@ export const markRequestAsCompleteAction = (requestID) => async (dispatch) => {
         dispatch(updateRequestInAll(response.data))
         return response
     } catch (error) {
-        console.log("error message", error.response);
         return error
     }
 }
@@ -142,7 +128,6 @@ export const deleteRequestAction = (requestID) => async (dispatch) => {
         dispatch(removeRequest(Number(requestID)))
         return response
     } catch (error) {
-        console.log("error message", error.response);
         return error
     }
 }
@@ -153,7 +138,6 @@ export const editRequestAction = (requestID, data) => async (dispatch) => {
         dispatch(updateRequestInAll(response.data))
         return response
     } catch (error) {
-        console.log("error message", error.response);
         return error
     }
 }

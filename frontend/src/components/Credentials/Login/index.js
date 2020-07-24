@@ -58,7 +58,6 @@ const Error = styled(ErrorPlaceholder)`
 
 const Login = ({errorReducer: {error}, authReducer: {authenticated, userObj}}) => {
     // const {authReducer} = props;
-    // console.log("authReducer", authReducer);
     const {push} = useHistory();
     const dispatch = useDispatch();
     const [loginInfo, setloginInfo] = useState({

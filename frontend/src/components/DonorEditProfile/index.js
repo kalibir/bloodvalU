@@ -168,7 +168,6 @@ const DonorEditProfile = ({
         email: `${email}`,
     });
     const [sureModal, setSureModal] = useState(false);
-    console.log("donor info", donorInfo)
 
     const onChangeHandler = (event, property) => {
         const value = event.currentTarget.value;
@@ -215,13 +214,11 @@ const DonorEditProfile = ({
     };
 
     const closeModal = () => {
-        console.log("in the close modal");
         setSureModal(false);
     };
 
     const handleDeleteDonorProfile = async (e, donorID) => {
         e.preventDefault();
-        console.log("in da delete test func", donorID)
         const response = await dispatch(deleteUserAction(donorID));
         if (response.status < 300) closeModal();
     };

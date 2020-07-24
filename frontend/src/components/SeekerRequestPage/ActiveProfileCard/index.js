@@ -157,7 +157,6 @@ const MinusSignButton = styled(PlusSignButton)`
 
 const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant, showSpinner}) => {
 
-    console.log("activeProfile", activeProfile)
 
     return (
         <ProfileWrapper>

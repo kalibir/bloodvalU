@@ -108,7 +108,6 @@ const SeekerProfileCard = ({ authReducer: { userObj }, dispatch }) => {
   }, [dispatch]);
 
   const onClickHandler = (event) => {
-    console.log("clicked");
     push("/editseeker");
   };
 
@@ -141,7 +140,6 @@ const SeekerProfileCard = ({ authReducer: { userObj }, dispatch }) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log("state", state);
   return {
     authReducer: state.authReducer,
   };

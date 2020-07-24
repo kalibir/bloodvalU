@@ -157,13 +157,11 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
   };
 
   const closeModal = () => {
-    console.log("in the close modal");
     setModal({ ...modal, showModal: false });
   };
 
    const handleDeleteRequest = async (e, requestID) => {
         e.preventDefault();
-        console.log("in da delete test func", requestID)
         const response = await dispatch(deleteRequestAction(requestID));
         if (response.status < 300) closeModal();
     };

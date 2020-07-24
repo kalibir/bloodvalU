@@ -72,7 +72,6 @@ const ResetValidation = ({
     is_donor: `${isDonor}`,
   });
 
-  console.log("userInfo", userInfo);
 
   const onChangeHandler = (event, property) => {
     const value = event.currentTarget.value;
@@ -82,10 +81,8 @@ const ResetValidation = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(resetError());
-    console.log("This is a submit function.");
     const response = await dispatch(resetValidate(userInfo));
     if (response.status < 300) {
-      console.log("success!");
       const loginInfo = { email: userInfo.email, password: userInfo.password };
       const response = await dispatch(sendLoginAction(loginInfo));
       if (response.status < 300) {
@@ -174,7 +171,6 @@ const ResetValidation = ({
 };
 
 const mapStateToProps = (state) => {
-  console.log("state", state);
   return {
     registrationReducer: state.registrationReducer,
     errorReducer: state.errorReducer,

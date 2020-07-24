@@ -39,12 +39,9 @@ export const buyTestAction = (test_id) => async (dispatch) => {
   try {
     const response = await Axios.post(`tests/buy/${test_id}/`);
     const { data } = response;
-    console.log("Buy test response", data);
     dispatch(updateTestInAll(data));
     return response;
   } catch (error) {
-    console.log("error message", error.response);
-    console.log("error", error);
     return error;
   }
 };
@@ -53,13 +50,9 @@ export const getRequestsOfSeekerAction = () => async (dispatch) => {
   try {
     const response = await Axios.get(`seeker/tests/me/`);
     const { data } = response;
-    console.log("data", data);
     dispatch(setAllTests(data));
-    console.log("in the action");
     return response;
   } catch (error) {
-    console.log("error message", error.response);
-    console.log("error", error);
     return error;
   }
 };
@@ -71,8 +64,6 @@ export const createTestRequestAction = (requestData) => async (dispatch) => {
     dispatch(addTestToAll(data));
     return response;
   } catch (error) {
-    console.log("error message", error.response);
-    console.log("error ", error);
     return error;
   }
 };
@@ -83,7 +74,6 @@ export const deleteTestAction = (testID) => async (dispatch) => {
     dispatch(removeTest(Number(testID)))
     return response
   } catch (error) {
-    console.log("error in delete test action", error);
     return error
   }
 }
