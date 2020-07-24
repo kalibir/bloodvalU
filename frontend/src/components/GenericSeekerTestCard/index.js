@@ -112,7 +112,6 @@ const GenericSeekerTestCard = ({
         setShowCustomersModal(false)
     }
 
-
     return (
         <TestCard>
             {sureModal ? (

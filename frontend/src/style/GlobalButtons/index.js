@@ -60,6 +60,35 @@ export const WhiteButton = styled.button`
   }
 `;
 
+export const WhiteLabel = styled.label`
+  background: #ffffff;
+  padding: 5px;
+  border: 1px solid #121232;
+  box-sizing: border-box;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.5px;
+  color: #121232;
+  transition-duration: 0.4s;
+  transition-timing-function: ease-in-out;
+
+  :hover {
+    color: #fff;
+    background: #121232;
+    //border: 1px solid #FFF;
+  }
+  :active {
+    color: #fff;
+    background: #121232;
+    //border: 1px solid #FFF;
+  }
+`;
+
 export const ChooseRoleButton = styled.button`
   width: ${rem("352px")};
   height: ${rem("160px")};

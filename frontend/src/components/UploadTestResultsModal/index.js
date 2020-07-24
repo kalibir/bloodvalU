@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import styled, {keyframes} from "styled-components";
-import {BaseStatusButton} from "../../style/GlobalButtons/";
+import {BaseStatusButton, WhiteLabel} from "../../style/GlobalButtons/";
 import {DarkBlueButton, WhiteButton} from "../../style/GlobalButtons/";
 import {rem} from "polished";
 import {connect, useDispatch} from "react-redux";
@@ -8,7 +8,7 @@ import {Select} from "../../style/GlobalInputs";
 import {createBloodRequestAction} from "../../store/actions/bloodRequestActions";
 import {useHistory} from "react-router";
 import Spinner from "../GenericSpinner";
-import {getCustomersAction} from "../../store/actions/offeredTestActions";
+import {getCustomersAction, uploadTestResultsAction} from "../../store/actions/offeredTestActions";
 import {DonorSubBar} from "../GenericSeekerRequestBar";
 
 const modalFade = keyframes`
@@ -125,10 +125,16 @@ const TitleWrapper = styled.div`
   width: 80%;
 `
 
+const UploadInput = styled.input`
+  display: none;
+`
+const UploadLabel = styled(WhiteLabel)``
+
 
 const UploadTestResultsModal = ({testID, test_type, handleCloseUploadResults}) => {
     const dispatch = useDispatch()
     const [customers, setCustomers] = useState()
+    const [uploadedPDF, setUploadedPFD] = useState()
 
     useEffect(() => {
         // TODO dispatch get customers
@@ -141,6 +147,22 @@ const UploadTestResultsModal = ({testID, test_type, handleCloseUploadResults}) =
         fetchCustomers(testID)
     }, [dispatch])
 
+    let fileUpload = useRef()
+
+    const PDFSelectHandler = (e) => {
+        if (e.target.files[0]) {
+            setUploadedPFD(e.target.files[0]);
+        }
+    };
+
+    const handleUpload = async (e, donorID, testID) => {
+        const form = new FormData()
+        form.append("donor", donorID)
+        form.append("test_id", testID)
+        form.append("results", uploadedPDF)
+        const response = await dispatch(uploadTestResultsAction(form))
+    }
+
 
     return (
         <ModalWrapper>
@@ -152,14 +174,21 @@ const UploadTestResultsModal = ({testID, test_type, handleCloseUploadResults}) =
                     return (
                         <CustomerBar key={customer.id} id={customer.id}>
                             <div>{`${customer.first_name} ${customer.last_name}`}</div>
-                            <div>{customer.pdf_result ?
-                                <>
-                                    <CustomWhiteButton>CHANGE</CustomWhiteButton>
-                                    <CustomWhiteButton>DOWNLOAD</CustomWhiteButton>
-                                </> :
-                                <CustomWhiteButton>UPLOAD</CustomWhiteButton>
-                            }</div>
+                            <div>
+                                {customer.pdf_result ?
+                                    <>
+                                        <UploadLabel htmlFor={`${customer.id}`}>CHANGE</UploadLabel>
+                                        <UploadInput type="file" onChange={PDFSelectHandler}  id={`${customer.id}`}/>
+                                        <CustomWhiteButton>DOWNLOAD</CustomWhiteButton>
+                                    </> :
+                                    <>
+                                    <UploadLabel htmlFor={`${customer.id}`}>UPLOAD</UploadLabel>
+                                    <UploadInput type="file" onChange={PDFSelectHandler} id={`${customer.id}`}/>
+                                    </>
+                                }
+                            </div>
                         </CustomerBar>
+                        // ref={(ref) => fileUpload = ref}
                     );
                 }) : <Spinner/>}
                 <CloseBtn onClick={handleCloseUploadResults}>CLOSE</CloseBtn>
