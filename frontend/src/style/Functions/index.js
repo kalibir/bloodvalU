@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 
 // const activeClassName = "nav-item-active";
 const StyledNavLink = styled(NavLink)`
-  color: ${(props) => (props.active ? "#d33449" : "#A1A4B1")};
+  color: ${(props) => (props.active === "true" ? "#d33449" : "#A1A4B1")};
   text-decoration: none;
   position: relative;
   text-decoration: none;
@@ -27,7 +27,7 @@ const StyledNavLink = styled(NavLink)`
     bottom: 0;
     content: "";
     display: block;
-    width: ${(props) => (props.active ? "100%" : "0")};
+    width: ${(props) => (props.active === "true" ? "100%" : "0")};
     height: 3px;
     background: #d33449;
     transition: width 0.3s;
@@ -53,67 +53,63 @@ const WrapperDiv = styled.div`
 `;
 
 export const SeekerNavigation = (name) => {
-  const [active, setActive] = useState("dashboard");
-  const handleClick = (e) => {
-    const value = e.target.id;
-    setActive(value);
-  };
-  return (
-    <WrapperDiv>
-      Welcome!
-      <LinksDiv>
-        {name === "" ? (
-          <></>
-        ) : (
-          <>
-            <StyledNavLink
-              to={"/dashboard/seeker"}
-              onClick={handleClick}
-              active={active === "dashboard"}
-              id="dashboard">
-              Dashboard
-            </StyledNavLink>
-            <StyledNavLink
-              to={"/seekerprofilepage"}
-              onClick={handleClick}
-              active={active === "profile"}
-              id="profile">
-              Profile
-            </StyledNavLink>
-          </>
-        )}
-      </LinksDiv>
-    </WrapperDiv>
-  );
+    const [active, setActive] = useState("dashboard");
+    const handleClick = (e) => {
+        const value = e.target.id;
+        setActive(value);
+    };
+    return (
+        <WrapperDiv>
+            Welcome!
+            <LinksDiv>
+                {name === "" ? <></> :
+                    <>
+                        <StyledNavLink
+                            to={"/dashboard/seeker"}
+                            onClick={handleClick}
+                            active={active === "dashboard" ? "true" : "false"}
+                            id="dashboard">
+                            Dashboard
+                        </StyledNavLink>
+                        <StyledNavLink
+                            to={"/seekerprofilepage"}
+                            onClick={handleClick}
+                            active={active === "profile" ? "true" : "false"}
+                            id="profile">
+                            Profile
+                        </StyledNavLink>
+                    </>
+                }
+            </LinksDiv>
+        </WrapperDiv>
+    );
 };
 
-export const DonorNavigation = ({ first_name, email }) => {
-  const [active, setActive] = useState("dashboard");
-  const handleClick = (e) => {
-    const value = e.target.id;
-    setActive(value);
-  };
-  return (
-    <WrapperDiv>
-      {first_name === "" ? `Welcome, ${email}` : `Welcome, ${first_name}`}
-      <LinksDiv>
-        {first_name === "" ? (
-          <></>
-        ) : (
-          <>
-            <StyledNavLink
-              to={"/dashboard/donor"}
-              onClick={handleClick}
-              active={active === "dashboard"}
-              id="dashboard">
-              Dashboard
-            </StyledNavLink>
-            <StyledNavLink to={"/map"} onClick={handleClick} active={active === "map"} id="map">
-              Map
-            </StyledNavLink>
-          </>
-        )}
-      </LinksDiv>
-    </WrapperDiv>
-  );
+export const DonorNavigation = ({first_name, email}) => {
+    const [active, setActive] = useState("dashboard");
+    const handleClick = (e) => {
+        const value = e.target.id;
+        setActive(value);
+    };
+    return (
+        <WrapperDiv>
+            {first_name === "" ? `Welcome, ${email}` : `Welcome, ${first_name}`}
+            <LinksDiv>
+                {first_name === "" ? <></>
+                    : <>
+                        <StyledNavLink
+                            to={"/dashboard/donor"}
+                            onClick={handleClick}
+                            active={active === "dashboard" ? "true" : "false"}
+                            id="dashboard">
+                            Dashboard
+                        </StyledNavLink>
+                        <StyledNavLink to={"/map"} onClick={handleClick} active={active === "map" ? "true" : "false"} id="map">
+                            Map
+                        </StyledNavLink>
+                    </>
+                }
+            </LinksDiv>
+        </WrapperDiv>
+    );
 };

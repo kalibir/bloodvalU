@@ -1,8 +1,8 @@
 from datetime import date
 
 from django.contrib.auth import get_user_model
-from django.core.validators import FileExtensionValidator
 from django.db import models
+from django.utils import timezone
 
 from apps.registrations.models import code_generator  # Attila
 
@@ -31,7 +31,7 @@ class DonorProfile(models.Model):
 
     birthday = models.DateField(auto_now=False, null=True, blank=True)
 
-    last_donation = models.DateTimeField(auto_now=False, null=True, blank=True)
+    next_donation = models.DateTimeField(auto_now=False, null=True, blank=True)
 
     total_points = models.IntegerField(blank=True, default=0)
 
@@ -48,6 +48,8 @@ class DonorProfile(models.Model):
 
     blood_group = models.CharField(max_length=3, choices=BLOOD_GROUP_CHOICES, default='O-')
 
+    has_been_selected = models.BooleanField(default=False)
+
     GENDER_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female'),
@@ -60,6 +62,13 @@ class DonorProfile(models.Model):
     def age(self):
         today = date.today()
         return today.year - self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
+
+    @property
+    def can_donate(self):
+        if self.next_donation:
+            return timezone.now() > self.next_donation
+        else:
+            return True
 
     def __str__(self):
         return f'Donor ID: {self.id} Donor Profile'

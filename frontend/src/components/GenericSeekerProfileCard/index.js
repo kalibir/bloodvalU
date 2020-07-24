@@ -111,7 +111,7 @@ const SeekerProfileCard = ({ authReducer: { userObj }, dispatch }) => {
         <ProfileWrapper>
           <UpperContainer>
             <ProfilePicPlaceholder>
-              <img src={userObj.logo} alt={"logo"} />
+              <img src={userObj.logo ? userObj.logo : profilePic} alt={"logo"} />
             </ProfilePicPlaceholder>
             <NameContainer>{userObj.name}</NameContainer>
             <CityContainer> {userObj.country}</CityContainer>

@@ -27,6 +27,7 @@
     "react-dom": "^16.13.1",
     "react-map-gl": "^5.2.7",
     "react-number-format": "^4.4.1",
+    "react-qr-scanner": "0.0.9",
     "react-redux": "^7.2.0",
     "react-reveal": "^1.2.2",
     "react-router": "^5.2.0",

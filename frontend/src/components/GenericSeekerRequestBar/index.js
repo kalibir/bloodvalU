@@ -197,8 +197,8 @@ const GenericSeekerRequestBar = ({
 
       {applicantsData.showApplicants
         ? applicantsData.applicants.map((applicant, index) => {
-            if (request.selected_donor) {
-              if (request.selected_donor.id === applicant.id) {
+
+              if (request.selected_donor && request.selected_donor.id === applicant.id) {
                 return (
                   <DonorSelectedBar
                     name={"selectbar"}
@@ -210,7 +210,7 @@ const GenericSeekerRequestBar = ({
                     }>{`${applicant.first_name} ${applicant.last_name}`}</DonorSelectedBar>
                 );
               }
-            }
+
             return (
               <SlidingContainer>
                 <DonorSubBar

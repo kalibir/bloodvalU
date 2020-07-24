@@ -1,6 +1,8 @@
 from django.shortcuts import render
 
 # Create your views here.
+from datetime import date
+
 from rest_framework import status
 
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
@@ -46,6 +48,17 @@ class RetrieveUpdateDestroyLoggedInUser(RetrieveUpdateDestroyAPIView):
             return self.request.user.seeker_profile
 
     def destroy(self, request, *args, **kwargs):
+        if not self.request.user.is_donor:
+            target_seeker_profile = self.request.user.seeker_profile
+            for blood_request in target_seeker_profile.made_requests.all():
+                target_donor = blood_request.selected_donor
+                target_donor.has_been_selected = False
+                target_donor.save()
+            for offered_test in target_seeker_profile.offered_tests.all(): # REFUNDS
+                if not offered_test.test_results and not date.today() > offered_test.expiry_date:
+                    for donor in offered_test.donors_who_bought.all():
+                        donor.total_points += offered_test.points_cost
+                        donor.save()
         instance = request.user
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)

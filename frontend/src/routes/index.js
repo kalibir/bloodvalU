@@ -14,6 +14,7 @@ import DonorEditProfile from "../components/DonorEditProfile";
 import SeekerEditProfile from "../components/SeekerEditProfile";
 import GeoMap from "../components/GeoMap";
 import AdminPage from "../components/AdminPage";
+import SeekerScanCode from "../components/SeekerScanCode";
 
 const Routes = () => {
   return (
@@ -30,6 +31,7 @@ const Routes = () => {
             <Route path="/editdonor" component={authComponent(DonorEditProfile)} />
             <Route path="/seekerprofilepage" component={authComponent(SeekerProfilePage)} />
             <Route path="/map" component={GeoMap} />
+            <Route path="/scan" component={SeekerScanCode} />
             <Route path="/admin_page" component={AdminPage} />
           </Navigation>
         </Switch>
