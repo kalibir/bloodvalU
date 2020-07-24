@@ -10,6 +10,10 @@ class DonorProfileSerializer(serializers.ModelSerializer):
     email = serializers.SerializerMethodField()
     no_of_applications = serializers.SerializerMethodField()
     no_of_test_results = serializers.SerializerMethodField()
+    is_staff = serializers.SerializerMethodField()
+
+    def get_is_staff(self, obj):
+        return obj.user.is_staff
 
     def get_no_of_test_results(self, obj):
         return obj.test_results.count()
@@ -28,7 +32,7 @@ class DonorProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DonorProfile
-        fields = ['id', 'phone', 'is_donor', 'email', 'can_donate', 'can_donate', 'first_name', 'last_name', 'country',
+        fields = ['id', 'phone', 'is_donor', 'is_staff', 'email', 'can_donate', 'can_donate', 'first_name', 'last_name', 'country',
                   'zip_code', 'street', 'no_of_bought_tests',
                   'avatar', 'birthday', 'has_been_selected',
                   'next_donation', 'total_points', 'blood_group', 'gender', 'age',

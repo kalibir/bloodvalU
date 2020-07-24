@@ -167,10 +167,10 @@ class ListAllOfferedTestsView(ListAPIView):
         return Response(serializer.data)
 
 
-class ValidateQRCodeView(CreateAPIView):
+class ValidateOfferedTestQRCodeView(CreateAPIView):
     """
     POST:
-    List all Offered Tests in most recently created order.
+    Validate a qr code buy posting a {code: <actual_code> } object in the request
     """
     permission_classes = [IsAuthenticated | ReadOnly]
     serializer_class = DonorProfileSerializer
@@ -192,8 +192,11 @@ class ValidateQRCodeView(CreateAPIView):
 
         if target_donor in target_offered_test.donors_who_bought.all():
             return Response({
-                                'detail': f'{target_donor.first_name} {target_donor.last_name} has come for a {target_offered_test.test_type}'},
-                            status=status.HTTP_200_OK)
+                'donor': f'{target_donor.first_name} {target_donor.last_name} {target_donor.blood_group}',
+                'institution': f'{target_offered_test.seeker.name}',
+                'type': f'{target_offered_test.test_type}'
+            },
+                status=status.HTTP_200_OK)
         else:
             return Response({"detail": "Invalid Code"},
                             status=status.HTTP_400_BAD_REQUEST)

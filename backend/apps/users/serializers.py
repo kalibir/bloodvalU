@@ -10,7 +10,7 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'is_donor']
+        fields = ['id', 'email', 'is_donor', 'is_staff']
         extra_kwargs = {
             'email': {'read_only': True},
             'is_donor': {'read_only': True},
@@ -22,7 +22,7 @@ class DonorUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'email', 'is_donor', 'donor_profile']
+        fields = ['id', 'email', 'is_donor', 'donor_profile', 'is_staff']
         extra_kwargs = {
             'email': {'read_only': True},
             'is_donor': {'read_only': True},

@@ -55,7 +55,7 @@ const MenuContainer = styled.div`
     background-color: ${ColorDebug ? "darkkhaki" : ""};
 `;
 
-const MiddleButton = styled.button`
+export const MiddleButton = styled.button`
   height: 100%;
   position: relative;
   width: 34%;
