@@ -108,7 +108,9 @@ class BuyOfferedTestView(CreateAPIView):
                 <p>&nbsp;</p>
                 <p>Please contact us to make an appointment:</p>
                 <p>{seeker_name}</p>
-                <p>{seeker_phone} or <a href="{seeker_website}">{seeker_website}</a>.</p>
+                <p>{seeker_phone}</p>
+                <p>or</p> 
+                <p><a href="{seeker_website}">{seeker_website}</a>.</p>
                 <p>&nbsp;</p>
                 <p>For the test, you will need to show us the QR code below. </p>
                 <p>&nbsp;</p>

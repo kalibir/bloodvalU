@@ -181,9 +181,9 @@ const CreateDonorProfile = (props) => {
             <div>
               <InputTitle>Gender</InputTitle>
               <Select onChange={(e) => onChangeHandler(e, "gender")} required>
-                <option value="Male">male</option>
-                <option value="Female">female</option>
-                <option value="Other">other</option>
+                <option value="M">male</option>
+                <option value="F">female</option>
+                <option value="O">other</option>
               </Select>
             </div>
 

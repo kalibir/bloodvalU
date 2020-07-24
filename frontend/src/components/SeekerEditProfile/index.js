@@ -192,7 +192,7 @@ const SeekerEditProfile = ({
         }
         const response = await dispatch(updateProfileAction(form));
         if (response.status < 300) {
-            push(`/dashboard/seeker`);
+            push(`/seekerprofilepage`);
         }
     };
 
