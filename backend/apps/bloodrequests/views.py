@@ -236,6 +236,32 @@ class SelectDonorFromApplicantsView(CreateAPIView):
             target_blood_request.status = "OP"
             target_applicant.save()
             target_blood_request.save()
+
+            donor_email = target_applicant.user.email
+            subject = 'Selection cancellation'
+            message = f'Sorry'
+            to = {donor_email}
+            seeker_name = request.user.seeker_profile.name
+            sender = ''
+            html_message = f"""
+                                <html lang=en>
+                                    <head>
+                                        <meta charset=utf-8>
+                                        <title></title>
+                                    </head>
+                                    <body>
+                                        <p>&nbsp;</p>
+                                            <p>You are no longer selected as a donor at {seeker_name}.</p>
+                                            <p>&nbsp;</p>
+                                            <p><a href="https://blood-value.propulsion-learn.ch">
+                                            <span style="color: #262541; font-size: 18px; font-weight: 600;">
+                                            Bloodval</span><span style="color: #d33449; font-size: 24px; font-weight: 600;">U
+                                            </span></a></p>
+                                    </body>
+                                </html>"""
+            send_mail(subject=subject, message=message, html_message=html_message, from_email=sender, recipient_list=to,
+                      fail_silently=False)
+
             return Response(self.get_serializer(target_blood_request).data)
         elif target_applicant in target_blood_request.applicants.all():
             target_applicant = DonorProfile.objects.get(id=self.kwargs['donor_id'])
@@ -244,29 +270,17 @@ class SelectDonorFromApplicantsView(CreateAPIView):
             target_blood_request.status = "CL"
             target_blood_request.save()
 
-            # email = EmailMessage()
             code1 = target_blood_request.unique_request_id
             code2 = target_applicant.unique_donor_id
             code = '{code1}.{code2}'.format(code1=code1, code2=code2)
             donor_email = target_applicant.user.email
-            # email.subject = 'Congratulations you have been Selected for a Blood Donation!'
-            # # email.body = '{seeker_name} would like you to come and donate blood at their site at {seeker_street}, {seeker_zip_code}!'.format(
-            # #     seeker_name=request.user.seeker_profile.name,
-            # #     seeker_street=request.user.seeker_profile.street, seeker_zip_code=request.user.seeker_profile.zip_code)
-            # email.body = 'At {seeker_name}, we are happy for that, you are choose us for donation. /n' \
-            #              'Our colleagues soon will make contact you, to discuss the followings. /n' \
-            #              'Your code for this donation is: {code}'.format(seeker_name=request.user.seeker_profile.name,
-            #                                                              code=code)
-            # email.to = [target_applicant.user.email]
-            # email.send(fail_silently=False)
+            seeker_name = request.user.seeker_profile.name
+            seeker_website = request.user.seeker_profile.website
 
             subject = 'You have been selected'
             message = f'Here is your code for donation: {code}'
             to = {donor_email}
             qr_img = f'https://qrickit.com/api/qr.php?d={code}&addtext=BloodvalU'
-            donor_name = f'{target_applicant.user.first_name} {target_applicant.user.last_name}'
-            seeker_name = request.user.seeker_profile.name
-            seeker_website = request.user.seeker_profile.website
             sender = ''
             html_message = f"""
                     <html lang=en>

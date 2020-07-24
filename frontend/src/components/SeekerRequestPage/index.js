@@ -226,7 +226,7 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
           </NewRequestButton>
         </LeftSide>
         <RightSide>
-          {activeProfile ? (
+          {activeProfile && activeRequest? (
             <ActiveProfileCard
               handleSelectApplicant={handleSelectApplicant}
               activeRequest={activeRequest}
