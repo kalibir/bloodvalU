@@ -112,7 +112,6 @@ const CreateTestModal = ({ closeModal }) => {
   const onChangeHandler = (event, property) => {
     const value = event.currentTarget.value;
     settestData({ ...testData, [property]: value });
-    console.log(testData);
   };
 
   const handleSubmit = async (e) => {

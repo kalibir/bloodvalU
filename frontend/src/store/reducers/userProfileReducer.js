@@ -34,7 +34,6 @@ export const userProfileReducer = (state = initialState, action) => {
             else return {...newState, requests: [action.payload]};
         }
         case UPDATE_REQUEST_IN_ALL_REQUESTS: {
-            console.log("in da reducer", action.payload)
             let index = newState.requests.findIndex(
                 (request) => request.id === action.payload.id
             );

@@ -1,7 +1,7 @@
 import React from "react";
 import {BigTitle} from "../../../style/GlobalTitles";
 import profilePic from "../../../assets/images/default-profile-pic.jpg";
-import success from "../../../assets/icons/success.png";
+import success from "../../../assets/icons/success_request.svg";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
 import {DarkBlueButton, WhiteButton} from "../../../style/GlobalButtons";
@@ -157,7 +157,6 @@ const MinusSignButton = styled(PlusSignButton)`
 
 const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant, showSpinner}) => {
 
-    console.log("activeProfile", activeProfile)
 
     return (
         <ProfileWrapper>
@@ -171,7 +170,7 @@ const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant,
                                 <SelectedTitle>Selected</SelectedTitle>
                             ) : activeRequest.status === "COM" ? (
                                 <ProfilePicPlaceholder>
-                                    <img src={success} alt={"should be antonios pic"}/>
+                                    <img src={success} alt="success sign"/>
                                 </ProfilePicPlaceholder>
                             ) : (
                                 <p>Sorry, we are confused a little bit.</p>
@@ -192,6 +191,7 @@ const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant,
                                 <Details>{activeProfile ? activeProfile.birthday : null}</Details>
                                 <Details>
                                     {activeProfile ? activeProfile.zip_code : null}<br/> {activeProfile ? activeProfile.city : null}
+                                    {activeProfile ? activeProfile.street : null}
                                     <br/> {activeProfile ? activeProfile.country : null}
                                 </Details>
                                 <Details>{activeProfile ? activeProfile.phone : null}</Details>

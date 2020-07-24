@@ -194,9 +194,7 @@ const FooterLinkTitle = styled.h2`
 
 const Navigation = ({ children, authReducer: { authenticated, userObj }, dispatch }) => {
   const { push } = useHistory();
-  console.log("userObj", userObj);
   const handleClickLogo = (e) => {
-    console.log("in the click");
     push("/");
   };
 
@@ -288,7 +286,6 @@ const Navigation = ({ children, authReducer: { authenticated, userObj }, dispatc
 };
 
 const mapStateToProps = (state) => {
-  console.log("state", state);
   return {
     authReducer: state.authReducer,
   };

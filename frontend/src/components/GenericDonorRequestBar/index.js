@@ -198,7 +198,6 @@ const GenericDonorRequestBar = ({
   };
 
   const handleApply = (e) => {
-    console.log("in the apply handler");
     dispatch(applyToRequestActionInAll(id));
   };
   const renderBloodType = () => {

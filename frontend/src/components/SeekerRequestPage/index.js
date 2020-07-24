@@ -159,16 +159,14 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
   };
 
   const closeModal = () => {
-    console.log("in the close modal");
     setModal({ ...modal, showModal: false });
   };
 
-  const handleDeleteRequest = async (e, requestID) => {
-    e.preventDefault();
-    console.log("in da delete test func", requestID);
-    const response = await dispatch(deleteRequestAction(requestID));
-    if (response.status < 300) closeModal();
-  };
+   const handleDeleteRequest = async (e, requestID) => {
+        e.preventDefault();
+        const response = await dispatch(deleteRequestAction(requestID));
+        if (response.status < 300) closeModal();
+    };
 
   const handleShowEditModal = (event, requestObj) => {
     setModal({ showModal: true, modalData: requestObj });
@@ -228,7 +226,7 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
           </NewRequestButton>
         </LeftSide>
         <RightSide>
-          {activeRequest ? (
+          {activeProfile && activeRequest? (
             <ActiveProfileCard
               handleSelectApplicant={handleSelectApplicant}
               activeRequest={activeRequest}

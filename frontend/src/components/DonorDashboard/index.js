@@ -192,7 +192,6 @@ const DonorDashboard = ({
         const value = e.target.id;
         setActive(value);
     };
-    console.log("active", active)
 
     const [searchParams, setSearchParams] = useState("");
 
@@ -295,7 +294,6 @@ const DonorDashboard = ({
 };
 
 const mapStateToProps = (state) => {
-    console.log("state", state);
     return {
         userProfileReducer: state.userProfileReducer,
         authReducer: state.authReducer,

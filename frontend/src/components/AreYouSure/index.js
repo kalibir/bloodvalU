@@ -62,14 +62,12 @@ const AreYouSureModal = ({
     const dispatch = useDispatch();
     const {push} = useHistory();
 
-    console.log("test in are you sure", id)
 
     const handleWhichDelete = (e, ID) => {
         if (context === "request") {
             handleDeleteRequest(e, ID)
         }
         if (context === "test") {
-            console.log("id in da handle which delete", ID)
             handleDeleteTest(e, ID)
         }
         if (context === "seekerprofile") {

@@ -106,7 +106,6 @@ const RequestModal = ({ closeModal, modalData, handleEditRequest }) => {
     valid_until: modalData ? modalData.valid_until : "",
   });
 
-  console.log("req data", requestData);
 
   const onChangeHandler = (event, property) => {
     const value = event.currentTarget.value;
