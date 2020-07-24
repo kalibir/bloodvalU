@@ -220,7 +220,7 @@ const GenericSeekerRequestBar = ({
             return (
               <SlidingContainer>
                 <DonorSubBar
-                  name={"selectba2"}
+                  name={"selectbar2"}
                   onClick={request.status === "COM" ? null : handleClickApplicant}
                   key={index}
                   id={index}
