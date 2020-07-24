@@ -112,6 +112,8 @@ const CreateDonorProfile = (props) => {
     gender: "",
   });
 
+  console.log("donorInfo", donorInfo);
+
   const onChangeHandler = (event, property) => {
     const value = event.currentTarget.value;
     setDonorInfo({ ...donorInfo, [property]: value });
@@ -142,6 +144,7 @@ const CreateDonorProfile = (props) => {
     }
     const response = await dispatch(updateProfileAction(form));
     if (response.status < 300) {
+      console.log("success!!");
       push(`/dashboard/donor`);
     }
 
@@ -276,6 +279,7 @@ const CreateDonorProfile = (props) => {
 };
 
 const mapStateToProps = (state) => {
+  console.log("state", state);
   return {
     registrationReducer: state.registrationReducer,
     errorReducer: state.errorReducer,

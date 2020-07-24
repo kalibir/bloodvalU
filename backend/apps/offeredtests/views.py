@@ -105,8 +105,10 @@ class BuyOfferedTestView(CreateAPIView):
                 <p>&nbsp;</p>
                 <h3>Dear <strong>{donor_name}</strong>,</h3>
                 <p>&nbsp;</p>
-                <p>Please call us at {target_seeker.phone} or connect us through our website {target_seeker.website} for an appointment.</p>
-                <p>For the test, you will need the QR above, so please not forget to bring it with you for the test, either in your phone or in printed form. (Mind the environment, please.)</p>
+                <p>Please call us at {target_seeker.phone} or connect us through our website {target_seeker.website} 
+for an appointment.</p>
+                <p>For the test, you will need the QR above, so please not forget to bring it with you for the test, 
+either in your phone or in printed form. (Mind the environment, please.)</p>
                 <p><img src='{qr_img}'/></p>
                 <p>&nbsp;</p>
                 <p>Best regards,</p>
