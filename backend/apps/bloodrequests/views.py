@@ -259,6 +259,7 @@ class SelectDonorFromApplicantsView(CreateAPIView):
             qr_img = f'https://qrickit.com/api/qr.php?d={code}&addtext=BloodvalU'
             donor_name = f'{target_applicant.user.first_name} {target_applicant.user.last_name}'
             seeker_name = request.user.seeker_profile.name
+            seeker_website = request.user.seeker_profile.webiste
             sender = ''
             html_message = f"""<!doctype html>
                     <html lang=en>
@@ -267,6 +268,16 @@ class SelectDonorFromApplicantsView(CreateAPIView):
                             <title>Blood test</title>
                         </head>
                         <body>
+                            <p>&nbsp;</p>
+                                <p>You have been chosen as a donor at <a href="{seeker_website}">{seeker_name}</a></p>
+                                <p>{seeker_name} will contact you for an appointment.</p>
+                                <p>Your code for this donation:</p>
+                                <p><img src='{qr_img}'/></p>
+                                <p>&nbsp;</p>
+                                <p><a href="https://blood-value.propulsion-learn.ch">
+                                <span style="color: #262541; font-size: 18px; font-weight: 600;">
+                                Bloodval</span><span style="color: #d33449; font-size: 24px; font-weight: 600;">U
+                                </span></a></p>
                             <h2><strong>Thank you very much for applying for Blood Donation.</strong></h2>
                             <p>&nbsp;</p>
                             <h3>Dear {donor_name},</h3>
