@@ -55,13 +55,44 @@ const SearchContainer = styled.div`
 `;
 
 const SearchInput = styled(BigInput)`
-  width: 80%;
+  width: 60%;
   height: ${rem("40px")};
 `;
 
 const SearchButton = styled(DarkBlueButton)`
   width: ${rem("96px")};
   height: ${rem("40px")};
+`;
+
+const FilterContainer = styled.div`
+  width: 256px;
+  display: flex;
+  justify-content: space-around;
+`;
+
+const FilterLabel = styled.label`
+  font-size: 16px;
+  color: #121232;
+`;
+
+const FilterInput = styled.select`
+  background: #ffffff;
+  border: 1px solid #a1a4b1;
+  box-sizing: border-box;
+  border-radius: 4px;
+  width: ${rem("160px")};
+  height: ${rem("24px")};
+  outline: none;
+  padding-left: ${rem("16px")};
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 24px;
+  color: #232735;
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const CertificateContainer = styled.div`
@@ -106,8 +137,16 @@ const AdminPage = ({ dispatch, profilesReducer: { profiles } }) => {
           <SearchContainer>
             <SearchInput onChange={handleSearchInput} placeholder="Search..." />
             <SearchButton onClick={handleSearch}>Search</SearchButton>
+            <FilterContainer>
+              <FilterLabel>Sort by:</FilterLabel>
+              <FilterInput>
+                <option value="date">Date</option>
+                <option value="valid">Valid</option>
+                <option value="not_valid">Not Valid</option>
+              </FilterInput>
+            </FilterContainer>
           </SearchContainer>
-          {/* CRIAR A MERDA DO FILTRO DROPDOWN FODA-SE */}
+
           <CertificateContainer>
             {profiles
               ? profiles.map((profile, index) => {
