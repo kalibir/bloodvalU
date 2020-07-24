@@ -1,7 +1,9 @@
 from rest_framework import serializers
 
 from apps.donorprofiles.models import DonorProfile
+from apps.offeredtests.models import OfferedTest
 from apps.offeredtests.serializers import BoughtTestsOnProfileSerializer
+from apps.testresults.models import TestResult
 
 
 class DonorProfileSerializer(serializers.ModelSerializer):
@@ -32,8 +34,38 @@ class DonorProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DonorProfile
-        fields = ['id', 'phone', 'is_donor', 'is_staff', 'email', 'can_donate', 'can_donate', 'first_name', 'last_name', 'country',
+        fields = ['id', 'phone', 'is_donor', 'is_staff', 'email', 'can_donate', 'can_donate', 'first_name', 'last_name',
+                  'country',
                   'zip_code', 'street', 'no_of_bought_tests',
-                  'avatar', 'birthday', 'has_been_selected',
+                  'avatar', 'birthday', 'has_been_selected', 'test_results',
+                  'next_donation', 'total_points', 'blood_group', 'gender', 'age',
+                  'no_of_applications', 'no_of_test_results']
+
+
+class GetBuyersOfOfferedTestSerializer(DonorProfileSerializer):
+    pdf_result = serializers.SerializerMethodField()
+
+    def get_pdf_result(self, obj):
+        request = self.context.get('request')
+        if not request.user.is_donor:
+            target_offered_test = OfferedTest.objects.get(id=int(request.data.get('test_id')))
+            tests_results = target_offered_test.test_results.all()
+            profile_results = obj.test_results.all()
+            if bool(set(profile_results) & set(tests_results)):
+                target_result = TestResult.objects.filter(offered_test=target_offered_test,
+                                                          donor=obj)
+                target_pdf = target_result[0].results
+                return request.scheme + "://" + request.get_host() + target_pdf.url
+            else:
+                return None
+        else:
+            return None
+
+    class Meta:
+        model = DonorProfile
+        fields = ['id', 'phone', 'is_donor', 'is_staff', 'email', 'can_donate', 'can_donate', 'first_name', 'last_name',
+                  'country',
+                  'zip_code', 'street', 'no_of_bought_tests',
+                  'avatar', 'birthday', 'has_been_selected', 'test_results', 'pdf_result',
                   'next_donation', 'total_points', 'blood_group', 'gender', 'age',
                   'no_of_applications', 'no_of_test_results']
