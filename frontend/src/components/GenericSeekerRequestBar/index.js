@@ -131,6 +131,7 @@ const GenericSeekerRequestBar = ({
     applicants: null,
   });
   const [sureModal, setSureModal] = useState(false);
+  const [openArrow, setOpenArrow] = useState(false);
 
   // const handleDeleteRequest = (event, requestID) => {
   //   dispatch(deleteRequestAction(requestID));
@@ -144,7 +145,10 @@ const GenericSeekerRequestBar = ({
       applicants: response.data,
       showApplicants: !applicantsData.showApplicants,
     });
+    setOpenArrow(!openArrow)
   };
+
+  console.log("in da seeker bar", applicantsData.applicants)
 
   const handleClickApplicant = (e) => {
     const index = Number(e.currentTarget.id);
@@ -161,6 +165,7 @@ const GenericSeekerRequestBar = ({
     console.log("in the close modal");
     setSureModal(false);
   };
+
 
   return (
     <BarWrapper>
@@ -196,7 +201,7 @@ const GenericSeekerRequestBar = ({
         )}
       </RequestBar>
 
-      {applicantsData.showApplicants
+      {applicantsData.applicants && openArrow
         ? applicantsData.applicants.map((applicant, index) => {
 
               if (request.selected_donor && request.selected_donor.id === applicant.id) {
@@ -223,7 +228,8 @@ const GenericSeekerRequestBar = ({
               </SlidingContainer>
             );
           })
-        : null}
+        : applicantsData.applicants && !openArrow ? null
+      : null}
     </BarWrapper>
   );
 };

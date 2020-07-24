@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, send_mail
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, UpdateAPIView
 from rest_framework.response import Response
@@ -27,15 +27,31 @@ class RequestForRegistration(CreateAPIView):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         target_profile = Registration.objects.get(email=request.data['email'])
-        email = EmailMessage()
-        email.subject = 'Thanks for registering'
-        email.body = 'See your account creation code: {code}'.format(code=target_profile.code)
-        email.to = [request.data['email']]
-        email.send(fail_silently=False)
-
-
-
-
+        subject = 'BloodvalU registration'
+        message = f'Here is your test code: {target_profile.code}'
+        to = {target_profile.email}
+        qr_img = f'https://qrickit.com/api/qr.php?d={target_profile.code}&addtext=BloodvalU'
+        sender = ''
+        html_message = f"""
+                            <html lang=en>
+                                <head>
+                                    <meta charset=utf-8>
+                                    <title></title>
+                                </head>
+                                <body>
+                                    <p>&nbsp;</p>
+                                    <p>Thank you for your registration!</p>
+                                    <p>&nbsp;</p>
+                                    <p>Here is your validation code: {target_profile.code}</p>
+                                    <p>&nbsp;</p>
+                                    <p><a href="https://blood-value.propulsion-learn.ch">
+                                    <span style="color: #262541; font-size: 18px; font-weight: 600;">
+                                    Bloodval</span><span style="color: #d33449; font-size: 24px; font-weight: 600;">U
+                                    </span></a></p>
+                                </body>
+                            </html>"""
+        send_mail(subject=subject, message=message, html_message=html_message, from_email=sender, recipient_list=to,
+                  fail_silently=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
@@ -78,11 +94,28 @@ class CreateValidationCodeForPasswordReset(CreateAPIView):
             target_profile.code = code_generator()
             target_profile.save()
 
-            email = EmailMessage()
-            email.subject = 'Your password Reset code'
-            email.body = f'See your password reset code:{target_profile.code}'
-            email.to = [target_profile.email]
-            email.send(fail_silently=False)
+            subject = 'Password reset'
+            message = f'Here is your test code: {target_profile.code}'
+            to = {target_profile.email}
+            sender = ''
+            html_message = f"""
+                    <html lang=en>
+                        <head>
+                            <meta charset=utf-8>
+                            <title></title>
+                        </head>
+                        <body>
+                            <p>&nbsp;</p>
+                            <p>Here is your validation code to reset the password : {target_profile.code}</p>
+                            <p>&nbsp;</p>
+                            <p><a href="https://blood-value.propulsion-learn.ch">
+                            <span style="color: #262541; font-size: 18px; font-weight: 600;">
+                            Bloodval</span><span style="color: #d33449; font-size: 24px; font-weight: 600;">U
+                            </span></a></p>
+                        </body>
+                    </html>"""
+            send_mail(subject=subject, message=message, html_message=html_message, from_email=sender, recipient_list=to,
+                      fail_silently=False)
 
             return Response(status=status.HTTP_201_CREATED)
         except Registration.DoesNotExist:

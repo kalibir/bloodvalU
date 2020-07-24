@@ -92,28 +92,35 @@ class BuyOfferedTestView(CreateAPIView):
         message = f'Here is your test code: {test_code}'
         to = [email_address]
         qr_img = f'https://qrickit.com/api/qr.php?d={test_code}&addtext=BloodvalU'
-        donor_name = f'{donor.first_name} {donor.last_name}'
+        seeker_name = target_seeker.name
+        seeker_phone = target_seeker.phone
+        seeker_website = target_seeker.website
         sender = ''
-        html_message = f"""<!doctype html>
+        html_message = f"""
         <html lang=en>
             <head>
                 <meta charset=utf-8>
-                <title>Blood test</title>
+                <title></title>
             </head>
             <body>
-                <h2><strong>Thank you very much for choosing one of our tests.</strong></h2>
                 <p>&nbsp;</p>
-                <h3>Dear <strong>{donor_name}</strong>,</h3>
+                <p>Thank you for choosing one of our tests.</p>
                 <p>&nbsp;</p>
-                <p>Please call us at {target_seeker.phone} or connect us through our website {target_seeker.website} 
-for an appointment.</p>
-                <p>For the test, you will need the QR above, so please not forget to bring it with you for the test, 
-either in your phone or in printed form. (Mind the environment, please.)</p>
+                <p>Please contact us to make an appointment:</p>
+                <p>{seeker_name}</p>
+                <p>{seeker_phone} or <a href="{seeker_website}">{seeker_website}</a>.</p>
+                <p>&nbsp;</p>
+                <p>For the test, you will need to show us the QR code below. </p>
+                <p>&nbsp;</p>
                 <p><img src='{qr_img}'/></p>
                 <p>&nbsp;</p>
                 <p>Best regards,</p>
-                <p>{target_seeker.name}</p>                
-                </p>
+                <p>{seeker_name}</p>
+                <p>&nbsp;</p>
+                <p><a href="https://blood-value.propulsion-learn.ch">
+                <span style="color: #262541; font-size: 18px; font-weight: 600;">
+                Bloodval</span><span style="color: #d33449; font-size: 24px; font-weight: 600;">U
+                </span></a></p>
             </body>
         </html>"""
         send_mail(subject=subject, message=message, html_message=html_message, from_email=sender, recipient_list=to,

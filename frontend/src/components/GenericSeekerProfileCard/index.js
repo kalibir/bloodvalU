@@ -88,6 +88,13 @@ const DetailTitle = styled.div`
   align-items: center;
   color: #000000;
   margin-bottom: ${rem("40px")};
+  
+  a{
+    color: #121232;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 24px;
+  }
 `;
 
 const EditProfileBtn = styled(DarkBlueButton)`
@@ -121,7 +128,7 @@ const SeekerProfileCard = ({ authReducer: { userObj }, dispatch }) => {
               <DetailTitle>
                 Address: {userObj.street}, {userObj.country}
               </DetailTitle>
-              <DetailTitle>Website: {userObj.website}</DetailTitle>
+              <DetailTitle>Website: <a href={userObj.website}> {userObj.website}</a></DetailTitle>
               <DetailTitle>Phone: {userObj.phone}</DetailTitle>
               <DetailTitle>Email: {userObj.email}</DetailTitle>
             </DetailTitlesContainer>

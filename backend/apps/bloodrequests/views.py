@@ -1,7 +1,6 @@
 import datetime
 from django.utils.datetime_safe import date
 
-
 from django.core.mail import EmailMessage, send_mail
 from django.shortcuts import render
 
@@ -57,15 +56,15 @@ class CreateBloodRequestView(CreateAPIView):
         blood_type = serializer.validated_data.get('blood_group')
         seeker_name = request.user.seeker_profile.name
         if target_emails:
-            subject = 'We are looking for a donor'
+            subject = 'Looking for a donor'
             message = f'We are looking for a donor'
             to = target_emails
             sender = ''
-            html_message = f"""<!doctype html>
+            html_message = f"""
                     <html lang=en>
                         <head>
                             <meta charset=utf-8>
-                            <title>Looking for a donor</title>
+                            <title></title>
                         </head>
                         <body>
                                 <p>&nbsp;</p>
@@ -116,7 +115,8 @@ class ListAllRequestsOfSpecificSeeker(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         target_seeker = self.get_object()
-        queryset = target_seeker.made_requests.filter((Q(valid_until__gt=date.today()) & Q(status="OP")) | Q(selected_donor=self.request.user.donor_profile)).order_by('-created')
+        queryset = target_seeker.made_requests.filter((Q(valid_until__gt=date.today()) & Q(status="OP")) | Q(
+            selected_donor=self.request.user.donor_profile)).order_by('-created')
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -206,8 +206,12 @@ class ListApplicantsOfSpecificRequestView(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         target_blood_request = self.get_object()
-        target_applicants = target_blood_request.applicants.filter(
-            (Q(has_been_selected=False) | Q(id=target_blood_request.selected_donor.id)))
+        if target_blood_request.selected_donor:
+            target_applicants = target_blood_request.applicants.filter(
+                (Q(has_been_selected=False) | Q(id=target_blood_request.selected_donor.id)))
+        else:
+            target_applicants = target_blood_request.applicants.filter(
+                (Q(has_been_selected=False)))
         serializer = self.get_serializer(target_applicants, many=True)
         return Response(serializer.data)
 
@@ -244,6 +248,7 @@ class SelectDonorFromApplicantsView(CreateAPIView):
             code1 = target_blood_request.unique_request_id
             code2 = target_applicant.unique_donor_id
             code = '{code1}.{code2}'.format(code1=code1, code2=code2)
+            donor_email = target_applicant.user.email
             # email.subject = 'Congratulations you have been Selected for a Blood Donation!'
             # # email.body = '{seeker_name} would like you to come and donate blood at their site at {seeker_street}, {seeker_zip_code}!'.format(
             # #     seeker_name=request.user.seeker_profile.name,
@@ -255,47 +260,34 @@ class SelectDonorFromApplicantsView(CreateAPIView):
             # email.to = [target_applicant.user.email]
             # email.send(fail_silently=False)
 
-            subject = 'Congratulations, you have been selected for a Blood Donation!'
+            subject = 'You have been selected'
             message = f'Here is your code for donation: {code}'
-            to = [target_applicant.user.email]
+            to = {donor_email}
             qr_img = f'https://qrickit.com/api/qr.php?d={code}&addtext=BloodvalU'
             donor_name = f'{target_applicant.user.first_name} {target_applicant.user.last_name}'
             seeker_name = request.user.seeker_profile.name
-            seeker_website = request.user.seeker_profile.webiste
+            seeker_website = request.user.seeker_profile.website
             sender = ''
-            html_message = f"""<!doctype html>
+            html_message = f"""
                     <html lang=en>
                         <head>
                             <meta charset=utf-8>
-                            <title>Blood test</title>
+                            <title></title>
                         </head>
                         <body>
                             <p>&nbsp;</p>
-                                <p>You have been chosen as a donor at <a href="{seeker_website}">{seeker_name}</a></p>
-                                <p>{seeker_name} will contact you for an appointment.</p>
+                                <p>You have been selected as a donor at <a href="{seeker_website}">{seeker_name}</a></p>
+                                <p>&nbsp;</p>
+                                <p>{seeker_name} will contact you to make an appointment.</p>
+                                <p>&nbsp;</p>
                                 <p>Your code for this donation:</p>
+                                <p>&nbsp;</p>
                                 <p><img src='{qr_img}'/></p>
                                 <p>&nbsp;</p>
                                 <p><a href="https://blood-value.propulsion-learn.ch">
                                 <span style="color: #262541; font-size: 18px; font-weight: 600;">
                                 Bloodval</span><span style="color: #d33449; font-size: 24px; font-weight: 600;">U
                                 </span></a></p>
-                            <h2><strong>Thank you very much for applying for Blood Donation.</strong></h2>
-                            <p>&nbsp;</p>
-                            <h3>Dear {donor_name},</h3>
-                            <p>&nbsp;</p>
-                            <p>At {seeker_name}, we are happy for that, you are choose us for donation.</p>
-                            <p>Our colleagues will make contact you soon,
-                                to organize an appointment for the donation.</p>
-                            <p>If you have any questions, please don't hesitate to contact us.</p>
-                            <p>For the identification at donation, you will need the QR above,
-                                so please do not forget to bring it with you,
-                                either in your phone or in printed form. (Mind the environment, please.)</p>
-                            <p><img src='{qr_img}'/></p>
-                            <p>&nbsp;</p>
-                            <p>Best regards,</p>
-                            <p><strong>{seeker_name}</strong></p>
-                            </p>
                         </body>
                     </html>"""
             send_mail(subject=subject, message=message, html_message=html_message, from_email=sender, recipient_list=to,
@@ -375,12 +367,34 @@ class MarkRequestAsCompletedView(CreateAPIView):
                 cloned_blood_request.selected_donor = None
                 cloned_blood_request.applicants.clear()
                 cloned_blood_request.save()
-            email = EmailMessage()
-            email.subject = 'Thanks for Donating :)'
-            email.body = '{seeker_name} would like you to thank you for your generous blood donation.\n{points_value} points have been added to your profile, enjoy!'.format(
-                seeker_name=request.user.seeker_profile.name, points_value=target_blood_request.points_value)
-            email.to = [target_donor.user.email]
-            email.send(fail_silently=False)
+            donor_email = target_blood_request.selected_donor.email
+            subject = 'Thank you'
+            message = f'Thank you'
+            to = {donor_email}
+            points_value = target_blood_request.points_value
+            sender = ''
+            html_message = f"""
+                                <html lang=en>
+                                    <head>
+                                        <meta charset=utf-8>
+                                        <title></title>
+                                    </head>
+                                    <body>
+                                        <p>&nbsp;</p>
+                                            <p>Thank you for your generous donation.</p>
+                                            <p>&nbsp;</p>
+                                            <p>{points_value} points have been added to your profile.</p>
+                                            <p>&nbsp;</p>
+                                            <p>Please visit our <a href="https://blood-value.propulsion-learn.ch">website</a> to see the available tests.</p>
+                                            <p>&nbsp;</p>
+                                            <p><a href="https://blood-value.propulsion-learn.ch">
+                                            <span style="color: #262541; font-size: 18px; font-weight: 600;">
+                                            Bloodval</span><span style="color: #d33449; font-size: 24px; font-weight: 600;">U
+                                            </span></a></p>
+                                    </body>
+                                </html>"""
+            send_mail(subject=subject, message=message, html_message=html_message, from_email=sender, recipient_list=to,
+                      fail_silently=False)
             return Response(self.get_serializer(target_blood_request).data)
 
 
