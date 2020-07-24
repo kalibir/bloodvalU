@@ -15,7 +15,7 @@ import {
 } from "../../store/actions/bloodRequestActions";
 import ActiveProfileCard from "./ActiveProfileCard";
 import { searchAllRequestsAndTestsAction } from "../../store/actions/searchActions";
-import {deleteTestAction} from "../../store/actions/offeredTestActions";
+import { deleteTestAction } from "../../store/actions/offeredTestActions";
 
 import Spinner from "../../components/GenericSpinner";
 
@@ -103,6 +103,8 @@ const Requests = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: ${rem("480px")};
+  overflow: auto;
 `;
 
 const PlusSignButton = styled.span`
@@ -185,7 +187,7 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
             closeModal={closeModal}
           />
         ) : null}
-        {}
+
         <LeftSide>
           <DashboardContentContainer>
             <MenuContainer>

@@ -55,7 +55,7 @@ const MenuContainer = styled.div`
     background-color: ${ColorDebug ? "darkkhaki" : ""};
 `;
 
-const MiddleButton = styled.button`
+export const MiddleButton = styled.button`
   height: 100%;
   position: relative;
   width: 34%;
@@ -167,6 +167,8 @@ const OfferContainer = styled.div`
 const RequestContainer = styled.div`
   width: 100%;
   background-color: ${ColorDebug ? "lightslategrey" : ""};
+  width: ${rem("480px")};
+  overflow: auto;
 `;
 
 const SpinnerContainer = styled.div`

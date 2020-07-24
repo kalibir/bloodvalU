@@ -10,3 +10,11 @@ export const PageContainer = styled.div`
   width: 100vw;
   background: #fafafc;
 `;
+
+export const BaseMenuContainer = styled.div`
+    //width: ${rem("445px")};
+    width: 100%;
+    height: ${rem("48px")};
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+    margin-bottom: ${rem("24px")};
+`;

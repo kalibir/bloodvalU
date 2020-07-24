@@ -1,9 +1,10 @@
 import React, {useRef, useState} from "react";
-import {PageContainer} from "../../style/GlobalWrappers";
+import {BaseMenuContainer, PageContainer} from "../../style/GlobalWrappers";
 import QrReader from 'react-qr-scanner'
 import styled from "styled-components";
 import {useDispatch} from "react-redux";
 import {validateQRCode} from "../../store/actions/QRActions";
+import {MiddleButton} from "../DonorDashboard";
 
 const SuccessText = styled.h1`
   color: #3eb33e;
@@ -25,8 +26,27 @@ const SubmitQRBtn = styled.input`
   margin: 4px 2px;
   cursor: pointer;
 `
+const Button = styled(MiddleButton)`
+  width: 50%;
+`;
+
+const MenuContainer = styled(BaseMenuContainer)`
+`
+
+const ContentWrapper = styled.div`
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+const Content = styled.div`
+    ${(props) => (props.active ? "" : "display:none")}
+`
 
 const SeekerScanCode = (props) => {
+    const [active, setActive] = useState("request")
     const dispatch = useDispatch()
     const [data, setData] = useState({
         delay: 100,
@@ -37,6 +57,15 @@ const SeekerScanCode = (props) => {
         isGood: null,
         message: null
     })
+
+    const handleTabs = e => {
+        const activeTab = e.currentTarget.id
+        setActive(activeTab)
+        setData({ delay: 100, scan: null})
+        setQRCode(null)
+        setQRResponse({isGood: null, message: null})
+    }
+
 
     const handleScan = (scannedInfo) => {
         if (data.scan) setQRCode(data.scan)
@@ -50,28 +79,46 @@ const SeekerScanCode = (props) => {
     }
     const refs = useRef()
     const handleSubmitQR = async (e) => {
+        e.preventDefault()
         if (QRCode) {
             const data = {code: QRCode}
-            const response = await dispatch(validateQRCode(data))
-            if (response.status < 300) setQRResponse({...QRresponse, message: response.data.detail, isGood: true})
+            const response = await dispatch(validateQRCode(data, active))
+            console.log(`dispatching this code: ${data.code} To   ${active}`)
+            if (response.status < 300) setQRResponse({...QRresponse, message: response.data, isGood: true})
             else setQRResponse({...QRresponse, message: "INVALID CODE", isGood: false})
         }
     }
 
+
     return (
         <PageContainer>
-            {QRresponse.message ? QRresponse.isGood ? <SuccessText>{QRresponse.message}</SuccessText> :
-                <ErrorText>{QRresponse.message}</ErrorText> : null}
-            <QrReader
-                ref={refs}
-                delay={data.delay}
-                style={previewStyle}
-                onError={handleError}
-                onScan={handleScan}
-            />
-            {QRCode ? <SubmitQRBtn type="button" value="Submit QR Code" onClick={handleSubmitQR}/> :
-                <p>Scanning, please hold still...</p>
-            }
+            <ContentWrapper><MenuContainer>
+                <Button id="request" onClick={handleTabs} active={active === "request"}>
+                    Scan Blood Request QR Code
+                </Button>
+                <Button id="tests" onClick={handleTabs} active={active === "tests"}>
+                    Scan Test QR Code
+                </Button>
+            </MenuContainer>
+                {QRresponse.message ? QRresponse.isGood ?
+                    <>
+                    <SuccessText>Donor Name: {QRresponse.message.donor}</SuccessText>
+                    <SuccessText>Institution: {QRresponse.message.institution}</SuccessText>
+                    <SuccessText>Type of Appointment: {QRresponse.message.type}</SuccessText>
+                    </>
+                    :
+                    <ErrorText>{QRresponse.message}</ErrorText> : null}
+                <QrReader
+                    ref={refs}
+                    delay={data.delay}
+                    style={previewStyle}
+                    onError={handleError}
+                    onScan={handleScan}
+                />
+                {QRCode ? <SubmitQRBtn type="button" value="Submit QR Code" onClick={handleSubmitQR}/> :
+                    <p>Scanning, please hold still...</p>
+                }</ContentWrapper>
+
         </PageContainer>
     )
 }

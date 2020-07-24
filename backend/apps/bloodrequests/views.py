@@ -14,7 +14,7 @@ from rest_framework.response import Response
 
 from apps.donordata.models import DonorData
 from apps.donordata.serializers import DonorDataSerializer
-from apps.registrations.models import code_generator
+from apps.registrations.models import code_generator, get_or_none
 
 from apps.bloodrequests.models import BloodRequest
 from apps.bloodrequests.permissions import IsRequesterOrAdminOrReadOnly, IsDonorOrReadOnly
@@ -412,3 +412,38 @@ class GetStatisticsOfBloodRequestView(ListAPIView):
         donor_data = target_blood_request.statistics.all()
         serializer = self.get_serializer(donor_data, many=True)
         return Response(serializer.data)
+
+
+class ValidateBloodRequestQRCodeView(CreateAPIView):
+    """
+    POST:
+    Validate a qr code buy posting a {code: <actual_code> } object in the request
+    """
+    permission_classes = [IsAuthenticated | ReadOnly]
+    serializer_class = DonorProfileSerializer
+
+    def create(self, request, *args, **kwargs):
+
+        code = request.data.get('code')
+        code_array = code.split(".")
+        unique_br_code = int(code_array[0])
+        unique_donor_id = int(code_array[1])
+        if not get_or_none(BloodRequest, unique_request_id=unique_br_code):
+            return Response({"detail": "This Blood request test does not exist"},
+                            status=status.HTTP_400_BAD_REQUEST)
+        if not get_or_none(DonorProfile, unique_donor_id=unique_donor_id):
+            return Response({"detail": "This donor does not exist"},
+                            status=status.HTTP_400_BAD_REQUEST)
+        target_donor = get_or_none(DonorProfile, unique_donor_id=unique_donor_id)
+        target_blood_request = get_or_none(BloodRequest, unique_request_id=unique_br_code)
+
+        if target_donor in target_blood_request.applicants.all():
+            return Response({
+                'donor': f'{target_donor.first_name} {target_donor.last_name} {target_donor.blood_group}',
+                'institution': f'{target_blood_request.seeker.name}',
+                'type': f'Blood Donation'
+            },
+                status=status.HTTP_200_OK)
+        else:
+            return Response({"detail": "Invalid Code"},
+                            status=status.HTTP_400_BAD_REQUEST)

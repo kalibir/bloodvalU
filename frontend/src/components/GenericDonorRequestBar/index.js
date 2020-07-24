@@ -2,10 +2,10 @@ import React from "react";
 import { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { BaseStatusButton } from "../../style/GlobalButtons/";
-import { rem } from "polished";
+import { rem, backgroundImages } from "polished";
 import { useDispatch } from "react-redux";
 import { applyToRequestActionInAll } from "../../store/actions/bloodRequestActions";
-import acceptedIcon from "../../assets/icons/accepted.png";
+import acceptedIcon from "../../assets/icons/Check.svg";
 import expiredIcon from "../../assets/icons/expired.png";
 import urgentIcon from "../../assets/icons/urgent.svg";
 import onProgressIcon from "../../assets/icons/on_progress.png";
@@ -65,10 +65,16 @@ const ButtonWrapper = styled.div`
 
 const IconWrapper = styled(ButtonWrapper)`
   grid-area: status;
+  height: 100%;
+  display: flex;
+  align-items: center;
 `;
 
 const UrgentWrapper = styled(ButtonWrapper)`
   grid-area: urgent;
+  height: 100%;
+  display: flex;
+  align-items: center;
 `;
 
 const BloodDiv = styled(TextWrapper)`
