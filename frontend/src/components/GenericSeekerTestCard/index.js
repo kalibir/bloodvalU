@@ -1,10 +1,11 @@
 import React, {useState} from "react";
 import {rem} from "polished";
 import styled from "styled-components";
-import {SmallBlueButton, SmallRedButton} from "../../style/GlobalButtons";
+import {SmallBlueButton, SmallGreenButton, SmallRedButton} from "../../style/GlobalButtons";
 import AreYouSureModal from "../AreYouSure";
 import {createTestRequestAction, deleteTestAction} from "../../store/actions/offeredTestActions";
 import {useDispatch} from "react-redux";
+import UploadTestResultsModal from "../UploadTestResultsModal";
 
 const TestCard = styled.div`
   width: ${rem("290px")};
@@ -66,6 +67,12 @@ const CardBlueButton = styled(SmallBlueButton)`
   font-size: 12px;
 `;
 
+const CardGreenButton = styled(SmallGreenButton)`
+    width: 60px;
+  height: 30px;
+  font-size: 12px;
+`
+
 const CardRedButton = styled(SmallRedButton)`
   width: 60px;
   height: 30px;
@@ -101,6 +108,7 @@ const GenericSeekerTestCard = ({
                                }) => {
 
     const [sureModal, setSureModal] = useState(false);
+    const [showCustomersModal, setShowCustomersModal] = useState(false)
     const dispatch = useDispatch()
 
     const closeModal = () => {
@@ -126,11 +134,13 @@ const GenericSeekerTestCard = ({
                     id={id}
                 />
             ) : null}
+            {showCustomersModal ? <UploadTestResultsModal testID={id}/>: null}
             <TextContainer>
                 <Text>{test_type}</Text>
                 <PointContainer>{points_cost}</PointContainer>
             </TextContainer>
             <BottomContainer>
+                <CardGreenButton onClick={e => setShowCustomersModal(true)}>Customers</CardGreenButton>
                 <CardBlueButton>edit</CardBlueButton>
                 <CardRedButton onClick={e => setSureModal(true)}>delete</CardRedButton>
             </BottomContainer>

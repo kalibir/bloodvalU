@@ -87,3 +87,12 @@ export const deleteTestAction = (testID) => async (dispatch) => {
     return error
   }
 }
+
+export const getCustomersAction = (testIdObj) => async (dispatch) => {
+  try {
+    return await Axios.get(`tests/customers/`, testIdObj);
+  } catch (error) {
+    console.log("error in the getCustomersAction", error);
+    return error
+  }
+}
