@@ -140,11 +140,11 @@ class ListAllSeekersOfferedTestsView(ListAPIView):
         return Response(serializer.data)
 
 
-class ListDonorsWhoBoughtOfferedTest(ListAPIView):
+class ListDonorsWhoBoughtOfferedTest(CreateAPIView):
     serializer_class = GetBuyersOfOfferedTestSerializer
     permission_classes = [IsAuthenticated | ReadOnly]
 
-    def list(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):
         offered_test_id = self.request.data.get('test_id')
         if offered_test_id:
             if get_or_none(OfferedTest, id=int(offered_test_id)):

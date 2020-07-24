@@ -89,21 +89,6 @@ const GenericSeekerTestCard = ({
                                        created,
                                        is_bought,
                                        is_expired,
-                                       seeker: {
-                                           id: seeker_id,
-                                           name,
-                                           phone,
-                                           is_donor,
-                                           email,
-                                           certificate,
-                                           no_of_requests,
-                                           is_valid,
-                                           website,
-                                           street,
-                                           zip_code,
-                                           country,
-                                           logo,
-                                       },
                                    },
                                }) => {
 
@@ -123,6 +108,10 @@ const GenericSeekerTestCard = ({
         if (response.status < 300) closeModal();
     };
 
+    const handleCloseUploadResults = e => {
+        setShowCustomersModal(false)
+    }
+
 
     return (
         <TestCard>
@@ -134,7 +123,7 @@ const GenericSeekerTestCard = ({
                     id={id}
                 />
             ) : null}
-            {showCustomersModal ? <UploadTestResultsModal testID={id}/>: null}
+            {showCustomersModal ? <UploadTestResultsModal handleCloseUploadResults={handleCloseUploadResults} test_type={test_type} testID={id}/>: null}
             <TextContainer>
                 <Text>{test_type}</Text>
                 <PointContainer>{points_cost}</PointContainer>
