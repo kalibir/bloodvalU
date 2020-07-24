@@ -46,7 +46,7 @@ const Content = styled.div`
 `
 
 const SeekerScanCode = (props) => {
-    const [active, setActive] = useState("requests")
+    const [active, setActive] = useState("request")
     const dispatch = useDispatch()
     const [data, setData] = useState({
         delay: 100,
@@ -94,7 +94,7 @@ const SeekerScanCode = (props) => {
     return (
         <PageContainer>
             <ContentWrapper><MenuContainer>
-                <Button id="requests" onClick={handleTabs} active={active === "requests"}>
+                <Button id="request" onClick={handleTabs} active={active === "request"}>
                     Scan Blood Request QR Code
                 </Button>
                 <Button id="tests" onClick={handleTabs} active={active === "tests"}>
