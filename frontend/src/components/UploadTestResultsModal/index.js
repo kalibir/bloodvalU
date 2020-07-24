@@ -10,6 +10,8 @@ import {useHistory} from "react-router";
 import Spinner from "../GenericSpinner";
 import {getCustomersAction, uploadTestResultsAction} from "../../store/actions/offeredTestActions";
 import {DonorSubBar} from "../GenericSeekerRequestBar";
+import CustomerBar from "./CustomerCard";
+import {applyToRequestOnMap} from "../../store/actions/mapActions";
 
 const modalFade = keyframes`
   from{opacity: 0}
@@ -113,9 +115,6 @@ const DownloadButton = styled(BaseStatusButton)`
   width: 175px;
 `;
 
-const CustomerBar = styled(DonorSubBar)`
-  width: 80%;
-`
 const Title = styled.h1`
   display: flex;
 `
@@ -125,16 +124,19 @@ const TitleWrapper = styled.div`
   width: 80%;
 `
 
-const UploadInput = styled.input`
-  display: none;
-`
-const UploadLabel = styled(WhiteLabel)``
-
 
 const UploadTestResultsModal = ({testID, test_type, handleCloseUploadResults}) => {
     const dispatch = useDispatch()
     const [customers, setCustomers] = useState()
-    const [uploadedPDF, setUploadedPFD] = useState()
+
+    const handleUpdateCustomers = (customerObj) => {
+        const newCustomers = [...customers]
+        const index = customers.findIndex(
+            (donor) => donor.id === customerObj.id
+        )
+        newCustomers[index] = customerObj
+        setCustomers(newCustomers)
+    }
 
     useEffect(() => {
         // TODO dispatch get customers
@@ -147,22 +149,6 @@ const UploadTestResultsModal = ({testID, test_type, handleCloseUploadResults}) =
         fetchCustomers(testID)
     }, [dispatch])
 
-    let fileUpload = useRef()
-
-    const PDFSelectHandler = (e) => {
-        if (e.target.files[0]) {
-            setUploadedPFD(e.target.files[0]);
-        }
-    };
-
-    const handleUpload = async (e, donorID, testID) => {
-        const form = new FormData()
-        form.append("donor", donorID)
-        form.append("test_id", testID)
-        form.append("results", uploadedPDF)
-        const response = await dispatch(uploadTestResultsAction(form))
-    }
-
 
     return (
         <ModalWrapper>
@@ -170,27 +156,9 @@ const UploadTestResultsModal = ({testID, test_type, handleCloseUploadResults}) =
                 <TitleWrapper>
                     <Title>{test_type}</Title>
                 </TitleWrapper>
-                {customers ? customers.map(customer => {
-                    return (
-                        <CustomerBar key={customer.id} id={customer.id}>
-                            <div>{`${customer.first_name} ${customer.last_name}`}</div>
-                            <div>
-                                {customer.pdf_result ?
-                                    <>
-                                        <UploadLabel htmlFor={`${customer.id}`}>CHANGE</UploadLabel>
-                                        <UploadInput type="file" onChange={PDFSelectHandler}  id={`${customer.id}`}/>
-                                        <CustomWhiteButton>DOWNLOAD</CustomWhiteButton>
-                                    </> :
-                                    <>
-                                    <UploadLabel htmlFor={`${customer.id}`}>UPLOAD</UploadLabel>
-                                    <UploadInput type="file" onChange={PDFSelectHandler} id={`${customer.id}`}/>
-                                    </>
-                                }
-                            </div>
-                        </CustomerBar>
-                        // ref={(ref) => fileUpload = ref}
-                    );
-                }) : <Spinner/>}
+                {customers ? customers.map(customer => <CustomerBar handleUpdateCustomers={handleUpdateCustomers} testID={testID}
+                                                                    customer={customer} key={customer.id}/>) :
+                    <Spinner/>}
                 <CloseBtn onClick={handleCloseUploadResults}>CLOSE</CloseBtn>
             </ModalForm>
         </ModalWrapper>
