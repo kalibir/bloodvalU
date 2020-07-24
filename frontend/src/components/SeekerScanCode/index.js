@@ -58,6 +58,15 @@ const SeekerScanCode = (props) => {
         message: null
     })
 
+    const handleTabs = e => {
+        const activeTab = e.currentTarget.id
+        setActive(activeTab)
+        setData({ delay: 100, scan: null})
+        setQRCode(null)
+        setQRResponse({isGood: null, message: null})
+    }
+
+
     const handleScan = (scannedInfo) => {
         if (data.scan) setQRCode(data.scan)
         setData({...data, scan: scannedInfo})
@@ -71,29 +80,32 @@ const SeekerScanCode = (props) => {
     }
     const refs = useRef()
     const handleSubmitQR = async (e) => {
+        e.preventDefault()
         if (QRCode) {
             const data = {code: QRCode}
             const response = await dispatch(validateQRCode(data, active))
+            console.log(`dispatching this code: ${data.code} To   ${active}`)
             if (response.status < 300) setQRResponse({...QRresponse, message: response.data, isGood: true})
             else setQRResponse({...QRresponse, message: "INVALID CODE", isGood: false})
         }
     }
 
+
     return (
         <PageContainer>
             <ContentWrapper><MenuContainer>
-                <Button id="requests" onClick={e => setActive("requests")} active={active === "requests"}>
+                <Button id="requests" onClick={handleTabs} active={active === "requests"}>
                     Scan Blood Request QR Code
                 </Button>
-                <Button id="applied" onClick={e => setActive("tests")} active={active === "tests"}>
+                <Button id="tests" onClick={handleTabs} active={active === "tests"}>
                     Scan Test QR Code
                 </Button>
             </MenuContainer>
                 {QRresponse.message ? QRresponse.isGood ?
                     <>
-                    <SuccessText>{QRresponse.message.}</SuccessText>
-                    <SuccessText>{QRresponse.message}</SuccessText>
-                    <SuccessText>{QRresponse.message}</SuccessText>
+                    <SuccessText>Donor Name: {QRresponse.message.donor}</SuccessText>
+                    <SuccessText>Institution: {QRresponse.message.institution}</SuccessText>
+                    <SuccessText>Type of Appointment: {QRresponse.message.type}</SuccessText>
                     </>
                     :
                     <ErrorText>{QRresponse.message}</ErrorText> : null}
