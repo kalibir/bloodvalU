@@ -46,13 +46,13 @@ const CustomerBar = ({testID, customer: {id, pdf_result, last_name, first_name},
             <div>
                 {pdf_result ?
                     <>
-                        <UploadLabel htmlFor={first_name}>CHANGE</UploadLabel>
+                        <UploadLabel htmlFor={first_name}>{uploadedPDF ? "FILE UPLOADED" : "UPLOAD"}</UploadLabel>
                         <UploadInput type="file" onChange={PDFSelectHandler} id={first_name}/>
                         <CustomWhiteButton>DOWNLOAD</CustomWhiteButton>
                         {uploadedPDF ? <CustomWhiteButton>SAVE</CustomWhiteButton> : null}
                     </> :
                     <>
-                        <UploadLabel htmlFor={first_name}>UPLOAD</UploadLabel>
+                        <UploadLabel htmlFor={first_name}>{uploadedPDF ? "FILE UPLOADED" : "UPLOAD"}</UploadLabel>
                         <UploadInput type="file" onChange={PDFSelectHandler} id={first_name}/>
                         {uploadedPDF ? <CustomWhiteButton>SAVE</CustomWhiteButton> : null}
                     </>
