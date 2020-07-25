@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
-import { PageContainer } from "../../style/GlobalWrappers";
+import {PageContainer} from "../../style/GlobalWrappers";
 import GenericSeekerRequestBar from "../GenericSeekerRequestBar";
-import { DarkBlueButton } from "../../style/GlobalButtons";
+import {DarkBlueButton} from "../../style/GlobalButtons";
 import RequestModal from "../RequestModal";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import {
-  assignApplicantAsSelectedDonor,
-  deleteRequestAction,
-  editRequestAction,
-  getSeekerBloodRequestsAction,
+    assignApplicantAsSelectedDonor,
+    deleteRequestAction,
+    editRequestAction,
+    getSeekerBloodRequestsAction,
 } from "../../store/actions/bloodRequestActions";
 import ActiveProfileCard from "./ActiveProfileCard";
 
@@ -111,134 +111,135 @@ const NewRequestButton = styled(DarkBlueButton)`
   width: ${rem("194px")};
 `;
 
-const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
-  const [active, setActive] = useState("OP");
-  const [activeProfile, setActiveProfile] = useState(null);
-  const [activeRequest, setActiveRequest] = useState(null);
-  const [showSpinner, setShowSpinner] = useState(false);
-  const [modal, setModal] = useState({
-    showModal: false,
-    modalData: null,
-  });
+const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
+    const [active, setActive] = useState("OP");
+    const [activeProfile, setActiveProfile] = useState(null);
+    const [activeRequest, setActiveRequest] = useState(null);
+    const [showSpinner, setShowSpinner] = useState(false);
+    const [modal, setModal] = useState({
+        showModal: false,
+        modalData: null,
+    });
 
-  const handleSetActiveProfile = (profileObj) => {
-    setActiveProfile(profileObj);
-  };
+    const handleSetActiveProfile = (profileObj) => {
+        setActiveProfile(profileObj);
+    };
 
-  const handleSetActiveRequest = (requestObj) => {
-    setActiveRequest(requestObj);
-  };
+    const handleSetActiveRequest = (requestObj) => {
+        setActiveRequest(requestObj);
+    };
 
-  const handleSelectApplicant = async (e) => {
-    if (activeRequest && activeProfile) {
-      setShowSpinner(true)
-      const response = await dispatch(
-        assignApplicantAsSelectedDonor(activeRequest.id, activeProfile.id)
-      );
-      if (response.status < 300)
-        setShowSpinner(false)
-      setActiveRequest(response.data);
-    }
-  };
+    const handleSelectApplicant = async (e) => {
+        if (activeRequest && activeProfile) {
+            setShowSpinner(true)
+            const response = await dispatch(
+                assignApplicantAsSelectedDonor(activeRequest.id, activeProfile.id)
+            );
+            if (response.status < 300)
+                setShowSpinner(false)
+            setActiveRequest(response.data);
+        }
+    };
 
-  useEffect(() => {
-    dispatch(getSeekerBloodRequestsAction("OP"));
-  }, [dispatch]);
+    useEffect(() => {
+        dispatch(getSeekerBloodRequestsAction(""));
+    }, [dispatch]);
 
-  const handleClick = (e) => {
-    const value = e.target.id;
-    setActive(value);
-    // dispatch(getSeekerBloodRequestsAction(value));
-  };
+    const handleClick = (e) => {
+        const value = e.target.id;
+        setActive(value);
+        // dispatch(getSeekerBloodRequestsAction(value));
+    };
 
-  const closeModal = () => {
-    setModal({ ...modal, showModal: false });
-  };
+    const closeModal = () => {
+        setModal({...modal, showModal: false});
+    };
 
-   const handleDeleteRequest = async (e, requestID) => {
+    const handleDeleteRequest = async (e, requestID) => {
         e.preventDefault();
         const response = await dispatch(deleteRequestAction(requestID));
         if (response.status < 300) closeModal();
     };
 
-  const handleShowEditModal = (event, requestObj) => {
-    setModal({ showModal: true, modalData: requestObj });
-  };
+    const handleShowEditModal = (event, requestObj) => {
+        setModal({showModal: true, modalData: requestObj});
+    };
 
-  const handleEditRequest = (event, requestID, requestData) => {
-    dispatch(editRequestAction(requestID, requestData));
-    setModal({ ...modal, showModal: false });
-  };
+    const handleEditRequest = (event, requestID, requestData) => {
+        dispatch(editRequestAction(requestID, requestData));
+        setModal({...modal, showModal: false});
+    };
 
-  return (
-    <PageContainer>
-      <PageWrapper>
-        {modal.showModal ? (
-          <RequestModal
-            handleEditRequest={handleEditRequest}
-            modalData={modal.modalData}
-            closeModal={closeModal}
-          />
-        ) : null}
+    return (
+        <PageContainer>
+            <PageWrapper>
+                {modal.showModal ? (
+                    <RequestModal
+                        handleEditRequest={handleEditRequest}
+                        modalData={modal.modalData}
+                        closeModal={closeModal}
+                    />
+                ) : null}
 
-        <LeftSide>
-          <DashboardContentContainer>
-            <MenuContainer>
-              <SideButton id="OP" onClick={handleClick} active={active === "OP"}>
-                Open
-              </SideButton>
-              <MiddleButton id="COM" onClick={handleClick} active={active === "COM"}>
-                Complete
-              </MiddleButton>
-              <SideButton id="CL" onClick={handleClick} active={active === "CL"}>
-                Closed
-              </SideButton>
-            </MenuContainer>
-            <Requests>
-              {requests ? (
-                requests.map((request, index) => {
-                  if (request.status === active) {
-                    return (
-                        <GenericSeekerRequestBar
-                            handleShowEditModal={handleShowEditModal}
-                            handleEditRequest={handleEditRequest}
-                            handleDeleteRequest={handleDeleteRequest}
-                            handleSetActiveRequest={handleSetActiveRequest}
-                            handleSetActiveProfile={handleSetActiveProfile}
-                            key={index}
-                            request={request}
+                <LeftSide>
+                    <DashboardContentContainer>
+                        <MenuContainer>
+                            <SideButton id="OP" onClick={handleClick} active={active === "OP"}>
+                                Open
+                            </SideButton>
+                            <MiddleButton id="CL" onClick={handleClick} active={active === "CL"}>
+                                On Going
+                            </MiddleButton>
+                            <SideButton id="COM" onClick={handleClick} active={active === "COM"}>
+                                Complete
+                            </SideButton>
+                        </MenuContainer>
+                        <Requests>
+                            {requests ? (
+                                requests.map((request, index) => {
+                                    if (request.status === active) {
+                                        return (
+                                            <GenericSeekerRequestBar
+                                                handleShowEditModal={handleShowEditModal}
+                                                handleEditRequest={handleEditRequest}
+                                                handleDeleteRequest={handleDeleteRequest}
+                                                handleSetActiveRequest={handleSetActiveRequest}
+                                                handleSetActiveProfile={handleSetActiveProfile}
+                                                key={index}
+                                                request={request}
+                                            />
+                                        );
+                                    }
+                                })
+                            ) : (
+                                <Spinner/>
+                            )}
+                        </Requests>
+                    </DashboardContentContainer>
+                    <NewRequestButton onClick={() => setModal({...modal, showModal: true})}>
+                        <PlusSignButton/>+ Create Request
+                    </NewRequestButton>
+                </LeftSide>
+                <RightSide>
+                    {activeProfile && activeRequest ? (
+                        <ActiveProfileCard
+                            handleSelectApplicant={handleSelectApplicant}
+                            activeRequest={activeRequest}
+                            activeProfile={activeProfile}
+                            showSpinner={showSpinner}
                         />
-                    );
-                  }
-                })
-              ) : (
-                <Spinner />
-              )}
-            </Requests>
-          </DashboardContentContainer>
-          <NewRequestButton onClick={() => setModal({ ...modal, showModal: true })}>
-            <PlusSignButton />+ Create Request
-          </NewRequestButton>
-        </LeftSide>
-        <RightSide>
-          {activeProfile && activeRequest? (
-            <ActiveProfileCard
-              handleSelectApplicant={handleSelectApplicant}
-              activeRequest={activeRequest}
-              activeProfile={activeProfile}
-              showSpinner={showSpinner}
-            />
-          ) : null}
-        </RightSide>
-      </PageWrapper>
-    </PageContainer>
-  );
+                    ) : null}
+                </RightSide>
+            </PageWrapper>
+        </PageContainer>
+    );
 };
 
 const mapStateToProps = (state) => {
-  return {
-    userProfileReducer: state.userProfileReducer,
-  };
+    console.log(state);
+    return {
+        userProfileReducer: state.userProfileReducer,
+    };
 };
 
 export default connect(mapStateToProps)(SeekerDashboard);

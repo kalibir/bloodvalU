@@ -217,14 +217,14 @@ const GenericSeekerRequestBar = ({
               }
 
             return (
-              <SlidingContainer>
+              // <SlidingContainer>
                 <DonorSubBar
                   name={"selectbar2"}
                   onClick={request.status === "COM" ? null : handleClickApplicant}
                   key={index}
                   id={index}
                   active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSubBar>
-              </SlidingContainer>
+              // </SlidingContainer>
             );
           })
         : applicantsData.applicants && !openArrow ? null
