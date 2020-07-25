@@ -202,13 +202,11 @@ const FooterLinkTitle = styled.h2`
   text-decoration: none;
 `;
 
-const Navigation = ({children, authReducer: {authenticated, userObj}, dispatch}) => {
-    const {push} = useHistory();
-    console.log("userObj", userObj);
-    const handleClickLogo = (e) => {
-        console.log("in the click");
-        push("/");
-    };
+const Navigation = ({ children, authReducer: { authenticated, userObj }, dispatch }) => {
+  const { push } = useHistory();
+  const handleClickLogo = (e) => {
+    push("/");
+  };
 
     const handleLogout = () => {
         dispatch(userLogout());
@@ -298,10 +296,9 @@ const Navigation = ({children, authReducer: {authenticated, userObj}, dispatch})
 };
 
 const mapStateToProps = (state) => {
-    console.log("state", state);
-    return {
-        authReducer: state.authReducer,
-    };
+  return {
+    authReducer: state.authReducer,
+  };
 };
 
 export default connect(mapStateToProps)(Navigation);

@@ -130,6 +130,7 @@ const GenericSeekerRequestBar = ({
     applicants: null,
   });
   const [sureModal, setSureModal] = useState(false);
+  const [openArrow, setOpenArrow] = useState(false);
 
   // const handleDeleteRequest = (event, requestID) => {
   //   dispatch(deleteRequestAction(requestID));
@@ -143,7 +144,9 @@ const GenericSeekerRequestBar = ({
       applicants: response.data,
       showApplicants: !applicantsData.showApplicants,
     });
+    setOpenArrow(!openArrow)
   };
+
 
   const handleClickApplicant = (e) => {
     const index = Number(e.currentTarget.id);
@@ -152,14 +155,16 @@ const GenericSeekerRequestBar = ({
     // handleSetActiveRequest(request)
   };
 
-  const handleCompleteRequest = (e) => {
-    dispatch(markRequestAsCompleteAction(request.id));
+  const handleCompleteRequest = async (e) => {
+    e.preventDefault();
+    const response = dispatch(markRequestAsCompleteAction(request.id));
+     if (response.status < 300) closeModal();
   };
 
   const closeModal = () => {
-    console.log("in the close modal");
     setSureModal(false);
   };
+
 
   return (
     <BarWrapper>
@@ -195,7 +200,7 @@ const GenericSeekerRequestBar = ({
         )}
       </RequestBar>
 
-      {applicantsData.showApplicants
+      {applicantsData.applicants && openArrow
         ? applicantsData.applicants.map((applicant, index) => {
 
               if (request.selected_donor && request.selected_donor.id === applicant.id) {
@@ -214,7 +219,7 @@ const GenericSeekerRequestBar = ({
             return (
               <SlidingContainer>
                 <DonorSubBar
-                  name={"selectba2"}
+                  name={"selectbar2"}
                   onClick={request.status === "COM" ? null : handleClickApplicant}
                   key={index}
                   id={index}
@@ -222,7 +227,8 @@ const GenericSeekerRequestBar = ({
               </SlidingContainer>
             );
           })
-        : null}
+        : applicantsData.applicants && !openArrow ? null
+      : null}
     </BarWrapper>
   );
 };

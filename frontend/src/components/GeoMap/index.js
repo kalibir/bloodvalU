@@ -171,7 +171,6 @@ const GeoMap = ({
 }
 
 const mapStateToProps = (state) => {
-    console.log("state", state);
     return {
         profilesReducer: state.profilesReducer,
         authReducer: state.authReducer,

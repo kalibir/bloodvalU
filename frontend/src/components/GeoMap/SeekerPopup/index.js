@@ -31,7 +31,6 @@ const Wrapper = styled.div`
 const SeekerInfo = ({selectedSeeker, handleClosePopup, userObj}) => {
     const dispatch = useDispatch()
     const [requests, setRequests] = useState(null)
-    console.log("seeker local data", requests)
 
     useEffect(() => {
         async function getRequests() {
@@ -45,7 +44,6 @@ const SeekerInfo = ({selectedSeeker, handleClosePopup, userObj}) => {
     }, [selectedSeeker.id, dispatch])
 
     const handleApply = async (e, reqID) => {
-        console.log("in the apply handler")
         const response = await dispatch(applyToRequestOnMap(reqID))
         if (response.status < 300) {
             const {data} = response

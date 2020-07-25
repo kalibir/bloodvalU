@@ -72,7 +72,6 @@ const SeekerScanCode = (props) => {
         setData({...data, scan: scannedInfo})
     }
     const handleError = err => {
-        console.error(err)
     }
     const previewStyle = {
         height: 240,

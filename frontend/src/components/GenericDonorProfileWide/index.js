@@ -136,7 +136,6 @@ const DonorProfileCardWide = ({
                                   }
                               }) => {
 
-    console.log("avatar", avatar)
     return (
         <ProfileWrapper>
             <UpperContainer name={"upper"}>

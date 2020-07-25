@@ -36,56 +36,46 @@ export const removeTest = (testID) => {
 };
 
 export const buyTestAction = (test_id) => async (dispatch) => {
-    try {
-        const response = await Axios.post(`tests/buy/${test_id}/`);
-        const {data} = response;
-        console.log("Buy test response", data);
-        dispatch(updateTestInAll(data));
-        return response;
-    } catch (error) {
-        console.log("error message", error.response);
-        console.log("error", error);
-        return error;
-    }
+  try {
+    const response = await Axios.post(`tests/buy/${test_id}/`);
+    const { data } = response;
+    dispatch(updateTestInAll(data));
+    return response;
+  } catch (error) {
+    return error;
+  }
 };
 
 export const getRequestsOfSeekerAction = () => async (dispatch) => {
-    try {
-        const response = await Axios.get(`seeker/tests/me/`);
-        const {data} = response;
-        console.log("data", data);
-        dispatch(setAllTests(data));
-        console.log("in the action");
-        return response;
-    } catch (error) {
-        console.log("error message", error.response);
-        console.log("error", error);
-        return error;
-    }
+  try {
+    const response = await Axios.get(`seeker/tests/me/`);
+    const { data } = response;
+    dispatch(setAllTests(data));
+    return response;
+  } catch (error) {
+    return error;
+  }
 };
 
 export const createTestRequestAction = (requestData) => async (dispatch) => {
-    try {
-        const response = await Axios.post(`tests/new/`, requestData);
-        const {data} = response;
-        dispatch(addTestToAll(data));
-        return response;
-    } catch (error) {
-        console.log("error message", error.response);
-        console.log("error ", error);
-        return error;
-    }
+  try {
+    const response = await Axios.post(`tests/new/`, requestData);
+    const { data } = response;
+    dispatch(addTestToAll(data));
+    return response;
+  } catch (error) {
+    return error;
+  }
 };
 
 export const deleteTestAction = (testID) => async (dispatch) => {
-    try {
-        const response = await Axios.delete(`tests/${testID}/`);
-        dispatch(removeTest(Number(testID)))
-        return response
-    } catch (error) {
-        console.log("error in delete test action", error);
-        return error
-    }
+  try {
+    const response = await Axios.delete(`tests/${testID}/`);
+    dispatch(removeTest(Number(testID)))
+    return response
+  } catch (error) {
+    return error
+  }
 }
 
 export const getCustomersAction = (testIdObj) => async (dispatch) => {

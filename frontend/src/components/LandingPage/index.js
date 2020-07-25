@@ -27,7 +27,7 @@ const ContentWrapper = styled.div`
 `;
 
 const WelcomeText = styled.div`
-  font-size: ${rem("14px")};
+  font-size: ${rem("16px")};
   color: #505565;
   margin-top: ${rem("32px")};
   margin-bottom: ${rem("72px")};
@@ -82,3 +82,14 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(LandingPage);
+console.log("")
+console.log("We hope you liked our presentation. :)")
+console.log("")
+console.log("")
+console.log("Attila Gőz - goz.attila.1977@gmail.com")
+console.log("")
+console.log("Habib Kadiri - kadirit@hotmail.com")
+console.log("")
+console.log("Edina Lovász – edina.lovasz@gmail.com")
+console.log("")
+console.log("António Meireles - edgarmeireles68@gmail.com")

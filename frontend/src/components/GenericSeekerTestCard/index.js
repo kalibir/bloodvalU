@@ -97,13 +97,11 @@ const GenericSeekerTestCard = ({
     const dispatch = useDispatch()
 
     const closeModal = () => {
-        console.log("in the close modal");
         setSureModal(false);
     };
 
     const handleDeleteTest = async (e, testID) => {
         e.preventDefault();
-        console.log("in da delete test func", testID)
         const response = await dispatch(deleteTestAction(testID));
         if (response.status < 300) closeModal();
     };
