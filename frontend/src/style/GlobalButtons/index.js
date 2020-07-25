@@ -1,4 +1,4 @@
-import { rem } from "polished";
+import {rem} from "polished";
 import styled from "styled-components";
 
 export const DarkBlueButton = styled.button`
@@ -59,6 +59,37 @@ export const WhiteButton = styled.button`
     //border: 1px solid #FFF;
   }
 `;
+
+export const DownloadButton = styled.a`
+  padding: 5px;
+  text-decoration: none;
+  margin-left: 5px;
+  background: #ffffff;
+  border: 1px solid #121232;
+  box-sizing: border-box;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.5px;
+  color: #121232;
+  transition-duration: 0.4s;
+  transition-timing-function: ease-in-out;
+
+  :hover {
+    color: #fff;
+    background: #121232;
+    //border: 1px solid #FFF;
+  }
+  :active {
+    color: #fff;
+    background: #121232;
+    //border: 1px solid #FFF;
+  }
+`
 
 export const WhiteLabel = styled.label`
   background: #ffffff;

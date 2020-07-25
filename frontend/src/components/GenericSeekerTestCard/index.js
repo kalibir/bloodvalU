@@ -17,7 +17,7 @@ const TestCard = styled.div`
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
-  margin-bottom: 32px;
+  margin: 0 ${rem("12px")} ${rem("12px")} 0;
 `;
 
 const Text = styled.p`

@@ -129,7 +129,8 @@ const UploadTestResultsModal = ({testID, test_type, handleCloseUploadResults}) =
     const dispatch = useDispatch()
     const [customers, setCustomers] = useState()
 
-    const handleUpdateCustomers = (customerObj) => {
+    const handleUpdateCustomers = (e,customerObj) => {
+        e.preventDefault()
         const newCustomers = [...customers]
         const index = customers.findIndex(
             (donor) => donor.id === customerObj.id
