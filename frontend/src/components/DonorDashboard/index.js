@@ -156,8 +156,11 @@ const UnderLine = styled.div`
 
 const OfferContainer = styled.div`
   width: 100%;
+  height: calc(100% - 200px);
   display: flex;
-  justify-content: center;
+  //justify-content: center;
+  //align-items: flex-start;
+  //justify-content: flex-start;
   flex-wrap: wrap;
   overflow: auto;
   background-color: ${ColorDebug ? "greenyellow" : ""};
@@ -177,6 +180,7 @@ const SpinnerContainer = styled.div`
 `;
 
 const Content = styled.div`
+height: 100%;
   ${(props) => (props.active ? "" : "display:none")}
 `
 const DonorDashboard = ({
