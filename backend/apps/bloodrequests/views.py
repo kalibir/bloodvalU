@@ -1,4 +1,6 @@
 import datetime
+
+from django.utils import timezone
 from django.utils.datetime_safe import date
 
 from django.core.mail import EmailMessage, send_mail
@@ -354,7 +356,7 @@ class MarkRequestAsCompletedView(CreateAPIView):
                             status=status.HTTP_400_BAD_REQUEST)
         else:
             target_blood_request.status = "COM"
-            target_donor.next_donation = datetime.datetime.now() + datetime.timedelta(days=90)
+            target_donor.next_donation = timezone.now() + datetime.timedelta(days=90)
             target_donor.total_points += int(target_blood_request.points_value)
             target_donor.has_been_selected = False
             target_donor.save()
