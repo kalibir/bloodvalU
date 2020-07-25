@@ -263,6 +263,7 @@ export const CompleteButton = styled.button`
   font-weight: bold;
   font-size: 12px;
   display: flex;
+  cursor: pointer;
   align-items: center;
   color: #ffffff;
   border: 1px solid #43a047;

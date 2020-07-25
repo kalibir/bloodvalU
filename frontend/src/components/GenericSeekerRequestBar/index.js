@@ -186,9 +186,9 @@ const GenericSeekerRequestBar = ({
           {request.status === "OP" ? (
             <BlueButton>Open</BlueButton>
           ) : request.status === "CL" ? (
-            <CompleteButton onClick={handleCompleteRequest}>Complete request</CompleteButton>
+            <CompleteButton onClick={handleCompleteRequest}>Mark As Complete</CompleteButton>
           ) : (
-            <CompleteButton>Complete</CompleteButton>
+            <CompleteButton>Completed</CompleteButton>
           )}
         </ButtonWrapper>
         {request.no_of_applicants ? (
