@@ -206,8 +206,12 @@ class ListApplicantsOfSpecificRequestView(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         target_blood_request = self.get_object()
-        target_applicants = target_blood_request.applicants.filter(
-            (Q(has_been_selected=False) | Q(id=target_blood_request.selected_donor.id)))
+        if target_blood_request.selected_donor:
+            target_applicants = target_blood_request.applicants.filter(
+                (Q(has_been_selected=False) | Q(id=target_blood_request.selected_donor.id)))
+        else:
+            target_applicants = target_blood_request.applicants.filter(
+                (Q(has_been_selected=False)))
         serializer = self.get_serializer(target_applicants, many=True)
         return Response(serializer.data)
 
