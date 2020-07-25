@@ -11,6 +11,6 @@ static-files
 /frontend/node_modules/
 
 **/migrations/
-**/**/migrations
+#**/**/migrations
 **/migrations/**
 !**/migrations
