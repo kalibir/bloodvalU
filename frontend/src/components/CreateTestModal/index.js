@@ -114,9 +114,14 @@ const CreateTestModal = ({ closeModal }) => {
     settestData({ ...testData, [property]: value });
   };
 
+  console.log(testData)
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await dispatch(createTestRequestAction(testData));
+    const form = new FormData()
+    form.append("test_type", testData.test_type)
+    form.append("expiry_date", testData.expiry_date)
+    form.append("points_cost", testData.points_cost)
+    const response = await dispatch(createTestRequestAction(form));
     if (response.status < 300) closeModal();
   };
 
