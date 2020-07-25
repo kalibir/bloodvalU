@@ -135,23 +135,32 @@ const PointsHeader = styled.div`
 `;
 
 const breatheAnimation = keyframes`
- 0% { height: 100px; width: 100px; }
- 30% { height: 400px; width: 400px; opacity: 1 }
- 40% { height: 405px; width: 405px; opacity: 0.3; }
- 100% { height: 100px; width: 100px; opacity: 0.6; }
+    0% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(0, 3px);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
 `
 
 const CustomNumber = styled(NumberFormat)`
-   animation-name: ${breatheAnimation};
-  animation-duration: 8s;
-  animation-iteration-count: infinite;
+`
+
+const Animated = styled.div`
+  animation: ${breatheAnimation} 2s linear infinite;
 `
 
 
 const PointsText = styled.div`
   font-size: ${rem("24px")};
   font-weight: 600;
-  color: #43a047;
+  text-shadow: 2px 0 0 #43a047, -2px 0 0 #43a047, 0 2px 0 #43a047, 0 -2px 0 #43a047, 1px 1px #43a047, -1px -1px 0 #43a047, 1px -1px 0 #43a047, -1px 1px 0 #43a047;
+  color: white;
+   
   margin-right: ${rem("8px")};
 `;
 const OfferTitle = styled(SmallTitle)`
@@ -257,15 +266,16 @@ const DonorDashboard = ({
                         <Content name={"content"} active={active === "tests"}>
                             <PointsHeader>
                                 <OfferTitle>Offers</OfferTitle>
-                                <CustomNumber
-                                    isNumericString={true}
-                                    renderText={(value) => <PointsText>{value} pts</PointsText>}
-                                    value={userObj ? userObj.total_points : 0}
-                                    displayType={"text"}
-                                    thousandSeparator={" "}
-                                />
+                                <Animated>
+                                    <CustomNumber
+                                        isNumericString={true}
+                                        renderText={(value) => <PointsText>{value} pts</PointsText>}
+                                        value={userObj ? userObj.total_points : 0}
+                                        displayType={"text"}
+                                        thousandSeparator={" "}
+                                    />
+                                </Animated>
                             </PointsHeader>
-
                             <UnderLine/>
                             <OfferContainer name={"OFFER"}>
                                 {offeredTests
