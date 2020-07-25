@@ -99,6 +99,13 @@ export const SeekerNavigation = (name) => {
                             Dashboard
                         </StyledNavLink>
                         <StyledNavLink
+                            to={"/scan"}
+                            onClick={handleClick}
+                            active={active === "QR" ? "true" : "false"}
+                            id="QR">
+                            Scan QR
+                        </StyledNavLink>
+                        <StyledNavLink
                             to={"/seekerprofilepage"}
                             onClick={handleClick}
                             active={active === "profile" ? "true" : "false"}
