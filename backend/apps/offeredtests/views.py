@@ -13,7 +13,7 @@ from rest_framework.response import Response
 
 from apps.bloodrequests.permissions import IsRequesterOrAdminOrReadOnly, IsDonorOrReadOnly
 from apps.donorprofiles.models import DonorProfile
-from apps.donorprofiles.serializers import DonorProfileSerializer
+from apps.donorprofiles.serializers import DonorProfileSerializer, GetBuyersOfOfferedTestSerializer
 from apps.offeredtests.models import OfferedTest
 from apps.offeredtests.serializers import OfferedTestSerializer
 from apps.registrations.models import get_or_none
@@ -149,17 +149,24 @@ class ListAllSeekersOfferedTestsView(ListAPIView):
         return Response(serializer.data)
 
 
-class ListDonorsWhoBoughtOfferedTest(ListAPIView):
-    lookup_url_kwarg = 'test_id'
-    serializer_class = DonorProfileSerializer
-    queryset = OfferedTest
+class ListDonorsWhoBoughtOfferedTest(CreateAPIView):
+    serializer_class = GetBuyersOfOfferedTestSerializer
     permission_classes = [IsAuthenticated | ReadOnly]
 
-    def list(self, request, *args, **kwargs):
-        target_offered_test = self.get_object()
-        customers = target_offered_test.donors_who_bought.all()
-        serializer = self.get_serializer(customers, many=True)
-        return Response(serializer.data)
+    def create(self, request, *args, **kwargs):
+        offered_test_id = self.request.data.get('test_id')
+        if offered_test_id:
+            if get_or_none(OfferedTest, id=int(offered_test_id)):
+                target_offered_test = OfferedTest.objects.get(id=offered_test_id)
+                customers = target_offered_test.donors_who_bought.all()
+                serializer = self.get_serializer(customers, many=True)
+                return Response(serializer.data)
+            else:
+                return Response({"detail": "Not found"},
+                                status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"detail": "You need to provide a test_id"},
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
 class ListAllOfferedTestsView(ListAPIView):

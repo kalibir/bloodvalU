@@ -14,3 +14,4 @@ static-files
 **/**/migrations
 **/migrations/**
 !**/migrations
+/backend/apps/bloodrequests/migrations/

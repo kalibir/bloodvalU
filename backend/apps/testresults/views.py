@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from apps.donorprofiles.models import DonorProfile
+from apps.donorprofiles.serializers import DonorProfileSerializer, GetBuyersOfOfferedTestSerializer
 from apps.offeredtests.models import OfferedTest
 from apps.testresults.serializers import TestResultSerializer
 from apps.users.permissions import ReadOnly
@@ -34,11 +35,6 @@ class CreateTestResultView(CreateAPIView):
             donor_name=target_donor.first_name)
         email.to = [target_donor.user.email]
         email.send(fail_silently=False)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-
-
-
-
-
+        self.serializer_class = GetBuyersOfOfferedTestSerializer
+        serialized_donor = self.get_serializer(target_donor)
+        return Response(serialized_donor.data)

@@ -3,7 +3,7 @@ import {useHistory} from "react-router-dom";
 import {connect} from "react-redux";
 import {compose} from "redux";
 
-const authComponent = (WrappedComponent) => (props) => {
+const authComponentDonor = (WrappedComponent) => (props) => {
     const {push} = useHistory();
     const {
         state: {token, userObj},
@@ -14,6 +14,7 @@ const authComponent = (WrappedComponent) => (props) => {
         else if (userObj && userObj.is_donor) {
             if (userObj.first_name === "") push("/auth/signup/donor-profile/")
         } else if (userObj && !userObj.is_donor) {
+            if (!userObj.is_donor) push("/dashboard/seeker")
             if (userObj.name === "") push("/auth/signup/seeker-profile/")
         }
 
@@ -28,4 +29,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default compose(connect(mapStateToProps), authComponent);
+export default compose(connect(mapStateToProps), authComponentDonor);

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import { rem } from "polished";
 import styled from "styled-components";
 import profilePic from "../../assets/images/default-profile-pic.jpg"
@@ -6,8 +6,7 @@ import {DarkBlueButton} from "../../style/GlobalButtons";
 import { Link } from "react-router-dom";
 
 const ProfileWrapper = styled.div`
-    width: ${rem("544px")};
-    //height: ${rem("628px")};
+    width: 100%;
     height: 100%;
     background: #FFFFFF;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
@@ -18,7 +17,6 @@ const ProfileWrapper = styled.div`
 `;
 
 const UpperContainer = styled.div`
-    width: ${rem("544px")};
     height: ${rem("300px")};
     display: flex;
     justify-content: center;
@@ -27,7 +25,6 @@ const UpperContainer = styled.div`
 `;
 
 const ProfilePicPlaceholder = styled.div`
-    width: ${rem("160px")};
     height: ${rem("160px")};
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
     img {
@@ -37,7 +34,6 @@ const ProfilePicPlaceholder = styled.div`
 `;
 
 const NameContainer = styled.div`
-    width: ${rem("544px")};
     height: ${rem("24px")};
     font-style: normal;
     font-weight: 600;
@@ -52,7 +48,6 @@ const NameContainer = styled.div`
 `;
 
 const CityContainer = styled.div`
-    width: ${rem("544px")};
     height: ${rem("16px")};
     font-style: normal;
     font-weight: normal;
@@ -65,7 +60,6 @@ const CityContainer = styled.div`
 `;
 
 const BottomContainer = styled.div`
-    width: ${rem("544px")};
     height: ${rem("315px")};
     display: flex;
     justify-content: center;
@@ -73,9 +67,6 @@ const BottomContainer = styled.div`
 
 const DetailTitlesContainer = styled.div`
     height: ${rem("328px")};
-    //width: ${rem("425px")};
-    //margin-left: ${rem("158px")};
-    //background-color: lightgreen;
 `;
 const DetailTitle = styled.p`
     font-style: normal;
@@ -147,7 +138,7 @@ const DonorProfileCardWide = ({
 
     return (
         <ProfileWrapper>
-            <UpperContainer>
+            <UpperContainer name={"upper"}>
                 <ProfilePicPlaceholder>
                     <img src={avatar ? avatar : profilePic} alt={"avatar"}/>
                 </ProfilePicPlaceholder>

@@ -186,9 +186,9 @@ const GenericSeekerRequestBar = ({
           {request.status === "OP" ? (
             <BlueButton>Open</BlueButton>
           ) : request.status === "CL" ? (
-            <CompleteButton onClick={handleCompleteRequest}>Complete request</CompleteButton>
+            <CompleteButton onClick={handleCompleteRequest}>Mark As Complete</CompleteButton>
           ) : (
-            <CompleteButton>Complete</CompleteButton>
+            <CompleteButton>Completed</CompleteButton>
           )}
         </ButtonWrapper>
         {request.no_of_applicants ? (
@@ -217,14 +217,14 @@ const GenericSeekerRequestBar = ({
               }
 
             return (
-              <SlidingContainer>
+              // <SlidingContainer>
                 <DonorSubBar
                   name={"selectbar2"}
                   onClick={request.status === "COM" ? null : handleClickApplicant}
                   key={index}
                   id={index}
                   active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSubBar>
-              </SlidingContainer>
+              // </SlidingContainer>
             );
           })
         : applicantsData.applicants && !openArrow ? null

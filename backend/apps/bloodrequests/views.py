@@ -1,4 +1,6 @@
 import datetime
+
+from django.utils import timezone
 from django.utils.datetime_safe import date
 
 from django.core.mail import EmailMessage, send_mail
@@ -60,11 +62,11 @@ class CreateBloodRequestView(CreateAPIView):
             message = f'We are looking for a donor'
             to = target_emails
             sender = ''
-            html_message = f"""
+            html_message = f"""<!doctype html>
                     <html lang=en>
                         <head>
                             <meta charset=utf-8>
-                            <title></title>
+                            <title>Looking for a donor</title>
                         </head>
                         <body>
                                 <p>&nbsp;</p>
@@ -282,11 +284,11 @@ class SelectDonorFromApplicantsView(CreateAPIView):
             to = {donor_email}
             qr_img = f'https://qrickit.com/api/qr.php?d={code}&addtext=BloodvalU'
             sender = ''
-            html_message = f"""
+            html_message = f"""<!doctype html>
                     <html lang=en>
                         <head>
                             <meta charset=utf-8>
-                            <title></title>
+                            <title>Blood test</title>
                         </head>
                         <body>
                             <p>&nbsp;</p>
@@ -356,7 +358,7 @@ class MarkRequestAsCompletedView(CreateAPIView):
                             status=status.HTTP_400_BAD_REQUEST)
         else:
             target_blood_request.status = "COM"
-            target_donor.next_donation = datetime.datetime.now() + datetime.timedelta(days=90)
+            target_donor.next_donation = timezone.now() + datetime.timedelta(days=90)
             target_donor.total_points += int(target_blood_request.points_value)
             target_donor.has_been_selected = False
             target_donor.save()
@@ -381,7 +383,7 @@ class MarkRequestAsCompletedView(CreateAPIView):
                 cloned_blood_request.selected_donor = None
                 cloned_blood_request.applicants.clear()
                 cloned_blood_request.save()
-            donor_email = target_blood_request.selected_donor.email
+            donor_email = target_blood_request.selected_donor.user.email
             subject = 'Thank you'
             message = f'Thank you'
             to = {donor_email}

@@ -67,14 +67,17 @@ class FilterOrListAllAvailableRequestsOrTestsForDonor(ListAPIView):
             type = self.request.query_params.get('type')
             if type == "requests":
                 queryset = BloodRequest.objects.filter(
-                    (Q(valid_until__gt=date.today()) & Q(status="OP")) | Q(selected_donor=self.request.user.donor_profile))
+                    (Q(valid_until__gt=date.today()) & Q(status="OP")) | (
+                            Q(selected_donor=self.request.user.donor_profile) & Q(status="CL")))
                 results = queryset.filter(
                     Q(seeker__name__icontains=search_param) | Q(seeker__name__icontains=search_param) | Q(
                         seeker__zip_code__icontains=search_param) | Q(seeker__country__icontains=search_param) | Q(
                         seeker__website__icontains=search_param) | Q(blood_group__icontains=search_param))
             elif type == "applied":
                 queryset = BloodRequest.objects.filter(
-                    (Q(valid_until__gt=date.today()) & Q(status="OP") & Q(applicants=self.request.user.donor_profile)) | Q(selected_donor=self.request.user.donor_profile))
+                    (Q(valid_until__gt=date.today()) & Q(status="OP") & Q(
+                        applicants=self.request.user.donor_profile)) | Q(
+                        selected_donor=self.request.user.donor_profile))
                 results = queryset.filter(
                     Q(seeker__name__icontains=search_param) | Q(seeker__name__icontains=search_param) | Q(
                         seeker__zip_code__icontains=search_param) | Q(seeker__country__icontains=search_param) | Q(

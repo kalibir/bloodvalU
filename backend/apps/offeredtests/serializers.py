@@ -57,7 +57,7 @@ class OfferedTestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OfferedTest
-        fields = ['id', 'test_type', 'results_available', 'seeker_name', 'results', 'points_cost', 'expiry_date',
+        fields = ['id', 'test_type', 'results_available', 'seeker_name', 'test_results', 'results', 'points_cost', 'expiry_date',
                   'created', 'is_bought', 'is_expired',
                   'seeker',
                   'donors_who_bought']
