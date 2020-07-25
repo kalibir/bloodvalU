@@ -148,7 +148,7 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
   const handleClick = (e) => {
     const value = e.target.id;
     setActive(value);
-    dispatch(getSeekerBloodRequestsAction(value));
+    // dispatch(getSeekerBloodRequestsAction(value));
   };
 
   const closeModal = () => {
@@ -197,17 +197,19 @@ const SeekerDashboard = ({ dispatch, userProfileReducer: { requests } }) => {
             <Requests>
               {requests ? (
                 requests.map((request, index) => {
-                  return (
-                    <GenericSeekerRequestBar
-                      handleShowEditModal={handleShowEditModal}
-                      handleEditRequest={handleEditRequest}
-                      handleDeleteRequest={handleDeleteRequest}
-                      handleSetActiveRequest={handleSetActiveRequest}
-                      handleSetActiveProfile={handleSetActiveProfile}
-                      key={index}
-                      request={request}
-                    />
-                  );
+                  if (request.status === active) {
+                    return (
+                        <GenericSeekerRequestBar
+                            handleShowEditModal={handleShowEditModal}
+                            handleEditRequest={handleEditRequest}
+                            handleDeleteRequest={handleDeleteRequest}
+                            handleSetActiveRequest={handleSetActiveRequest}
+                            handleSetActiveProfile={handleSetActiveProfile}
+                            key={index}
+                            request={request}
+                        />
+                    );
+                  }
                 })
               ) : (
                 <Spinner />
