@@ -12,5 +12,5 @@ static-files
 
 **/migrations/
 **/**/migrations
-#**/migrations/**
+**/migrations/**
 !**/migrations
