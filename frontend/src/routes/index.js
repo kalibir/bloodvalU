@@ -8,8 +8,8 @@ import SeekerProfilePage from "../components/SeekerProfilePage";
 
 import DonorDashboard from "../components/DonorDashboard";
 import SeekerDashboard from "../components/SeekerRequestPage";
-import CreateDonorProfile from "../components/Credentials/CreateSeekerProfile/";
-import authComponent from "../HOCs/AuthComponent";
+import authComponentDonor from "../HOCs/AuthComponentDonor";
+import authComponentSeeker from "../HOCs/AuthComponentSeeker";
 import DonorEditProfile from "../components/DonorEditProfile";
 import SeekerEditProfile from "../components/SeekerEditProfile";
 import GeoMap from "../components/GeoMap";
@@ -22,17 +22,19 @@ const Routes = () => {
             <Router>
                 <Switch>
                     <Navigation>
-                        <Route path="/dashboard/donor" component={authComponent(DonorDashboard)}/>
-                        <Route path="/dashboard/seeker" component={authComponent(SeekerDashboard)}/>
-                        <Route path="/templates" component={Template}/>
-                        <Route exact path="/" component={authComponent(LandingPage)}/>
-                        <Route path="/auth" component={Credentials}/>
-                        <Route path="/editseeker" component={authComponent(SeekerEditProfile)}/>
-                        <Route path="/editdonor" component={authComponent(DonorEditProfile)}/>
-                        <Route path="/seekerprofilepage" component={authComponent(SeekerProfilePage)}/>
-                        <Route path="/map" component={GeoMap}/>
-                        <Route path="/scan" component={SeekerScanCode}/>
+                        <Route exact path="/" component={LandingPage}/>
+
+                        <Route path="/scan" component={authComponentSeeker(SeekerScanCode)}/>
+                        <Route path="/editseeker" component={authComponentSeeker(SeekerEditProfile)}/>
+                        <Route path="/dashboard/seeker" component={authComponentSeeker(SeekerDashboard)}/>
+                        <Route path="/seekerprofilepage" component={authComponentSeeker(SeekerProfilePage)}/>
+
+                        <Route path="/map" component={authComponentDonor(GeoMap)}/>
+                        <Route path="/editdonor" component={authComponentDonor(DonorEditProfile)}/>
+                        <Route path="/dashboard/donor" component={authComponentDonor(DonorDashboard)}/>
                         <Route path="/admin_page" component={AdminPage}/>
+                        <Route path="/templates" component={Template}/>
+                        <Route path="/auth" component={Credentials}/>
                     </Navigation>
                 </Switch>
             </Router>
