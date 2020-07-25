@@ -265,7 +265,7 @@ class SelectDonorFromApplicantsView(CreateAPIView):
             qr_img = f'https://qrickit.com/api/qr.php?d={code}&addtext=BloodvalU'
             donor_name = f'{target_applicant.user.first_name} {target_applicant.user.last_name}'
             seeker_name = request.user.seeker_profile.name
-            seeker_website = request.user.seeker_profile.webiste
+            seeker_website = request.user.seeker_profile.website
             sender = ''
             html_message = f"""<!doctype html>
                     <html lang=en>
