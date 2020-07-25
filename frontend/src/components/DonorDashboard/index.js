@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import styled from "styled-components";
+import styled, {keyframes} from "styled-components";
 import rem from "polished/lib/helpers/rem";
 import NumberFormat from "react-number-format";
 import {PageContainer} from "../../style/GlobalWrappers";
@@ -133,6 +133,21 @@ const PointsHeader = styled.div`
     //min-width should be 432px because of the texts
     background-color: ${ColorDebug ? "lightgreen" : ""};
 `;
+
+const breatheAnimation = keyframes`
+ 0% { height: 100px; width: 100px; }
+ 30% { height: 400px; width: 400px; opacity: 1 }
+ 40% { height: 405px; width: 405px; opacity: 0.3; }
+ 100% { height: 100px; width: 100px; opacity: 0.6; }
+`
+
+const CustomNumber = styled(NumberFormat)`
+   animation-name: ${breatheAnimation};
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+`
+
+
 const PointsText = styled.div`
   font-size: ${rem("24px")};
   font-weight: 600;
@@ -156,7 +171,7 @@ const UnderLine = styled.div`
 
 const OfferContainer = styled.div`
   width: 100%;
-  max-height: calc(100% - 320px);
+  
   justify-content: center;
   @media ${device.laptop} {
     height: auto;
@@ -181,7 +196,7 @@ const SpinnerContainer = styled.div`
 `;
 
 const Content = styled.div`
-height: 100%;
+  height: 100%;
   ${(props) => (props.active ? "" : "display:none")}
 `
 const DonorDashboard = ({
@@ -239,12 +254,12 @@ const DonorDashboard = ({
                             {/*TODO add search on enter*/}
                             <SearchButton>Search</SearchButton>
                         </SearchFormContainer>
-                        <Content active={active === "tests"}>
+                        <Content name={"content"} active={active === "tests"}>
                             <PointsHeader>
                                 <OfferTitle>Offers</OfferTitle>
-                                <NumberFormat
+                                <CustomNumber
                                     isNumericString={true}
-                                    renderText={(value) => <PointsText>Your total points: {value} pts</PointsText>}
+                                    renderText={(value) => <PointsText>{value} pts</PointsText>}
                                     value={userObj ? userObj.total_points : 0}
                                     displayType={"text"}
                                     thousandSeparator={" "}
