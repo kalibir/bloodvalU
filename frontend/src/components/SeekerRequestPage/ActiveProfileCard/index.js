@@ -1,10 +1,11 @@
 import React from "react";
 import {BigTitle} from "../../../style/GlobalTitles";
 import profilePic from "../../../assets/images/default-profile-pic.jpg";
-import success from "../../../assets/icons/success.png";
+import success from "../../../assets/icons/success_request.svg";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
 import {DarkBlueButton, WhiteButton} from "../../../style/GlobalButtons";
+import ButtonSpinner from "../../ButtonSpinner";
 
 const ProfileWrapper = styled.div`
   width: ${rem("544px")};
@@ -130,10 +131,16 @@ const ButtonContainer = styled.div`
 
 const SelectButton = styled(DarkBlueButton)`
   width: ${rem("194px")};
+    display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const CancelButton = styled(WhiteButton)`
   width: ${rem("194px")};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const PlusSignButton = styled.span`
@@ -148,7 +155,8 @@ const MinusSignButton = styled(PlusSignButton)`
 `;
 
 
-const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant}) => {
+const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant, showSpinner}) => {
+
 
     return (
         <ProfileWrapper>
@@ -156,13 +164,13 @@ const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant}
                             <BigTitle>donor profile</BigTitle>
                             {activeRequest.status === "OP" ? (
                                 <ProfilePicPlaceholder>
-                                    <img src={activeProfile ? activeProfile.avatar : profilePic} alt={"avatar"}/>
+                                    <img src={activeProfile ? activeProfile.avatar ? activeProfile.avatar : profilePic : profilePic} alt={"avatar"}/>
                                 </ProfilePicPlaceholder>
                             ) : activeProfile ? activeRequest.status === "CL" && activeProfile.id === activeRequest.selected_donor.id ? (
                                 <SelectedTitle>Selected</SelectedTitle>
                             ) : activeRequest.status === "COM" ? (
                                 <ProfilePicPlaceholder>
-                                    <img src={success} alt={"should be antonios pic"}/>
+                                    <img src={success} alt="success sign"/>
                                 </ProfilePicPlaceholder>
                             ) : (
                                 <p>Sorry, we are confused a little bit.</p>
@@ -183,6 +191,7 @@ const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant}
                                 <Details>{activeProfile ? activeProfile.birthday : null}</Details>
                                 <Details>
                                     {activeProfile ? activeProfile.zip_code : null}<br/> {activeProfile ? activeProfile.city : null}
+                                    {activeProfile ? activeProfile.street : null}
                                     <br/> {activeProfile ? activeProfile.country : null}
                                 </Details>
                                 <Details>{activeProfile ? activeProfile.phone : null}</Details>
@@ -191,14 +200,16 @@ const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant}
                         </BottomContainer>
                         <ButtonContainer>
                             {activeRequest.status === "OP" ? (
-                                <SelectButton onClick={handleSelectApplicant}> {/*needs a onclick*/}
-                                    <PlusSignButton/>+ Select Donor
+                                <SelectButton onClick={handleSelectApplicant}> {/*needs an onclick*/}
+                                    {/*<ButtonSpinner/>*/}
+                                    {showSpinner ? <ButtonSpinner/> : "+ Select Donor"}
                                 </SelectButton>
                             ) : activeProfile ? activeRequest.selected_donor.id === activeProfile.id && activeRequest.status !== "COM" ? (
                                 <CancelButton onClick={handleSelectApplicant}>
-                                    <MinusSignButton/>X Cancel Select
+                                    {showSpinner ? <ButtonSpinner/> : "X Cancel Select"}
                                 </CancelButton>
-                            ) : activeRequest.status === "COM" ? null : null : null}
+                            ) : activeRequest.status === "COM" ? null : null : null
+                            }
                         </ButtonContainer>
                     </ProfileWrapper>
     )

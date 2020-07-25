@@ -10,13 +10,12 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {WhiteButton} from "../../style/GlobalButtons";
 import {BloodValU} from "../../style/GlobalTitles";
 import {userLogout} from "../../store/actions/logoutActions";
-import {SeekerNavigation, DonorNavigation} from "../../style/Functions";
-
+import {SeekerNavigation, DonorNavigation, device} from "../../style/Functions";
 
 const Wrapper = styled.div`
   padding-top: 72px; /* Needs to be exactly the same height as the Header, offsets content because it's fixed */
   padding-bottom: 64px; /* Needs to be exactly the same height as the Footer, offsets content because it's fixed */
-  background-color: #FAFAFC;
+  background-color: #fafafc;
 `;
 
 /* -----------HEADER------------------ */
@@ -25,9 +24,9 @@ const Header = styled.div`
   height: 72px;
   left: 0;
   top: 0;
-  background-color: #FFFFFF;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-  padding: 0 ${rem("160px")} 0 ${rem("160px")};
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  padding: 0 ${rem("40px")} 0 ${rem("40px")};
   position: fixed;
   z-index: 999;
   display: flex;
@@ -35,41 +34,43 @@ const Header = styled.div`
   align-items: center;
 `;
 
+
 /* -----------BUTTONS------------------ */
 const HeaderButtonUser = styled(WhiteButton)`
-  font-family: Roboto;
+  font-family: Roboto,serif;
   font-size: ${rem("14px")};
   line-height: ${rem("16px")};
-  width:  ${rem("144px")};
-  color: #3E465F;
-  transition-duration: initial;  //to remove base button
-    
-  :hover, :active{
-  color: #3E465F;
-  background-color: #FFFFFF;
-  border: 1px solid #121232;
-  }  
-`
+  width: ${rem("144px")};
+  color: #3e465f;
+  transition-duration: initial; //to remove base button
 
-const HeaderButtonLogin = styled(HeaderButtonUser)`  
+  :hover,
+  :active {
+    color: #3e465f;
+    background-color: #ffffff;
+    border: 1px solid #121232;
+  }
+`;
+
+const HeaderButtonLogin = styled(HeaderButtonUser)`
   border: none;
-  
-  :hover, :active{
+
+  :hover,
+  :active {
     border: none;
   }
-`
+`;
 
 const WelcomeText = styled.div`
   font-family: Roboto;
   font-size: ${rem("16px")};
   line-height: ${rem("16px")};
   height: 100%;
-  color: #3E465F;
+  color: #3e465f;
   display: flex;
   text-align: center;
   align-items: center;
-`
-
+`;
 
 /* -----------FOOTER------------------ */
 const Footer = styled.div`
@@ -89,9 +90,13 @@ const Footer = styled.div`
 
 const NavLink = styled(Link)`
   text-decoration: none;
-`
+`;
 
 const TopFooter = styled.div`
+   @media ${device.tablet} {
+    flex-direction: column;
+    height: auto;
+  }
   border-bottom: solid 1px rgba(221, 221, 221, 0.67);
   width: 100%;
   height: 42px;
@@ -149,6 +154,11 @@ const SocialsContainer = styled.div`
   justify-content: center;
   grid-column-gap: ${rem("20px")};
   align-items: center;
+  @media ${device.tablet} {
+      display: flex;
+      justify-content: space-evenly;
+      width: 100%;
+  }
 `;
 
 const SocialButton = styled.button`
@@ -192,42 +202,42 @@ const FooterLinkTitle = styled.h2`
   text-decoration: none;
 `;
 
-const Navigation = ({
-                        children,
-                        authReducer: {authenticated, userObj}, dispatch
-                    }) => {
-    const {push} = useHistory()
-    console.log("userObj", userObj)
-    const handleClickLogo = e => {
-        console.log("in the click")
-        push("/")
-    }
+const Navigation = ({ children, authReducer: { authenticated, userObj }, dispatch }) => {
+  const { push } = useHistory();
+  const handleClickLogo = (e) => {
+    push("/");
+  };
 
     const handleLogout = () => {
-        dispatch(userLogout())
-        push("/")
-    }
+        dispatch(userLogout());
+        push("/");
+    };
 
     const handClickLogin = () => {
-        push("/auth/login")
-    }
-
+        push("/auth/login");
+    };
 
     return (
         <div>
             <Wrapper>
                 <Header>
-                    <NavLink to={"/"}><BloodValU onClick={handleClickLogo} text="bloodval" black={24} red={36}/></NavLink>
-                    {authenticated ?
+                    <NavLink to={"/"}>
+                        <BloodValU onClick={handleClickLogo} text="bloodval" black={24} red={36}/>
+                    </NavLink>
+                    {authenticated ? (
                         <>
-                            {userObj ? userObj.is_donor ?
-                                <DonorNavigation email={userObj.email} first_name={userObj.first_name}/>
-                                : <SeekerNavigation/> : null
-                            }
+                            {userObj ? (
+                                userObj.is_donor ? (
+                                    <DonorNavigation email={userObj.email} first_name={userObj.first_name}/>
+                                ) : (
+                                    <SeekerNavigation name={userObj.name}/>
+                                )
+                            ) : null}
                             <HeaderButtonUser onClick={handleLogout}>Logout</HeaderButtonUser>
                         </>
-                        : <HeaderButtonUser onClick={handClickLogin}>Login</HeaderButtonUser>
-                    }
+                    ) : (
+                        <HeaderButtonUser onClick={handClickLogin}>Login</HeaderButtonUser>
+                    )}
                 </Header>
                 {children}
                 <Footer>
@@ -279,7 +289,6 @@ const Navigation = ({
                     <BottomFooter>
                         <p>© Copyright BloodvalU 2020</p>
                     </BottomFooter>
-
                 </Footer>
             </Wrapper>
         </div>
@@ -287,10 +296,9 @@ const Navigation = ({
 };
 
 const mapStateToProps = (state) => {
-    console.log("state", state);
-    return {
-        authReducer: state.authReducer,
-    };
+  return {
+    authReducer: state.authReducer,
+  };
 };
 
 export default connect(mapStateToProps)(Navigation);

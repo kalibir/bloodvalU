@@ -96,6 +96,7 @@ const CustomDarkBlueButton = styled(DarkBlueButton)`
 
 const RequestModal = ({ closeModal, modalData, handleEditRequest }) => {
   const dispatch = useDispatch();
+  const [canSubmit, setCanSubmit] = useState(true)
   const { push } = useHistory();
   const [requestData, setRequestData] = useState({
     blood_group: modalData ? modalData.blood_group : "",
@@ -105,7 +106,6 @@ const RequestModal = ({ closeModal, modalData, handleEditRequest }) => {
     valid_until: modalData ? modalData.valid_until : "",
   });
 
-  console.log("req data", requestData);
 
   const onChangeHandler = (event, property) => {
     const value = event.currentTarget.value;
@@ -115,9 +115,13 @@ const RequestModal = ({ closeModal, modalData, handleEditRequest }) => {
     setRequestData({ ...requestData, [property]: !requestData[property] });
   };
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const response = await dispatch(createBloodRequestAction(requestData));
-    if (response.status < 300) closeModal();
+    if (canSubmit) {
+      setCanSubmit(false)
+      e.preventDefault();
+      const response = await dispatch(createBloodRequestAction(requestData));
+      if (response.status < 300) closeModal();
+      setCanSubmit(true)
+    }
   };
 
   return (

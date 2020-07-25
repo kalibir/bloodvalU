@@ -1,12 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styled from "styled-components";
-import { rem } from "polished";
-import { BloodValU } from "../../style/GlobalTitles";
-import { PageContainer } from "../../style/GlobalWrappers";
-import { ChooseRoleButton } from "../../style/GlobalButtons";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
-import { setIsDonor } from "../../store/actions/registrationActions";
+import {rem} from "polished";
+import {BloodValU} from "../../style/GlobalTitles";
+import {PageContainer} from "../../style/GlobalWrappers";
+import {ChooseRoleButton} from "../../style/GlobalButtons";
+import {connect, useDispatch} from "react-redux";
+import {useHistory} from "react-router";
+import {setIsDonor} from "../../store/actions/registrationActions";
 
 const LandPageContainer = styled(PageContainer)`
   //background-color: lightcoral;
@@ -27,7 +27,7 @@ const ContentWrapper = styled.div`
 `;
 
 const WelcomeText = styled.div`
-  font-size: ${rem("14px")};
+  font-size: ${rem("16px")};
   color: #505565;
   margin-top: ${rem("32px")};
   margin-bottom: ${rem("72px")};
@@ -41,30 +41,55 @@ const ButtonWrapper = styled.div`
   //background-color: darkorange;
 `;
 
-export const LandingPage = () => {
-  const dispatch = useDispatch();
-  const { push } = useHistory();
-  // setIsDonor
-  const handleClick = (e) => {
-    const value = e.currentTarget.id;
-    dispatch(setIsDonor(value));
-    push("/auth/signup");
-  };
+const LandingPage = ({authReducer: {userObj, authenticated}}) => {
+    const dispatch = useDispatch();
+    const {push} = useHistory();
+    useEffect(() => {
+        if (authenticated) {
+            userObj.is_donor ? push("/dashboard/donor") : push("/dashboard/seeker")
+        }
+    })
+    // setIsDonor
+    const handleClick = (e) => {
+        const value = e.currentTarget.id;
+        dispatch(setIsDonor(value));
+        push("/auth/signup");
+    };
 
-  return (
-    <LandPageContainer>
-      <ContentWrapper>
-        <BloodValU text="Welcome to bloodval" black={32} red={48} />
-        <WelcomeText>Let’s start creating your profile. Are you interested in</WelcomeText>
-        <ButtonWrapper>
-          <ChooseRoleButton onClick={handleClick} id={"True"}>
-            Becoming a donor
-          </ChooseRoleButton>
-          <ChooseRoleButton onClick={handleClick} id={"False"}>
-            Becoming a recipient
-          </ChooseRoleButton>
-        </ButtonWrapper>
-      </ContentWrapper>
-    </LandPageContainer>
-  );
+    return (
+        <LandPageContainer>
+            <ContentWrapper>
+                <BloodValU text="Welcome to bloodval" black={32} red={48}/>
+                <WelcomeText>Let’s start creating your profile. Are you interested in</WelcomeText>
+                <ButtonWrapper>
+                    <ChooseRoleButton onClick={handleClick} id={"True"}>
+                        Becoming a donor
+                    </ChooseRoleButton>
+                    <ChooseRoleButton onClick={handleClick} id={"False"}>
+                        Becoming a recipient
+                    </ChooseRoleButton>
+                </ButtonWrapper>
+            </ContentWrapper>
+        </LandPageContainer>
+    );
 };
+
+const mapStateToProps = (state) => {
+    console.log("state", state);
+    return {
+        authReducer: state.authReducer,
+    };
+};
+
+export default connect(mapStateToProps)(LandingPage);
+console.log("")
+console.log("We hope you liked our presentation. :)")
+console.log("")
+console.log("")
+console.log("Attila Gőz - goz.attila.1977@gmail.com")
+console.log("")
+console.log("Habib Kadiri - kadirit@hotmail.com")
+console.log("")
+console.log("Edina Lovász – edina.lovasz@gmail.com")
+console.log("")
+console.log("António Meireles - edgarmeireles68@gmail.com")

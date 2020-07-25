@@ -88,6 +88,13 @@ const DetailTitle = styled.div`
   align-items: center;
   color: #000000;
   margin-bottom: ${rem("40px")};
+  
+  a{
+    color: #121232;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 24px;
+  }
 `;
 
 const EditProfileBtn = styled(DarkBlueButton)`
@@ -101,7 +108,6 @@ const SeekerProfileCard = ({ authReducer: { userObj }, dispatch }) => {
   }, [dispatch]);
 
   const onClickHandler = (event) => {
-    console.log("clicked");
     push("/editseeker");
   };
 
@@ -111,7 +117,7 @@ const SeekerProfileCard = ({ authReducer: { userObj }, dispatch }) => {
         <ProfileWrapper>
           <UpperContainer>
             <ProfilePicPlaceholder>
-              <img src={userObj.logo} alt={"logo"} />
+              <img src={userObj.logo ? userObj.logo : profilePic} alt={"logo"} />
             </ProfilePicPlaceholder>
             <NameContainer>{userObj.name}</NameContainer>
             <CityContainer> {userObj.country}</CityContainer>
@@ -121,7 +127,7 @@ const SeekerProfileCard = ({ authReducer: { userObj }, dispatch }) => {
               <DetailTitle>
                 Address: {userObj.street}, {userObj.country}
               </DetailTitle>
-              <DetailTitle>Website: {userObj.website}</DetailTitle>
+              <DetailTitle>Website: <a href={userObj.website}> {userObj.website}</a></DetailTitle>
               <DetailTitle>Phone: {userObj.phone}</DetailTitle>
               <DetailTitle>Email: {userObj.email}</DetailTitle>
             </DetailTitlesContainer>
@@ -134,7 +140,6 @@ const SeekerProfileCard = ({ authReducer: { userObj }, dispatch }) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log("state", state);
   return {
     authReducer: state.authReducer,
   };

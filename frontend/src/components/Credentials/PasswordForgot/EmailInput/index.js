@@ -72,7 +72,6 @@ const ResetEmailInput = ({registrationReducer, dispatch, errorReducer:{error}}) 
 
 
 const mapStateToProps = (state) => {
-    console.log("state", state);
     return {
         registrationReducer: state.registrationReducer,
         errorReducer: state.errorReducer,

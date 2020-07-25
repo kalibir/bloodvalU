@@ -1,7 +1,11 @@
-import React from "react";
-import { rem } from "polished";
+import React, {useState} from "react";
+import {rem} from "polished";
 import styled from "styled-components";
-import { SmallBlueButton, SmallRedButton } from "../../style/GlobalButtons";
+import {SmallBlueButton, SmallGreenButton, SmallRedButton} from "../../style/GlobalButtons";
+import AreYouSureModal from "../AreYouSure";
+import {createTestRequestAction, deleteTestAction} from "../../store/actions/offeredTestActions";
+import {useDispatch} from "react-redux";
+import UploadTestResultsModal from "../UploadTestResultsModal";
 
 const TestCard = styled.div`
   width: ${rem("290px")};
@@ -13,7 +17,7 @@ const TestCard = styled.div`
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
-  margin-bottom: 32px;
+  margin: 0 ${rem("12px")} ${rem("12px")} 0;
 `;
 
 const Text = styled.p`
@@ -63,6 +67,12 @@ const CardBlueButton = styled(SmallBlueButton)`
   font-size: 12px;
 `;
 
+const CardGreenButton = styled(SmallGreenButton)`
+    width: 60px;
+  height: 30px;
+  font-size: 12px;
+`
+
 const CardRedButton = styled(SmallRedButton)`
   width: 60px;
   height: 30px;
@@ -70,44 +80,58 @@ const CardRedButton = styled(SmallRedButton)`
 `;
 
 const GenericSeekerTestCard = ({
-  test: {
-    id,
-    test_type,
-    seeker_name,
-    points_cost,
-    expiry_date,
-    created,
-    is_bought,
-    is_expired,
-    seeker: {
-      id: seeker_id,
-      name,
-      phone,
-      is_donor,
-      email,
-      certificate,
-      no_of_requests,
-      is_valid,
-      website,
-      street,
-      zip_code,
-      country,
-      logo,
-    },
-  },
-}) => {
-  return (
-    <TestCard>
-      <TextContainer>
-        <Text>{test_type}</Text>
-        <PointContainer>{points_cost}</PointContainer>
-      </TextContainer>
-      <BottomContainer>
-        <CardBlueButton>edit</CardBlueButton>
-        <CardRedButton>delete</CardRedButton>
-      </BottomContainer>
-    </TestCard>
-  );
+                                   test: {
+                                       id,
+                                       test_type,
+                                       seeker_name,
+                                       points_cost,
+                                       expiry_date,
+                                       created,
+                                       is_bought,
+                                       is_expired,
+                                   },
+                               }) => {
+
+    const [sureModal, setSureModal] = useState(false);
+    const [showCustomersModal, setShowCustomersModal] = useState(false)
+    const dispatch = useDispatch()
+
+    const closeModal = () => {
+        setSureModal(false);
+    };
+
+    const handleDeleteTest = async (e, testID) => {
+        e.preventDefault();
+        const response = await dispatch(deleteTestAction(testID));
+        if (response.status < 300) closeModal();
+    };
+
+    const handleCloseUploadResults = e => {
+        setShowCustomersModal(false)
+    }
+
+    return (
+        <TestCard>
+            {sureModal ? (
+                <AreYouSureModal
+                    handleDeleteTest={handleDeleteTest}
+                    closeModal={closeModal}
+                    context={"test"}
+                    id={id}
+                />
+            ) : null}
+            {showCustomersModal ? <UploadTestResultsModal handleCloseUploadResults={handleCloseUploadResults} test_type={test_type} testID={id}/>: null}
+            <TextContainer>
+                <Text>{test_type}</Text>
+                <PointContainer>{points_cost}</PointContainer>
+            </TextContainer>
+            <BottomContainer>
+                <CardGreenButton onClick={e => setShowCustomersModal(true)}>Customers</CardGreenButton>
+                <CardBlueButton>edit</CardBlueButton>
+                <CardRedButton onClick={e => setSureModal(true)}>delete</CardRedButton>
+            </BottomContainer>
+        </TestCard>
+    );
 };
 
 export default GenericSeekerTestCard;

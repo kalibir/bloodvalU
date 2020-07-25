@@ -2,14 +2,22 @@ import React from "react";
 import { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { BaseStatusButton } from "../../style/GlobalButtons/";
-import { rem } from "polished";
+import { rem, backgroundImages } from "polished";
 import { useDispatch } from "react-redux";
 import { applyToRequestActionInAll } from "../../store/actions/bloodRequestActions";
-import acceptedIcon from "../../assets/icons/accepted.png";
+import acceptedIcon from "../../assets/icons/Check.svg";
 import expiredIcon from "../../assets/icons/expired.png";
-import urgentIcon from "../../assets/icons/urgent.png";
+import urgentIcon from "../../assets/icons/urgent.svg";
 import onProgressIcon from "../../assets/icons/on_progress.png";
 import { PointContainer } from "../GenericDonorTestCard";
+import O_negative from "../../assets/icons/O_negative.svg";
+import O_positive from "../../assets/icons/O_positive.svg";
+import AB_negative from "../../assets/icons/AB_negative.svg";
+import AB_positive from "../../assets/icons/AB_positive.svg";
+import A_negative from "../../assets/icons/A_negative.svg";
+import A_positive from "../../assets/icons/A_positive.svg";
+import B_negative from "../../assets/icons/B_negative.svg";
+import B_positive from "../../assets/icons/B_positive.svg";
 
 const BarWrapper = styled.div`
   //width: 445px;
@@ -23,15 +31,15 @@ const heightAnimation = keyframes`
 `;
 
 const RequestBar = styled.div`
+  display: grid;
   width: 100%;
   height: 48px;
+  grid-template-areas: "text status urgent blood button valid arrow";
+  grid-template-columns: 2fr 1fr 1fr 35px 1fr 1fr 1fr;
   background-color: #ffffff;
   border-bottom: 1px solid #d9d9d9;
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding-left: 23px;
-  padding-right: 27px;
+  grid-gap: 8px;
   cursor: pointer;
 `;
 
@@ -45,32 +53,46 @@ const RedButton = styled(BaseStatusButton)`
 
 const TextWrapper = styled.div`
   display: flex;
-  text-align: left;
+  height: 35px;
+  grid-area: text;
+  justify-content: center;
   align-items: center;
-  width: 35%;
-  height: 100%;
 `;
 
 const ButtonWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 25%;
-  height: 100%;
+  grid-area: button;
 `;
 
 const IconWrapper = styled(ButtonWrapper)`
-  width: 10%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  grid-area: status;
   height: 100%;
+  display: flex;
+  align-items: center;
+`;
+
+const UrgentWrapper = styled(ButtonWrapper)`
+  grid-area: urgent;
+  height: 100%;
+  display: flex;
+  align-items: center;
+`;
+
+const BloodDiv = styled(TextWrapper)`
+  grid-area: blood;
+  height: 35px;
+  background-color: darkred;
+  border-radius: 50%;
+  padding: 2px;
+`;
+
+const Type = styled.img`
+  color: white;
 `;
 
 const BarArrowWrapper = styled(ButtonWrapper)`
-  width: 10%;
-  justify-content: flex-end;
-  height: 100%;
+  grid-area: arrow;
+  justify-self: end;
+  margin-right: 24px;
 `;
 
 const BarArrowRight = styled.i`
@@ -136,6 +158,11 @@ const InfoIcons = styled.img`
   height: ${rem("30px")};
 `;
 
+const UrgentIcon = styled.img`
+  width: ${rem("30px")};
+  height: ${rem("30px")};
+`;
+
 const RequestIsActiveSign = styled(PointContainer)`
   width: ${rem("82px")};
   height: ${rem("28px")};
@@ -171,10 +198,18 @@ const GenericDonorRequestBar = ({
   };
 
   const handleApply = (e) => {
-    console.log("in the apply handler");
     dispatch(applyToRequestActionInAll(id));
   };
-
+  const renderBloodType = () => {
+    if (blood_group === "O-") return O_negative;
+    if (blood_group === "O+") return O_positive;
+    if (blood_group === "A-") return A_negative;
+    if (blood_group === "A+") return A_positive;
+    if (blood_group === "B-") return B_negative;
+    if (blood_group === "B+") return B_positive;
+    if (blood_group === "AB-") return AB_negative;
+    if (blood_group === "AB+") return AB_positive;
+  };
   return (
     <BarWrapper>
       <RequestBar>
@@ -190,10 +225,12 @@ const GenericDonorRequestBar = ({
           ) : null}
         </IconWrapper>
 
-        <IconWrapper onClick={showSeekerHandler}>
-          {is_urgent ? <InfoIcons src={urgentIcon} /> : null}
-        </IconWrapper>
-
+        <UrgentWrapper onClick={showSeekerHandler}>
+          {is_urgent ? <UrgentIcon src={urgentIcon} /> : null}
+        </UrgentWrapper>
+        <BloodDiv>
+          <Type src={renderBloodType()} alt="blood_type" />
+        </BloodDiv>
         <ButtonWrapper>
           {" "}
           {logged_in_donor_applied ? (

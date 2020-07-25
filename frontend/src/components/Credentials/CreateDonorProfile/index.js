@@ -8,6 +8,7 @@ import { PageContainer } from "../../../style/GlobalWrappers";
 import { connect, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { updateProfileAction } from "../../../store/actions/userActions";
+import CountrySelect from "../../CountrySelect";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -111,11 +112,11 @@ const CreateDonorProfile = (props) => {
     gender: "",
   });
 
-  console.log("donorInfo", donorInfo);
 
   const onChangeHandler = (event, property) => {
     const value = event.currentTarget.value;
     setDonorInfo({ ...donorInfo, [property]: value });
+
   };
 
   const avatarSelectHandler = (e) => {
@@ -141,9 +142,9 @@ const CreateDonorProfile = (props) => {
     }
     const response = await dispatch(updateProfileAction(form));
     if (response.status < 300) {
-      console.log("success!!");
       push(`/dashboard/donor`);
     }
+
   };
 
   return (
@@ -190,8 +191,8 @@ const CreateDonorProfile = (props) => {
               <InputTitle>Birthday</InputTitle>
               <SmallInput
                 type="date"
-                value="1854-01-06"
                 onChange={(e) => onChangeHandler(e, "birthday")}
+                max="2002-07-22"
                 required
               />
             </div>
@@ -228,7 +229,7 @@ const CreateDonorProfile = (props) => {
               <InputTitle>Address</InputTitle>
               <AddressInput
                 type="text"
-                placeholder="Baker Street"
+                placeholder="Baker Street 7"
                 onChange={(e) => onChangeHandler(e, "street")}
                 required
               />
@@ -248,12 +249,9 @@ const CreateDonorProfile = (props) => {
 
             <div>
               <InputTitle>Country</InputTitle>
-              <SmallInput
-                type="text"
-                placeholder="England"
-                onChange={(e) => onChangeHandler(e, "country")}
-                required
-              />
+              <CountrySelect
+                  handleChange={(e) => onChangeHandler(e, "country")}
+                                required/>
             </div>
           </InputPairContainer>
           <ImgInput
@@ -278,7 +276,6 @@ const CreateDonorProfile = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log("state", state);
   return {
     registrationReducer: state.registrationReducer,
     errorReducer: state.errorReducer,

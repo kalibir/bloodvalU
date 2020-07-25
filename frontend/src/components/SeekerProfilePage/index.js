@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { rem } from "polished";
-import { DarkBlueButton } from "../../style/GlobalButtons";
+import React, {useEffect, useState} from "react";
+import {rem} from "polished";
+import {DarkBlueButton} from "../../style/GlobalButtons";
 import styled from "styled-components";
-import { PageContainer } from "../../style/GlobalWrappers";
+import {PageContainer} from "../../style/GlobalWrappers";
 import GenericSeekerTestCard from "../GenericSeekerTestCard";
 import SeekerProfileCard from "../GenericSeekerProfileCard";
-import { connect } from "react-redux";
-import { getRequestsOfSeekerAction } from "../../store/actions/offeredTestActions";
+import {connect} from "react-redux";
+import {deleteTestAction, getRequestsOfSeekerAction} from "../../store/actions/offeredTestActions";
 import CreateTestModal from "../CreateTestModal";
+import GenericSeekerRequestBar from "../GenericSeekerRequestBar";
+import {deleteRequestAction, editRequestAction} from "../../store/actions/bloodRequestActions";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -67,10 +69,11 @@ const MiddleButton = styled.button`
 
 const TestWrapper = styled.div`
   width: 100%;
+  overflow: auto;
+  max-height: 600px;
+  height: inherit;
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap; //DO NOT REMOVE THIS
-  //border: 1px solid orange;
 `;
 
 const SideButton = styled(MiddleButton)`
@@ -91,46 +94,49 @@ const PlusSignButton = styled.span`
   margin-right: ${rem("10px")};
 `;
 
-const SeekerProfilePage = ({ userProfileReducer: { offeredTests }, dispatch }) => {
-  useEffect(() => {
-    dispatch(getRequestsOfSeekerAction());
-  }, []);
+const SeekerProfilePage = ({userProfileReducer: {offeredTests}, dispatch}) => {
+    useEffect(() => {
+        dispatch(getRequestsOfSeekerAction());
+    }, []);
 
-  const [modalActive, setModalActive] = useState(false);
+    const [modalActive, setModalActive] = useState(false);
 
   const closeModal = () => {
-    console.log("in the close modal");
     setModalActive(false);
   };
-  return (
-    <PageWrapper>
-      {modalActive ? <CreateTestModal closeModal={closeModal} /> : null}
-      <DashboardPageContainer>
-        <LeftSide>
-          <DashboardContentContainer>
-            <MenuContainer>
-              <SideButton id="requests">Offered Tests</SideButton>
-            </MenuContainer>
-            <CreateTestButton onClick={() => setModalActive(true)}>+ Create Test</CreateTestButton>
-            <TestWrapper>
-              {offeredTests
-                ? offeredTests.map((test, index) => {
-                    return <GenericSeekerTestCard test={test} key={index} />;
-                  })
-                : null}
-            </TestWrapper>
-          </DashboardContentContainer>
-        </LeftSide>
-        <RightSide>
-          <SeekerProfileCard />
-        </RightSide>
-      </DashboardPageContainer>
-    </PageWrapper>
-  );
+
+
+    return (
+        <PageWrapper>
+            {modalActive ? <CreateTestModal closeModal={closeModal}/> : null}
+            <DashboardPageContainer>
+                <LeftSide>
+                    <DashboardContentContainer>
+                        <MenuContainer>
+                            <SideButton id="requests">Offered Tests</SideButton>
+                        </MenuContainer>
+                        <CreateTestButton onClick={() => setModalActive(true)}>+ Create Test</CreateTestButton>
+                        <TestWrapper>
+                            {offeredTests
+                                ? offeredTests.map((test, index) => {
+                                    return <GenericSeekerTestCard
+                                        test={test}
+                                        key={index}
+                                    />;
+                                })
+                                : null}
+                        </TestWrapper>
+                    </DashboardContentContainer>
+                </LeftSide>
+                <RightSide>
+                    <SeekerProfileCard/>
+                </RightSide>
+            </DashboardPageContainer>
+        </PageWrapper>
+    );
 };
 
 const mapStateToProps = (state) => {
-  console.log("state", state);
   return {
     userProfileReducer: state.userProfileReducer,
   };

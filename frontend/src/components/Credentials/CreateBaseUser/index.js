@@ -72,8 +72,6 @@ const CreateBaseUser = ({
     is_donor: `${isDonor}`,
   });
 
-  console.log("userInfo", userInfo);
-
   const onChangeHandler = (event, property) => {
     const value = event.currentTarget.value;
     setUserInfo({ ...userInfo, [property]: value });
@@ -82,10 +80,8 @@ const CreateBaseUser = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(resetError());
-    console.log("This is a submit function.");
     const response = await dispatch(validate(userInfo));
     if (response.status < 300) {
-      console.log("success!");
       const loginInfo = { email: userInfo.email, password: userInfo.password };
       const response = await dispatch(sendLoginAction(loginInfo));
       if (response.status < 300) {
@@ -127,8 +123,8 @@ const CreateBaseUser = ({
                 <p>{error === "3" ? "Passwords do not match!" : null}</p>
               </Error>
               <BigInput
-                title="Password must be at least 4 characters"
-                pattern=".{4,}"
+                title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                 type="password"
                 placeholder="password"
                 onChange={(e) => onChangeHandler(e, "password")}
@@ -174,7 +170,6 @@ const CreateBaseUser = ({
 };
 
 const mapStateToProps = (state) => {
-  console.log("state", state);
   return {
     registrationReducer: state.registrationReducer,
     errorReducer: state.errorReducer,

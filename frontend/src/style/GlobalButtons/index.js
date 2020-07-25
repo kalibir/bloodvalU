@@ -1,4 +1,4 @@
-import { rem } from "polished";
+import {rem} from "polished";
 import styled from "styled-components";
 
 export const DarkBlueButton = styled.button`
@@ -38,6 +38,66 @@ export const WhiteButton = styled.button`
   outline: none;
   width: ${rem("106px")};
   height: ${rem("48px")};
+  cursor: pointer;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.5px;
+  color: #121232;
+  transition-duration: 0.4s;
+  transition-timing-function: ease-in-out;
+
+  :hover {
+    color: #fff;
+    background: #121232;
+    //border: 1px solid #FFF;
+  }
+  :active {
+    color: #fff;
+    background: #121232;
+    //border: 1px solid #FFF;
+  }
+`;
+
+export const DownloadButton = styled.a`
+  padding: 5px;
+  text-decoration: none;
+  margin-left: 5px;
+  background: #ffffff;
+  border: 1px solid #121232;
+  box-sizing: border-box;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.5px;
+  color: #121232;
+  transition-duration: 0.4s;
+  transition-timing-function: ease-in-out;
+
+  :hover {
+    color: #fff;
+    background: #121232;
+    //border: 1px solid #FFF;
+  }
+  :active {
+    color: #fff;
+    background: #121232;
+    //border: 1px solid #FFF;
+  }
+`
+
+export const WhiteLabel = styled.label`
+  background: #ffffff;
+  padding: 5px;
+  border: 1px solid #121232;
+  box-sizing: border-box;
+  border-radius: 4px;
+  outline: none;
   cursor: pointer;
   font-style: normal;
   font-weight: normal;
@@ -203,6 +263,7 @@ export const CompleteButton = styled.button`
   font-weight: bold;
   font-size: 12px;
   display: flex;
+  cursor: pointer;
   align-items: center;
   color: #ffffff;
   border: 1px solid #43a047;
