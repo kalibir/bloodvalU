@@ -11,11 +11,8 @@ import {
   deleteRequestAction,
   editRequestAction,
   getSeekerBloodRequestsAction,
-  updateRequestInAll,
 } from "../../store/actions/bloodRequestActions";
 import ActiveProfileCard from "./ActiveProfileCard";
-import { searchAllRequestsAndTestsAction } from "../../store/actions/searchActions";
-import { deleteTestAction } from "../../store/actions/offeredTestActions";
 
 import Spinner from "../../components/GenericSpinner";
 
@@ -29,7 +26,6 @@ const PageWrapper = styled.div`
 const LeftSide = styled.div`
   height: 100%;
   width: calc(100% - 700px);
-  //width: 40%;
   min-width: 576px;
   padding-top: ${rem("36px")};
   padding-left: ${rem("160px")};
@@ -37,12 +33,10 @@ const LeftSide = styled.div`
 
 const RightSide = styled.div`
     width: ${rem("700px")};
-    //height: ${rem("628px")};
     height: 100%;
 `;
 
 const MenuContainer = styled.div`
-    //width: ${rem("445px")};
     width: 100%;
     height: ${rem("48px")};
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
@@ -103,7 +97,6 @@ const Requests = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: ${rem("480px")};
   overflow: auto;
 `;
 
