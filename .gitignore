@@ -13,3 +13,6 @@ static-files
 
 **/migrations/**
 
+!/backend/apps/bloodrequests/migrations/0001_initial.py
+!/backend/apps/bloodrequests/migrations/0002_bloodrequest_applicants.py
+!/backend/apps/bloodrequests/migrations/0003_auto_20200722_0855.py
