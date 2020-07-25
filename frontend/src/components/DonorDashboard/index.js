@@ -156,10 +156,10 @@ const UnderLine = styled.div`
 
 const OfferContainer = styled.div`
   width: 100%;
+  he
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  flex-grow: 1;
   overflow: auto;
   background-color: ${ColorDebug ? "greenyellow" : ""};
 `;
