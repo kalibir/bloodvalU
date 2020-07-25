@@ -383,7 +383,7 @@ class MarkRequestAsCompletedView(CreateAPIView):
                 cloned_blood_request.selected_donor = None
                 cloned_blood_request.applicants.clear()
                 cloned_blood_request.save()
-            donor_email = target_blood_request.selected_donor.email
+            donor_email = target_blood_request.selected_donor.user.email
             subject = 'Thank you'
             message = f'Thank you'
             to = {donor_email}
