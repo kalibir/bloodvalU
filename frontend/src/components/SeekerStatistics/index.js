@@ -8,6 +8,31 @@ const getRandomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+// setInterval(() => {
+//     setState(getState());
+// }, 2000)
+
+const initialState = {
+    labels: [
+        'Male',
+        'Female',
+        'Other'
+    ],
+    datasets: [{
+        data: [0, 0, 0],
+        backgroundColor: [
+            '#36A2EB',
+            '#FFCE56',
+            '#CCC',
+        ],
+        hoverBackgroundColor: [
+            '#36A2EB',
+            '#FFCE56',
+            '#FF6384',
+        ]
+    }]
+}
+
 const getGenderData = (stats) => {
     return [stats.filter(el => el.gender === "M").length, stats.filter(el => el.gender === "F").length, stats.filter(el => el.gender === "O").length]
 }
@@ -15,34 +40,10 @@ const getGenderData = (stats) => {
 const SeekerStatistics = ({userProfileReducer: {statistics}, dispatch}) => {
 
 
-    const [state, setState] = useState({
-        labels: [
-            'Male',
-            'Female',
-            'Other'
-        ],
-        datasets: [{
-            data: [0, 0, 0],
-            backgroundColor: [
-                '#36A2EB',
-                '#FFCE56',
-                '#CCC',
-            ],
-            hoverBackgroundColor: [
-                '#36A2EB',
-                '#FFCE56',
-                '#FF6384',
-            ]
-        }]
-    });
-    console.log("state", state);
+    const [state, setState] = useState(initialState);
 
     useEffect(() => {
         dispatch(getMyStatisticsAction())
-
-        // setInterval(() => {
-        //     setState(getState());
-        // }, 2000)
     }, [dispatch])
 
     useEffect(() => {
@@ -52,7 +53,7 @@ const SeekerStatistics = ({userProfileReducer: {statistics}, dispatch}) => {
             newState.datasets[0].data = getGenderData(statistics)
             setState(newState)
         }
-    },[statistics])
+    }, [statistics])
 
 
     return (
