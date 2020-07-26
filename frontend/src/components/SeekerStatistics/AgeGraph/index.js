@@ -43,30 +43,30 @@ const getAgeData = (func, stats) => {
 }
 
 const options = {
-                    responsive: true,
-                    title: {text: "THICCNESS SCALE", display: true},
-                    scales: {
-                        yAxes: [
-                            {
-                                ticks: {
-                                    autoSkip: true,
-                                    maxTicksLimit: 10,
-                                    beginAtZero: true
-                                },
-                                gridLines: {
-                                    display: false
-                                }
-                            }
-                        ],
-                        xAxes: [
-                            {
-                                gridLines: {
-                                    display: false
-                                }
-                            }
-                        ]
-                    }
+    responsive: true,
+    title: {text: "THICCNESS SCALE", display: true},
+    scales: {
+        yAxes: [
+            {
+                ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 10,
+                    beginAtZero: true
+                },
+                gridLines: {
+                    display: false
                 }
+            }
+        ],
+        xAxes: [
+            {
+                gridLines: {
+                    display: false
+                }
+            }
+        ]
+    }
+}
 
 
 const initialState = {
