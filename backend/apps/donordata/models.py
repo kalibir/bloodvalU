@@ -40,6 +40,8 @@ class DonorData(models.Model):
 
     gender = models.CharField(max_length=2, choices=GENDER_CHOICES, default='M')
 
+    created = models.DateTimeField(auto_now_add=True)
+
     @property
     def age(self):
         today = date.today()
