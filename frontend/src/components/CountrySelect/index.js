@@ -24,8 +24,8 @@ const SelectCountryInput = styled.select`
 
 const CountrySelect = ({handleChange, country}) => {
     return (
-        <SelectCountryInput defaultValue={country} onChange={handleChange} id="country" name="country">
-            <option value={country} disabled>Select Country</option>
+        <SelectCountryInput defaultValue={country || ""} onChange={handleChange} id="country" name="country">
+            <option value={country || ""} disabled>Select Country</option>
             <option value="Switzerland">Switzerland</option>
             <option value="Germany">Germany</option>
             <option value="Italy">Italy</option>
