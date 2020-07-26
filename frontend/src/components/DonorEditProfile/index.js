@@ -9,7 +9,7 @@ import {connect} from "react-redux";
 import {resetError} from "../../store/actions/errorActions";
 import {deleteUserAction, updateProfileAction} from "../../store/actions/userActions";
 import {setLoggedInUser} from "../../store/actions/loginActions";
-import {Link, useHistory} from "react-router-dom";
+import { useHistory} from "react-router-dom";
 import AreYouSureModal from "../AreYouSure";
 import CountrySelect from "../CountrySelect";
 
@@ -167,6 +167,7 @@ const DonorEditProfile = ({
         birthday: `${birthday}`,
         email: `${email}`,
     });
+
     const [sureModal, setSureModal] = useState(false);
 
     const onChangeHandler = (event, property) => {

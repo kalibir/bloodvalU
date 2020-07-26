@@ -7,7 +7,7 @@ import {
     UPDATE_REQUEST_IN_ALL_REQUESTS,
     REMOVE_REQUEST_FROM_LIST,
     ADD_TEST_TO_LIST,
-    REMOVE_TEST_FROM_LIST
+    REMOVE_TEST_FROM_LIST, SET_ALL_STATISTICS
 
 } from "../actionTypes";
 
@@ -15,6 +15,7 @@ const initialState = {
   userObj: null,
   requests: null,
   offeredTests: null,
+  statistics: null,
 };
 
 export const userProfileReducer = (state = initialState, action) => {
@@ -22,6 +23,9 @@ export const userProfileReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_USER_PROFILE_USER: {
             return {...newState, userObj: action.payload};
+        }
+        case SET_ALL_STATISTICS: {
+            return {...newState, statistics: action.payload};
         }
         case SET_REQUESTS: {
             return {...newState, requests: action.payload};

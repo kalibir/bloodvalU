@@ -18,3 +18,10 @@ export const BaseMenuContainer = styled.div`
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
     margin-bottom: ${rem("24px")};
 `;
+
+export const BaseChartWrapper = styled.div`
+background-color: white;
+  padding: ${rem("20px")};;
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+`
