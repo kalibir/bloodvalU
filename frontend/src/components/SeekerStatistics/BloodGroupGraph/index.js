@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {Polar} from "react-chartjs-2";
 
+const goldenRatio = 0.618 // ... truncated
+
 const initialState = {
     labels: [
         'O-',
@@ -17,12 +19,21 @@ const initialState = {
         backgroundColor: [
             '#36A2EB',
             '#FFCE56',
-            '#CCC',
+            '#27AE60',
+            '#8E44AD',
+            '#E67E22',
+            '#E74C3C',
+            '#B7950B',
+            '#145A32',
         ],
         hoverBackgroundColor: [
             '#36A2EB',
             '#FFCE56',
-            '#FF6384',
+            '#27AE60',
+            '#E67E22',
+            '#E74C3C',
+            '#B7950B',
+            '#145A32',
         ]
     }]
 }
