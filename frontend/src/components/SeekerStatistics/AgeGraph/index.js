@@ -42,6 +42,32 @@ const getAgeData = (func, stats) => {
     ]
 }
 
+const options = {
+                    responsive: true,
+                    title: {text: "THICCNESS SCALE", display: true},
+                    scales: {
+                        yAxes: [
+                            {
+                                ticks: {
+                                    autoSkip: true,
+                                    maxTicksLimit: 10,
+                                    beginAtZero: true
+                                },
+                                gridLines: {
+                                    display: false
+                                }
+                            }
+                        ],
+                        xAxes: [
+                            {
+                                gridLines: {
+                                    display: false
+                                }
+                            }
+                        ]
+                    }
+                }
+
 
 const initialState = {
     labels: ['18-19', '20-29', '30-39', '40-49', '50-59', '60-69', '70+'],
@@ -52,10 +78,10 @@ const initialState = {
             lineTension: 0.5,
             backgroundColor: 'rgba(75,192,192,0.4)',
             borderColor: 'rgba(75,192,192,1)',
-            // borderCapStyle: 'butt',
+            borderCapStyle: 'butt',
             borderDash: [],
             borderDashOffset: 0.0,
-            // borderJoinStyle: 'miter',
+            borderJoinStyle: 'miter',
             pointBorderColor: 'rgba(75,192,192,1)',
             pointBackgroundColor: '#fff',
             pointBorderWidth: 1,
@@ -73,10 +99,10 @@ const initialState = {
             lineTension: 0.5,
             backgroundColor: 'rgb(202,131,93)',
             borderColor: 'rgb(122,81,81)',
-            // borderCapStyle: 'butt',
+            borderCapStyle: 'butt',
             borderDash: [],
             borderDashOffset: 0.0,
-            // borderJoinStyle: 'miter',
+            borderJoinStyle: 'miter',
             pointBorderColor: 'rgb(192,130,75)',
             pointBackgroundColor: '#fff',
             pointBorderWidth: 1,
@@ -94,10 +120,10 @@ const initialState = {
             lineTension: 0.5,
             backgroundColor: 'rgb(156,106,200)',
             borderColor: 'rgb(122,81,81)',
-            // borderCapStyle: 'butt',
+            borderCapStyle: 'butt',
             borderDash: [],
             borderDashOffset: 0.0,
-            // borderJoinStyle: 'miter',
+            borderJoinStyle: 'miter',
             pointBorderColor: 'rgba(75,192,192,1)',
             pointBackgroundColor: '#fff',
             pointBorderWidth: 1,
@@ -137,7 +163,7 @@ const AgeGraph = ({statistics}) => {
                 width={600}
                 height={300}
                 data={state}
-                options={{responsive: true}}
+                options={options}
             /> : null}
         </div>)
 }
