@@ -1,12 +1,16 @@
 from django.db import models
 from datetime import date
 
-
 # Create your models here.
 from apps.bloodrequests.models import BloodRequest
+from apps.seekerprofiles.models import SeekerProfile
 
 
 class DonorData(models.Model):
+    seeker = models.ForeignKey(to=SeekerProfile, on_delete=models.CASCADE,
+                               related_name="statistics",
+                               blank=True, null=True)
+
     blood_request = models.ForeignKey(to=BloodRequest, on_delete=models.CASCADE, related_name="statistics")
 
     zip_code = models.CharField(max_length=100, blank=True)

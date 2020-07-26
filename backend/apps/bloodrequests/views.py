@@ -364,6 +364,7 @@ class MarkRequestAsCompletedView(CreateAPIView):
             target_donor.save()
             for donor in target_blood_request.applicants.all():
                 new_data = DonorData.objects.create(
+                    seeker=self.request.user.seeker_profile,
                     blood_request=target_blood_request,
                     zip_code=donor.zip_code,
                     birthday=donor.birthday,
