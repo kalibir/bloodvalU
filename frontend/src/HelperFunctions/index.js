@@ -1,3 +1,5 @@
+
+
 export const bloodGroupTest = (bloodgroup, request) => {
     if (bloodgroup === "O-") return true;
     if (bloodgroup === "O+" && ["O+", "A+", "B+", "AB+"].includes(request.blood_group)) return true;

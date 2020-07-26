@@ -1,11 +1,25 @@
 import React, {useEffect, useState} from "react";
 import {Line} from "react-chartjs-2";
+import dayjs from "dayjs";
+import 'dayjs/locale/es'
+
+
+const getLabels = (amountOfDays, format) => {
+    let labels = []
+    for (let i = 0; i < amountOfDays; i++) {
+        labels.push(dayjs().subtract(i, 'day').format(format))
+    }
+    return labels.reverse()
+}
+
+getLabels(7, 'dddd')
+
 
 const initialState = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels: ['18-19', '20-29', '30-39', '40-49', '50-59', '60-69', '70+'],
     datasets: [
         {
-            label: 'My First dataset',
+            label: 'Blood Donation Frequency by Age Group',
             fill: true,
             lineTension: 0.5,
             backgroundColor: 'rgba(75,192,192,0.4)',
@@ -23,8 +37,9 @@ const initialState = {
             pointHoverBorderWidth: 2,
             pointRadius: 1,
             pointHitRadius: 10,
-            data: [65, 59, 80, 81, 56, 55, 40]
-        }
+            data: [65, 59, 20,0,0, 55, 40]
+        },
+
     ]
 };
 
@@ -32,10 +47,16 @@ const filterThis = (arr, param) => {
     return arr.filter(el => el.blood_group === param).length
 }
 
-
 const AgeGraph = ({statistics}) => {
 
     const [state, setState] = useState(initialState);
+    useEffect(() => {
+        if (statistics) {
+            console.log(dayjs(statistics[0].created).format('DD/MM/YYYY'))
+            console.log(dayjs(statistics[0].created).subtract(1, 'day').format('DD/MM/YYYY'))
+            // console.log(dayjs(statistics[0].created))
+        }
+    }, [statistics])
 
 
     return (
