@@ -123,7 +123,7 @@ const AgeGraph = ({statistics}) => {
 
     return (
         <Wrapper>
-            <ChartTitle>Average Donor Age Group</ChartTitle>
+            <ChartTitle>Donations By Age Group</ChartTitle>
             {state ? <Line
                 data={state}
                 options={options}
