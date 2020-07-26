@@ -15,6 +15,7 @@ import SeekerEditProfile from "../components/SeekerEditProfile";
 import GeoMap from "../components/GeoMap";
 import AdminPage from "../components/AdminPage";
 import SeekerScanCode from "../components/SeekerScanCode";
+import SeekerStatistics from "../components/SeekerStatistics";
 
 const Routes = () => {
     return (
@@ -26,12 +27,14 @@ const Routes = () => {
 
                         <Route path="/scan" component={authComponentSeeker(SeekerScanCode)}/>
                         <Route path="/editseeker" component={authComponentSeeker(SeekerEditProfile)}/>
+                        <Route path="/statistics" component={authComponentSeeker(SeekerStatistics)}/>
                         <Route path="/dashboard/seeker" component={authComponentSeeker(SeekerDashboard)}/>
                         <Route path="/seekerprofilepage" component={authComponentSeeker(SeekerProfilePage)}/>
 
                         <Route path="/map" component={authComponentDonor(GeoMap)}/>
                         <Route path="/editdonor" component={authComponentDonor(DonorEditProfile)}/>
                         <Route path="/dashboard/donor" component={authComponentDonor(DonorDashboard)}/>
+
                         <Route path="/admin_page" component={AdminPage}/>
                         <Route path="/templates" component={Template}/>
                         <Route path="/auth" component={Credentials}/>

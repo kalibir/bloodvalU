@@ -47,4 +47,6 @@ export const ADD_TEST_TO_LIST = "ADD_TEST_TO_LIST";
 
 export const SET_ALL_PROFILES = "SET_ALL_PROFILES";
 
+// Statistics Types
 
+export const SET_ALL_STATISTICS = "SET_ALL_STATISTICS";

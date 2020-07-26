@@ -75,7 +75,6 @@ const LandingPage = ({authReducer: {userObj, authenticated}}) => {
 };
 
 const mapStateToProps = (state) => {
-    console.log("state", state);
     return {
         authReducer: state.authReducer,
     };
