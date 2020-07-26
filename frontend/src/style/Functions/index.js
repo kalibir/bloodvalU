@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import styled from "styled-components";
 import {rem} from "polished";
 import {NavLink} from "react-router-dom";
@@ -14,7 +14,6 @@ const StyledNavLink = styled(NavLink).attrs({ activeClassName })`
   color: #A1A4B1;
   text-decoration: none;
   position: relative;
-  text-decoration: none;
   width: ${rem("85px")};
   height: 100%;
   display: flex;
