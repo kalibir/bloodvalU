@@ -81,8 +81,8 @@ const initialState = {
         {
             label: 'Blood Donation Applicants',
             fill: true,
-            backgroundColor: 'rgba(255,99,132,0.53)',
-            borderColor: '#FF6384',
+            backgroundColor: 'rgba(17,152,75,0.44)',
+            borderColor: '#11984b',
             data: [0, 0, 0, 0, 0, 0, 0]
         },
         {
