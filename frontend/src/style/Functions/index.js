@@ -113,11 +113,7 @@ export const SeekerNavigation = (name) => {
 };
 
 export const DonorNavigation = ({first_name, email}) => {
-    const [active, setActive] = useState("dashboard");
-    const handleClick = (e) => {
-        const value = e.target.id;
-        setActive(value);
-    };
+
     return (
         <WrapperDiv>
             <WelcomeText>{first_name === "" ? `Welcome, ${email}` : `Welcome, ${first_name}`}</WelcomeText>
@@ -125,14 +121,10 @@ export const DonorNavigation = ({first_name, email}) => {
                 {first_name === "" ? <></>
                     : <>
                         <StyledNavLink
-                            to={"/dashboard/donor"}
-                            onClick={handleClick}
-                            active={active === "dashboard" ? "true" : "false"}
-                            id="dashboard">
+                            to="/dashboard/donor">
                             Dashboard
                         </StyledNavLink>
-                        <StyledNavLink to={"/map"} onClick={handleClick} active={active === "map" ? "true" : "false"}
-                                       id="map">
+                        <StyledNavLink to="/map">
                             Map
                         </StyledNavLink>
                     </>
