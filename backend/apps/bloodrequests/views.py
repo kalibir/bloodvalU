@@ -364,6 +364,7 @@ class MarkRequestAsCompletedView(CreateAPIView):
             target_donor.save()
             for donor in target_blood_request.applicants.all():
                 new_data = DonorData.objects.create(
+                    seeker=self.request.user.seeker_profile,
                     blood_request=target_blood_request,
                     zip_code=donor.zip_code,
                     birthday=donor.birthday,
@@ -427,6 +428,19 @@ class GetStatisticsOfBloodRequestView(ListAPIView):
         target_blood_request = self.get_object()
         donor_data = target_blood_request.statistics.all()
         serializer = self.get_serializer(donor_data, many=True)
+        return Response(serializer.data)
+
+
+class GetAllStatisticsOfSeekerView(ListAPIView):
+    permission_classes = [IsRequesterOrAdminOrReadOnly]
+    serializer_class = DonorDataSerializer
+
+    def list(self, request, *args, **kwargs):
+        if self.request.user.is_donor:
+            return Response({"detail": "Sorry, you must be a seeker to perform this request"},
+                            status=status.HTTP_400_BAD_REQUEST)
+        seeker_statistics = self.request.user.seeker_profile.statistics.all()
+        serializer = self.get_serializer(seeker_statistics, many=True)
         return Response(serializer.data)
 
 

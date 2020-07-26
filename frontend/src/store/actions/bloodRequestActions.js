@@ -1,6 +1,6 @@
 import Axios from "../../axios";
 import {
-    ADD_REQUEST_TO_LIST, REMOVE_REQUEST_FROM_LIST,
+    ADD_REQUEST_TO_LIST, REMOVE_REQUEST_FROM_LIST, SET_ALL_STATISTICS,
     SET_REQUESTS,
     UPDATE_REQUEST_IN_ALL_REQUESTS,
 } from "../actionTypes";
@@ -10,6 +10,13 @@ export const setAllRequests = (arrayOfRequests) => {
     return {
         type: SET_REQUESTS,
         payload: arrayOfRequests
+    }
+}
+
+export const setAllStatistics = (arrayOfStatistics) => {
+    return {
+        type: SET_ALL_STATISTICS,
+        payload: arrayOfStatistics
     }
 }
 
@@ -138,6 +145,17 @@ export const editRequestAction = (requestID, data) => async (dispatch) => {
         dispatch(updateRequestInAll(response.data))
         return response
     } catch (error) {
+        return error
+    }
+}
+
+export const getMyStatisticsAction = () => async (dispatch) => {
+    try {
+        const response = await Axios.get(`request/statistics/me/`);
+        dispatch(setAllStatistics(response.data))
+        return response
+    } catch (error) {
+        console.log("error", error.response)
         return error
     }
 }

@@ -7,6 +7,9 @@ from apps.seekerprofiles.models import SeekerProfile
 class SeekerProfileSerializer(serializers.ModelSerializer):
     is_donor = serializers.SerializerMethodField()
     no_of_requests = serializers.SerializerMethodField()
+    no_of_completed = serializers.SerializerMethodField()
+    no_of_closed = serializers.SerializerMethodField()
+    no_of_open = serializers.SerializerMethodField()
     email = serializers.SerializerMethodField()
     is_staff = serializers.SerializerMethodField()
 
@@ -22,6 +25,15 @@ class SeekerProfileSerializer(serializers.ModelSerializer):
     def get_no_of_requests(self, obj):
         return obj.made_requests.count()
 
+    def get_no_of_completed(self, obj):
+        return obj.made_requests.filter(status="COM").count()
+
+    def get_no_of_closed(self, obj):
+        return obj.made_requests.filter(status="CL").count()
+
+    def get_no_of_open(self, obj):
+        return obj.made_requests.filter(status="OP").count()
+
     class Meta:
         model = SeekerProfile
         fields = ['id', 'name', 'phone', 'is_donor', 'is_staff', 'email', 'certificate', 'longitude', 'latitude',
@@ -29,5 +41,8 @@ class SeekerProfileSerializer(serializers.ModelSerializer):
                   'street',
                   'zip_code',
                   'country',
+                  'no_of_completed',
+                  'no_of_closed',
+                  'no_of_open',
                   'phone',
-                  'logo', 'offered_tests']
+                  'logo']

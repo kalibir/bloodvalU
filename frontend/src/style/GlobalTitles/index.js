@@ -51,6 +51,13 @@ export const BloodValU = ({text, black, red}) => {
     )
 }
 
+export const ChartTitle = styled.h2`
+  font-size: ${rem("25px")};
+  font-weight: lighter;
+  grid-area: title;
+  border-bottom: 1px solid rgba(0,0,0,0.44);
+`
+
 export const ErrorPlaceholder = styled.div`
   // width: ${rem("340px")};
   // height: ${rem("52px")};

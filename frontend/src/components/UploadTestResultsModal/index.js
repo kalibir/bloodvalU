@@ -127,10 +127,9 @@ const TitleWrapper = styled.div`
 
 const UploadTestResultsModal = ({testID, test_type, handleCloseUploadResults}) => {
     const dispatch = useDispatch()
-    const [customers, setCustomers] = useState()
+    const [customers, setCustomers] = useState(null)
 
-    const handleUpdateCustomers = (e,customerObj) => {
-        e.preventDefault()
+    const handleUpdateCustomers = (customerObj) => {
         const newCustomers = [...customers]
         const index = customers.findIndex(
             (donor) => donor.id === customerObj.id
