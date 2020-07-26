@@ -13,6 +13,13 @@ export const setAllRequests = (arrayOfRequests) => {
     }
 }
 
+export const setAllStatistics = (arrayOfStatistics) => {
+    return {
+        type: SET_STATISTICS,
+        payload: arrayOfStatistics
+    }
+}
+
 
 export const updateRequestInAll = (request) => {
     return {
@@ -136,6 +143,15 @@ export const editRequestAction = (requestID, data) => async (dispatch) => {
     try {
         const response = await Axios.patch(`request/${requestID}/`, data);
         dispatch(updateRequestInAll(response.data))
+        return response
+    } catch (error) {
+        return error
+    }
+}
+
+export const getMyStatisticsAction = () => async (dispatch) => {
+    try {
+        const response = await Axios.get(`request/statistics/me/`);
         return response
     } catch (error) {
         return error

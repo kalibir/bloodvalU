@@ -431,6 +431,19 @@ class GetStatisticsOfBloodRequestView(ListAPIView):
         return Response(serializer.data)
 
 
+class GetAllStatisticsOfSeekerView(ListAPIView):
+    permission_classes = [IsRequesterOrAdminOrReadOnly]
+    serializer_class = DonorDataSerializer
+
+    def list(self, request, *args, **kwargs):
+        if self.request.user.is_donor:
+            return Response({"detail": "Sorry, you must be a seeker to perform this request"},
+                            status=status.HTTP_400_BAD_REQUEST)
+        seeker_statistics = self.request.user.seeker_profile.statistics.all()
+        serializer = self.get_serializer(seeker_statistics, many=True)
+        return Response(serializer.data)
+
+
 class ValidateBloodRequestQRCodeView(CreateAPIView):
     """
     POST:

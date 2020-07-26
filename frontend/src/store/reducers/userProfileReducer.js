@@ -15,6 +15,7 @@ const initialState = {
   userObj: null,
   requests: null,
   offeredTests: null,
+  statistics: null,
 };
 
 export const userProfileReducer = (state = initialState, action) => {
