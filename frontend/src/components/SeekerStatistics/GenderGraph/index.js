@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Polar} from "react-chartjs-2";
 import styled from "styled-components";
 import {BaseChartWrapper} from "../../../style/GlobalWrappers";
+import {ChartTitle} from "../../../style/GlobalTitles";
 
 const Wrapper = styled(BaseChartWrapper)`
   grid-area: gender;
@@ -50,7 +51,7 @@ const GenderGraph = ({statistics}) => {
 
     return (
         <Wrapper>
-            <h2>Gender Demographic</h2>
+            <ChartTitle>Gender Demographic</ChartTitle>
             {state ? <Polar data={state}/> : null}
         </Wrapper>)
 }

@@ -20,7 +20,7 @@ export const BaseMenuContainer = styled.div`
 `;
 
 export const BaseChartWrapper = styled.div`
-padding: ${rem("20px")};;
-border-radius: 4px;
+  padding: ${rem("20px")};;
+  border-radius: 4px;
   box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
 `

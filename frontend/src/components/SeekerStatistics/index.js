@@ -26,7 +26,9 @@ const StatsContent = styled.div`
 `
 
 
-const Title = styled.h1`
+const Title = styled.h2`
+  font-size: ${rem("40px")};
+  font-weight: lighter;
   grid-area: title;
 `
 

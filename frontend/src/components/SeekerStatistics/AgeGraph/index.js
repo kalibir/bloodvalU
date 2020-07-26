@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import 'dayjs/locale/es'
 import styled from "styled-components";
 import {BaseChartWrapper} from "../../../style/GlobalWrappers";
+import {ChartTitle} from "../../../style/GlobalTitles";
 
 
 const getLabels = (amountOfDays, format) => {
@@ -163,10 +164,8 @@ const AgeGraph = ({statistics}) => {
 
     return (
         <Wrapper>
-            <h2>Average Donor Age Group</h2>
+            <ChartTitle>Average Donor Age Group</ChartTitle>
             {state ? <Line
-                width={600}
-                height={300}
                 data={state}
                 options={options}
             /> : null}
