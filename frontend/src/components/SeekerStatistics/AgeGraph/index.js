@@ -11,15 +11,43 @@ const getLabels = (amountOfDays, format) => {
     }
     return labels.reverse()
 }
+// useEffect(() => {
+//     if (statistics) {
+//         console.log(dayjs(statistics[0].created).format('DD/MM/YYYY'))
+//         console.log(dayjs(statistics[0].created).subtract(1, 'day').format('DD/MM/YYYY'))
+//         // console.log(dayjs(statistics[0].created))
+//     }
+// }, [statistics])
 
 getLabels(7, 'dddd')
+
+const filterAll = (arr, min, max) => {
+    return arr.filter(el => el.age >= min && el.age <= max).length
+}
+const filterMale = (arr, min, max) => {
+    return arr.filter(el => el.age >= min && el.age <= max && el.gender === "M").length
+}
+const filterFemale = (arr, min, max) => {
+    return arr.filter(el => el.age >= min && el.age <= max && el.gender === "F").length
+}
+const getAgeData = (func, stats) => {
+    return [
+        func(stats, 18, 19),
+        func(stats, 20, 29),
+        func(stats, 30, 39),
+        func(stats, 40, 49),
+        func(stats, 50, 59),
+        func(stats, 60, 69),
+        func(stats, 70, 150)
+    ]
+}
 
 
 const initialState = {
     labels: ['18-19', '20-29', '30-39', '40-49', '50-59', '60-69', '70+'],
     datasets: [
         {
-            label: 'Blood Donation Frequency by Age Group',
+            label: 'Blood Donation Applicants',
             fill: true,
             lineTension: 0.5,
             backgroundColor: 'rgba(75,192,192,0.4)',
@@ -37,31 +65,74 @@ const initialState = {
             pointHoverBorderWidth: 2,
             pointRadius: 1,
             pointHitRadius: 10,
-            data: [65, 59, 20,0,0, 55, 40]
+            data: [0, 0, 0, 0, 0, 0, 0]
+        },
+        {
+            label: 'Male Applicants',
+            fill: true,
+            lineTension: 0.5,
+            backgroundColor: 'rgb(202,131,93)',
+            borderColor: 'rgb(122,81,81)',
+            // borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            // borderJoinStyle: 'miter',
+            pointBorderColor: 'rgb(192,130,75)',
+            pointBackgroundColor: '#fff',
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: 'rgb(192,130,75)',
+            pointHoverBorderColor: 'rgba(220,220,220,1)',
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: [0, 0, 0, 0, 0, 0, 0]
+        },
+        {
+            label: 'Female Applicants',
+            fill: true,
+            lineTension: 0.5,
+            backgroundColor: 'rgb(156,106,200)',
+            borderColor: 'rgb(122,81,81)',
+            // borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            // borderJoinStyle: 'miter',
+            pointBorderColor: 'rgba(75,192,192,1)',
+            pointBackgroundColor: '#fff',
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+            pointHoverBorderColor: 'rgba(220,220,220,1)',
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: [0, 0, 0, 0, 0, 0, 0]
         },
 
     ]
 };
 
-const filterThis = (arr, param) => {
-    return arr.filter(el => el.blood_group === param).length
-}
-
 const AgeGraph = ({statistics}) => {
 
     const [state, setState] = useState(initialState);
+
+
     useEffect(() => {
         if (statistics) {
-            console.log(dayjs(statistics[0].created).format('DD/MM/YYYY'))
-            console.log(dayjs(statistics[0].created).subtract(1, 'day').format('DD/MM/YYYY'))
-            // console.log(dayjs(statistics[0].created))
+            console.log("we got stats!")
+            const newState = {...state}
+            newState.datasets[0].data = getAgeData(filterAll, statistics)
+            newState.datasets[1].data = getAgeData(filterMale, statistics)
+            newState.datasets[2].data = getAgeData(filterFemale, statistics)
+            setState(newState)
         }
     }, [statistics])
 
 
     return (
         <div>
-            <h2>Average Donor Blood Type</h2>
+            <h2>Average Donor Age Group</h2>
             {state ? <Line
                 width={600}
                 height={300}
