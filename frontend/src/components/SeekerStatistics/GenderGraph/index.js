@@ -12,7 +12,7 @@ const initialState = {
         backgroundColor: [
             '#36A2EB',
             '#FFCE56',
-            '#CCC',
+            '#FF6384',
         ],
         hoverBackgroundColor: [
             '#36A2EB',
