@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Doughnut} from "react-chartjs-2";
+import {Polar} from "react-chartjs-2";
 
 const initialState = {
     labels: [
@@ -60,7 +60,7 @@ const BloodGroupGraph = ({statistics}) => {
     return (
         <div>
             <h2>Average Donor Blood Type</h2>
-            {state ? <Doughnut data={state}/> : null}
+            {state ? <Polar data={state}/> : null}
         </div>)
 }
 

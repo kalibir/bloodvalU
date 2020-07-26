@@ -44,7 +44,6 @@ const getAgeData = (func, stats) => {
 
 const options = {
     responsive: true,
-    title: {text: "THICCNESS SCALE", display: true},
     scales: {
         yAxes: [
             {

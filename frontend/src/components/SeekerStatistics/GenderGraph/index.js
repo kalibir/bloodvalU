@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Pie} from "react-chartjs-2";
+import {Polar} from "react-chartjs-2";
 
 const initialState = {
     labels: [
@@ -44,7 +44,7 @@ const GenderGraph = ({statistics}) => {
     return (
         <div>
             <h2>Gender Demographic</h2>
-            {state ? <Pie data={state}/> : null}
+            {state ? <Polar data={state}/> : null}
         </div>)
 }
 
