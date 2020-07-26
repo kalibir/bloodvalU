@@ -51,6 +51,7 @@ const Wrapper = styled(BaseChartWrapper)`
 
 const options = {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
         yAxes: [
             {

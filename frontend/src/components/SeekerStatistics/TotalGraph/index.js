@@ -5,14 +5,14 @@ import {BaseChartWrapper} from "../../../style/GlobalWrappers";
 import {ChartTitle} from "../../../style/GlobalTitles";
 
 const Wrapper = styled(BaseChartWrapper)`
-  grid-area: gender;
+  grid-area: total;
 `
 
 const initialState = {
     labels: [
-        'Male',
-        'Female',
-        'Other'
+        'Open',
+        'On Going',
+        'Completed'
     ],
     datasets: [{
         data: [0, 0, 0],
@@ -29,31 +29,25 @@ const initialState = {
     }]
 }
 
-const getGenderData = (stats) => {
-    return [stats.filter(el => el.gender === "M").length, stats.filter(el => el.gender === "F").length, stats.filter(el => el.gender === "O").length]
-}
-
-
-
-const GenderGraph = ({statistics}) => {
+const TotalGraph = ({profile}) => {
 
     const [state, setState] = useState(initialState);
 
     useEffect(() => {
-        if (statistics) {
+        if (profile) {
             console.log("we got stats!")
             const newState = {...state}
-            newState.datasets[0].data = getGenderData(statistics)
+            newState.datasets[0].data = [profile.no_of_open, profile.no_of_closed, profile.no_of_completed]
             setState(newState)
         }
-    }, [statistics])
+    }, [profile])
 
 
     return (
-        <Wrapper>
-            <ChartTitle>Gender Demographic</ChartTitle>
+        <Wrapper >
+            <ChartTitle>Total Requests</ChartTitle>
             {state ? <Pie data={state}/> : null}
         </Wrapper>)
 }
 
-export default GenderGraph
+export default TotalGraph

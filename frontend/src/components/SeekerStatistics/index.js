@@ -7,7 +7,7 @@ import BloodGroupGraph from "./BloodGroupGraph";
 import styled from "styled-components";
 import AgeGraph from "./AgeGraph";
 import rem from "polished/lib/helpers/rem";
-
+import TotalGraph from "./TotalGraph";
 
 
 // setInterval(() => {
@@ -16,13 +16,12 @@ import rem from "polished/lib/helpers/rem";
 
 const StatsContent = styled.div`
   display: grid;
+  height: 90%;
   grid-gap: ${rem("16px")};
   grid-template-areas: 
-  "title title title title"
-  ". . . ."
-  "age age age age"
-  "gender gender blood blood";
-  justify-content: center;
+  "title title title"
+  "gender blood total"
+  "age age age";
 `
 
 
@@ -33,7 +32,7 @@ const Title = styled.h2`
 `
 
 
-const SeekerStatistics = ({userProfileReducer: {statistics}, dispatch}) => {
+const SeekerStatistics = ({userProfileReducer: {statistics}, dispatch, authReducer: {userObj}}) => {
 
     useEffect(() => {
         dispatch(getMyStatisticsAction())
@@ -45,6 +44,7 @@ const SeekerStatistics = ({userProfileReducer: {statistics}, dispatch}) => {
             <StatsContent>
                 <Title>Analytics</Title>
                 <AgeGraph statistics={statistics}/>
+                <TotalGraph profile={userObj}/>
                 <GenderGraph statistics={statistics}/>
                 <BloodGroupGraph statistics={statistics}/>
             </StatsContent>
@@ -55,6 +55,7 @@ const SeekerStatistics = ({userProfileReducer: {statistics}, dispatch}) => {
 const mapStateToProps = (state) => {
     return {
         userProfileReducer: state.userProfileReducer,
+        authReducer: state.authReducer,
     };
 };
 
