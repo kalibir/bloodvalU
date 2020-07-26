@@ -5,13 +5,14 @@ import {getMyStatisticsAction} from "../../store/actions/bloodRequestActions";
 import GenderGraph from "./GenderGraph";
 import BloodGroupGraph from "./BloodGroupGraph";
 import styled from "styled-components";
+import AgeGraph from "./AgeGraph";
 
 
 // setInterval(() => {
 //     setState(getState());
 // }, 2000)
 
-const StatsPageContainer = styled(PageContainer)`
+const StatsContent = styled.div`
   display: flex;
   justify-content: center;
 `
@@ -25,10 +26,13 @@ const SeekerStatistics = ({userProfileReducer: {statistics}, dispatch}) => {
 
 
     return (
-        <StatsPageContainer>
-            <GenderGraph statistics={statistics}/>
-            <BloodGroupGraph statistics={statistics}/>
-        </StatsPageContainer>
+        <PageContainer>
+            <StatsContent>
+                <AgeGraph statistics={statistics}/>
+                <GenderGraph statistics={statistics}/>
+                <BloodGroupGraph statistics={statistics}/>
+            </StatsContent>
+        </PageContainer>
     )
 }
 
