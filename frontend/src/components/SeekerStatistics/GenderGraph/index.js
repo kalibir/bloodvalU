@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {Polar} from "react-chartjs-2";
+import styled from "styled-components";
+import {BaseChartWrapper} from "../../../style/GlobalWrappers";
+
+const Wrapper = styled(BaseChartWrapper)`
+  grid-area: gender;
+`
 
 const initialState = {
     labels: [
@@ -27,6 +33,7 @@ const getGenderData = (stats) => {
 }
 
 
+
 const GenderGraph = ({statistics}) => {
 
     const [state, setState] = useState(initialState);
@@ -42,10 +49,10 @@ const GenderGraph = ({statistics}) => {
 
 
     return (
-        <div>
+        <Wrapper>
             <h2>Gender Demographic</h2>
             {state ? <Polar data={state}/> : null}
-        </div>)
+        </Wrapper>)
 }
 
 export default GenderGraph

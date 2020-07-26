@@ -1,7 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {Polar} from "react-chartjs-2";
+import styled from "styled-components";
+import {BaseChartWrapper} from "../../../style/GlobalWrappers";
 
-const goldenRatio = 0.618 // ... truncated
+const Wrapper = styled(BaseChartWrapper)`
+  grid-area: blood;
+`
 
 const initialState = {
     labels: [
@@ -69,10 +73,10 @@ const BloodGroupGraph = ({statistics}) => {
 
 
     return (
-        <div>
+        <Wrapper>
             <h2>Average Donor Blood Type</h2>
             {state ? <Polar data={state}/> : null}
-        </div>)
+        </Wrapper>)
 }
 
 export default BloodGroupGraph

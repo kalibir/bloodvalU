@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Line} from "react-chartjs-2";
 import dayjs from "dayjs";
 import 'dayjs/locale/es'
+import styled from "styled-components";
+import {BaseChartWrapper} from "../../../style/GlobalWrappers";
 
 
 const getLabels = (amountOfDays, format) => {
@@ -41,6 +43,10 @@ const getAgeData = (func, stats) => {
         func(stats, 70, 150)
     ]
 }
+
+const Wrapper = styled(BaseChartWrapper)`
+  grid-area: age;
+`
 
 const options = {
     responsive: true,
@@ -156,7 +162,7 @@ const AgeGraph = ({statistics}) => {
 
 
     return (
-        <div>
+        <Wrapper>
             <h2>Average Donor Age Group</h2>
             {state ? <Line
                 width={600}
@@ -164,7 +170,7 @@ const AgeGraph = ({statistics}) => {
                 data={state}
                 options={options}
             /> : null}
-        </div>)
+        </Wrapper>)
 }
 
 export default AgeGraph
