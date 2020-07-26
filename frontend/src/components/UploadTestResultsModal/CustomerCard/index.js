@@ -20,7 +20,7 @@ const CustomWhiteButton = styled(WhiteButton)`
   height: auto;
 `;
 
-const DownloadLink = styled.a``
+const UploadForm = styled.form``
 
 const CustomerBar = ({testID, customer: {id, pdf_result, last_name, first_name}, handleUpdateCustomers}) => {
     const [uploadedPDF, setUploadedPFD] = useState(null)
@@ -52,17 +52,19 @@ const CustomerBar = ({testID, customer: {id, pdf_result, last_name, first_name},
             <div>{`${first_name} ${last_name}`}</div>
             <div>
                 {pdf_result ?
-                    <>
+                    <UploadForm>
                         <UploadLabel htmlFor={first_name}>{uploadedPDF ? uploadedPDF.name : "CHANGE"}</UploadLabel>
                         <UploadInput type="file" onChange={PDFSelectHandler} id={first_name}/>
                         <DownloadButton href={pdf_result} target="_blank" download>DOWNLOAD</DownloadButton>
                         {uploadedPDF ? <CustomWhiteButton>SAVE</CustomWhiteButton> : null}
-                    </> :
-                    <>
+                    </UploadForm>
+                    :
+                    <UploadForm>
                         <UploadLabel htmlFor={first_name}>{uploadedPDF ? uploadedPDF.name : "UPLOAD"}</UploadLabel>
                         <UploadInput type="file" onChange={PDFSelectHandler} id={first_name}/>
                         {uploadedPDF ? <CustomWhiteButton onClick={handleUpload}>SAVE</CustomWhiteButton> : null}
-                    </>
+                    </UploadForm>
+
                 }
             </div>
         </Wrapper>
