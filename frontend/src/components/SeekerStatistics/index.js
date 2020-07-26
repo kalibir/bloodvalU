@@ -13,7 +13,7 @@ const getGenderData = (stats) => {
 }
 
 const SeekerStatistics = ({userProfileReducer: {statistics}, dispatch}) => {
-    console.log("statistics", statistics);
+
 
     const [state, setState] = useState({
         labels: [
@@ -35,15 +35,24 @@ const SeekerStatistics = ({userProfileReducer: {statistics}, dispatch}) => {
             ]
         }]
     });
+    console.log("state", state);
 
+    useEffect(() => {
+        dispatch(getMyStatisticsAction())
 
-    useEffect(async () => {
-        const response = await dispatch(getMyStatisticsAction())
-        if (response.status < 300) setState({...state, datasets: {data: getGenderData(response.data)}})
         // setInterval(() => {
         //     setState(getState());
         // }, 2000)
     }, [dispatch])
+
+    useEffect(() => {
+        if (statistics) {
+            console.log("we got stats!")
+            const newState = {...state}
+            newState.datasets[0].data = getGenderData(statistics)
+            setState(newState)
+        }
+    },[statistics])
 
 
     return (
