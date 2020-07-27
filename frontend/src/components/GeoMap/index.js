@@ -150,7 +150,7 @@ const GeoMap = ({
                 trackUserLocation={true}
             />
                 {profiles ? profiles.map((profile, index) => {
-                    if (profile.latitude) {
+                    if (profile.latitude && profile.no_of_requests) {
                         return (
                             <CustomMarker key={profile.id} latitude={profile.latitude} longitude={profile.longitude}>
                                 {profile.no_of_requests && !selectedSeeker ? <AlertWrapper>
