@@ -134,18 +134,12 @@ const ProfilePicPlaceholder = styled.div`
   }
 `;
 
-const SeekerCertificateBar = ({ profile: { name, phone, street, zip_code, email, logo } }) => {
-  const dispatch = useDispatch();
+const SeekerCertificateBar = ({ profile: { id, name, phone, street, zip_code, email, logo, is_valid }, handleVerifyCertificate }) => {
   const [showSeeker, setSeekerInfo] = useState(false);
-  const [verified, setVerified] = useState(false);
-
   const showSeekerHandler = (event) => {
     setSeekerInfo(!showSeeker);
   };
 
-  const handleVerifyCertificate = (e) => {
-    setVerified(!verified);
-  };
 
   return (
     <CertificateWrapper>
@@ -155,10 +149,10 @@ const SeekerCertificateBar = ({ profile: { name, phone, street, zip_code, email,
           <DownloadButton>Download Certificate</DownloadButton>
         </DownloadButtonWrapper>
         <ButtonWrapper>
-          {verified ? (
-            <RedButton onClick={handleVerifyCertificate}>Unverify</RedButton>
+          {is_valid ? (
+            <RedButton onClick={e => handleVerifyCertificate(e, id)}>Unverify</RedButton>
           ) : (
-            <BlueButton onClick={handleVerifyCertificate}>Verify</BlueButton>
+            <BlueButton onClick={e => handleVerifyCertificate(e, id)}>Verify</BlueButton>
           )}
         </ButtonWrapper>
         <BarArrowWrapper onClick={showSeekerHandler}>
