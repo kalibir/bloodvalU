@@ -2,7 +2,15 @@ import Axios from "../../axios";
 import {setLoggedInUser} from "./loginActions";
 import {userLogout} from "./logoutActions";
 import {resetError, setError} from "./errorActions";
-import {SET_ALL_PROFILES} from "../actionTypes";
+import {SET_ALL_PROFILES, SET_IS_LOGIN} from "../actionTypes";
+
+export const setIsLogin = (boolean) => {
+    return {
+        type: SET_IS_LOGIN,
+        payload: boolean,
+    };
+};
+
 
 
 export const getLoggedInUserAction = () => async (dispatch) => {

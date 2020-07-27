@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import {rem} from "polished";
 import {Link} from "react-router-dom";
@@ -11,6 +11,7 @@ import {WhiteButton} from "../../style/GlobalButtons";
 import {BloodValU} from "../../style/GlobalTitles";
 import {userLogout} from "../../store/actions/logoutActions";
 import {SeekerNavigation, DonorNavigation, device, AdminNavigation} from "../../style/Functions";
+import {setIsLogin} from "../../store/actions/userActions";
 
 const Wrapper = styled.div`
   padding-top: 72px; /* Needs to be exactly the same height as the Header, offsets content because it's fixed */
@@ -202,9 +203,10 @@ const FooterLinkTitle = styled.h2`
   text-decoration: none;
 `;
 
-const Navigation = ({children, authReducer: {authenticated, userObj}, dispatch}) => {
+const Navigation = ({children, authReducer: {authenticated, userObj, isLogin}, dispatch}) => {
     const {push} = useHistory();
     const handleClickLogo = (e) => {
+        dispatch(setIsLogin(true))
         push("/");
     };
 
@@ -214,7 +216,13 @@ const Navigation = ({children, authReducer: {authenticated, userObj}, dispatch})
     };
 
     const handClickLogin = () => {
+        dispatch(setIsLogin(false))
         push("/auth/login");
+    };
+
+    const handClickSignUp = () => {
+        dispatch(setIsLogin(true))
+        push("/");
     };
 
     return (
@@ -225,11 +233,15 @@ const Navigation = ({children, authReducer: {authenticated, userObj}, dispatch})
                         <BloodValU onClick={handleClickLogo} text="bloodval" black={24} red={36}/>
                     </NavLink>
                     {authenticated && userObj ?
-                        userObj.is_staff ?<> <AdminNavigation/> <HeaderButtonUser onClick={handleLogout}>Logout</HeaderButtonUser></>:
+                        userObj.is_staff ? <> <AdminNavigation/> <HeaderButtonUser
+                                onClick={handleLogout}>Logout</HeaderButtonUser></> :
                             (userObj.is_donor ?
-                                <><DonorNavigation email={userObj.email} first_name={userObj.first_name}/> <HeaderButtonUser onClick={handleLogout}>Logout</HeaderButtonUser></>:
-                                <><SeekerNavigation name={userObj.name}/> <HeaderButtonUser onClick={handleLogout}>Logout</HeaderButtonUser></>) : null}
-                    {!authenticated ? <HeaderButtonUser onClick={handClickLogin}>Login</HeaderButtonUser> : null}
+                                <><DonorNavigation email={userObj.email} first_name={userObj.first_name}/>
+                                    <HeaderButtonUser onClick={handleLogout}>Logout</HeaderButtonUser></> :
+                                <><SeekerNavigation name={userObj.name}/> <HeaderButtonUser
+                                    onClick={handleLogout}>Logout</HeaderButtonUser></>) : null}
+                    {!authenticated ? (isLogin ? <HeaderButtonUser onClick={handClickLogin}>Login</HeaderButtonUser> :
+                        <HeaderButtonUser onClick={handClickSignUp}>Sign Up</HeaderButtonUser> ): null}
 
                 </Header>
                 {children}
