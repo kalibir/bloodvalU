@@ -8,6 +8,8 @@ import {connect} from "react-redux";
 import {getAllSeekersAction} from "../../store/actions/userActions";
 import SeekerCertificateBar from "./CertificateBar";
 import {toggleVerifyAction} from "../../store/actions/adminActions";
+import Spinner from "../GenericSpinner";
+import {useHistory} from "react-router";
 
 const ColorDebug = false; //at true all element get colored background for checking
 
@@ -52,9 +54,11 @@ const SearchInput = styled(BigInput)`
   height: ${rem("40px")};
 `;
 
-const SearchButton = styled(DarkBlueButton)`
-  width: ${rem("96px")};
-  height: ${rem("40px")};
+const RefreshButton = styled(DarkBlueButton)`
+  width: auto;
+  height: auto;
+  padding: ${rem("5px")} ${rem("10px")};
+  border-radius: 20px;
 `;
 
 const FilterContainer = styled.div`
@@ -94,30 +98,32 @@ const CertificateContainer = styled.div`
 `;
 
 const AdminPage = ({dispatch, profilesReducer: {profiles}}) => {
-    const [showSeeker, setSeekerInfo] = useState(false);
-    const [active, setActive] = useState("requests");
-    const [verified, setVerified] = useState(false);
+    const [searchParams, setSearchParams] = useState("");
 
     useEffect(() => {
         dispatch(getAllSeekersAction());
     }, [dispatch]);
 
-    const [searchParams, setSearchParams] = useState("");
-
-    const handleSeekers = (e) => {
-        console.log("in the apply handler");
+    const handleRefresh = (event) => {
+        event.preventDefault();
         dispatch(getAllSeekersAction());
     };
 
-    const handleSearch = (event) => {
-        dispatch(getAllSeekersAction(searchParams, active));
-        setSearchParams("");
-    };
-
     const handleSearchInput = (e) => {
-        const value = e.currentTarget.value;
+        e.preventDefault();
+        const value = e.currentTarget.value.toLowerCase();
         setSearchParams(value);
     };
+
+    const handleCertificateDisplay = () => {
+        return profiles.map((profile, index) => {
+            if (profile.name.toLowerCase().includes(searchParams) || profile.zip_code.includes(searchParams) || profile.street.toLowerCase().includes(searchParams)) {
+                return <SeekerCertificateBar handleVerifyCertificate={handleVerifyCertificate} key={index}
+                                             profile={profile}/>;
+            }
+        })
+
+    }
 
     const handleVerifyCertificate = (e, seekerID) => {
         dispatch(toggleVerifyAction(seekerID))
@@ -129,7 +135,7 @@ const AdminPage = ({dispatch, profilesReducer: {profiles}}) => {
                     <AdminText>Admin Panel</AdminText>
                     <SearchContainer>
                         <SearchInput onChange={handleSearchInput} placeholder="Search..."/>
-                        <SearchButton onClick={handleSearch}>Search</SearchButton>
+                        <RefreshButton onClick={handleRefresh}>Refresh</RefreshButton>
                         <FilterContainer>
                             <FilterLabel>Sort by:</FilterLabel>
                             <FilterInput>
@@ -141,11 +147,7 @@ const AdminPage = ({dispatch, profilesReducer: {profiles}}) => {
                     </SearchContainer>
 
                     <CertificateContainer>
-                        {profiles
-                            ? profiles.map((profile, index) => {
-                                return <SeekerCertificateBar handleVerifyCertificate={handleVerifyCertificate} key={index} profile={profile}/>;
-                            })
-                            : null}
+                        {profiles? handleCertificateDisplay() : <Spinner/>}
                     </CertificateContainer>
                 </DashboardContentContainer>
             </PageWrapper>
