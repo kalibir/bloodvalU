@@ -50,6 +50,15 @@ const ButtonContainer = styled(InputPairContainer)`
   //background-color: rosybrown;
 `;
 
+const PasswordInput = styled(BigInput)`
+      :invalid{
+        border:1px solid #ea0000;
+      }
+     :not(placeholder-shown):invalid{
+      border:1px solid #ea0000;
+    }
+`
+
 const InputTitle = styled(SmallTitle)`
   margin-bottom: ${rem("8px")};
   font-weight: 500;
@@ -122,10 +131,11 @@ const CreateBaseUser = ({
               <Error>
                 <p>{error === "3" ? "Passwords do not match!" : null}</p>
               </Error>
-              <BigInput
+              <PasswordInput
                 title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                 type="password"
+                name="new-password"
                 placeholder="password"
                 onChange={(e) => onChangeHandler(e, "password")}
                 required
@@ -136,8 +146,10 @@ const CreateBaseUser = ({
           <InputPairContainer>
             <div>
               <InputTitle>Repeat password</InputTitle>
-              <BigInput
+              <PasswordInput
                 type="password"
+                name="new-password"
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                 placeholder="repeat password"
                 onChange={(e) => onChangeHandler(e, "password_repeat")}
                 required
@@ -153,6 +165,7 @@ const CreateBaseUser = ({
               </Error>
               <BigInput
                 type="text"
+                inputmode="numeric"
                 placeholder="12345"
                 onChange={(e) => onChangeHandler(e, "code")}
                 required

@@ -8,6 +8,7 @@ import {connect, useDispatch} from "react-redux";
 import {useHistory} from "react-router";
 import {setIsDonor} from "../../store/actions/registrationActions";
 import {setIsLogin} from "../../store/actions/userActions";
+import {device} from "../../style/Functions";
 
 const LandPageContainer = styled(PageContainer)`
   //background-color: lightcoral;
@@ -17,18 +18,34 @@ const LandPageContainer = styled(PageContainer)`
   align-items: center;
 `;
 
+const LogoWrapper = styled.div`
+  @media ${device.laptop} { 
+  }
+`
+
 const ContentWrapper = styled.div`
   //background-color: cadetblue;
   display: flex;
   flex-flow: column;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   width: calc(100% - 320px);
   margin-top: ${rem("104px")};
+    @media ${device.laptop} { 
+      width: auto;
+      margin-top: 0;
+      padding: ${rem("20px")};
+      justify-content: center;
+      align-items: center;
+  }
 `;
 
 const WelcomeText = styled.div`
   font-size: ${rem("16px")};
+  @media ${device.laptop} { 
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
   color: #505565;
   margin-top: ${rem("32px")};
   margin-bottom: ${rem("72px")};
@@ -38,7 +55,12 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: ${rem("736px")};
+  width: auto;
+  @media ${device.laptop} { 
+      flex-direction: column;
+      width: auto;
+      align-items: flex-start;
+  }
   //background-color: darkorange;
 `;
 // dispatch(setIsLogin(true))
@@ -64,7 +86,7 @@ const LandingPage = ({authReducer: {userObj, authenticated, isLogin}}) => {
     return (
         <LandPageContainer>
             <ContentWrapper>
-                <BloodValU text="Welcome to bloodval" black={32} red={48}/>
+                <LogoWrapper><BloodValU text="Welcome to bloodval" black={32} red={48}/></LogoWrapper>
                 <WelcomeText>Let’s start creating your profile. Are you interested in</WelcomeText>
                 <ButtonWrapper>
                     <ChooseRoleButton onClick={handleClick} id={"True"}>
