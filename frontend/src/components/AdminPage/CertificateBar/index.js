@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import React, {useEffect, useState} from "react";
+import styled, {keyframes} from "styled-components";
 import rem from "polished/lib/helpers/rem";
-import { BaseStatusButton } from "../../../style/GlobalButtons/";
-import { useDispatch } from "react-redux";
+import {BaseStatusButton} from "../../../style/GlobalButtons/";
+import {useDispatch} from "react-redux";
 
 const ColorDebug = false; //at true all element get colored background for checking
 
@@ -106,6 +106,10 @@ const CompanyName = styled.p`
   font-size: 18px;
 `;
 
+const DownloadLink = styled.a`
+  text-decoration: none;
+`
+
 const SeekerInfoBodyWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -134,58 +138,58 @@ const ProfilePicPlaceholder = styled.div`
   }
 `;
 
-const SeekerCertificateBar = ({ profile: { id, name, phone, street, zip_code, email, logo, is_valid }, handleVerifyCertificate }) => {
-  const [showSeeker, setSeekerInfo] = useState(false);
-  const showSeekerHandler = (event) => {
-    setSeekerInfo(!showSeeker);
-  };
+const SeekerCertificateBar = ({profile: {id, name, phone, certificate, street, zip_code, email, logo, is_valid}, handleVerifyCertificate}) => {
+    const [showSeeker, setSeekerInfo] = useState(false);
+    const showSeekerHandler = (event) => {
+        setSeekerInfo(!showSeeker);
+    };
 
 
-  return (
-    <CertificateWrapper>
-      <CertificateBar>
-        <TextWrapper onClick={showSeekerHandler}> {name} </TextWrapper>
-        <DownloadButtonWrapper>
-          <DownloadButton>Download Certificate</DownloadButton>
-        </DownloadButtonWrapper>
-        <ButtonWrapper>
-          {is_valid ? (
-            <RedButton onClick={e => handleVerifyCertificate(e, id)}>Unverify</RedButton>
-          ) : (
-            <BlueButton onClick={e => handleVerifyCertificate(e, id)}>Verify</BlueButton>
-          )}
-        </ButtonWrapper>
-        <BarArrowWrapper onClick={showSeekerHandler}>
-          <BarArrowRight
-            style={showSeeker ? { transform: "rotate(45deg)" } : { transform: "rotate(-45deg)" }}
-          />
-        </BarArrowWrapper>
-      </CertificateBar>
-      {showSeeker ? (
-        <>
-          <SeekerInfo>
-            <SeekerInfoHeader>
-              <CompanyName>{name}</CompanyName>
-            </SeekerInfoHeader>
-            <SeekerInfoBodyWrapper>
-              <SeekerInfoBody>
-                <SeekerInfoBodyLine>Phone: {phone}</SeekerInfoBodyLine>
-                <SeekerInfoBodyLine>Address: {street}</SeekerInfoBodyLine>
-                <SeekerInfoBodyLine>Zip Code: {zip_code}</SeekerInfoBodyLine>
-              </SeekerInfoBody>
-              <SeekerInfoBody>
-                <SeekerInfoBodyLine>Address: {street}</SeekerInfoBodyLine>
-                <SeekerInfoBodyLine>E-mail: {email}</SeekerInfoBodyLine>
-              </SeekerInfoBody>
-              <ProfilePicPlaceholder>
-                <img src={logo} />
-              </ProfilePicPlaceholder>
-            </SeekerInfoBodyWrapper>
-          </SeekerInfo>
-        </>
-      ) : null}
-    </CertificateWrapper>
-  );
+    return (
+        <CertificateWrapper>
+            <CertificateBar>
+                <TextWrapper onClick={showSeekerHandler}> {name} </TextWrapper>
+                <DownloadButtonWrapper>
+                    <DownloadLink href={certificate} target="_blank" download><DownloadButton>Download Certificate</DownloadButton></DownloadLink>
+                </DownloadButtonWrapper>
+                <ButtonWrapper>
+                    {is_valid ? (
+                        <RedButton onClick={e => handleVerifyCertificate(e, id)}>Unverify</RedButton>
+                    ) : (
+                        <BlueButton onClick={e => handleVerifyCertificate(e, id)}>Verify</BlueButton>
+                    )}
+                </ButtonWrapper>
+                <BarArrowWrapper onClick={showSeekerHandler}>
+                    <BarArrowRight
+                        style={showSeeker ? {transform: "rotate(45deg)"} : {transform: "rotate(-45deg)"}}
+                    />
+                </BarArrowWrapper>
+            </CertificateBar>
+            {showSeeker ? (
+                <>
+                    <SeekerInfo>
+                        <SeekerInfoHeader>
+                            <CompanyName>{name}</CompanyName>
+                        </SeekerInfoHeader>
+                        <SeekerInfoBodyWrapper>
+                            <SeekerInfoBody>
+                                <SeekerInfoBodyLine>Phone: {phone}</SeekerInfoBodyLine>
+                                <SeekerInfoBodyLine>Address: {street}</SeekerInfoBodyLine>
+                                <SeekerInfoBodyLine>Zip Code: {zip_code}</SeekerInfoBodyLine>
+                            </SeekerInfoBody>
+                            <SeekerInfoBody>
+                                <SeekerInfoBodyLine>Address: {street}</SeekerInfoBodyLine>
+                                <SeekerInfoBodyLine>E-mail: {email}</SeekerInfoBodyLine>
+                            </SeekerInfoBody>
+                            <ProfilePicPlaceholder>
+                                <img src={logo}/>
+                            </ProfilePicPlaceholder>
+                        </SeekerInfoBodyWrapper>
+                    </SeekerInfo>
+                </>
+            ) : null}
+        </CertificateWrapper>
+    );
 };
 
 export default SeekerCertificateBar;

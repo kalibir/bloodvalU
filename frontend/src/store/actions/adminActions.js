@@ -1,9 +1,19 @@
 import Axios from "../../axios";
+import {UPDATE_PROFILE_IN_ALL_PROFILES} from "../actionTypes";
 
 
-export const toggleVerifyAction = (seekerID) => async () => {
+export const updateProfileInAll = (profileObj) => {
+    return {
+        type: UPDATE_PROFILE_IN_ALL_PROFILES,
+        payload: profileObj
+    }
+}
+
+export const toggleVerifyAction = (seekerID) => async (dispatch) => {
     try {
-        return await Axios.post(`seeker/verify/${seekerID}/`);
+        const response =  await Axios.post(`seeker/verify/${seekerID}/`);
+        dispatch(updateProfileInAll(response.data))
+        return response
     } catch (error) {
         console.log("error", error.response)
         return error
