@@ -10,6 +10,7 @@ import {sendLoginAction} from "../../../store/actions/loginActions";
 import {useHistory} from "react-router";
 import {resetError} from "../../../store/actions/errorActions";
 import {Link} from "react-router-dom";
+import {setIsLogin} from "../../../store/actions/userActions";
 
 const PageWrapper = styled(PageContainer)`
     height: 78.2vh;
@@ -57,13 +58,17 @@ const Error = styled(ErrorPlaceholder)`
 
 
 const Login = ({errorReducer: {error}, authReducer: {authenticated, userObj}}) => {
-    // const {authReducer} = props;
+
     const {push} = useHistory();
     const dispatch = useDispatch();
     const [loginInfo, setloginInfo] = useState({
         email: "",
         password: "",
     });
+
+    useEffect(()=> {
+        dispatch(setIsLogin(false))
+    }, [])
 
     useEffect(() => {
         if (authenticated && userObj && userObj.is_donor) push("/dashboard/donor")

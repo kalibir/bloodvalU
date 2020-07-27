@@ -45,4 +45,5 @@ class SeekerProfileSerializer(serializers.ModelSerializer):
                   'no_of_closed',
                   'no_of_open',
                   'phone',
+                  'created',
                   'logo']

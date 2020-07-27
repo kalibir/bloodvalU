@@ -7,6 +7,7 @@ export const SET_EMAIL = "SET_EMAIL";
 
 export const USER_LOGIN = "USER_LOGIN";
 export const SET_LOGGED_IN_USER = "SET_LOGGED_IN_USER";
+export const SET_IS_LOGIN = "SET_IS_LOGIN";
 
 // Logout types
 

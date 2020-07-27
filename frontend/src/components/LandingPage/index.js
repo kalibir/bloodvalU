@@ -7,6 +7,7 @@ import {ChooseRoleButton} from "../../style/GlobalButtons";
 import {connect, useDispatch} from "react-redux";
 import {useHistory} from "react-router";
 import {setIsDonor} from "../../store/actions/registrationActions";
+import {setIsLogin} from "../../store/actions/userActions";
 
 const LandPageContainer = styled(PageContainer)`
   //background-color: lightcoral;
@@ -40,10 +41,13 @@ const ButtonWrapper = styled.div`
   width: ${rem("736px")};
   //background-color: darkorange;
 `;
-
-const LandingPage = ({authReducer: {userObj, authenticated}}) => {
+// dispatch(setIsLogin(true))
+const LandingPage = ({authReducer: {userObj, authenticated, isLogin}}) => {
     const dispatch = useDispatch();
     const {push} = useHistory();
+    useEffect(()=> {
+        dispatch(setIsLogin(true))
+    }, [])
     useEffect(() => {
         if (authenticated) {
             userObj.is_donor ? push("/dashboard/donor") : push("/dashboard/seeker")
