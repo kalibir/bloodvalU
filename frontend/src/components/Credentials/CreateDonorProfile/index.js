@@ -14,28 +14,22 @@ const FormWrapper = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  min-width: 350px;
+  width: fit-content;
   height: 100%;
-  //background-color: darkorange;
-`;
-
-const FormContainer = styled.div`
-  display: flex;
-  flex-flow: column;
-  //background-color: burlywood;
+   justify-content: space-evenly;
 `;
 
 const InputPairContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${rem("24px")};
   width: ${rem("352px")};
 `;
 
 const TitleContainer = styled(InputPairContainer)`
   justify-content: flex-start;
-  margin-top: ${rem("48px")};
+  // margin-top: ${rem("48px")};
 `;
 
 const MiddleTitle500 = styled(MiddleTitle)`
@@ -91,6 +85,12 @@ const ChooseFileButton = styled.label`
   align-items: center;
   justify-content: center;
 `;
+
+const InputDiv = styled.div`
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+`
 
 const WhiteButtonWithMargin = styled(WhiteButton)`
   margin-right: ${rem("16px")};
@@ -151,127 +151,125 @@ const CreateDonorProfile = (props) => {
 
     return (
         <PageContainer>
-            <FormWrapper onSubmit={handleSubmit}>
-                <FormContainer>
-                    <TitleContainer>
-                        <MiddleTitle500>Create an Account</MiddleTitle500>
-                    </TitleContainer>
+            <FormWrapper name={"form"} onSubmit={handleSubmit}>
+                <TitleContainer>
+                    <MiddleTitle500>Create an Account</MiddleTitle500>
+                </TitleContainer>
 
-                    <InputPairContainer>
-                        <div>
-                            <InputTitle>First Name</InputTitle>
-                            <SmallInput
-                                type="text"
-                                placeholder="Sherlock"
-                                onChange={(e) => onChangeHandler(e, "first_name")}
-                                required
-                            />
-                        </div>
+                <InputPairContainer>
+                    <InputDiv>
+                        <InputTitle>First Name</InputTitle>
+                        <SmallInput
+                            type="text"
+                            placeholder="Sherlock"
+                            onChange={(e) => onChangeHandler(e, "first_name")}
+                            required
+                        />
+                    </InputDiv>
 
-                        <div>
-                            <InputTitle>Last Name</InputTitle>
-                            <SmallInput
-                                type="text"
-                                placeholder="Holmes"
-                                onChange={(e) => onChangeHandler(e, "last_name")}
-                                required
-                            />
-                        </div>
-                    </InputPairContainer>
+                    <InputDiv>
+                        <InputTitle>Last Name</InputTitle>
+                        <SmallInput
+                            type="text"
+                            placeholder="Holmes"
+                            onChange={(e) => onChangeHandler(e, "last_name")}
+                            required
+                        />
+                    </InputDiv>
+                </InputPairContainer>
 
-                    <InputPairContainer>
-                        <div>
-                            <InputTitle>Gender</InputTitle>
-                            <Select onChange={(e) => onChangeHandler(e, "gender")} required>
-                                <option value="M">male</option>
-                                <option value="F">female</option>
-                                <option value="O">other</option>
-                            </Select>
-                        </div>
+                <InputPairContainer>
+                    <InputDiv>
+                        <InputTitle>Gender</InputTitle>
+                        <Select onChange={(e) => onChangeHandler(e, "gender")} required>
+                            <option value="M">male</option>
+                            <option value="F">female</option>
+                            <option value="O">other</option>
+                        </Select>
+                    </InputDiv>
 
-                        <div>
-                            <InputTitle>Birthday</InputTitle>
-                            <SmallInput
-                                type="date"
-                                onChange={(e) => onChangeHandler(e, "birthday")}
-                                max="2002-07-22"
-                                required
-                            />
-                        </div>
-                    </InputPairContainer>
+                    <InputDiv>
+                        <InputTitle>Birthday</InputTitle>
+                        <SmallInput
+                            type="date"
+                            onChange={(e) => onChangeHandler(e, "birthday")}
+                            max="2002-07-22"
+                            required
+                        />
+                    </InputDiv>
+                </InputPairContainer>
 
-                    <InputPairContainer>
-                        <div>
-                            <InputTitle>Blood Group</InputTitle>
-                            <Select onChange={(e) => onChangeHandler(e, "blood_group")} required>
-                                <option value="O-">O-</option>
-                                <option value="O+">O+</option>
-                                <option value="A-">A-</option>
-                                <option value="A+">A+</option>
-                                <option value="B-">B-</option>
-                                <option value="B+">B+</option>
-                                <option value="AB-">AB-</option>
-                                <option value="AB+">AB+</option>
-                            </Select>
-                        </div>
+                <InputPairContainer>
+                    <InputDiv>
+                        <InputTitle>Blood Group</InputTitle>
+                        <Select onChange={(e) => onChangeHandler(e, "blood_group")} required>
+                            <option value="O-">O-</option>
+                            <option value="O+">O+</option>
+                            <option value="A-">A-</option>
+                            <option value="A+">A+</option>
+                            <option value="B-">B-</option>
+                            <option value="B+">B+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="AB+">AB+</option>
+                        </Select>
+                    </InputDiv>
 
-                        <div>
-                            <InputTitle>Phone Number</InputTitle>
-                            <SmallInput
-                                type="text"
-                                placeholder="044 123 45 67"
-                                onChange={(e) => onChangeHandler(e, "phone")}
-                                required
-                            />
-                        </div>
-                    </InputPairContainer>
+                    <InputDiv>
+                        <InputTitle>Phone Number</InputTitle>
+                        <SmallInput
+                            type="text"
+                            placeholder="044 123 45 67"
+                            onChange={(e) => onChangeHandler(e, "phone")}
+                            required
+                        />
+                    </InputDiv>
+                </InputPairContainer>
 
-                    <InputPairContainer>
-                        <FullWidthInputContainer>
-                            <InputTitle>Address</InputTitle>
-                            <AddressInput
-                                type="text"
-                                placeholder="Baker Street 7"
-                                onChange={(e) => onChangeHandler(e, "street")}
-                                required
-                            />
-                        </FullWidthInputContainer>
-                    </InputPairContainer>
+                <InputPairContainer>
+                    <FullWidthInputContainer>
+                        <InputTitle>Address</InputTitle>
+                        <AddressInput
+                            type="text"
+                            placeholder="Baker Street 7"
+                            onChange={(e) => onChangeHandler(e, "street")}
+                            required
+                        />
+                    </FullWidthInputContainer>
+                </InputPairContainer>
 
-                    <InputPairContainer>
-                        <div>
-                            <InputTitle>Zip code</InputTitle>
-                            <SmallInput
-                                type="text"
-                                placeholder="NW1 London"
-                                onChange={(e) => onChangeHandler(e, "zip_code")}
-                                required
-                            />
-                        </div>
+                <InputPairContainer>
+                    <InputDiv>
+                        <InputTitle>Zip code</InputTitle>
+                        <SmallInput
+                            type="text"
+                            placeholder="NW1 London"
+                            onChange={(e) => onChangeHandler(e, "zip_code")}
+                            required
+                        />
+                    </InputDiv>
 
-                        <div>
-                            <InputTitle>Country</InputTitle>
-                            <CountrySelect
-                                handleChange={(e) => onChangeHandler(e, "country")}
-                                required/>
-                        </div>
-                    </InputPairContainer>
-                    <ImgInput
-                        onChange={avatarSelectHandler}
-                        type="file"
-                        name="file"
-                        id="file"
-                        className="inputfile"
-                    />
-                    <ChooseFileButton className="file_btn" htmlFor="file">
-                        CHOOSE YOUR PROFILE PICTURE
-                    </ChooseFileButton>
+                    <InputDiv>
+                        <InputTitle>Country</InputTitle>
+                        <CountrySelect
+                            handleChange={(e) => onChangeHandler(e, "country")}
+                            required/>
+                    </InputDiv>
+                </InputPairContainer>
+                <ImgInput
+                    onChange={avatarSelectHandler}
+                    type="file"
+                    name="file"
+                    id="file"
+                    className="inputfile"
+                />
+                <ChooseFileButton className="file_btn" htmlFor="file">
+                    CHOOSE YOUR PROFILE PICTURE
+                </ChooseFileButton>
 
-                    <ButtonContainer>
-                        <WhiteButtonWithMargin>Back</WhiteButtonWithMargin>
-                        <DarkBlueButton>Register</DarkBlueButton>
-                    </ButtonContainer>
-                </FormContainer>
+                <ButtonContainer>
+                    <WhiteButtonWithMargin>Back</WhiteButtonWithMargin>
+                    <DarkBlueButton>Register</DarkBlueButton>
+                </ButtonContainer>
             </FormWrapper>
         </PageContainer>
     );

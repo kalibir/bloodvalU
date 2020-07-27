@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { rem } from "polished";
 
-export const SmallTitle = styled.h4`
+export const SmallTitle = styled.label`
     font-style: normal;
     font-weight: 600;
     font-size: 14px;
