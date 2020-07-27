@@ -30,7 +30,7 @@ const ToggleButton = () => {
     toggleActive(!active);
   };
   return (
-    <BtnContainer active={active} onClick={activeHandler}>
+    <BtnContainer active={active}>
       <ToggleBtn active={active}></ToggleBtn>
     </BtnContainer>
   );

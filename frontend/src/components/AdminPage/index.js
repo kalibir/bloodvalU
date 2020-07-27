@@ -1,15 +1,16 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
-import {PageContainer} from "../../style/GlobalWrappers";
-import {BigInput} from "../../style/GlobalInputs";
-import {DarkBlueButton} from "../../style/GlobalButtons";
-import {connect} from "react-redux";
-import {getAllSeekersAction} from "../../store/actions/userActions";
+import { PageContainer } from "../../style/GlobalWrappers";
+import { BigInput } from "../../style/GlobalInputs";
+import { DarkBlueButton } from "../../style/GlobalButtons";
+import { connect } from "react-redux";
+import { getAllSeekersAction } from "../../store/actions/userActions";
 import SeekerCertificateBar from "./CertificateBar";
-import {toggleVerifyAction} from "../../store/actions/adminActions";
+import { toggleVerifyAction } from "../../store/actions/adminActions";
 import Spinner from "../GenericSpinner";
-import {useHistory} from "react-router";
+import { useHistory } from "react-router";
+import ToggleButton from "../../components/ToggleButton";
 
 const ColorDebug = false; //at true all element get colored background for checking
 
@@ -72,96 +73,106 @@ const FilterLabel = styled.label`
   color: #121232;
 `;
 
-const FilterInput = styled.select`
-  background: #ffffff;
-  border: 1px solid #a1a4b1;
-  box-sizing: border-box;
-  border-radius: 4px;
-  width: ${rem("160px")};
-  height: ${rem("24px")};
-  outline: none;
-  padding-left: ${rem("16px")};
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 24px;
-  color: #232735;
-
-  &:focus {
-    outline: none;
-  }
-`;
-
 const CertificateContainer = styled.div`
   width: 100%;
   background-color: ${ColorDebug ? "lightslategrey" : ""};
 `;
 
-const AdminPage = ({dispatch, profilesReducer: {profiles}}) => {
-    const [searchParams, setSearchParams] = useState("");
+const AdminPage = ({ dispatch, profilesReducer: { profiles } }) => {
+  const [searchParams, setSearchParams] = useState("");
+  const [validity, setValidity] = useState(false);
 
-    useEffect(() => {
-        dispatch(getAllSeekersAction());
-    }, [dispatch]);
+  useEffect(() => {
+    dispatch(getAllSeekersAction());
+  }, [dispatch]);
 
-    const handleRefresh = (event) => {
-        event.preventDefault();
-        dispatch(getAllSeekersAction());
-    };
+  const handleRefresh = (event) => {
+    event.preventDefault();
+    dispatch(getAllSeekersAction());
+  };
 
-    const handleSearchInput = (e) => {
-        e.preventDefault();
-        const value = e.currentTarget.value.toLowerCase();
-        setSearchParams(value);
-    };
+  const handleSearchInput = (e) => {
+    e.preventDefault();
+    const value = e.currentTarget.value.toLowerCase();
+    setSearchParams(value);
+  };
 
-    const handleCertificateDisplay = () => {
-        return profiles.map((profile, index) => {
-            if (profile.name.toLowerCase().includes(searchParams) || profile.zip_code.includes(searchParams) || profile.street.toLowerCase().includes(searchParams)) {
-                return <SeekerCertificateBar handleVerifyCertificate={handleVerifyCertificate} key={index}
-                                             profile={profile}/>;
-            }
-        })
+  const validityHandler = (e) => {
+    console.log(validity, "clicked");
+    setValidity(!validity);
+  };
 
-    }
+  const handleCertificateDisplay = () => {
+    return profiles.map((profile, index) => {
+      if (
+        profile.name.toLowerCase().includes(searchParams) ||
+        profile.zip_code.includes(searchParams) ||
+        profile.street.toLowerCase().includes(searchParams)
+      ) {
+        return (
+          <SeekerCertificateBar
+            handleVerifyCertificate={handleVerifyCertificate}
+            key={index}
+            profile={profile}
+          />
+        );
+      }
+    });
+  };
 
-    const handleVerifyCertificate = (e, seekerID) => {
-        dispatch(toggleVerifyAction(seekerID))
-    };
-    return (
-        <PageContainer>
-            <PageWrapper>
-                <DashboardContentContainer>
-                    <AdminText>Admin Panel</AdminText>
-                    <SearchContainer>
-                        <SearchInput onChange={handleSearchInput} placeholder="Search..."/>
-                        <RefreshButton onClick={handleRefresh}>Refresh</RefreshButton>
-                        <FilterContainer>
-                            <FilterLabel>Sort by:</FilterLabel>
-                            <FilterInput>
-                                <option value="date">Date</option>
-                                <option value="valid">Valid</option>
-                                <option value="not_valid">Not Valid</option>
-                            </FilterInput>
-                        </FilterContainer>
-                    </SearchContainer>
+  const handleValidSeekerDisplay = () => {
+    return profiles.map((profile, index) => {
+      if (profile.is_valid) {
+        return (
+          <SeekerCertificateBar
+            handleVerifyCertificate={handleVerifyCertificate}
+            key={index}
+            profile={profile}
+          />
+        );
+      }
+    });
+  };
 
-                    <CertificateContainer>
-                        {profiles? handleCertificateDisplay() : <Spinner/>}
-                    </CertificateContainer>
-                </DashboardContentContainer>
-            </PageWrapper>
-        </PageContainer>
-    );
+  const handleVerifyCertificate = (e, seekerID) => {
+    dispatch(toggleVerifyAction(seekerID));
+  };
+  return (
+    <PageContainer>
+      <PageWrapper>
+        <DashboardContentContainer>
+          <AdminText>Admin Panel</AdminText>
+          <SearchContainer>
+            <SearchInput onChange={handleSearchInput} placeholder="Search..." />
+            <RefreshButton onClick={handleRefresh}>Refresh</RefreshButton>
+            <FilterContainer>
+              <FilterLabel>Toggle Valid</FilterLabel>
+              <ToggleButton onClick={validityHandler} />
+            </FilterContainer>
+          </SearchContainer>
+
+          <CertificateContainer>
+            {profiles ? (
+              handleCertificateDisplay()
+            ) : profiles && validity ? (
+              handleValidSeekerDisplay()
+            ) : (
+              <Spinner />
+            )}
+          </CertificateContainer>
+        </DashboardContentContainer>
+      </PageWrapper>
+    </PageContainer>
+  );
 };
 
 const mapStateToProps = (state) => {
-    console.log("state", state);
-    return {
-        userProfileReducer: state.userProfileReducer,
-        authReducer: state.authReducer,
-        profilesReducer: state.profilesReducer,
-    };
+  console.log("state", state);
+  return {
+    userProfileReducer: state.userProfileReducer,
+    authReducer: state.authReducer,
+    profilesReducer: state.profilesReducer,
+  };
 };
 
 export default connect(mapStateToProps)(AdminPage);
