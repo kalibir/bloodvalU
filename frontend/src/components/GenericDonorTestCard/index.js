@@ -114,6 +114,22 @@ const DownloadButton = styled(RedeemButton)`
       background-color: #c60f24;
       border: none;
 `
+const BuyButton = styled(SmallBlueButton)`
+      width: ${rem("56px")};
+      height: ${rem("28px")};
+      background: #000080;
+      border: 1px solid #000080;
+      :hover {
+        color: #000080;
+        background: #fff;
+        border: 1px solid #000080;
+      }
+      :active {
+        color: #000080;
+        background: #fff;
+        border: 1px solid #000080;
+  }
+`
 
 const GenericDonorTestCard = (props) => {
     const {test: {id, test_type, seeker, seeker_name, is_bought, points_cost, expiry_date, is_expired, results},} = props;
@@ -158,7 +174,7 @@ const GenericDonorTestCard = (props) => {
                         : is_bought ? is_expired ? <ExpiredText>Expired</ExpiredText> :
                             <RedeemButton onClick={handleBuy}>Re-send Code</RedeemButton> :
                             <>
-                                <SmallBlueButton onClick={handleBuy}>Buy</SmallBlueButton>
+                                <BuyButton onClick={handleBuy}>Buy</BuyButton>
                                 <PointContainer>{points_cost} Points</PointContainer>
                             </>
                     }

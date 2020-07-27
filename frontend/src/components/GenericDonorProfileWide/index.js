@@ -22,14 +22,15 @@ const UpperContainer = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    margin: ${rem("10px")};
 `;
 
 const ProfilePicPlaceholder = styled.div`
-    height: ${rem("160px")};
+    height: ${rem("150px")};
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
     img {
-        width: ${rem("160px")};
-        height: ${rem("160px")};
+        width: ${rem("150px")};
+        height: ${rem("150px")};
   }
 `;
 
@@ -63,7 +64,16 @@ const BottomContainer = styled.div`
     height: ${rem("315px")};
     display: flex;
     justify-content: center;
+    flex-direction: column;
 `;
+
+const ButtonContainer = styled.div`
+    height: ${rem("50px")};
+    width: ${rem("315px")};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
 
 const DetailTitlesContainer = styled.div`
     height: ${rem("328px")};
@@ -72,7 +82,7 @@ const DetailTitle = styled.p`
     font-style: normal;
     font-weight: 600;
     font-size: 14px;
-    line-height: 24px;
+    line-height: 22px;
     display: flex;
     align-items: center;
     color: #000000;
@@ -96,7 +106,7 @@ const Details = styled.div`
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
-    line-height: 24px;
+    line-height: 22px;
     display: flex;
     align-items: center;
     color: #4E4E5A;
@@ -180,11 +190,13 @@ const DonorProfileCardWide = ({
                         <Details>{email}</Details>
                     </Test>
                 </DetailTitlesContainer>
-
+                <ButtonContainer>
+                    <Link to={`/editdonor`}>
+                        <EditButton>Edit Profile</EditButton>
+                    </Link>
+                </ButtonContainer>
             </BottomContainer>
-            <Link to={`/editdonor`}>
-                <EditButton>Edit Profile</EditButton>
-            </Link>
+
             {/*<BottomContainer>*/}
             {/*    <DetailTitlesContainer>*/}
             {/*        <DetailTitle>Gender: </DetailTitle>*/}
