@@ -8,6 +8,7 @@ import {connect, useDispatch} from "react-redux";
 import {useHistory} from "react-router";
 import {setIsDonor} from "../../store/actions/registrationActions";
 import {setIsLogin} from "../../store/actions/userActions";
+import {device} from "../../style/Functions";
 
 const LandPageContainer = styled(PageContainer)`
   //background-color: lightcoral;
@@ -25,6 +26,9 @@ const ContentWrapper = styled.div`
   align-items: flex-start;
   width: calc(100% - 320px);
   margin-top: ${rem("104px")};
+    @media ${device.laptop} { 
+      width: auto;
+  }
 `;
 
 const WelcomeText = styled.div`
@@ -38,7 +42,12 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: ${rem("736px")};
+  width: auto;
+  @media ${device.laptop} { 
+      flex-direction: column;
+      width: auto;
+      align-items: flex-start;
+  }
   //background-color: darkorange;
 `;
 // dispatch(setIsLogin(true))
@@ -68,10 +77,10 @@ const LandingPage = ({authReducer: {userObj, authenticated, isLogin}}) => {
                 <WelcomeText>Let’s start creating your profile. Are you interested in</WelcomeText>
                 <ButtonWrapper>
                     <ChooseRoleButton onClick={handleClick} id={"True"}>
-                        Becoming a donor
+                        Become a donor
                     </ChooseRoleButton>
                     <ChooseRoleButton onClick={handleClick} id={"False"}>
-                        Becoming a recipient
+                        Become a recipient
                     </ChooseRoleButton>
                 </ButtonWrapper>
             </ContentWrapper>
