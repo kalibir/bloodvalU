@@ -45,9 +45,10 @@ const ButtonWrapper = styled.div`
 const LandingPage = ({authReducer: {userObj, authenticated, isLogin}}) => {
     const dispatch = useDispatch();
     const {push} = useHistory();
-    useEffect(()=> {
+    useEffect(() => {
         dispatch(setIsLogin(true))
     }, [])
+
     useEffect(() => {
         if (authenticated) {
             userObj.is_donor ? push("/dashboard/donor") : push("/dashboard/seeker")
