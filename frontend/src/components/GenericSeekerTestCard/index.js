@@ -25,8 +25,8 @@ const Text = styled.p`
   font-weight: 500;
   margin-top: 8px;
   margin-bottom: 8px;
-  font-size: 16px;
-  line-height: 22px;
+  font-size: 18px;
+  line-height: 25px;
   color: #121232;
 `;
 
@@ -44,19 +44,19 @@ const PointContainer = styled.span`
   color: #43a047;
   border: 1px solid #71b774;
   border-radius: 4px;
-  text-transform: uppercase;
+  //text-transform: uppercase;
 `;
 
 const TextContainer = styled.div`
   width: 80%;
   height: ${rem("42px")};
   margin-right: ${rem("17px")};
-  text-transform: capitalize;
+  //text-transform: capitalize;
 `;
 
 const BottomContainer = styled.div`
   height: ${rem("40px")};
-  width: ${rem("144px")};
+  width: ${rem("250px")};
   display: flex;
   justify-content: space-between;
 `;
@@ -68,7 +68,7 @@ const CardBlueButton = styled(SmallBlueButton)`
 `;
 
 const CardGreenButton = styled(SmallGreenButton)`
-    width: 60px;
+    width: 80px;
   height: 30px;
   font-size: 12px;
 `
@@ -123,7 +123,7 @@ const GenericSeekerTestCard = ({
             {showCustomersModal ? <UploadTestResultsModal handleCloseUploadResults={handleCloseUploadResults} test_type={test_type} testID={id}/>: null}
             <TextContainer>
                 <Text>{test_type}</Text>
-                <PointContainer>{points_cost}</PointContainer>
+                <PointContainer>{points_cost} pts</PointContainer>
             </TextContainer>
             <BottomContainer>
                 <CardGreenButton onClick={e => setShowCustomersModal(true)}>Customers</CardGreenButton>

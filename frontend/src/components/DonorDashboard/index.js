@@ -180,6 +180,11 @@ const UnderLine = styled.div`
 
 const OfferContainer = styled.div`
   width: 100%;
+  overflow: auto;
+  max-height: 550px;
+  height: inherit;
+  display: flex;
+  flex-wrap: wrap;
   
   justify-content: center;
   @media ${device.laptop} {
