@@ -16,7 +16,7 @@ class IsDonorOrReadOnly(BasePermission):
 
 
 class IsAdminOrReadOnly(BasePermission):
-    def has_object_permission(self, request, view, obj):
+    def has_permission(self, request, view):
         if request.method == 'GET':
             return True
         return request.user.is_staff

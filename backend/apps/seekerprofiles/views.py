@@ -79,5 +79,4 @@ class ToggleVerifySeekerView(CreateAPIView):
             target_seeker.save()
             return Response(self.get_serializer(target_seeker).data)
         else:
-            return Response({"detail": "This Seeker Does not exits"},
-                            status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "This Seeker Does not exist"}, status=status.HTTP_400_BAD_REQUEST)
