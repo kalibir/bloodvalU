@@ -56,7 +56,7 @@ const TextContainer = styled.div`
 
 const BottomContainer = styled.div`
   height: ${rem("40px")};
-  width: ${rem("144px")};
+  width: ${rem("250px")};
   display: flex;
   justify-content: space-between;
 `;
@@ -68,7 +68,7 @@ const CardBlueButton = styled(SmallBlueButton)`
 `;
 
 const CardGreenButton = styled(SmallGreenButton)`
-    width: 60px;
+    width: 80px;
   height: 30px;
   font-size: 12px;
 `

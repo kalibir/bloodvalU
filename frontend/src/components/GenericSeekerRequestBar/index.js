@@ -1,13 +1,13 @@
 import React from "react";
-import { useState } from "react";
-import styled, { keyframes } from "styled-components";
-import { BaseStatusButton, CompleteButton } from "../../style/GlobalButtons/";
-import { rem } from "polished";
-import { useDispatch } from "react-redux";
+import {useState} from "react";
+import styled, {keyframes} from "styled-components";
+import {BaseStatusButton, CompleteButton} from "../../style/GlobalButtons/";
+import {rem} from "polished";
+import {useDispatch} from "react-redux";
 import {
-  deleteRequestAction,
-  getApplicantsOfRequestAction,
-  markRequestAsCompleteAction,
+    deleteRequestAction,
+    getApplicantsOfRequestAction,
+    markRequestAsCompleteAction,
 } from "../../store/actions/bloodRequestActions";
 import AreYouSureModal from "../AreYouSure";
 
@@ -117,120 +117,124 @@ const DonorNotSelected = styled(DonorSubBar)`
 `;
 
 const GenericSeekerRequestBar = ({
-  handleShowEditModal,
-  handleDeleteRequest,
-  handleSetActiveRequest,
-  handleSetActiveProfile,
-  request,
-}) => {
-  const dispatch = useDispatch();
+                                     handleShowEditModal,
+                                     handleSetActiveRequest,
+                                     handleSetActiveProfile,
+                                     request,
+                                 }) => {
+    const dispatch = useDispatch();
 
-  const [applicantsData, setApplicantsData] = useState({
-    showApplicants: false,
-    applicants: null,
-  });
-  const [sureModal, setSureModal] = useState(false);
-  const [openArrow, setOpenArrow] = useState(false);
-
-  // const handleDeleteRequest = (event, requestID) => {
-  //   dispatch(deleteRequestAction(requestID));
-  // };
-
-  const handleRenderApplicants = async (e) => {
-    const response = await dispatch(getApplicantsOfRequestAction(request.id));
-    handleSetActiveRequest(request);
-    setApplicantsData({
-      ...applicantsData,
-      applicants: response.data,
-      showApplicants: !applicantsData.showApplicants,
+    const [applicantsData, setApplicantsData] = useState({
+        showApplicants: false,
+        applicants: null,
     });
-    setOpenArrow(!openArrow)
-  };
+    const [sureModal, setSureModal] = useState(false);
+    const [openArrow, setOpenArrow] = useState(false);
+
+    // const handleDeleteRequest = (event, requestID) => {
+    //   dispatch(deleteRequestAction(requestID));
+    // };
+
+    const handleRenderApplicants = async (e) => {
+        const response = await dispatch(getApplicantsOfRequestAction(request.id));
+        handleSetActiveRequest(request);
+        setApplicantsData({
+            ...applicantsData,
+            applicants: response.data,
+            showApplicants: !applicantsData.showApplicants,
+        });
+        setOpenArrow(!openArrow)
+    };
+
+    const closeModal = () => {
+        setSureModal(false);
+    };
+
+    const handleClickApplicant = (e) => {
+        const index = Number(e.currentTarget.id);
+        const targetProfile = applicantsData.applicants[index];
+        handleSetActiveProfile(targetProfile);
+        // handleSetActiveRequest(request)
+    };
+
+    const handleDeleteRequest = async (e, requestID) => {
+        e.preventDefault();
+        const response = await dispatch(deleteRequestAction(requestID));
+        if (response.status < 300) closeModal();
+    };
+
+    const handleCompleteRequest = async (e) => {
+        e.preventDefault();
+        const response = dispatch(markRequestAsCompleteAction(request.id));
+        if (response.status < 300) closeModal();
+    };
 
 
-  const handleClickApplicant = (e) => {
-    const index = Number(e.currentTarget.id);
-    const targetProfile = applicantsData.applicants[index];
-    handleSetActiveProfile(targetProfile);
-    // handleSetActiveRequest(request)
-  };
+    return (
+        <BarWrapper>
+            {sureModal ? (
+                <AreYouSureModal
+                    handleDeleteRequest={handleDeleteRequest}
+                    closeModal={closeModal}
+                    id={request.id}
+                    context={"request"}
+                />
+            ) : null}
+            <RequestBar>
+                <TextWrapper> Request {request.id}</TextWrapper>
+                <IconWrapper>
+                    <IconButton onClick={(e) => setSureModal(true)}>&#10006;</IconButton>
+                    <IconButton onClick={(e) => handleShowEditModal(e, request)}>&#9998;</IconButton>
+                </IconWrapper>
+                <ButtonWrapper>
+                    {request.status === "OP" ? (
+                        <BlueButton>Open</BlueButton>
+                    ) : request.status === "CL" ? (
+                        <CompleteButton onClick={handleCompleteRequest}>Mark As Complete</CompleteButton>
+                    ) : (
+                        <CompleteButton>Completed</CompleteButton>
+                    )}
+                </ButtonWrapper>
+                {request.no_of_applicants ? (
+                    <ArrowWrapper onClick={handleRenderApplicants}>
+                        <BarArrowRight/>
+                    </ArrowWrapper>
+                ) : (
+                    <EmptyArrowWrapper/>
+                )}
+            </RequestBar>
 
-  const handleCompleteRequest = async (e) => {
-    e.preventDefault();
-    const response = dispatch(markRequestAsCompleteAction(request.id));
-     if (response.status < 300) closeModal();
-  };
+            {applicantsData.applicants && openArrow
+                ? applicantsData.applicants.map((applicant, index) => {
 
-  const closeModal = () => {
-    setSureModal(false);
-  };
+                    if (request.selected_donor && request.selected_donor.id === applicant.id) {
+                        return (
+                            <DonorSelectedBar
+                                name={"selectbar"}
+                                onClick={handleClickApplicant}
+                                key={index}
+                                id={index}
+                                active={
+                                    false
+                                }>{`${applicant.first_name} ${applicant.last_name}`}</DonorSelectedBar>
+                        );
+                    }
 
-
-  return (
-    <BarWrapper>
-      {sureModal ? (
-        <AreYouSureModal
-          handleDeleteRequest={handleDeleteRequest}
-          closeModal={closeModal}
-          id={request.id}
-          context={"request"}
-        />
-      ) : null}
-      <RequestBar>
-        <TextWrapper> Request {request.id}</TextWrapper>
-        <IconWrapper>
-          <IconButton onClick={(e) => setSureModal(true)}>&#10006;</IconButton>
-          <IconButton onClick={(e) => handleShowEditModal(e, request)}>&#9998;</IconButton>
-        </IconWrapper>
-        <ButtonWrapper>
-          {request.status === "OP" ? (
-            <BlueButton>Open</BlueButton>
-          ) : request.status === "CL" ? (
-            <CompleteButton onClick={handleCompleteRequest}>Mark As Complete</CompleteButton>
-          ) : (
-            <CompleteButton>Completed</CompleteButton>
-          )}
-        </ButtonWrapper>
-        {request.no_of_applicants ? (
-          <ArrowWrapper onClick={handleRenderApplicants}>
-            <BarArrowRight />
-          </ArrowWrapper>
-        ) : (
-          <EmptyArrowWrapper />
-        )}
-      </RequestBar>
-
-      {applicantsData.applicants && openArrow
-        ? applicantsData.applicants.map((applicant, index) => {
-
-              if (request.selected_donor && request.selected_donor.id === applicant.id) {
-                return (
-                  <DonorSelectedBar
-                    name={"selectbar"}
-                    onClick={handleClickApplicant}
-                    key={index}
-                    id={index}
-                    active={
-                      false
-                    }>{`${applicant.first_name} ${applicant.last_name}`}</DonorSelectedBar>
-                );
-              }
-
-            return (
-              // <SlidingContainer>
-                <DonorSubBar
-                  name={"selectbar2"}
-                  onClick={request.status === "COM" ? null : handleClickApplicant}
-                  key={index}
-                  id={index}
-                  active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSubBar>
-              // </SlidingContainer>
-            );
-          })
-        : applicantsData.applicants && !openArrow ? null
-      : null}
-    </BarWrapper>
-  );
+                    return (
+                        // <SlidingContainer>
+                        <DonorSubBar
+                            name={"selectbar2"}
+                            onClick={request.status === "COM" ? null : handleClickApplicant}
+                            key={index}
+                            id={index}
+                            active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSubBar>
+                        // </SlidingContainer>
+                    );
+                })
+                : applicantsData.applicants && !openArrow ? null
+                    : null}
+        </BarWrapper>
+    );
 };
 
 export default GenericSeekerRequestBar;
