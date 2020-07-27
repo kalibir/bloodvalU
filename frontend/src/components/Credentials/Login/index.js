@@ -93,7 +93,9 @@ const Login = ({errorReducer: {error}, authReducer: {authenticated, userObj}}) =
         const response = await dispatch(sendLoginAction(loginInfo));
         if (response.status < 300) {
             const profile = response.data.profile
-            if (profile.is_donor) {
+            if (profile.is_staff) {
+                push("/admin")
+            } else if (profile.is_donor) {
                 profile.first_name === "" ?
                     push("/auth/signup/donor-profile/")
                     : push("/dashboard/donor")
