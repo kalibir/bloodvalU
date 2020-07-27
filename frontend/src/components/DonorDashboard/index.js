@@ -290,7 +290,7 @@ const DonorDashboard = ({
                                 {requests ? (
                                     requests.map((request, index) => {
                                         if (userObj && bloodGroupTest(userObj.blood_group, request))
-                                            return <Fade left cascade><GenericDonorRequestBar key={index} request={request}/></Fade>;
+                                            return <GenericDonorRequestBar key={index} request={request}/>;
                                     })
                                 ) : (
                                     <SpinnerContainer>

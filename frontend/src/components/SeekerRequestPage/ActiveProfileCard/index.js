@@ -6,6 +6,11 @@ import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
 import {DarkBlueButton, WhiteButton} from "../../../style/GlobalButtons";
 import ButtonSpinner from "../../ButtonSpinner";
+import Flip from 'react-reveal/Flip';
+import Tada from 'react-reveal/Tada';
+import Fade from 'react-reveal/Fade';
+import Zoom from 'react-reveal/Zoom';
+import Rotate from 'react-reveal/Rotate';
 
 const ProfileWrapper = styled.div`
   width: ${rem("544px")};
@@ -159,6 +164,7 @@ const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant,
 
 
     return (
+        <Fade>
         <ProfileWrapper>
                         <UpperContainer>
                             <BigTitle>donor profile</BigTitle>
@@ -187,7 +193,7 @@ const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant,
                                 <DetailTitle>Email:</DetailTitle>
                             </DetailTitlesContainer>
                             <DetailsContainer>
-                                <Details>{activeProfile ? activeProfile.gender : null}</Details>
+                                <Details>{activeProfile ? activeProfile.gender === "M" ? "Male" : activeProfile.gender === "F" ? "Female" : "Other" : null}</Details>
                                 <Details>{activeProfile ? activeProfile.birthday : null}</Details>
                                 <Details>
                                     {activeProfile ? activeProfile.zip_code : null}<br/> {activeProfile ? activeProfile.city : null}
@@ -212,6 +218,7 @@ const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant,
                             }
                         </ButtonContainer>
                     </ProfileWrapper>
+        </Fade>
     )
 }
 
