@@ -3,12 +3,14 @@ from django.shortcuts import render
 
 # Create your views here.
 from rest_framework import status
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
+from apps.bloodrequests.permissions import IsAdminOrReadOnly
 from apps.bloodrequests.serializers import BloodRequestSerializer
 from apps.offeredtests.serializers import OfferedTestSerializer
+from apps.registrations.models import get_or_none
 from apps.seekerprofiles.models import SeekerProfile
 from apps.seekerprofiles.serializers import SeekerProfileSerializer
 
@@ -60,3 +62,22 @@ class ListAllOfferedTestOfLoggedInSeeker(ListAPIView):
             return Response(
                 {"detail": "Sorry, you must be a seeker to perform this request"},
                 status=status.HTTP_400_BAD_REQUEST)
+
+
+class ToggleVerifySeekerView(CreateAPIView):
+    """
+    POST:
+    Toggle making a seeker valid, ONLY ADMIN
+    """
+    permission_classes = [IsAdminOrReadOnly]
+    serializer_class = SeekerProfileSerializer
+
+    def post(self, request, *args, **kwargs):
+        target_seeker = get_or_none(SeekerProfile, id=self.kwargs['seeker_id'])
+        if target_seeker:
+            target_seeker.is_valid = not target_seeker.is_valid
+            target_seeker.save()
+            return Response(self.get_serializer(target_seeker).data)
+        else:
+            return Response({"detail": "This Seeker Does not exits"},
+                            status=status.HTTP_400_BAD_REQUEST)
