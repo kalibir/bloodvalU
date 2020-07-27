@@ -27,7 +27,6 @@ const CertificateBar = styled.div`
   border-bottom: 1px solid #d9d9d9;
   align-items: center;
   grid-gap: 8px;
-  cursor: pointer;
 `;
 
 const TextWrapper = styled.div`
@@ -41,11 +40,6 @@ const TextWrapper = styled.div`
 
 const DownloadButtonWrapper = styled.div`
   grid-area: download;
-`;
-
-const DownloadButton = styled(BaseStatusButton)`
-  background-color: #121232;
-  width: 175px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -66,12 +60,18 @@ const RedButton = styled(BaseStatusButton)`
 
 const BarArrowWrapper = styled(ButtonWrapper)`
   grid-area: arrow;
-  justify-self: end;
-  margin-right: 24px;
+align-items: center;
+justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
 `;
 
 const BarArrowRight = styled.i`
   border: solid #757575;
+  margin-right: 15px;
+  width: 5px;
+  height: 5px;
   border-width: 0 3px 3px 0;
   display: inline-block;
   padding: 3px;
@@ -106,9 +106,17 @@ const CompanyName = styled.p`
   font-size: 18px;
 `;
 
-const DownloadLink = styled.a`
+const DownloadButton = styled.a`
+  border: none;
+  padding: ${rem("6px")} ${rem("10px")};
+  border-radius: 87px;
+  font-size: 12px;
   text-decoration: none;
-`
+  cursor: pointer;
+  color: white;
+  background-color: #121232;
+
+`;
 
 const SeekerInfoBodyWrapper = styled.div`
   width: 100%;
@@ -143,6 +151,7 @@ const SeekerCertificateBar = ({profile: {id, name, phone, certificate, street, z
     const showSeekerHandler = (event) => {
         setSeekerInfo(!showSeeker);
     };
+    console.log("profile", certificate)
 
 
     return (
@@ -150,7 +159,7 @@ const SeekerCertificateBar = ({profile: {id, name, phone, certificate, street, z
             <CertificateBar>
                 <TextWrapper onClick={showSeekerHandler}> {name} </TextWrapper>
                 <DownloadButtonWrapper>
-                    <DownloadLink href={certificate} target="_blank" download><DownloadButton>Download Certificate</DownloadButton></DownloadLink>
+                    {certificate ? <DownloadButton href={certificate} target="_blank" download>Download Certificate</DownloadButton>: null}
                 </DownloadButtonWrapper>
                 <ButtonWrapper>
                     {is_valid ? (
