@@ -14,6 +14,7 @@ import AreYouSureModal from "../AreYouSure";
 const BarWrapper = styled.div`
   width: 100%;
 `;
+
 const RequestBar = styled.div`
   display: grid;
   width: 100%;
@@ -23,7 +24,6 @@ const RequestBar = styled.div`
   background-color: #ffffff;
   border-bottom: 1px solid #d9d9d9;
   align-items: center;
-  justify-items: auto;
   grid-gap: 8px;
   cursor: pointer;
 `;
@@ -33,21 +33,43 @@ const TextWrapper = styled.div`
   height: 100%;
   grid-area: text;
   align-items: center;
-  //background-color: lightgreen;
+  background-color: lightgreen;
 `;
 
 const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
   grid-area: button;
 `;
 
 const IconWrapper = styled(ButtonWrapper)`
   grid-area: edit;
-  //width: 100px;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  //background-color: orangered;
+  background-color: orangered;
 `;
+
+const UrgentWrapper = styled.div`
+  grid-area: urgent;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: darkgrey;
+`
+const BloodDiv = styled(UrgentWrapper)`
+  grid-area: blood;
+  display: flex;
+  width: 100%;
+  background-color: deepskyblue;
+`
+const RenewWrapper = styled(UrgentWrapper)`
+  grid-area: renew;
+  display: flex;
+  width: 100%;
+  background-color: darkolivegreen;
+`
 
 const BlueButton = styled(BaseStatusButton)`
   background-color: #2196f3;
@@ -59,8 +81,6 @@ const IconButton = styled.button`
   margin-right: 8px;
   width: 30px;
   border-radius: 50%;
-  //background-color: black;
-  //color: white;
   background-color: white;
   color: #2196f3;
   cursor: pointer;
@@ -85,9 +105,6 @@ const IconButton2 = styled(IconButton)`
 `;
 
 const ArrowWrapper = styled.div`
-  //grid-area: arrow;
-  //justify-self: end;
-  //margin-right: 24px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -96,7 +113,7 @@ const ArrowWrapper = styled.div`
   margin-right: 24px;
   width: 100%;
   height: 100%;
-  //background-color: darksalmon;
+  background-color: darksalmon;
 `;
 
 const EmptyArrowWrapper = styled.div`
@@ -222,6 +239,10 @@ const GenericSeekerRequestBar = ({
             <CompleteButton>Completed</CompleteButton>
           )}
         </ButtonWrapper>
+
+        <UrgentWrapper></UrgentWrapper>
+        <BloodDiv></BloodDiv>
+        <RenewWrapper></RenewWrapper>
 
         {request.no_of_applicants ? (
           <ArrowWrapper onClick={handleRenderApplicants}>
