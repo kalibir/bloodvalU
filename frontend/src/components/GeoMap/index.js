@@ -69,21 +69,22 @@ const AlertWrapper = styled.div`
   animation: ${rotate} 2s linear infinite;
 `
 
-const MapCover = styled.div`
-  background-color: darkred;
-  position: fixed;
-  z-index: 999;
-  width: 100%;
-  height: 80%;
-`
 const FlyTo = styled.button`
-  padding: 2rem;
-  display: flex;
-  color: white;
-  
+  padding: 1rem;
+  color: #730000;
+  z-index: 999;
+  //font-weight: bold;
+  font-size: 2rem;
+
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
   position: fixed;
+  :hover {
+    border: 1px solid #730000;
+  }
   top: 50%;
-  left: 50%;
 `
 
 const GeoMap = ({
@@ -91,7 +92,6 @@ const GeoMap = ({
                     profilesReducer: {profiles},
                     authReducer: {userObj},
                 }) => {
-    const [showCover, setShowCover] = useState(true)
     const [viewPort, setViewport] = useState({
         latitude: 47.36667,
         longitude: 8.55,
@@ -103,20 +103,22 @@ const GeoMap = ({
     const [selectedSeeker, setSelectedSeeker] = useState(null)
 
 
-    const handleFly = e => {
-        e.preventDefault()
+    const handleFly = () => {
         const newViewport = {
             ...viewPort,
             latitude: 47.36667,
             longitude: 8.55,
-            zoom: 12,
+            zoom: 10,
             transitionDuration: 2000,
             transitionInterpolator: new FlyToInterpolator(),
         };
         setViewport(newViewport);
         dispatch(getAllSeekersAction())
-        setShowCover(!showCover)
     }
+
+    useEffect(() => {
+        handleFly()
+    }, [])
 
     const handleClosePopup = () => {
         setSelectedSeeker(null)
@@ -137,7 +139,6 @@ const GeoMap = ({
 
     return (
         <PageContainer>
-            {showCover ? <MapCover><FlyTo onClick={handleFly}>Discover</FlyTo></MapCover> : null}
             <ReactMapGL
                 {...viewPort}
                 mapboxApiAccessToken={"pk.eyJ1IjoiZ3lzZW4iLCJhIjoiY2tjczdzcXJuMGZ5azJ3cDR6N2Jqcm00cyJ9.mkv2PJA7gpy9-ddtprFKXA"}
