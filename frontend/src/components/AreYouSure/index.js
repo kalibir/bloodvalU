@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import styled from "styled-components";
+import styled, {keyframes} from "styled-components";
 import {BaseStatusButton} from "../../style/GlobalButtons/";
 import {DarkBlueButton, WhiteButton} from "../../style/GlobalButtons/";
 import {connect, useDispatch} from "react-redux";
@@ -9,16 +9,31 @@ import {createTestRequestAction, deleteTestAction} from "../../store/actions/off
 import {MiddleTitle, SmallTitle} from "../../style/GlobalTitles";
 import {deleteRequestAction} from "../../store/actions/bloodRequestActions";
 
+const DropDownAnimation = keyframes`
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+`;
+
+
 const ModalWrapper = styled.div`
   position: fixed;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
   top: 0;
   left: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; 
+  background-color: rgba(0, 0, 0, 0.6);  
+  animation-name: ${DropDownAnimation};
+  animation-duration: 0.6s;
+  
 `;
 
 const Modal = styled.div`
@@ -48,6 +63,24 @@ const ButtonContainer = styled.div`
 const YesButton = styled(DarkBlueButton)`
   width: ${rem("106px")};
   height: ${rem("48px")};
+  
+  color: #8B0000;
+  background: #fff;
+  border: 2px solid #8B0000;
+  font-weight: 500;
+  
+  :hover {
+    color: #FF0000;
+    background: #fff;
+    border: 2px solid #FF0000;
+    font-size: 18px;
+  }
+  :active {
+    color: #FF0000;
+    background: #fff;
+    border: 2px solid #FF0000;
+    font-size: 18px;
+  }
 `
 
 
@@ -58,7 +91,8 @@ const AreYouSureModal = ({
                              handleDeleteRequest,
                              handleDeleteSeekerProfile,
                              handleDeleteDonorProfile,
-                             id}) => {
+                             id
+                         }) => {
     const dispatch = useDispatch();
     const {push} = useHistory();
 
@@ -77,7 +111,6 @@ const AreYouSureModal = ({
             handleDeleteDonorProfile(e, ID)
         }
     }
-
 
     return (
         <ModalWrapper>

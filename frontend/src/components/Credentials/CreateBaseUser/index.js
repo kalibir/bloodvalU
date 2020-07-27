@@ -133,7 +133,7 @@ const CreateBaseUser = ({
               </Error>
               <PasswordInput
                 title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                // pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                 type="password"
                 name="new-password"
                 placeholder="password"

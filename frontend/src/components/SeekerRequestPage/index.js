@@ -29,6 +29,7 @@ const LeftSide = styled.div`
   min-width: 576px;
   padding-top: ${rem("36px")};
   padding-left: ${rem("160px")};
+  padding-right: ${rem("85px")};
 `;
 
 const RightSide = styled.div`

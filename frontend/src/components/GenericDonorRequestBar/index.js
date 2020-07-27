@@ -18,6 +18,7 @@ import A_negative from "../../assets/icons/A_negative.svg";
 import A_positive from "../../assets/icons/A_positive.svg";
 import B_negative from "../../assets/icons/B_negative.svg";
 import B_positive from "../../assets/icons/B_positive.svg";
+import {Fade} from "react-reveal";
 
 const BarWrapper = styled.div`
   //width: 445px;
@@ -70,6 +71,10 @@ const IconWrapper = styled(ButtonWrapper)`
   align-items: center;
 `;
 
+const ValidWrapper = styled(IconWrapper)`
+  grid-area: valid;
+`
+
 const UrgentWrapper = styled(ButtonWrapper)`
   grid-area: urgent;
   height: 100%;
@@ -90,9 +95,15 @@ const Type = styled.img`
 `;
 
 const BarArrowWrapper = styled(ButtonWrapper)`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: ${rem("24px")};
   grid-area: arrow;
-  justify-self: end;
+  //justify-self: end;
   margin-right: 24px;
+  width: 100%;
+  height: 100%;
 `;
 
 const BarArrowRight = styled.i`
@@ -211,6 +222,7 @@ const GenericDonorRequestBar = ({
     if (blood_group === "AB+") return AB_positive;
   };
   return (
+      <Fade left>
     <BarWrapper>
       <RequestBar>
         <TextWrapper onClick={showSeekerHandler}> Request {id}</TextWrapper>
@@ -228,7 +240,7 @@ const GenericDonorRequestBar = ({
         <UrgentWrapper onClick={showSeekerHandler}>
           {is_urgent ? <UrgentIcon src={urgentIcon} /> : null}
         </UrgentWrapper>
-        <BloodDiv>
+        <BloodDiv onClick={showSeekerHandler}>
           <Type src={renderBloodType()} alt="blood_type" />
         </BloodDiv>
         <ButtonWrapper>
@@ -244,9 +256,9 @@ const GenericDonorRequestBar = ({
           )}
         </ButtonWrapper>
 
-        <IconWrapper onClick={showSeekerHandler}>
+        <ValidWrapper onClick={showSeekerHandler}>
           {is_valid ? null : <InfoIcons src={expiredIcon} />}
-        </IconWrapper>
+        </ValidWrapper>
 
         <BarArrowWrapper onClick={showSeekerHandler}>
           {" "}
@@ -283,6 +295,7 @@ const GenericDonorRequestBar = ({
         </>
       ) : null}
     </BarWrapper>
+        </Fade>
   );
 };
 

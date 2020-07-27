@@ -4,6 +4,7 @@ import styled from "styled-components";
 import profilePic from "../../assets/images/default-profile-pic.jpg"
 import {DarkBlueButton} from "../../style/GlobalButtons";
 import { Link } from "react-router-dom";
+import Fade from "react-reveal/Fade";
 
 const ProfileWrapper = styled.div`
     width: 100%;
@@ -137,6 +138,7 @@ const DonorProfileCardWide = ({
                               }) => {
 
     return (
+        <Fade>
         <ProfileWrapper>
             <UpperContainer name={"upper"}>
                 <ProfilePicPlaceholder>
@@ -185,23 +187,8 @@ const DonorProfileCardWide = ({
             <Link to={`/editdonor`}>
                 <EditButton>Edit Profile</EditButton>
             </Link>
-            {/*<BottomContainer>*/}
-            {/*    <DetailTitlesContainer>*/}
-            {/*        <DetailTitle>Gender: </DetailTitle>*/}
-            {/*        <DetailTitle>Birthday: </DetailTitle>*/}
-            {/*        <AddressTitle>Address:</AddressTitle>*/}
-            {/*        <DetailTitle>Phone:</DetailTitle>*/}
-            {/*        <DetailTitle>Email:</DetailTitle>*/}
-            {/*    </DetailTitlesContainer>*/}
-            {/*    <DetailsContainer>*/}
-            {/*        <Details>{gender==="M" ? "Male" : gender==="F" ? "Female" : "Other"}</Details>*/}
-            {/*        <Details>{birthday}</Details>*/}
-            {/*        <Details>{street}<br/> {zip_code}<br/>{country.name}</Details>*/}
-            {/*        <Details>{phone.length ? phone : "please add a number"}</Details>*/}
-            {/*        <Details>{email}</Details>*/}
-            {/*    </DetailsContainer>*/}
-            {/*</BottomContainer>*/}
         </ProfileWrapper>
+            </Fade>
     )
 }
 
