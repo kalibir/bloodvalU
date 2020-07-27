@@ -28,6 +28,9 @@ const Header = styled.div`
   background-color: #ffffff;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   padding: 0 ${rem("40px")} 0 ${rem("40px")};
+    @media ${device.tablet} {
+      padding: 0 ${rem("20px")} 0 ${rem("20px")};
+  }
   position: fixed;
   z-index: 999;
   display: flex;
