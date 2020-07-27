@@ -1,5 +1,6 @@
 import {rem} from "polished";
 import styled from "styled-components";
+import {device} from "../Functions";
 
 export const DarkBlueButton = styled.button`
   background: #121232;
@@ -124,10 +125,15 @@ export const ChooseRoleButton = styled.button`
   width: ${rem("352px")};
   height: ${rem("160px")};
   cursor: pointer;
+   @media ${device.laptop} { 
+      margin-right: 0;
+      margin-bottom: 10px;
+   }
   background: #ffffff;
   border: 1px solid #d3d4d8;
   border-radius: 4px;
   font-style: normal;
+  margin-right: ${rem("18px")};
   font-weight: 500;
   font-size: ${rem("18px")};
   line-height: 24px;

@@ -62,11 +62,11 @@ class CreateBloodRequestView(CreateAPIView):
             message = f'We are looking for a donor'
             to = target_emails
             sender = ''
-            html_message = f"""<!doctype html>
+            html_message = f"""
                     <html lang=en>
                         <head>
                             <meta charset=utf-8>
-                            <title>Looking for a donor</title>
+                            <title></title>
                         </head>
                         <body>
                                 <p>&nbsp;</p>
@@ -284,15 +284,15 @@ class SelectDonorFromApplicantsView(CreateAPIView):
             to = {donor_email}
             qr_img = f'https://qrickit.com/api/qr.php?d={code}&addtext=BloodvalU'
             sender = ''
-            html_message = f"""<!doctype html>
+            html_message = f"""
                     <html lang=en>
                         <head>
                             <meta charset=utf-8>
-                            <title>Blood test</title>
+                            <title></title>
                         </head>
                         <body>
                             <p>&nbsp;</p>
-                                <p>You have been selected as a donor at <a href="{seeker_website}">{seeker_name}</a></p>
+                                <p>You have been selected as a donor at <a href="{seeker_website}">{seeker_name}.</a></p>
                                 <p>&nbsp;</p>
                                 <p>{seeker_name} will contact you to make an appointment.</p>
                                 <p>&nbsp;</p>

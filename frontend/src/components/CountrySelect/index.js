@@ -16,6 +16,7 @@ const SelectCountryInput = styled.select`
     font-size: 14px;
     line-height: 24px;
     color: #232735;
+    margin-top: 8px;
 
     &:focus {
         outline: none;
