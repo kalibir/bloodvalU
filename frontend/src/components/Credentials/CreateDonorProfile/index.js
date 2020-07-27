@@ -264,7 +264,7 @@ const CreateDonorProfile = (props) => {
                     className="inputfile"
                 />
                 <ChooseFileButton className="file_btn" htmlFor="file">
-                    CHOOSE YOUR PROFILE PICTURE
+                    {donorInfo.avatar ? "FILE UPLOADED" : "CHOOSE YOUR PROFILE PICTURE"}
                 </ChooseFileButton>
 
                 <ButtonContainer>
