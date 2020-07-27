@@ -10,7 +10,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {WhiteButton} from "../../style/GlobalButtons";
 import {BloodValU} from "../../style/GlobalTitles";
 import {userLogout} from "../../store/actions/logoutActions";
-import {SeekerNavigation, DonorNavigation, device} from "../../style/Functions";
+import {SeekerNavigation, DonorNavigation, device, AdminNavigation} from "../../style/Functions";
 
 const Wrapper = styled.div`
   padding-top: 72px; /* Needs to be exactly the same height as the Header, offsets content because it's fixed */
@@ -202,11 +202,11 @@ const FooterLinkTitle = styled.h2`
   text-decoration: none;
 `;
 
-const Navigation = ({ children, authReducer: { authenticated, userObj }, dispatch }) => {
-  const { push } = useHistory();
-  const handleClickLogo = (e) => {
-    push("/");
-  };
+const Navigation = ({children, authReducer: {authenticated, userObj}, dispatch}) => {
+    const {push} = useHistory();
+    const handleClickLogo = (e) => {
+        push("/");
+    };
 
     const handleLogout = () => {
         dispatch(userLogout());
@@ -224,20 +224,13 @@ const Navigation = ({ children, authReducer: { authenticated, userObj }, dispatc
                     <NavLink to={"/"}>
                         <BloodValU onClick={handleClickLogo} text="bloodval" black={24} red={36}/>
                     </NavLink>
-                    {authenticated ? (
-                        <>
-                            {userObj ? (
-                                userObj.is_donor ? (
-                                    <DonorNavigation email={userObj.email} first_name={userObj.first_name}/>
-                                ) : (
-                                    <SeekerNavigation name={userObj.name}/>
-                                )
-                            ) : null}
-                            <HeaderButtonUser onClick={handleLogout}>Logout</HeaderButtonUser>
-                        </>
-                    ) : (
-                        <HeaderButtonUser onClick={handClickLogin}>Login</HeaderButtonUser>
-                    )}
+                    {authenticated && userObj ?
+                        userObj.is_staff ?<> <AdminNavigation/> <HeaderButtonUser onClick={handleLogout}>Logout</HeaderButtonUser></>:
+                            (userObj.is_donor ?
+                                <><DonorNavigation email={userObj.email} first_name={userObj.first_name}/> <HeaderButtonUser onClick={handleLogout}>Logout</HeaderButtonUser></>:
+                                <><SeekerNavigation name={userObj.name}/> <HeaderButtonUser onClick={handleLogout}>Logout</HeaderButtonUser></>) : null}
+                    {!authenticated ? <HeaderButtonUser onClick={handClickLogin}>Login</HeaderButtonUser> : null}
+
                 </Header>
                 {children}
                 <Footer>
@@ -296,9 +289,9 @@ const Navigation = ({ children, authReducer: { authenticated, userObj }, dispatc
 };
 
 const mapStateToProps = (state) => {
-  return {
-    authReducer: state.authReducer,
-  };
+    return {
+        authReducer: state.authReducer,
+    };
 };
 
 export default connect(mapStateToProps)(Navigation);

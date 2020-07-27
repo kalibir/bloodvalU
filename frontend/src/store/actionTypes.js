@@ -50,3 +50,7 @@ export const SET_ALL_PROFILES = "SET_ALL_PROFILES";
 // Statistics Types
 
 export const SET_ALL_STATISTICS = "SET_ALL_STATISTICS";
+
+// Admin Types
+
+export const UPDATE_PROFILE_IN_ALL_PROFILES = "UPDATE_PROFILE_IN_ALL_PROFILES";
