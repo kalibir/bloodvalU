@@ -64,7 +64,16 @@ const BottomContainer = styled.div`
     height: ${rem("315px")};
     display: flex;
     justify-content: center;
+    flex-direction: column;
 `;
+
+const ButtonContainer = styled.div`
+    height: ${rem("50px")};
+    width: ${rem("315px")};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
 
 const DetailTitlesContainer = styled.div`
     height: ${rem("328px")};
@@ -73,7 +82,7 @@ const DetailTitle = styled.p`
     font-style: normal;
     font-weight: 600;
     font-size: 14px;
-    line-height: 24px;
+    line-height: 22px;
     display: flex;
     align-items: center;
     color: #000000;
@@ -97,7 +106,7 @@ const Details = styled.div`
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
-    line-height: 24px;
+    line-height: 22px;
     display: flex;
     align-items: center;
     color: #4E4E5A;

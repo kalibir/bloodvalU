@@ -1,13 +1,13 @@
 import React from "react";
-import { useState } from "react";
-import styled, { keyframes } from "styled-components";
-import { BaseStatusButton, CompleteButton } from "../../style/GlobalButtons/";
-import { rem } from "polished";
-import { useDispatch } from "react-redux";
+import {useState} from "react";
+import styled, {keyframes} from "styled-components";
+import {BaseStatusButton, CompleteButton} from "../../style/GlobalButtons/";
+import {rem} from "polished";
+import {useDispatch} from "react-redux";
 import {
-  deleteRequestAction,
-  getApplicantsOfRequestAction,
-  markRequestAsCompleteAction,
+    deleteRequestAction,
+    getApplicantsOfRequestAction,
+    markRequestAsCompleteAction,
 } from "../../store/actions/bloodRequestActions";
 import AreYouSureModal from "../AreYouSure";
 import O_negative from "../../assets/icons/O_negative.svg";
@@ -42,7 +42,6 @@ const TextWrapper = styled.div`
   height: 100%;
   grid-area: text;
   align-items: center;
-  background-color: lightgreen;
 `;
 
 const ButtonWrapper = styled.div`
@@ -184,53 +183,57 @@ const UrgentIcon = styled.img`
 //The seeker request bar starts from here
 
 const GenericSeekerRequestBar = ({
-  handleShowEditModal,
-  handleDeleteRequest,
-  handleSetActiveRequest,
-  handleSetActiveProfile,
-  request,
-}) => {
-  const dispatch = useDispatch();
+                                     handleShowEditModal,
+                                     handleSetActiveRequest,
+                                     handleSetActiveProfile,
+                                     request,
+                                 }) => {
+    const dispatch = useDispatch();
 
-  const [applicantsData, setApplicantsData] = useState({
-    showApplicants: false,
-    applicants: null,
-  });
-  const [sureModal, setSureModal] = useState(false);
-  const [openArrow, setOpenArrow] = useState(false);
-
-  // const handleDeleteRequest = (event, requestID) => {
-  //   dispatch(deleteRequestAction(requestID));
-  // };
-
-  const handleRenderApplicants = async (e) => {
-    const response = await dispatch(getApplicantsOfRequestAction(request.id));
-    handleSetActiveRequest(request);
-    setApplicantsData({
-      ...applicantsData,
-      applicants: response.data,
-      showApplicants: !applicantsData.showApplicants,
+    const [applicantsData, setApplicantsData] = useState({
+        showApplicants: false,
+        applicants: null,
     });
-    setOpenArrow(!openArrow)
-  };
+    const [sureModal, setSureModal] = useState(false);
+    const [openArrow, setOpenArrow] = useState(false);
 
+    // const handleDeleteRequest = (event, requestID) => {
+    //   dispatch(deleteRequestAction(requestID));
+    // };
 
-  const handleClickApplicant = (e) => {
-    const index = Number(e.currentTarget.id);
-    const targetProfile = applicantsData.applicants[index];
-    handleSetActiveProfile(targetProfile);
-    // handleSetActiveRequest(request)
-  };
+    const handleRenderApplicants = async (e) => {
+        const response = await dispatch(getApplicantsOfRequestAction(request.id));
+        handleSetActiveRequest(request);
+        setApplicantsData({
+            ...applicantsData,
+            applicants: response.data,
+            showApplicants: !applicantsData.showApplicants,
+        });
+        setOpenArrow(!openArrow)
+    };
 
-  const handleCompleteRequest = async (e) => {
-    e.preventDefault();
-    const response = dispatch(markRequestAsCompleteAction(request.id));
-     if (response.status < 300) closeModal();
-  };
+    const closeModal = () => {
+        setSureModal(false);
+    };
 
-  const closeModal = () => {
-    setSureModal(false);
-  };
+    const handleClickApplicant = (e) => {
+        const index = Number(e.currentTarget.id);
+        const targetProfile = applicantsData.applicants[index];
+        handleSetActiveProfile(targetProfile);
+        // handleSetActiveRequest(request)
+    };
+
+    const handleDeleteRequest = async (e, requestID) => {
+        e.preventDefault();
+        const response = await dispatch(deleteRequestAction(requestID));
+        if (response.status < 300) closeModal();
+    };
+
+    const handleCompleteRequest = async (e) => {
+        e.preventDefault();
+        const response = dispatch(markRequestAsCompleteAction(request.id));
+        if (response.status < 300) closeModal();
+    };
 
   const renderBloodType = () => {
     if (request.blood_group === "O-") return O_negative;
@@ -286,37 +289,37 @@ const GenericSeekerRequestBar = ({
 
       </RequestBar>
 
-      {applicantsData.applicants && openArrow
-        ? applicantsData.applicants.map((applicant, index) => {
+            {applicantsData.applicants && openArrow
+                ? applicantsData.applicants.map((applicant, index) => {
 
-              if (request.selected_donor && request.selected_donor.id === applicant.id) {
-                return (
-                  <DonorSelectedBar
-                    name={"selectbar"}
-                    onClick={handleClickApplicant}
-                    key={index}
-                    id={index}
-                    active={
-                      false
-                    }>{`${applicant.first_name} ${applicant.last_name}`}</DonorSelectedBar>
-                );
-              }
+                    if (request.selected_donor && request.selected_donor.id === applicant.id) {
+                        return (
+                            <DonorSelectedBar
+                                name={"selectbar"}
+                                onClick={handleClickApplicant}
+                                key={index}
+                                id={index}
+                                active={
+                                    false
+                                }>{`${applicant.first_name} ${applicant.last_name}`}</DonorSelectedBar>
+                        );
+                    }
 
-            return (
-              // <SlidingContainer>
-                <DonorSubBar
-                  name={"selectbar2"}
-                  onClick={request.status === "COM" ? null : handleClickApplicant}
-                  key={index}
-                  id={index}
-                  active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSubBar>
-              // </SlidingContainer>
-            );
-          })
-        : applicantsData.applicants && !openArrow ? null
-      : null}
-    </BarWrapper>
-  );
+                    return (
+                        // <SlidingContainer>
+                        <DonorSubBar
+                            name={"selectbar2"}
+                            onClick={request.status === "COM" ? null : handleClickApplicant}
+                            key={index}
+                            id={index}
+                            active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSubBar>
+                        // </SlidingContainer>
+                    );
+                })
+                : applicantsData.applicants && !openArrow ? null
+                    : null}
+        </BarWrapper>
+    );
 };
 
 export default GenericSeekerRequestBar;

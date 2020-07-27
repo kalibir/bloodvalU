@@ -156,12 +156,6 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
         setModal({...modal, showModal: false});
     };
 
-    const handleDeleteRequest = async (e, requestID) => {
-        e.preventDefault();
-        const response = await dispatch(deleteRequestAction(requestID));
-        if (response.status < 300) closeModal();
-    };
-
     const handleShowEditModal = (event, requestObj) => {
         setModal({showModal: true, modalData: requestObj});
     };
@@ -203,7 +197,6 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
                                             <GenericSeekerRequestBar
                                                 handleShowEditModal={handleShowEditModal}
                                                 handleEditRequest={handleEditRequest}
-                                                handleDeleteRequest={handleDeleteRequest}
                                                 handleSetActiveRequest={handleSetActiveRequest}
                                                 handleSetActiveProfile={handleSetActiveProfile}
                                                 key={index}
