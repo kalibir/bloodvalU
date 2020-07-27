@@ -27,13 +27,17 @@ const rotate = keyframes`
 	}
 `;
 const Img = styled.img`
-  animation: ${rotate} 2s linear infinite;
+  
   width: 40px;
   height: 40px;
   background-color: transparent;
   border: none;
   cursor: pointer;
   border-radius: 50%;
+`
+
+const WaypointMarker = styled.div`
+  animation: ${rotate} 2s linear infinite;
 `
 
 const CustomLocation = styled(GeolocateControl)`
@@ -66,25 +70,6 @@ const CustomPopup = styled(Popup)`
 const CustomMarker = styled(Marker)``
 
 const AlertWrapper = styled.div`
-  animation: ${rotate} 2s linear infinite;
-`
-
-const FlyTo = styled.button`
-  padding: 1rem;
-  color: #730000;
-  z-index: 999;
-  //font-weight: bold;
-  font-size: 2rem;
-
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-  position: fixed;
-  :hover {
-    border: 1px solid #730000;
-  }
-  top: 50%;
 `
 
 const GeoMap = ({
@@ -150,17 +135,17 @@ const GeoMap = ({
                 positionOptions={{enableHighAccuracy: true}}
                 trackUserLocation={true}
             />
-                {profiles ? profiles.map((profile, index) => {
+                {profiles ? profiles.map((profile) => {
                     if (profile.latitude && profile.no_of_requests) {
                         return (
                             <CustomMarker key={profile.id} latitude={profile.latitude} longitude={profile.longitude}>
-                                {profile.no_of_requests && !selectedSeeker ? <AlertWrapper>
+                                <WaypointMarker>{profile.no_of_requests && !selectedSeeker ? <AlertWrapper>
                                     <span role={"img"}>&#10071;</span>{profile.no_of_requests}
                                 </AlertWrapper> : null}
-                                <Img onClick={(e) => {
-                                    e.preventDefault()
-                                    setSelectedSeeker(profile)
-                                }} src={droplet}/>
+                                    <Img onClick={(e) => {
+                                        e.preventDefault()
+                                        setSelectedSeeker(profile)
+                                    }} src={droplet}/></WaypointMarker>
                             </CustomMarker>
                         )
                     }
