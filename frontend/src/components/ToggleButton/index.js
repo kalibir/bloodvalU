@@ -14,7 +14,7 @@ const BtnContainer = styled.div`
   margin-right: 16px;
 `;
 
-const ToggleBtn = styled.button`
+const ToggleBtn = styled.div`
   width: 8px;
   height: 8px;
   background: ${(props) => (props.active ? "white" : "#D33449 ")};
@@ -33,7 +33,7 @@ const ToggleButton = ({ toggleValue, handleClick }) => {
   // };
   return (
     <BtnContainer onClick={handleClick} active={toggleValue}>
-      <ToggleBtn active={toggleValue}></ToggleBtn>
+      <ToggleBtn active={toggleValue}/>
     </BtnContainer>
   );
 };
