@@ -37,7 +37,8 @@ const MiddleTitle500 = styled(MiddleTitle)`
 `;
 
 const ButtonContainer = styled(InputPairContainer)`
-  justify-content: flex-end;
+  justify-content: flex-start;
+  align-items: center;
   margin: 0;
   //background-color: rosybrown;
 `;
@@ -52,7 +53,7 @@ const FullWidthInputContainer = styled.div`
 `;
 
 const AddressInput = styled(BigInput)`
-  width: 100%;
+  width: 95%;
 `;
 // const HouseNumberInput = styled(BigInput)`
 //   width: ${rem("64px")};
@@ -71,9 +72,8 @@ const ChooseFileButton = styled.label`
   background: #121232;
   border-radius: 4px;
   border: 1px solid #121232;
-  margin-bottom: ${rem("24px")};
   outline: none;
-  width: 100%;
+  width: 96%;
   height: ${rem("32px")};
   cursor: pointer;
   font-style: normal;
@@ -83,6 +83,7 @@ const ChooseFileButton = styled.label`
   color: #ffffff;
   display: flex;
   align-items: center;
+  align-self: flex-start;
   justify-content: center;
 `;
 
