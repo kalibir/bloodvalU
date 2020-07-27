@@ -9,6 +9,7 @@ import {PageContainer} from "../../../style/GlobalWrappers";
 import {useHistory} from "react-router";
 import {sendCode, setEmail} from "../../../store/actions/registrationActions";
 import {resetError} from "../../../store/actions/errorActions";
+import ButtonSpinner from "../../ButtonSpinner";
 
 const PageWrapper = styled(PageContainer)`
     height: 78.2vh;
@@ -30,6 +31,12 @@ const RegistrationTitle = styled(MiddleTitle)`
     margin-bottom: 23px;
 `;
 
+const RegButton = styled(DarkBlueButton)`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
 const Error = styled(ErrorPlaceholder)``
 
 
@@ -40,6 +47,7 @@ const Registration = ({registrationReducer, dispatch, errorReducer:{error}}) => 
     const [userInfo, setUserInfo] = useState({
         email: "",
     });
+    const [showSpinner, setShowSpinner] = useState(false);
 
     const onChangeHandler = (event, property) => {
         const value = event.currentTarget.value;
@@ -47,6 +55,7 @@ const Registration = ({registrationReducer, dispatch, errorReducer:{error}}) => 
     };
 
     const handleSubmit = async (e) => {
+        setShowSpinner(true)
         e.preventDefault();
         dispatch(resetError())
         const response = await dispatch(sendCode(userInfo));
@@ -64,7 +73,7 @@ const Registration = ({registrationReducer, dispatch, errorReducer:{error}}) => 
                 {error ? <Error><p>{error}</p></Error> : null}
                 <SmallTitle>Email</SmallTitle>
                 <EmailInput onChange={(e) => onChangeHandler(e, "email")} placeholder="email" type="email" required/>
-                <DarkBlueButton>Register</DarkBlueButton>
+                <RegButton>{showSpinner ? <ButtonSpinner/> : "Register"}</RegButton>
             </FormWrapper>
         </PageWrapper>
     );
