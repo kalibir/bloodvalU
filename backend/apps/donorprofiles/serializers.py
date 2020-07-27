@@ -39,7 +39,7 @@ class DonorProfileSerializer(serializers.ModelSerializer):
                   'zip_code', 'street', 'no_of_bought_tests',
                   'avatar', 'birthday', 'has_been_selected', 'test_results',
                   'next_donation', 'total_points', 'blood_group', 'gender', 'age',
-                  'no_of_applications', 'no_of_test_results']
+                  'no_of_applications', 'no_of_test_results', 'created']
 
 
 class GetBuyersOfOfferedTestSerializer(DonorProfileSerializer):
@@ -67,5 +67,5 @@ class GetBuyersOfOfferedTestSerializer(DonorProfileSerializer):
                   'country',
                   'zip_code', 'street', 'no_of_bought_tests',
                   'avatar', 'birthday', 'has_been_selected', 'test_results', 'pdf_result',
-                  'next_donation', 'total_points', 'blood_group', 'gender', 'age',
+                  'next_donation', 'total_points', 'blood_group', 'created', 'gender', 'age',
                   'no_of_applications', 'no_of_test_results']

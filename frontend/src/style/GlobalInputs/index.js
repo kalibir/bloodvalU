@@ -18,14 +18,14 @@ export const BigInput = styled.input`
 
     &:focus {
         outline: none;
-  }
+    }
     ::placeholder{
         color: #8B90A0
   }
 `;
 
 export const SmallInput = styled(BigInput)`
-    width: ${rem("160px")};
+    width: 90%;
 `;
 
 export const Select = styled.select`

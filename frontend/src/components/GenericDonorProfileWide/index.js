@@ -4,6 +4,7 @@ import styled from "styled-components";
 import profilePic from "../../assets/images/default-profile-pic.jpg"
 import {DarkBlueButton} from "../../style/GlobalButtons";
 import { Link } from "react-router-dom";
+import Fade from "react-reveal/Fade";
 
 const ProfileWrapper = styled.div`
     width: 100%;
@@ -22,15 +23,14 @@ const UpperContainer = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin: ${rem("10px")};
 `;
 
 const ProfilePicPlaceholder = styled.div`
-    height: ${rem("150px")};
+    height: ${rem("160px")};
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
     img {
-        width: ${rem("150px")};
-        height: ${rem("150px")};
+        width: ${rem("160px")};
+        height: ${rem("160px")};
   }
 `;
 
@@ -147,6 +147,7 @@ const DonorProfileCardWide = ({
                               }) => {
 
     return (
+        <Fade>
         <ProfileWrapper>
             <UpperContainer name={"upper"}>
                 <ProfilePicPlaceholder>
@@ -190,30 +191,13 @@ const DonorProfileCardWide = ({
                         <Details>{email}</Details>
                     </Test>
                 </DetailTitlesContainer>
-                <ButtonContainer>
-                    <Link to={`/editdonor`}>
-                        <EditButton>Edit Profile</EditButton>
-                    </Link>
-                </ButtonContainer>
-            </BottomContainer>
 
-            {/*<BottomContainer>*/}
-            {/*    <DetailTitlesContainer>*/}
-            {/*        <DetailTitle>Gender: </DetailTitle>*/}
-            {/*        <DetailTitle>Birthday: </DetailTitle>*/}
-            {/*        <AddressTitle>Address:</AddressTitle>*/}
-            {/*        <DetailTitle>Phone:</DetailTitle>*/}
-            {/*        <DetailTitle>Email:</DetailTitle>*/}
-            {/*    </DetailTitlesContainer>*/}
-            {/*    <DetailsContainer>*/}
-            {/*        <Details>{gender==="M" ? "Male" : gender==="F" ? "Female" : "Other"}</Details>*/}
-            {/*        <Details>{birthday}</Details>*/}
-            {/*        <Details>{street}<br/> {zip_code}<br/>{country.name}</Details>*/}
-            {/*        <Details>{phone.length ? phone : "please add a number"}</Details>*/}
-            {/*        <Details>{email}</Details>*/}
-            {/*    </DetailsContainer>*/}
-            {/*</BottomContainer>*/}
+            </BottomContainer>
+            <Link to={`/editdonor`}>
+                <EditButton>Edit Profile</EditButton>
+            </Link>
         </ProfileWrapper>
+            </Fade>
     )
 }
 

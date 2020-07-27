@@ -18,8 +18,8 @@ const RequestBar = styled.div`
   display: grid;
   width: 100%;
   height: 48px;
-  grid-template-areas: "text status urgent blood button valid arrow";
-  grid-template-columns: 2fr 1fr 1fr 35px 30% 1fr 1fr;
+  grid-template-areas: "text edit button urgent blood renew arrow";
+  grid-template-columns: 2fr 1fr 1fr 1fr 35px 1fr 1fr;
   background-color: #ffffff;
   border-bottom: 1px solid #d9d9d9;
   align-items: center;
@@ -40,9 +40,12 @@ const ButtonWrapper = styled.div`
 `;
 
 const IconWrapper = styled(ButtonWrapper)`
-  grid-area: urgent;
-  width: 100px;
-  justify-content: space-between;
+  grid-area: edit;
+  //width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  //background-color: orangered;
 `;
 
 const BlueButton = styled(BaseStatusButton)`
@@ -50,25 +53,49 @@ const BlueButton = styled(BaseStatusButton)`
 `;
 
 const IconButton = styled.button`
-  border: 1px solid black;
+  border: 1px solid #2196f3;
   padding: 3px;
   margin-right: 8px;
   width: 30px;
-  background-color: black;
   border-radius: 50%;
-  color: white;
+  //background-color: black;
+  //color: white;
+  background-color: white;
+  color: #2196f3;
   cursor: pointer;
 
   :hover {
-    background-color: white;
-    color: black;
+    background-color: #2196f3;
+    color: white;    
+    border: 1px solid #2196f3;
+  }
+`;
+
+const IconButton2 = styled(IconButton)`
+  border: 1px solid red;  
+  background-color: white;
+  color: red;
+
+  :hover {
+    background-color: orangered;
+    color: white;    
+    border: 1px solid orangered;
   }
 `;
 
 const ArrowWrapper = styled.div`
+  //grid-area: arrow;
+  //justify-self: end;
+  //margin-right: 24px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: ${rem("24px")};
   grid-area: arrow;
-  justify-self: end;
   margin-right: 24px;
+  width: 100%;
+  height: 100%;
+  //background-color: darksalmon;
 `;
 
 const EmptyArrowWrapper = styled.div`
@@ -170,39 +197,44 @@ const GenericSeekerRequestBar = ({
     };
 
 
-    return (
-        <BarWrapper>
-            {sureModal ? (
-                <AreYouSureModal
-                    handleDeleteRequest={handleDeleteRequest}
-                    closeModal={closeModal}
-                    id={request.id}
-                    context={"request"}
-                />
-            ) : null}
-            <RequestBar>
-                <TextWrapper> Request {request.id}</TextWrapper>
-                <IconWrapper>
-                    <IconButton onClick={(e) => setSureModal(true)}>&#10006;</IconButton>
-                    <IconButton onClick={(e) => handleShowEditModal(e, request)}>&#9998;</IconButton>
-                </IconWrapper>
-                <ButtonWrapper>
-                    {request.status === "OP" ? (
-                        <BlueButton>Open</BlueButton>
-                    ) : request.status === "CL" ? (
-                        <CompleteButton onClick={handleCompleteRequest}>Mark As Complete</CompleteButton>
-                    ) : (
-                        <CompleteButton>Completed</CompleteButton>
-                    )}
-                </ButtonWrapper>
-                {request.no_of_applicants ? (
-                    <ArrowWrapper onClick={handleRenderApplicants}>
-                        <BarArrowRight/>
-                    </ArrowWrapper>
-                ) : (
-                    <EmptyArrowWrapper/>
-                )}
-            </RequestBar>
+  return (
+    <BarWrapper>
+      {sureModal ? (
+        <AreYouSureModal
+          handleDeleteRequest={handleDeleteRequest}
+          closeModal={closeModal}
+          id={request.id}
+          context={"request"}
+        />
+      ) : null}
+
+      <RequestBar>
+        <TextWrapper> Request {request.id}</TextWrapper>
+
+        <IconWrapper>
+          <IconButton2 onClick={(e) => setSureModal(true)}>&#10006;</IconButton2>
+          <IconButton onClick={(e) => handleShowEditModal(e, request)}>&#9998;</IconButton>
+        </IconWrapper>
+
+        <ButtonWrapper>
+          {request.status === "OP" ? (
+            <BlueButton>Open</BlueButton>
+          ) : request.status === "CL" ? (
+            <CompleteButton onClick={handleCompleteRequest}>Mark As Complete</CompleteButton>
+          ) : (
+            <CompleteButton>Completed</CompleteButton>
+          )}
+        </ButtonWrapper>
+
+        {request.no_of_applicants ? (
+          <ArrowWrapper onClick={handleRenderApplicants}>
+            <BarArrowRight />
+          </ArrowWrapper>
+        ) : (
+          <EmptyArrowWrapper />
+        )}
+
+      </RequestBar>
 
             {applicantsData.applicants && openArrow
                 ? applicantsData.applicants.map((applicant, index) => {
