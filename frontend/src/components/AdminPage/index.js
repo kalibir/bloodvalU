@@ -51,15 +51,14 @@ const SearchContainer = styled.div`
 `;
 
 const SearchInput = styled(BigInput)`
-  width: 60%;
+  width: 90%;
   height: ${rem("40px")};
 `;
 
 const RefreshButton = styled(DarkBlueButton)`
-  width: auto;
-  height: auto;
-  padding: ${rem("5px")} ${rem("10px")};
-  border-radius: 20px;
+  width: 96px;
+  height: 40px;
+  border-radius: 5px;
 `;
 
 const FilterContainer = styled.div`
@@ -98,6 +97,7 @@ const AdminPage = ({ dispatch, profilesReducer: { profiles } }) => {
   };
 
   const validityHandler = (e) => {
+    e.preventDefault();
     console.log(validity, "clicked");
     setValidity(!validity);
   };
@@ -145,16 +145,18 @@ const AdminPage = ({ dispatch, profilesReducer: { profiles } }) => {
           <SearchContainer>
             <SearchInput onChange={handleSearchInput} placeholder="Search..." />
             <RefreshButton onClick={handleRefresh}>Refresh</RefreshButton>
-            <FilterContainer>
+            {/* <FilterContainer>
               <FilterLabel>Toggle Valid</FilterLabel>
-              <ToggleButton onClick={validityHandler} />
-            </FilterContainer>
+              <div onClick={validityHandler} style={{ background: "black" }}>
+                <ToggleButton />
+              </div>
+            </FilterContainer> */}
           </SearchContainer>
 
           <CertificateContainer>
             {profiles ? (
               handleCertificateDisplay()
-            ) : profiles && validity ? (
+            ) : validity ? (
               handleValidSeekerDisplay()
             ) : (
               <Spinner />
