@@ -149,7 +149,7 @@ const CreateBaseUser = ({
               <PasswordInput
                 type="password"
                 name="new-password"
-                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                //pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                 placeholder="repeat password"
                 onChange={(e) => onChangeHandler(e, "password_repeat")}
                 required

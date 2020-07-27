@@ -10,10 +10,20 @@ import {
     markRequestAsCompleteAction,
 } from "../../store/actions/bloodRequestActions";
 import AreYouSureModal from "../AreYouSure";
+import O_negative from "../../assets/icons/O_negative.svg";
+import O_positive from "../../assets/icons/O_positive.svg";
+import A_negative from "../../assets/icons/A_negative.svg";
+import A_positive from "../../assets/icons/A_positive.svg";
+import B_negative from "../../assets/icons/B_negative.svg";
+import B_positive from "../../assets/icons/B_positive.svg";
+import AB_negative from "../../assets/icons/AB_negative.svg";
+import AB_positive from "../../assets/icons/AB_positive.svg";
+import urgentIcon from "../../assets/icons/urgent.svg";
 
 const BarWrapper = styled.div`
   width: 100%;
 `;
+
 const RequestBar = styled.div`
   display: grid;
   width: 100%;
@@ -23,7 +33,6 @@ const RequestBar = styled.div`
   background-color: #ffffff;
   border-bottom: 1px solid #d9d9d9;
   align-items: center;
-  justify-items: auto;
   grid-gap: 8px;
   cursor: pointer;
 `;
@@ -36,17 +45,40 @@ const TextWrapper = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
   grid-area: button;
 `;
 
 const IconWrapper = styled(ButtonWrapper)`
   grid-area: edit;
-  //width: 100px;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  //background-color: orangered;
+  background-color: orangered;
 `;
+
+const UrgentWrapper = styled.div`
+  grid-area: urgent;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: darkgrey;
+`
+const BloodDiv = styled(UrgentWrapper)`
+  grid-area: blood;
+  display: flex;
+  width: 100%;
+  background-color: deepskyblue;
+`
+const RenewWrapper = styled(UrgentWrapper)`
+  grid-area: renew;
+  display: flex;
+  width: 100%;
+  background-color: darkolivegreen;
+`
 
 const BlueButton = styled(BaseStatusButton)`
   background-color: #2196f3;
@@ -58,8 +90,6 @@ const IconButton = styled.button`
   margin-right: 8px;
   width: 30px;
   border-radius: 50%;
-  //background-color: black;
-  //color: white;
   background-color: white;
   color: #2196f3;
   cursor: pointer;
@@ -84,9 +114,6 @@ const IconButton2 = styled(IconButton)`
 `;
 
 const ArrowWrapper = styled.div`
-  //grid-area: arrow;
-  //justify-self: end;
-  //margin-right: 24px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -95,7 +122,7 @@ const ArrowWrapper = styled.div`
   margin-right: 24px;
   width: 100%;
   height: 100%;
-  //background-color: darksalmon;
+  background-color: darksalmon;
 `;
 
 const EmptyArrowWrapper = styled.div`
@@ -142,6 +169,18 @@ const DonorSelectedBar = styled(DonorSubBar)`
 const DonorNotSelected = styled(DonorSubBar)`
   background: #c6c6c6;
 `;
+
+const Type = styled.img`
+  color: white;
+`;
+
+const UrgentIcon = styled.img`
+  width: ${rem("30px")};
+  height: ${rem("30px")};
+`;
+
+
+//The seeker request bar starts from here
 
 const GenericSeekerRequestBar = ({
                                      handleShowEditModal,
@@ -196,6 +235,16 @@ const GenericSeekerRequestBar = ({
         if (response.status < 300) closeModal();
     };
 
+  const renderBloodType = () => {
+    if (request.blood_group === "O-") return O_negative;
+    if (request.blood_group === "O+") return O_positive;
+    if (request.blood_group === "A-") return A_negative;
+    if (request.blood_group === "A+") return A_positive;
+    if (request.blood_group === "B-") return B_negative;
+    if (request.blood_group === "B+") return B_positive;
+    if (request.blood_group === "AB-") return AB_negative;
+    if (request.blood_group === "AB+") return AB_positive;
+  };
 
   return (
     <BarWrapper>
@@ -209,7 +258,7 @@ const GenericSeekerRequestBar = ({
       ) : null}
 
       <RequestBar>
-        <TextWrapper> Request {request.id}</TextWrapper>
+        <TextWrapper onClick={handleRenderApplicants}> Request {request.id}</TextWrapper>
 
         <IconWrapper>
           <IconButton2 onClick={(e) => setSureModal(true)}>&#10006;</IconButton2>
@@ -225,6 +274,10 @@ const GenericSeekerRequestBar = ({
             <CompleteButton>Completed</CompleteButton>
           )}
         </ButtonWrapper>
+
+        <UrgentWrapper onClick={handleRenderApplicants}>{request.is_urgent ? <UrgentIcon src={urgentIcon} /> : null}</UrgentWrapper>
+        <BloodDiv onClick={handleRenderApplicants}><Type src={renderBloodType()} alt="blood_type" /></BloodDiv>
+        <RenewWrapper onClick={handleRenderApplicants}></RenewWrapper>
 
         {request.no_of_applicants ? (
           <ArrowWrapper onClick={handleRenderApplicants}>
