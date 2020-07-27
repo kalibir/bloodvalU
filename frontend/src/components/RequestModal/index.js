@@ -7,6 +7,7 @@ import { connect, useDispatch } from "react-redux";
 import { Select } from "../../style/GlobalInputs";
 import { createBloodRequestAction } from "../../store/actions/bloodRequestActions";
 import { useHistory } from "react-router";
+import ToggleButton from "../../components/ToggleButton";
 
 const modalFade = keyframes`
   from{opacity: 0}
@@ -55,7 +56,6 @@ const ValidityWrapper = styled.div`
 
 const RequestValidity = styled.input`
   width: 60%;
-  height: 24px;
   border-radius: 4px;
   border: 1px solid #a1a4b1;
   color: #a1a4b1;
@@ -65,6 +65,8 @@ const RequestValidity = styled.input`
 
 const CheckboxWrapper = styled.div`
   width: 100%;
+  height: fit-content;
+  height: 24px;
   display: flex;
   align-items: center;
 `;
@@ -96,7 +98,7 @@ const CustomDarkBlueButton = styled(DarkBlueButton)`
 
 const RequestModal = ({ closeModal, modalData, handleEditRequest }) => {
   const dispatch = useDispatch();
-  const [canSubmit, setCanSubmit] = useState(true)
+  const [canSubmit, setCanSubmit] = useState(true);
   const { push } = useHistory();
   const [requestData, setRequestData] = useState({
     blood_group: modalData ? modalData.blood_group : "",
@@ -106,21 +108,20 @@ const RequestModal = ({ closeModal, modalData, handleEditRequest }) => {
     valid_until: modalData ? modalData.valid_until : "",
   });
 
-
   const onChangeHandler = (event, property) => {
     const value = event.currentTarget.value;
     setRequestData({ ...requestData, [property]: value });
   };
-  const handleCheckBox = (event, property) => {
+  const handleCheckBox = (property) => {
     setRequestData({ ...requestData, [property]: !requestData[property] });
   };
   const handleSubmit = async (e) => {
     if (canSubmit) {
-      setCanSubmit(false)
+      setCanSubmit(false);
       e.preventDefault();
       const response = await dispatch(createBloodRequestAction(requestData));
       if (response.status < 300) closeModal();
-      setCanSubmit(true)
+      setCanSubmit(true);
     }
   };
 
@@ -160,26 +161,23 @@ const RequestModal = ({ closeModal, modalData, handleEditRequest }) => {
           </ValidityWrapper>
         )}
         <CheckboxWrapper>
-          <RequestCheckBoxInput
-            defaultChecked={requestData.is_urgent}
-            onChange={(e) => handleCheckBox(e, "is_urgent")}
-            type="checkbox"
+          <ToggleButton
+            toggleValue={requestData.is_urgent}
+            handleClick={(e) => handleCheckBox("is_urgent")}
           />
           <p>Urgent</p>
         </CheckboxWrapper>
         <CheckboxWrapper>
-          <RequestCheckBoxInput
-            defaultChecked={requestData.is_renewable}
-            onChange={(e) => handleCheckBox(e, "is_renewable")}
-            type="checkbox"
+          <ToggleButton
+            toggleValue={requestData.is_renewable}
+            handleClick={(e) => handleCheckBox("is_renewable")}
           />
           Renewable
         </CheckboxWrapper>
         <CheckboxWrapper>
-          <RequestCheckBoxInput
-            defaultChecked={requestData.is_for_covid}
-            onChange={(e) => handleCheckBox(e, "is_for_covid")}
-            type="checkbox"
+          <ToggleButton
+            toggleValue={requestData.is_for_covid}
+            handleClick={(e) => handleCheckBox("is_for_covid")}
           />
           Is for Covid
         </CheckboxWrapper>

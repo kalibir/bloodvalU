@@ -61,6 +61,7 @@ export const createBloodRequestAction = (requestData) => async (dispatch) => {
         dispatch(addRequestToAll(data))
         return response
     } catch (error) {
+        console.log("error", error.response)
         return error
     }
 }
@@ -95,6 +96,7 @@ export const getSeekerBloodRequestsAction = (status) => async (dispatch) => {
         dispatch(setAllRequests(data))
         return response
     } catch (error) {
+        console.log("error", error)
         return error
     }
 }

@@ -30,19 +30,6 @@ export const BigTitle = styled.h1`
 
 export const BloodValU = ({text, black, red}) => {
 
-    const Bloodval = styled.span`
-      @media ${device.tablet} { 
-        display: none;
-      }
-      cursor: pointer;
-      margin-bottom: 5px;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 600;
-      font-size: ${rem(`${black}px`)};
-      line-height: ${rem("24px")};
-      color: #262541;
-    `
-
     const U = styled.span`
       @media ${device.tablet} { 
         font-size: ${rem(`${50}px`)};
@@ -54,8 +41,16 @@ export const BloodValU = ({text, black, red}) => {
       cursor: pointer;
       margin-bottom: 5px;
       font-family: 'Poppins', sans-serif;
+      line-height: ${rem("24px")};
+    `
+
+    const Bloodval = styled(U)`
+      @media ${device.tablet} { 
+        display: none;
+      }
       font-size: ${rem(`${black}px`)};
       line-height: ${rem("24px")};
+      color: #262541;
     `
 
     return (
