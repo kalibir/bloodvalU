@@ -10,6 +10,15 @@ import {
   markRequestAsCompleteAction,
 } from "../../store/actions/bloodRequestActions";
 import AreYouSureModal from "../AreYouSure";
+import O_negative from "../../assets/icons/O_negative.svg";
+import O_positive from "../../assets/icons/O_positive.svg";
+import A_negative from "../../assets/icons/A_negative.svg";
+import A_positive from "../../assets/icons/A_positive.svg";
+import B_negative from "../../assets/icons/B_negative.svg";
+import B_positive from "../../assets/icons/B_positive.svg";
+import AB_negative from "../../assets/icons/AB_negative.svg";
+import AB_positive from "../../assets/icons/AB_positive.svg";
+import urgentIcon from "../../assets/icons/urgent.svg";
 
 const BarWrapper = styled.div`
   width: 100%;
@@ -55,6 +64,7 @@ const UrgentWrapper = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
   background-color: darkgrey;
 `
@@ -161,6 +171,18 @@ const DonorNotSelected = styled(DonorSubBar)`
   background: #c6c6c6;
 `;
 
+const Type = styled.img`
+  color: white;
+`;
+
+const UrgentIcon = styled.img`
+  width: ${rem("30px")};
+  height: ${rem("30px")};
+`;
+
+
+//The seeker request bar starts from here
+
 const GenericSeekerRequestBar = ({
   handleShowEditModal,
   handleDeleteRequest,
@@ -210,6 +232,16 @@ const GenericSeekerRequestBar = ({
     setSureModal(false);
   };
 
+  const renderBloodType = () => {
+    if (request.blood_group === "O-") return O_negative;
+    if (request.blood_group === "O+") return O_positive;
+    if (request.blood_group === "A-") return A_negative;
+    if (request.blood_group === "A+") return A_positive;
+    if (request.blood_group === "B-") return B_negative;
+    if (request.blood_group === "B+") return B_positive;
+    if (request.blood_group === "AB-") return AB_negative;
+    if (request.blood_group === "AB+") return AB_positive;
+  };
 
   return (
     <BarWrapper>
@@ -223,7 +255,7 @@ const GenericSeekerRequestBar = ({
       ) : null}
 
       <RequestBar>
-        <TextWrapper> Request {request.id}</TextWrapper>
+        <TextWrapper onClick={handleRenderApplicants}> Request {request.id}</TextWrapper>
 
         <IconWrapper>
           <IconButton2 onClick={(e) => setSureModal(true)}>&#10006;</IconButton2>
@@ -240,9 +272,9 @@ const GenericSeekerRequestBar = ({
           )}
         </ButtonWrapper>
 
-        <UrgentWrapper></UrgentWrapper>
-        <BloodDiv></BloodDiv>
-        <RenewWrapper></RenewWrapper>
+        <UrgentWrapper onClick={handleRenderApplicants}>{request.is_urgent ? <UrgentIcon src={urgentIcon} /> : null}</UrgentWrapper>
+        <BloodDiv onClick={handleRenderApplicants}><Type src={renderBloodType()} alt="blood_type" /></BloodDiv>
+        <RenewWrapper onClick={handleRenderApplicants}></RenewWrapper>
 
         {request.no_of_applicants ? (
           <ArrowWrapper onClick={handleRenderApplicants}>
