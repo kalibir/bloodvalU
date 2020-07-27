@@ -4,6 +4,26 @@ from rest_framework import serializers
 from apps.seekerprofiles.models import SeekerProfile
 
 
+def bloodGroupTest(bloodgroup, request):
+    if bloodgroup == "O-":
+        return True
+    if bloodgroup == "O+" and request.blood_group in ["O+", "A+", "B+", "AB+"]:
+        return True
+    if bloodgroup == "A-" and request.blood_group in ["A-", "A+", "AB-", "AB+"]:
+        return True
+    if bloodgroup == "A+" and request.blood_group in ["A+", "AB+"]:
+        return True
+    if bloodgroup == "B-" and request.blood_group in ["B-", "B+", "AB-", "AB+"]:
+        return True
+    if bloodgroup == "B+" and request.blood_group in ["B+", "AB+"]:
+        return True
+    if bloodgroup == "AB-" and request.blood_group in ["AB-", "AB+"]:
+        return True
+    if bloodgroup == "AB+" and request.blood_group == "AB+":
+        return True
+    return False
+
+
 class SeekerProfileSerializer(serializers.ModelSerializer):
     is_donor = serializers.SerializerMethodField()
     no_of_requests = serializers.SerializerMethodField()
@@ -23,7 +43,17 @@ class SeekerProfileSerializer(serializers.ModelSerializer):
         return obj.user.email
 
     def get_no_of_requests(self, obj):
-        return obj.made_requests.count()
+        if self.context.get('request').user.is_staff:
+            return obj.made_requests.count()
+        elif self.context.get('request').user.is_donor:
+            count = 0
+            donor_blood_group = self.context.get('request').user.donor_profile.blood_group
+            for request_obj in obj.made_requests.all():
+                if bloodGroupTest(donor_blood_group, request_obj):
+                    count += 1
+            return count
+        else:
+            return obj.made_requests.count()
 
     def get_no_of_completed(self, obj):
         return obj.made_requests.filter(status="COM").count()
