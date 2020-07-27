@@ -20,7 +20,7 @@ class ListAllSeekersView(ListAPIView):
     List all Seekers.
     """
     serializer_class = SeekerProfileSerializer
-    queryset = SeekerProfile.objects.filter(user__is_donor=False)
+    queryset = SeekerProfile.objects.filter(user__is_donor=False).order_by('-created')
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
