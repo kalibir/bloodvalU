@@ -19,6 +19,8 @@ import A_positive from "../../assets/icons/A_positive.svg";
 import B_negative from "../../assets/icons/B_negative.svg";
 import B_positive from "../../assets/icons/B_positive.svg";
 import {Fade} from "react-reveal";
+import ButtonSpinner from "../ButtonSpinner";
+import SmallButtonSpinner from "../SmallButtonSpinner";
 
 const BarWrapper = styled.div`
   //width: 445px;
@@ -203,13 +205,16 @@ const GenericDonorRequestBar = ({
 }) => {
   const dispatch = useDispatch();
   const [showSeeker, setSeekerInfo] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const showSeekerHandler = (event) => {
     setSeekerInfo(!showSeeker);
   };
 
   const handleApply = (e) => {
+    setShowSpinner(true)
     dispatch(applyToRequestActionInAll(id));
+    setShowSpinner(false)
   };
   const renderBloodType = () => {
     if (blood_group === "O-") return O_negative;
@@ -252,7 +257,7 @@ const GenericDonorRequestBar = ({
               <RequestIsActiveSign onClick={showSeekerHandler}>Active</RequestIsActiveSign>
             )
           ) : (
-            <GreenButton onClick={handleApply}>Apply</GreenButton>
+            <GreenButton onClick={handleApply}>{showSpinner ? <SmallButtonSpinner/> : "Apply"}</GreenButton>
           )}
         </ButtonWrapper>
 

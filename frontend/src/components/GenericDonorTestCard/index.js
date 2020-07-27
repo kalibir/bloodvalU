@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {rem} from "polished";
 import styled from "styled-components";
 import {SmallBlueButton, SmallGreenButton} from "../../style/GlobalButtons";
@@ -6,6 +6,7 @@ import {applyToRequestActionInAll} from "../../store/actions/bloodRequestActions
 import {useDispatch} from "react-redux";
 import {buyTestAction} from "../../store/actions/offeredTestActions";
 import {getLoggedInUserAction} from "../../store/actions/userActions";
+import SmallButtonSpinner from "../SmallButtonSpinner";
 
 const ColorDebug = false;  //at true all element get colored background for checking
 
@@ -149,10 +150,14 @@ const GenericDonorTestCard = (props) => {
 `;
 
     const dispatch = useDispatch();
+      const [showSpinner, setShowSpinner] = useState(false);
 
     const handleBuy = async e => {
+        setShowSpinner(true)
         const response = await dispatch(buyTestAction(id))
-        if (response.status < 300) dispatch(getLoggedInUserAction())
+        if (response.status < 300)
+            setShowSpinner(false)
+        dispatch(getLoggedInUserAction())
     }
 
 
@@ -175,7 +180,7 @@ const GenericDonorTestCard = (props) => {
                         : is_bought ? is_expired ? <ExpiredText>Expired</ExpiredText> :
                             <RedeemButton onClick={handleBuy}>Re-send Code</RedeemButton> :
                             <>
-                                <BuyButton onClick={handleBuy}>Buy</BuyButton>
+                                <BuyButton onClick={handleBuy}>{showSpinner ? <SmallButtonSpinner/> : "Buy"}</BuyButton>
                                 <PointContainer>{points_cost} Points</PointContainer>
                             </>
                     }
