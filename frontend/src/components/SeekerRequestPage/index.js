@@ -90,7 +90,7 @@ const DashboardContentContainer = styled.div`
     flex-flow: column;
     justify-content: flex-start;
     overflow: auto;
-    max-height: ${rem("560px")};
+    max-height: ${rem("490px")};
     margin-bottom: ${rem("32px")};
 `;
 

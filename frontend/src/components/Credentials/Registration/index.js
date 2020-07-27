@@ -60,6 +60,7 @@ const Registration = ({registrationReducer, dispatch, errorReducer:{error}}) => 
         dispatch(resetError())
         const response = await dispatch(sendCode(userInfo));
         if (response.status < 300) {
+            setShowSpinner(false)
             dispatch(setEmail(userInfo.email))
             history.push("/auth/signup/sent");
         }
