@@ -138,13 +138,14 @@ const GenericDonorTestCard = (props) => {
     const LogoContainer = styled.div`
       overflow: hidden;
       background-image: url(${seeker_logo});
-      width: ${rem("110px")};
-      height: 100%;
+      width: ${rem("135px")};
+      height: ${rem("135px")};
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
       text-align: center;
       border-radius: 4px;
+      margin-left: ${rem("5px")};
 `;
 
     const dispatch = useDispatch();
