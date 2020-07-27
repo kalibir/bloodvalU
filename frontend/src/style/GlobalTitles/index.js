@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { rem } from "polished";
+import {rem} from "polished";
 
 export const SmallTitle = styled.label`
     font-style: normal;
@@ -31,6 +31,7 @@ export const BloodValU = ({text, black, red}) => {
 
     const Bloodval = styled.span`
       cursor: pointer;
+      margin-bottom: 5px;
       font-family: 'Poppins', sans-serif;
       font-weight: 600;
       font-size: ${rem(`${black}px`)};

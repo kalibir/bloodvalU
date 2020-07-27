@@ -18,21 +18,34 @@ const LandPageContainer = styled(PageContainer)`
   align-items: center;
 `;
 
+const LogoWrapper = styled.div`
+  @media ${device.laptop} { 
+  }
+`
+
 const ContentWrapper = styled.div`
   //background-color: cadetblue;
   display: flex;
   flex-flow: column;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   width: calc(100% - 320px);
   margin-top: ${rem("104px")};
     @media ${device.laptop} { 
       width: auto;
+      margin-top: 0;
+      padding: ${rem("20px")};
+      justify-content: center;
+      align-items: center;
   }
 `;
 
 const WelcomeText = styled.div`
   font-size: ${rem("16px")};
+  @media ${device.laptop} { 
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
   color: #505565;
   margin-top: ${rem("32px")};
   margin-bottom: ${rem("72px")};
@@ -73,14 +86,14 @@ const LandingPage = ({authReducer: {userObj, authenticated, isLogin}}) => {
     return (
         <LandPageContainer>
             <ContentWrapper>
-                <BloodValU text="Welcome to bloodval" black={32} red={48}/>
+                <LogoWrapper><BloodValU text="Welcome to bloodval" black={32} red={48}/></LogoWrapper>
                 <WelcomeText>Let’s start creating your profile. Are you interested in</WelcomeText>
                 <ButtonWrapper>
                     <ChooseRoleButton onClick={handleClick} id={"True"}>
-                        Become a donor
+                        Becoming a donor
                     </ChooseRoleButton>
                     <ChooseRoleButton onClick={handleClick} id={"False"}>
-                        Become a recipient
+                        Becoming a recipient
                     </ChooseRoleButton>
                 </ButtonWrapper>
             </ContentWrapper>
