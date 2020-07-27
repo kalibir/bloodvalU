@@ -71,6 +71,10 @@ const IconWrapper = styled(ButtonWrapper)`
   align-items: center;
 `;
 
+const ValidWrapper = styled(IconWrapper)`
+  grid-area: valid;
+`
+
 const UrgentWrapper = styled(ButtonWrapper)`
   grid-area: urgent;
   height: 100%;
@@ -91,9 +95,15 @@ const Type = styled.img`
 `;
 
 const BarArrowWrapper = styled(ButtonWrapper)`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: ${rem("24px")};
   grid-area: arrow;
-  justify-self: end;
+  //justify-self: end;
   margin-right: 24px;
+  width: 100%;
+  height: 100%;
 `;
 
 const BarArrowRight = styled.i`
@@ -230,7 +240,7 @@ const GenericDonorRequestBar = ({
         <UrgentWrapper onClick={showSeekerHandler}>
           {is_urgent ? <UrgentIcon src={urgentIcon} /> : null}
         </UrgentWrapper>
-        <BloodDiv>
+        <BloodDiv onClick={showSeekerHandler}>
           <Type src={renderBloodType()} alt="blood_type" />
         </BloodDiv>
         <ButtonWrapper>
@@ -246,9 +256,9 @@ const GenericDonorRequestBar = ({
           )}
         </ButtonWrapper>
 
-        <IconWrapper onClick={showSeekerHandler}>
+        <ValidWrapper onClick={showSeekerHandler}>
           {is_valid ? null : <InfoIcons src={expiredIcon} />}
-        </IconWrapper>
+        </ValidWrapper>
 
         <BarArrowWrapper onClick={showSeekerHandler}>
           {" "}
