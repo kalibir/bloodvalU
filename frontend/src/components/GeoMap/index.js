@@ -38,7 +38,7 @@ const Img = styled.img`
 
 const CustomLocation = styled(GeolocateControl)`
   position: fixed;
-  top: 10%;
+  top: 20%;
 `
 const CustomScaler = styled(ScaleControl)`
   bottom: 0;
@@ -48,7 +48,7 @@ const CustomScaler = styled(ScaleControl)`
 const CustomNavigator = styled(NavigationControl)`
   position: fixed;
   right: 0;
-  bottom: 10%;
+  bottom: 15%;
   width: 30px;
 `
 
@@ -69,9 +69,18 @@ const AlertWrapper = styled.div`
   animation: ${rotate} 2s linear infinite;
 `
 
+const MapCover = styled.div`
+  background-color: darkred;
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  height: 80%;
+`
 const FlyTo = styled.button`
   padding: 2rem;
   display: flex;
+  color: white;
+  
   position: fixed;
   top: 50%;
   left: 50%;
@@ -82,7 +91,7 @@ const GeoMap = ({
                     profilesReducer: {profiles},
                     authReducer: {userObj},
                 }) => {
-    const [showFly, setShowFly] = useState(true)
+    const [showCover, setShowCover] = useState(true)
     const [viewPort, setViewport] = useState({
         latitude: 47.36667,
         longitude: 8.55,
@@ -106,7 +115,7 @@ const GeoMap = ({
         };
         setViewport(newViewport);
         dispatch(getAllSeekersAction())
-        setShowFly(!showFly)
+        setShowCover(!showCover)
     }
 
     const handleClosePopup = () => {
@@ -128,6 +137,7 @@ const GeoMap = ({
 
     return (
         <PageContainer>
+            {showCover ? <MapCover><FlyTo onClick={handleFly}>Discover</FlyTo></MapCover> : null}
             <ReactMapGL
                 {...viewPort}
                 mapboxApiAccessToken={"pk.eyJ1IjoiZ3lzZW4iLCJhIjoiY2tjczdzcXJuMGZ5azJ3cDR6N2Jqcm00cyJ9.mkv2PJA7gpy9-ddtprFKXA"}
@@ -137,14 +147,14 @@ const GeoMap = ({
             > <CustomLocation
                 positionOptions={{enableHighAccuracy: true}}
                 trackUserLocation={true}
-            />{showFly ? <FlyTo onClick={handleFly}>Discover</FlyTo> : null}
+            />
                 {profiles ? profiles.map((profile, index) => {
                     if (profile.latitude) {
                         return (
                             <CustomMarker key={profile.id} latitude={profile.latitude} longitude={profile.longitude}>
-                                {profile.no_of_requests && !selectedSeeker  ?<AlertWrapper>
+                                {profile.no_of_requests && !selectedSeeker ? <AlertWrapper>
                                     <span role={"img"}>&#10071;</span>{profile.no_of_requests}
-                                </AlertWrapper>: null}
+                                </AlertWrapper> : null}
                                 <Img onClick={(e) => {
                                     e.preventDefault()
                                     setSelectedSeeker(profile)
@@ -159,7 +169,8 @@ const GeoMap = ({
                         latitude={selectedSeeker.latitude}
                         longitude={selectedSeeker.longitude}
                     >
-                        <SeekerInfo handleClosePopup={handleClosePopup} selectedSeeker={selectedSeeker} userObj={userObj}/>
+                        <SeekerInfo handleClosePopup={handleClosePopup} selectedSeeker={selectedSeeker}
+                                    userObj={userObj}/>
                     </CustomPopup>
                 ) : null}
                 <CustomScaler/>
