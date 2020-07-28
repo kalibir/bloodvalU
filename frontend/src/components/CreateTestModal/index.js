@@ -42,9 +42,11 @@ const TitleInputWrapper = styled.div`
 
 const Label = styled.label`
   margin-bottom: 10px;
+  font-weight: bold;
 `
 
 const SmallLabel = styled.label`
+  font-weight: bold;
 `
 
 const TitleInput = styled.input`
@@ -54,7 +56,6 @@ const TitleInput = styled.input`
   border-radius: 4px;
 
   border: 1px solid #a1a4b1;
-  color: #a1a4b1;
   margin-left: 8px;
 `;
 
@@ -72,7 +73,6 @@ const PointsInput = styled.input`
   height: 30px;
   border-radius: 4px;
   border: 1px solid #a1a4b1;
-  color: #000000;
   margin-left: 8px;
   font-size: 9pt;
 `;
@@ -92,7 +92,6 @@ const ExpiryDateInput = styled.input`
   border-radius: 4px;
   border: 1px solid #a1a4b1;
   justify-content: space-between;
-  color: #a1a4b1;
   margin-left: 8px;
 `;
 
@@ -169,7 +168,8 @@ const CreateTestModal = ({closeModal}) => {
                 </TitleInputWrapper>
 
                 <ExpiryDateInputWrapper>
-                    Expiry Date:
+
+                    <SmallLabel>Expiry Date:</SmallLabel>
                     <ExpiryDateInput
                         required
                         onChange={(e) => onChangeHandler(e, "expiry_date")}
@@ -178,7 +178,8 @@ const CreateTestModal = ({closeModal}) => {
                 </ExpiryDateInputWrapper>
 
                 <PointsInputWrapper>
-                    Points:
+
+                    <SmallLabel>Points:</SmallLabel>
                     <PointsInput required onChange={(e) => onChangeHandler(e, "points_cost")} type="number"/>
                 </PointsInputWrapper>
                 <InputBoxWrapper>
