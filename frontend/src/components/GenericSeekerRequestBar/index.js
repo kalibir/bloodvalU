@@ -20,6 +20,7 @@ import AB_negative from "../../assets/icons/AB_negative.svg";
 import AB_positive from "../../assets/icons/AB_positive.svg";
 import urgentIcon from "../../assets/icons/urgent.svg";
 import renewIcon from "../../assets/icons/renew.svg";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const BarWrapper = styled.div`
   width: 100%;
@@ -294,31 +295,34 @@ const GenericSeekerRequestBar = ({
                 <TextWrapper onClick={handleRenderApplicants}> Request {request.id}</TextWrapper>
 
                 <IconWrapper>
-                    <IconButton2 onClick={(e) => setSureModal(true)}>&#10006;</IconButton2>
-                    <IconButton onClick={(e) => handleShowEditModal(e, request)}>&#9998;</IconButton>
+                    {request.status != "COM" ? (
+                        <>
+                    <Tooltip title="Delete request." arrow><IconButton2 onClick={(e) => setSureModal(true)}>&#10006;</IconButton2></Tooltip>
+                    <Tooltip title="Edit request." arrow><IconButton onClick={(e) => handleShowEditModal(e, request)}>&#9998;</IconButton></Tooltip>
+                        </>) : null}
                 </IconWrapper>
 
                 <ButtonWrapper>
                     {request.status === "OP" ? (
-                        <BlueButton>Open</BlueButton>
+                        <Tooltip title="Request is open currently." arrow><BlueButton>Open</BlueButton></Tooltip>
                     ) : request.status === "CL" ? (
                         <CompleteItButton onClick={handleCompleteRequest}>Mark As Complete</CompleteItButton>
                     ) : (
-                        <CompletedButton onClick={handleRenderApplicants}>Completed</CompletedButton>
+                        <Tooltip title="Request is completed." arrow><CompletedButton onClick={handleRenderApplicants}>Completed</CompletedButton></Tooltip>
                     )}
                 </ButtonWrapper>
 
                 <UrgentWrapper onClick={handleRenderApplicants}>{request.is_urgent ?
-                    <UrgentIcon src={urgentIcon}/> : null}</UrgentWrapper>
-                <BloodDiv onClick={handleRenderApplicants}><Type src={renderBloodType()} alt="blood_type"/></BloodDiv>
-                <RenewWrapper onClick={handleRenderApplicants}>{request.is_renewable ?
-                    <UrgentIcon src={renewIcon}/> : null}</RenewWrapper>
+                    <Tooltip title="This request is urgent." arrow><UrgentIcon src={urgentIcon}/></Tooltip> : null}</UrgentWrapper>
+                <BloodDiv onClick={handleRenderApplicants}><Tooltip title="Blood-group of request." arrow><Type src={renderBloodType()} alt="blood_type"/></Tooltip></BloodDiv>
+                <Tooltip title="Request renew itself after current one is done." arrow><RenewWrapper onClick={handleRenderApplicants}>{request.is_renewable ?
+                    <UrgentIcon src={renewIcon}/> : null}</RenewWrapper></Tooltip>
 
                 {request.no_of_applicants ? (
-                    <ArrowWrapper onClick={handleRenderApplicants}>
+                    <Tooltip title="Click for more information." arrow><ArrowWrapper onClick={handleRenderApplicants}>
                         <BarArrowRight
                             style={openArrow ? {transform: "rotate(45deg)"} : {transform: "rotate(-45deg)"}}/>
-                    </ArrowWrapper>
+                    </ArrowWrapper></Tooltip>
                 ) : (
                     <EmptyArrowWrapper/>
                 )}
