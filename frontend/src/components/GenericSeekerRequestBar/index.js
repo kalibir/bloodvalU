@@ -31,7 +31,7 @@ const RequestBar = styled.div`
   grid-template-areas: "text edit button urgent blood renew arrow";
   grid-template-columns: 2fr 1fr 1fr 1fr 35px 1fr 1fr;
   background-color: #ffffff;
-  border-bottom: 1px solid #d9d9d9;
+  border: 1px solid #d9d9d9;
   align-items: center;
   grid-gap: 8px;
   cursor: pointer;
