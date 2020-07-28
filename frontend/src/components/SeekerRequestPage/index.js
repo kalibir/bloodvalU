@@ -209,7 +209,7 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
                             )}
                         </Requests>
                     </DashboardContentContainer>
-                    <NewRequestButton onClick={() => setModal({...modal, showModal: true})}>
+                    <NewRequestButton onClick={() => setModal({...modal, showModal: true, modalData: null})}>
                         <PlusSignButton/>+ Create Request
                     </NewRequestButton>
                 </LeftSide>
