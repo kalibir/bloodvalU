@@ -17,7 +17,8 @@ const CustomSpinner = styled(PuffLoader)`
   color: #d33449;
 `
 const SmallButtonSpinner = () => {
-    return <CustomSpinner size={30} color={"#d33449"} loading/>;
+    // return <CustomSpinner size={30} color={"#d33449"} loading/>;
+    return <CustomSpinner size={30} color={"#121232"} loading/>;
 };
 
 export default SmallButtonSpinner;

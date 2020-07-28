@@ -48,10 +48,16 @@ const RequestBar = styled.div`
 
 const GreenButton = styled(BaseStatusButton)`
   background-color: #43a047;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const RedButton = styled(BaseStatusButton)`
   background-color: #d33449;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const TextWrapper = styled.div`
@@ -211,10 +217,13 @@ const GenericDonorRequestBar = ({
     setSeekerInfo(!showSeeker);
   };
 
-  const handleApply = (e) => {
+  const handleApply = async e => {
     setShowSpinner(true)
-    dispatch(applyToRequestActionInAll(id));
-    setShowSpinner(false)
+    console.log("Showspinner, b4 dispatch", showSpinner)
+    const response = await dispatch(applyToRequestActionInAll(id));
+    if (response.status < 300)
+            setShowSpinner(false)
+    console.log("Showspinner, after dispatch", showSpinner)
   };
   const renderBloodType = () => {
     if (blood_group === "O-") return O_negative;
@@ -252,7 +261,7 @@ const GenericDonorRequestBar = ({
           {" "}
           {logged_in_donor_applied ? (
             is_valid ? (
-              <RedButton onClick={handleApply}>Cancel</RedButton>
+              <RedButton onClick={handleApply}>{showSpinner ? <SmallButtonSpinner/> : "Cancel"}</RedButton>
             ) : (
               <RequestIsActiveSign onClick={showSeekerHandler}>Active</RequestIsActiveSign>
             )
