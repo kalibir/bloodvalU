@@ -72,11 +72,11 @@ const CheckboxWrapper = styled.div`
   align-items: center;
 `;
 
-const RequestCheckBoxInput = styled.input`
-  width: 16px;
-  height: 16px;
-  margin-right: 16px;
-`;
+// const RequestCheckBoxInput = styled.input`
+//   width: 16px;
+//   height: 16px;
+//   margin-right: 16px;
+// `;
 
 const ModalBtnWrapper = styled.div`
   width: 100%;
