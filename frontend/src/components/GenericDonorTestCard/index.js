@@ -7,6 +7,7 @@ import {useDispatch} from "react-redux";
 import {buyTestAction} from "../../store/actions/offeredTestActions";
 import {getLoggedInUserAction} from "../../store/actions/userActions";
 import SmallButtonSpinner from "../SmallButtonSpinner";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const ColorDebug = false;  //at true all element get colored background for checking
 
@@ -32,6 +33,8 @@ const TestCardContent = styled.div`
     padding-left: ${rem("10px")};
     background-color: ${ColorDebug ? "deepskyblue" : ""};
 `;
+
+const ErrorTool = styled(Tooltip)``
 
 const TextContainer = styled.div`
     width: 100%;
@@ -150,13 +153,20 @@ const GenericDonorTestCard = (props) => {
 `;
 
     const dispatch = useDispatch();
-      const [showSpinner, setShowSpinner] = useState(false);
+    const [showSpinner, setShowSpinner] = useState(false);
+    const [showBroke, setShowBroke] = useState(false)
+    console.log(showBroke);
 
     const handleBuy = async e => {
         setShowSpinner(true)
         const response = await dispatch(buyTestAction(id))
-        if (response.status < 300)
+        if (response.status < 300) {
+            setShowBroke(false)
             setShowSpinner(false)
+        } else {
+            setShowBroke(true)
+            setShowSpinner(false)
+        }
         dispatch(getLoggedInUserAction())
     }
 
@@ -180,7 +190,7 @@ const GenericDonorTestCard = (props) => {
                         : is_bought ? is_expired ? <ExpiredText>Expired</ExpiredText> :
                             <RedeemButton onClick={handleBuy}>Re-send Code</RedeemButton> :
                             <>
-                                <BuyButton onClick={handleBuy}>{showSpinner ? <SmallButtonSpinner/> : "Buy"}</BuyButton>
+                                {showBroke ? <ErrorTool title="You have insuficient points..." arrow><BuyButton onClick={handleBuy}>{showSpinner ? <SmallButtonSpinner/> : "Buy"}</BuyButton></ErrorTool> :<BuyButton onClick={handleBuy}>{showSpinner ? <SmallButtonSpinner/> : "Buy"}</BuyButton>}
                                 <PointContainer>{points_cost} Points</PointContainer>
                             </>
                     }
