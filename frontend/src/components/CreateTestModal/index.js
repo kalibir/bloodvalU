@@ -134,17 +134,17 @@ export const InputBox = styled.textarea`
 
 const CreateTestModal = ({closeModal, modalData, handleEditTest}) => {
     const dispatch = useDispatch();
-    const [testData, settestData] = useState({
-        test_type: "",
-        expiry_date: "",
-        points_cost: "",
+    const [testData, setTestData] = useState({
+        test_type: modalData ? modalData.test_type : "",
+        expiry_date: modalData ? modalData.expiry_date : "",
+        points_cost: modalData ? modalData.points_cost : "",
         details: modalData ? modalData.details : "",
     });
     console.log(testData);
 
     const onChangeHandler = (event, property) => {
         const value = event.currentTarget.value;
-        settestData({...testData, [property]: value});
+        setTestData({...testData, [property]: value});
     };
 
     const handleSubmit = async (e) => {
@@ -187,7 +187,8 @@ const CreateTestModal = ({closeModal, modalData, handleEditTest}) => {
                 }
                 <InputBoxWrapper>
                     <Label htmlFor="description">Description:</Label>
-                    <InputBox id="description" maxLength="300" value={testData.details} rows={11} cols="50" placeholder={`Describe the test...`}
+                    <InputBox id="description" maxLength="300" value={testData.details} rows={11} cols="50"
+                              placeholder={`Describe the test...`}
                               onChange={(e) => onChangeHandler(e, "details")}/>
                 </InputBoxWrapper>
 

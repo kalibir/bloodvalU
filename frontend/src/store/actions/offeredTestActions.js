@@ -78,6 +78,17 @@ export const deleteTestAction = (testID) => async (dispatch) => {
   }
 }
 
+export const editTestAction = (testID, testData) => async (dispatch) => {
+  try {
+    const response = await Axios.patch(`tests/${testID}/`, testData);
+    const { data } = response;
+    dispatch(updateTestInAll(data));
+    return response
+  } catch (error) {
+    return error
+  }
+}
+
 export const getCustomersAction = (testIdObj) => async (dispatch) => {
     try {
         const response = await Axios.post(`tests/customers/`, testIdObj);
