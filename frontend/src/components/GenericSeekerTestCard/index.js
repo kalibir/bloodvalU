@@ -8,12 +8,14 @@ import {useDispatch} from "react-redux";
 import UploadTestResultsModal from "../UploadTestResultsModal";
 
 const TestCard = styled.div`
-  width: ${rem("290px")};
-  height: ${rem("150px")};
+  width: ${rem("320px")};
+  height: ${rem("160px")};
   background: #FFF;
+  padding: 10px;
   border: 1px solid #d3d4d8;
   border-radius: 4px;
   display: flex;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
@@ -52,25 +54,27 @@ const TextContainer = styled.div`
 
 const BottomContainer = styled.div`
   height: ${rem("40px")};
-  width: ${rem("250px")};
+  width: 100%;
   display: flex;
+  align-items: flex-end;
   justify-content: space-between;
 `;
 
 const CardBlueButton = styled(SmallBlueButton)`
-  width: 60px;
+  width: 150px;
   height: 30px;
+  margin: 0 5px 0 5px;
   font-size: 12px;
 `;
 
 const CardGreenButton = styled(SmallGreenButton)`
-   width: 80px;
+   width: 100px;
   height: 30px;
   font-size: 12px;
 `
 
 const CardRedButton = styled(SmallRedButton)`
-  width: 60px;
+  width: 70px;
   height: 30px;
   font-size: 12px;
 `;
@@ -126,9 +130,8 @@ const GenericSeekerTestCard = ({
                     <CardGreenButton onClick={e => setShowCustomersModal(true)}>Customers</CardGreenButton>
                     : <BlindButton></BlindButton>
                 }
-                {/*<CardBlueButton>edit</CardBlueButton>*/}
+                <CardBlueButton onClick={e => handleShowEditModal(e, test)}>edit description</CardBlueButton>
                 <CardRedButton onClick={e => setSureModal(true)}>delete</CardRedButton>
-                <CardRedButton onClick={e => handleShowEditModal(e, test)}>edit</CardRedButton>
             </BottomContainer>
         </TestCard>
     );

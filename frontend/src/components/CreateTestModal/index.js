@@ -188,8 +188,11 @@ const CreateTestModal = ({closeModal, modalData, handleEditTest}) => {
                 <InputBoxWrapper>
                     <Label htmlFor="description">Description:</Label>
                     <InputBox id="description" maxLength="300" value={testData.details} rows={11} cols="50"
-                              placeholder={`Describe the test...`}
-                              onChange={(e) => onChangeHandler(e, "details")}/>
+                              placeholder={`Describe the test... Minimum 30 characters`}
+                              onChange={(e) => onChangeHandler(e, "details")}
+                              minLength="30"
+                              required
+                    />
                 </InputBoxWrapper>
 
                 <ModalBtnWrapper>

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { rem } from "polished";
-import styled, { keyframes } from "styled-components";
-import { SmallBlueButton, SmallGreenButton } from "../../style/GlobalButtons";
-import { applyToRequestActionInAll } from "../../store/actions/bloodRequestActions";
-import { useDispatch } from "react-redux";
-import { buyTestAction } from "../../store/actions/offeredTestActions";
-import { getLoggedInUserAction } from "../../store/actions/userActions";
+import React, {useState} from "react";
+import {rem} from "polished";
+import styled, {keyframes} from "styled-components";
+import {SmallBlueButton, SmallGreenButton} from "../../style/GlobalButtons";
+import {applyToRequestActionInAll} from "../../store/actions/bloodRequestActions";
+import {useDispatch} from "react-redux";
+import {buyTestAction} from "../../store/actions/offeredTestActions";
+import {getLoggedInUserAction} from "../../store/actions/userActions";
 import SmallButtonSpinner from "../SmallButtonSpinner";
 import Tooltip from "@material-ui/core/Tooltip";
 import Flip from "react-reveal/Flip";
@@ -62,13 +62,36 @@ const TextContainer = styled.div`
 
 const DetailsContainer = styled.div`
   width: 100%;
-  height: ${rem("100px")};
-  display: flex;
-  flex-flow: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  background-color: ${ColorDebug ? "darkorange" : ""};
+   display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 `;
+
+const CloseDetailsButton = styled(SmallBlueButton)`
+  width: ${rem("56px")};
+  height: ${rem("28px")};
+  background: #000080;
+  border: 1px solid #000080;
+  margin-top: 24px;
+  :hover {
+    color: #000080;
+    background: #fff;
+    border: 1px solid #000080;
+  }
+  :active {
+    color: #000080;
+    background: #fff;
+    border: 1px solid #000080;
+  }
+`;
+
+
+const BackButton = styled(CloseDetailsButton)`
+margin-top: 0;
+
+`
 
 const Text = styled.div`
   font-style: normal;
@@ -166,23 +189,8 @@ const BuyButton = styled(SmallBlueButton)`
     border: 1px solid #000080;
   }
 `;
-const CloseDetailsButton = styled(SmallBlueButton)`
-  width: ${rem("56px")};
-  height: ${rem("28px")};
-  background: #000080;
-  border: 1px solid #000080;
-  margin-top: 24px;
-  :hover {
-    color: #000080;
-    background: #fff;
-    border: 1px solid #000080;
-  }
-  :active {
-    color: #000080;
-    background: #fff;
-    border: 1px solid #000080;
-  }
-`;
+
+
 
 const DetailsText = styled.p`
   white-space: pre-line;
@@ -190,23 +198,23 @@ const DetailsText = styled.p`
 `;
 
 const GenericDonorTestCard = (props) => {
-  const {
-    test: {
-      id,
-      test_type,
-      seeker,
-      seeker_name,
-      is_bought,
-      points_cost,
-      expiry_date,
-      is_expired,
-      results,
-      details,
-    },
-  } = props;
-  let seeker_logo = seeker.logo;
+    const {
+        test: {
+            id,
+            test_type,
+            seeker,
+            seeker_name,
+            is_bought,
+            points_cost,
+            expiry_date,
+            is_expired,
+            results,
+            details,
+        },
+    } = props;
+    let seeker_logo = seeker.logo;
 
-  const LogoContainer = styled.div`
+    const LogoContainer = styled.div`
     overflow: hidden;
     background-image: url(${seeker_logo});
     width: ${rem("135px")};
@@ -219,93 +227,93 @@ const GenericDonorTestCard = (props) => {
     margin-left: ${rem("5px")};
   `;
 
-  const dispatch = useDispatch();
-  const [showSpinner, setShowSpinner] = useState(false);
-  const [showBroke, setShowBroke] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
+    const dispatch = useDispatch();
+    const [showSpinner, setShowSpinner] = useState(false);
+    const [showBroke, setShowBroke] = useState(false);
+    const [showDetails, setShowDetails] = useState(false);
 
-  const handleBuy = async (e) => {
-    setShowSpinner(true);
-    const response = await dispatch(buyTestAction(id));
-    if (response.status < 300) {
-      setShowBroke(false);
-      setShowSpinner(false);
-    } else {
-      setShowBroke(true);
-      setShowSpinner(false);
-    }
-    dispatch(getLoggedInUserAction());
-  };
+    const handleBuy = async (e) => {
+        setShowSpinner(true);
+        const response = await dispatch(buyTestAction(id));
+        if (response.status < 300) {
+            setShowBroke(false);
+            setShowSpinner(false);
+        } else {
+            setShowBroke(true);
+            setShowSpinner(false);
+        }
+        dispatch(getLoggedInUserAction());
+    };
 
-  const handleDetails = (e) => {
-    e.preventDefault();
-    setShowDetails(!showDetails);
-  };
+    const handleDetails = (e) => {
+        e.preventDefault();
+        setShowDetails(!showDetails);
+    };
 
-  return (
-    <>
-      {showDetails ? (
-        <DetailsCard>
-          <DetailsContainer>
-            <DetailsText>{details}</DetailsText>
-            <CloseDetailsButton onClick={handleDetails}>
-              {showSpinner ? <SmallButtonSpinner /> : "back"}
-            </CloseDetailsButton>
-          </DetailsContainer>
-        </DetailsCard>
-      ) : (
-        <TestCard>
-          <LogoContainer>{/*<img src={seeker_logo}/>*/}</LogoContainer>
-          <TestCardContent>
-            <TextContainer>
-              <TestHeader>
-                <TestText>{test_type}</TestText>
-                <PointContainer>{points_cost} Points</PointContainer>
-              </TestHeader>
+    return (
+        <>
+            {showDetails ? (
+                <DetailsCard>
+                    <DetailsContainer>
+                        <DetailsText>{details}</DetailsText>
+                        <BackButton onClick={handleDetails}>
+                            back
+                        </BackButton>
+                    </DetailsContainer>
+                </DetailsCard>
+            ) : (
+                <TestCard>
+                    <LogoContainer>{/*<img src={seeker_logo}/>*/}</LogoContainer>
+                    <TestCardContent>
+                        <TextContainer>
+                            <TestHeader>
+                                <TestText>{test_type}</TestText>
+                                <PointContainer>{points_cost} Points</PointContainer>
+                            </TestHeader>
 
-              <Text>{seeker_name}</Text>
-              <ValidText>
-                Valid until: <ValidDate active={is_expired}>{expiry_date}</ValidDate>
-              </ValidText>
-            </TextContainer>
+                            <Text>{seeker_name}</Text>
+                            <ValidText>
+                                Valid until: <ValidDate active={is_expired}>{expiry_date}</ValidDate>
+                            </ValidText>
+                        </TextContainer>
 
-            <TestCardBottomContainer active={is_bought}>
-              {results ? (
-                <DownloadLink href={results} target={"_blank"} download>
-                  <DownloadButton>DOWNLOAD</DownloadButton>
-                </DownloadLink>
-              ) : is_bought ? (
-                is_expired ? (
-                  <ExpiredText>Expired</ExpiredText>
-                ) : (
-                  <RedeemButton onClick={handleBuy}>Re-send Code</RedeemButton>
-                )
-              ) : (
-                <>
-                  {showBroke ? (
-                    <ErrorTool title="You have insuficient points..." arrow>
-                      <BuyButton onClick={handleBuy}>
-                        {showSpinner ? <SmallButtonSpinner /> : "Buy"}
-                      </BuyButton>
-                    </ErrorTool>
-                  ) : (
-                    <>
-                      <BuyButton onClick={handleBuy}>
-                        {showSpinner ? <SmallButtonSpinner /> : "Buy"}
-                      </BuyButton>
-                    </>
-                  )}
-                  <BuyButton onClick={handleDetails}>
-                    {showSpinner ? <SmallButtonSpinner /> : "Details"}
-                  </BuyButton>
-                </>
-              )}
-            </TestCardBottomContainer>
-          </TestCardContent>
-        </TestCard>
-      )}
-    </>
-  );
+                        <TestCardBottomContainer active={is_bought}>
+                            {results ? (
+                                <DownloadLink href={results} target={"_blank"} download>
+                                    <DownloadButton>DOWNLOAD</DownloadButton>
+                                </DownloadLink>
+                            ) : is_bought ? (
+                                is_expired ? (
+                                    <ExpiredText>Expired</ExpiredText>
+                                ) : (
+                                    <RedeemButton onClick={handleBuy}>Re-send Code</RedeemButton>
+                                )
+                            ) : (
+                                <>
+                                    {showBroke ? (
+                                        <ErrorTool title="You have insuficient points..." arrow>
+                                            <BuyButton onClick={handleBuy}>
+                                                {showSpinner ? <SmallButtonSpinner/> : "Buy"}
+                                            </BuyButton>
+                                        </ErrorTool>
+                                    ) : (
+                                        <>
+                                            <BuyButton onClick={handleBuy}>
+                                                {showSpinner ? <SmallButtonSpinner/> : "Buy"}
+                                            </BuyButton>
+                                        </>
+                                    )}
+                                    <BuyButton onClick={handleDetails}>
+                                        {showSpinner ? <SmallButtonSpinner/> : "Details"}
+                                    </BuyButton>
+                                </>
+                            )}
+                        </TestCardBottomContainer>
+                    </TestCardContent>
+                </TestCard>
+            )}
+        </>
+    );
 };
 
 export default GenericDonorTestCard;

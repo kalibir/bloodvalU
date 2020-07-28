@@ -110,7 +110,7 @@ const IconButton = styled.button`
   }
 `;
 
-const IconButton2 = styled(IconButton)`
+export const IconButton2 = styled(IconButton)`
   border: 3px solid red;  
   background-color: white;
   color: red;
