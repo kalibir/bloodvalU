@@ -48,10 +48,13 @@ const RequestBar = styled.div`
 `;
 
 const GreenButton = styled(BaseStatusButton)`
-  height: 38px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
   background-color: #43a047;
+  display: flex;
+    height: 38px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+  justify-content: center;
+  align-items: center;
 `;
 
 const RedButton = styled(BaseStatusButton)`
@@ -59,6 +62,9 @@ const RedButton = styled(BaseStatusButton)`
   font-weight: 500;
   letter-spacing: 1.5px;
   background-color: #d33449;
+    display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const TextWrapper = styled.div`
@@ -217,28 +223,29 @@ const GenericDonorRequestBar = ({
         setSeekerInfo(!showSeeker);
     };
 
-    const handleApply = (e) => {
-        setShowSpinner(true)
-        dispatch(applyToRequestActionInAll(id));
-        setShowSpinner(false)
-    };
-
-    const renderBloodType = () => {
-        if (blood_group === "O-") return O_negative;
-        if (blood_group === "O+") return O_positive;
-        if (blood_group === "A-") return A_negative;
-        if (blood_group === "A+") return A_positive;
-        if (blood_group === "B-") return B_negative;
-        if (blood_group === "B+") return B_positive;
-        if (blood_group === "AB-") return AB_negative;
-        if (blood_group === "AB+") return AB_positive;
-    };
-
-    return (
-        <Fade left>
-            <BarWrapper>
-                <RequestBar>
-                    <TextWrapper onClick={showSeekerHandler}> Request {id}</TextWrapper>
+  const handleApply = async e => {
+    setShowSpinner(true)
+    console.log("Showspinner, b4 dispatch", showSpinner)
+    const response = await dispatch(applyToRequestActionInAll(id));
+    if (response.status < 300)
+            setShowSpinner(false)
+    console.log("Showspinner, after dispatch", showSpinner)
+  };
+  const renderBloodType = () => {
+    if (blood_group === "O-") return O_negative;
+    if (blood_group === "O+") return O_positive;
+    if (blood_group === "A-") return A_negative;
+    if (blood_group === "A+") return A_positive;
+    if (blood_group === "B-") return B_negative;
+    if (blood_group === "B+") return B_positive;
+    if (blood_group === "AB-") return AB_negative;
+    if (blood_group === "AB+") return AB_positive;
+  };
+  return (
+      <Fade left>
+    <BarWrapper>
+      <RequestBar>
+        <TextWrapper onClick={showSeekerHandler}> Request {id}</TextWrapper>
 
                     <IconWrapper onClick={showSeekerHandler}>
                         {(status === "CL") &
@@ -262,7 +269,7 @@ const GenericDonorRequestBar = ({
                         {logged_in_donor_applied ? (
                             is_valid ? (
                                 <Tooltip title="Click to cancel your apply." arrow><RedButton
-                                    onClick={handleApply}>Cancel</RedButton></Tooltip>
+                                    onClick={handleApply}>{showSpinner ? <SmallButtonSpinner/> : "Cancel"}</RedButton></Tooltip>
                             ) : (
                                 <Tooltip title="Another donor is accepted for this request." arrow><RequestIsActiveSign
                                     onClick={showSeekerHandler}>Active</RequestIsActiveSign></Tooltip>

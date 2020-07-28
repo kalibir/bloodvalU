@@ -8,6 +8,7 @@ import { Select } from "../../style/GlobalInputs";
 import { createBloodRequestAction } from "../../store/actions/bloodRequestActions";
 import { useHistory } from "react-router";
 import ToggleButton from "../../components/ToggleButton";
+import SmallButtonSpinner from "../SmallButtonSpinner";
 
 const modalFade = keyframes`
   from{opacity: 0}
@@ -94,6 +95,9 @@ const CustomDarkBlueButton = styled(DarkBlueButton)`
   width: 82px;
   height: 32px;
   margin-left: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const RequestModal = ({ closeModal, modalData, handleEditRequest }) => {
@@ -107,6 +111,7 @@ const RequestModal = ({ closeModal, modalData, handleEditRequest }) => {
     is_renewable: modalData ? modalData.is_renewable : false,
     valid_until: modalData ? modalData.valid_until : "",
   });
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const onChangeHandler = (event, property) => {
     const value = event.currentTarget.value;
@@ -117,10 +122,12 @@ const RequestModal = ({ closeModal, modalData, handleEditRequest }) => {
   };
   const handleSubmit = async (e) => {
     if (canSubmit) {
+      setShowSpinner(true)
       setCanSubmit(false);
       e.preventDefault();
       const response = await dispatch(createBloodRequestAction(requestData));
       if (response.status < 300) closeModal();
+      setShowSpinner(false)
       setCanSubmit(true);
     }
   };
@@ -183,7 +190,7 @@ const RequestModal = ({ closeModal, modalData, handleEditRequest }) => {
         </CheckboxWrapper>
         <ModalBtnWrapper>
           <CustomWhiteButton onClick={closeModal}>Cancel</CustomWhiteButton>
-          <CustomDarkBlueButton>Confirm</CustomDarkBlueButton>
+          <CustomDarkBlueButton>{showSpinner ? <SmallButtonSpinner/> : "Confirm"}</CustomDarkBlueButton>
         </ModalBtnWrapper>
       </ModalForm>
     </ModalWrapper>

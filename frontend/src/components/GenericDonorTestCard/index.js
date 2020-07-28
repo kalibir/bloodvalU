@@ -13,7 +13,7 @@ const ColorDebug = false;  //at true all element get colored background for chec
 const TestCard = styled.div`
     width: ${rem("330px")};
     height: ${rem("150px")};
-    background: rgba(211,52,73, 0.05);
+    background: rgba(52, 73, 211 0.05);
     border: 1px solid #D3D4D8;
     border-radius: 4px;
     display: flex;
