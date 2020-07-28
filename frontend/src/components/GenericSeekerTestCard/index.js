@@ -131,7 +131,7 @@ const GenericSeekerTestCard = ({
                     <CardGreenButton onClick={e => setShowCustomersModal(true)}>Customers</CardGreenButton>
                     : <BlindButton></BlindButton>
                 }
-                <CardBlueButton>edit</CardBlueButton>
+                {/*<CardBlueButton>edit</CardBlueButton>*/}
                 <CardRedButton onClick={e => setSureModal(true)}>delete</CardRedButton>
             </BottomContainer>
         </TestCard>
