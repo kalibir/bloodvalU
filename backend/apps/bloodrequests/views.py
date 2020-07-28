@@ -365,11 +365,6 @@ class MarkRequestAsCompletedView(CreateAPIView):
             target_donor.has_been_selected = False
             target_donor.save()
             for donor in target_blood_request.applicants.all():
-                # v Attila
-                unique_request_id = code_generator(length=8)
-                while BloodRequest.objects.filter(unique_request_id=unique_request_id).count() > 0:
-                    unique_request_id = code_generator(length=8)
-                # ^ Attila
                 new_data = DonorData.objects.create(
                     seeker=self.request.user.seeker_profile,
                     blood_request=target_blood_request,
@@ -379,7 +374,6 @@ class MarkRequestAsCompletedView(CreateAPIView):
                     country=donor.country,
                     street=donor.street,
                     gender=donor.gender,
-                    unique_request_id=unique_request_id,
                     blood_group=donor.blood_group,
                 )
                 new_data.save()
@@ -389,6 +383,12 @@ class MarkRequestAsCompletedView(CreateAPIView):
                 cloned_blood_request.id = None
                 cloned_blood_request.save()
                 cloned_blood_request.status = 'OP'
+                # v Attila
+                unique_request_id = code_generator(length=8)
+                while BloodRequest.objects.filter(unique_request_id=unique_request_id).count() > 0:
+                    unique_request_id = code_generator(length=8)
+                # ^ Attila
+                cloned_blood_request.unique_request_id = unique_request_id
                 cloned_blood_request.selected_donor = None
                 cloned_blood_request.applicants.clear()
                 cloned_blood_request.save()
