@@ -11,6 +11,7 @@ import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { resetError } from "../../../store/actions/errorActions";
 import { sendLoginAction } from "../../../store/actions/loginActions";
+import {FaEye} from "react-icons/fa";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -50,14 +51,43 @@ const ButtonContainer = styled(InputPairContainer)`
   //background-color: rosybrown;
 `;
 
+const PasswordContainer = styled.div`
+    margin-bottom: 32px;
+    height: ${rem("50px")};
+    width: ${rem("352px")};
+    display: flex;
+    justify-content: space-between;
+    background: #FFFFFF;
+    border: 1px solid #A1A4B1;
+    border-radius: 4px;
+    outline: none;
+`;
+
 const PasswordInput = styled(BigInput)`
-      :invalid{
-        border:1px solid #ea0000;
-      }
-     :not(placeholder-shown):invalid{
-      border:1px solid #ea0000;
-    }
-`
+    width: 87%;
+    border: none;
+    // :invalid{
+    //    border:1px solid #ea0000;
+    //  }
+    // :not(placeholder-shown):invalid{
+    //  border:1px solid #ea0000;
+    //}
+`;
+
+const RepeatPasswordInput = styled(BigInput)`
+    width: 87%;
+    border: none;
+`;
+
+const EyeContainer = styled.div`
+    height: ${rem("48px")};
+    width: 13%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: ${rem("15px")};
+    color: ${(props) => (props.active ? "#8B90A0;" : props.repeat_active ? "#8B90A0;" : "#232735")};
+`;
 
 const InputTitle = styled(SmallTitle)`
   margin-bottom: ${rem("8px")};
@@ -80,6 +110,8 @@ const CreateBaseUser = ({
     password_repeat: "",
     is_donor: `${isDonor}`,
   });
+  const [seePassword, setSeePassword] = useState(false)
+  const [seeRepeatPassword, setRepeatSeePassword] = useState(false)
 
   const onChangeHandler = (event, property) => {
     const value = event.currentTarget.value;
@@ -131,29 +163,35 @@ const CreateBaseUser = ({
               <Error>
                 <p>{error === "3" ? "Passwords do not match!" : null}</p>
               </Error>
-              <PasswordInput
+              <PasswordContainer>
+                <PasswordInput
                 title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                type="password"
+                type={seePassword ? "text" : "password"}
                 name="new-password"
                 placeholder="password"
                 onChange={(e) => onChangeHandler(e, "password")}
                 required
               />
+              <EyeContainer active={seePassword} onClick={(e) => setSeePassword(!seePassword)}><FaEye /></EyeContainer>
+              </PasswordContainer>
             </div>
           </InputPairContainer>
 
           <InputPairContainer>
             <div>
               <InputTitle>Repeat password</InputTitle>
-              <PasswordInput
-                type="password"
+              <PasswordContainer>
+                <RepeatPasswordInput
+                type={seeRepeatPassword ? "text" : "password"}
                 name="new-password"
                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                 placeholder="repeat password"
                 onChange={(e) => onChangeHandler(e, "password_repeat")}
                 required
               />
+              <EyeContainer repeat_active={seeRepeatPassword} onClick={(e) => setRepeatSeePassword(!seeRepeatPassword)}><FaEye /></EyeContainer>
+              </PasswordContainer>
             </div>
           </InputPairContainer>
 

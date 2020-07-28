@@ -11,6 +11,7 @@ import {useHistory} from "react-router";
 import {resetError} from "../../../store/actions/errorActions";
 import {Link} from "react-router-dom";
 import {setIsLogin} from "../../../store/actions/userActions";
+import { FaEye } from 'react-icons/fa';
 
 const PageWrapper = styled(PageContainer)`
     height: 78.2vh;
@@ -26,15 +27,41 @@ const FormWrapper = styled.form`
 const EmailInput = styled(BigInput)`
     margin-top: 9px;
     margin-bottom: 32px;
+    height: ${rem("50px")};
     :not(placeholder-shown):invalid{
       color: #a40000;
     }
 `;
 
-const PasswordInput = styled(BigInput)`
+const PasswordContainer = styled.div`
     margin-top: 9px;
     margin-bottom: 32px;
+    height: ${rem("50px")};
+    width: ${rem("352px")};
+    display: flex;
+    justify-content: space-between;
+    background: #FFFFFF;
+    border: 1px solid #A1A4B1;
+    border-radius: 4px;
+    outline: none;
+`
+
+const PasswordInput = styled(BigInput)`
+    margin-bottom: 32px;
+    width: 80%;
+    border: none;
+    outline: none;
 `;
+
+const EyeContainer = styled.div`
+    height: ${rem("48px")};
+    width: 20%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: ${rem("15px")};
+    color: ${(props) => (props.active ? "#8B90A0;" : "#232735")};
+`
 
 const RegistrationTitle = styled(MiddleTitle)`
     margin-bottom: 23px;
@@ -73,6 +100,7 @@ const Login = ({errorReducer: {error}, authReducer: {authenticated, userObj}}) =
         email: "",
         password: "",
     });
+    const [seePassword, setSeePassword] = useState(false)
 
     useEffect(()=> {
         dispatch(setIsLogin(false))
@@ -129,7 +157,10 @@ const Login = ({errorReducer: {error}, authReducer: {authenticated, userObj}}) =
                 <SmallTitle htmlFor="email">Email</SmallTitle>
                 <EmailInput id="email" name="email" autocomplete="email" onChange={handleEmail} placeholder="example@email.com" type="email" required autoFocus/>
                 <SmallTitle  htmlFor="password">Password</SmallTitle>
-                <PasswordInput id="password" name="current-password" onChange={handlePassword} placeholder="***********" type="password" required/>
+                <PasswordContainer>
+                    <PasswordInput id="password" name="current-password" onChange={handlePassword} placeholder="***********" type={seePassword ? "text" : "password"} required/>
+                    <EyeContainer active={seePassword} onClick={(e) => setSeePassword(!seePassword)}><FaEye /></EyeContainer>
+                </PasswordContainer>
                 <ButtonWrapper>
                     <DarkBlueButton>Login</DarkBlueButton>
                     <ForgotContainer>
