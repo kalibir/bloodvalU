@@ -132,14 +132,13 @@ export const InputBox = styled.textarea`
   height: 100%;
 `;
 
-const CreateTestModal = ({closeModal}) => {
+const CreateTestModal = ({closeModal, modalData, handleEditTest}) => {
     const dispatch = useDispatch();
-    const {push} = useHistory();
     const [testData, settestData] = useState({
         test_type: "",
         expiry_date: "",
         points_cost: "",
-        details: "",
+        details: modalData ? modalData.details : "",
     });
     console.log(testData);
 
@@ -161,27 +160,31 @@ const CreateTestModal = ({closeModal}) => {
 
     return (
         <ModalWrapper>
-            <Modal onSubmit={handleSubmit}>
-                <TitleInputWrapper>
-                    <SmallLabel>Title</SmallLabel>
-                    <TitleInput onChange={(e) => onChangeHandler(e, "test_type")}/>
-                </TitleInputWrapper>
+            <Modal onSubmit={modalData ? (e) => handleEditTest(e, modalData.id, testData) : handleSubmit}>
+                {modalData ? null :
+                    <>
+                        <TitleInputWrapper>
+                            <SmallLabel>Title</SmallLabel>
+                            <TitleInput onChange={(e) => onChangeHandler(e, "test_type")}/>
+                        </TitleInputWrapper>
 
-                <ExpiryDateInputWrapper>
+                        <ExpiryDateInputWrapper>
 
-                    <SmallLabel>Expiry Date:</SmallLabel>
-                    <ExpiryDateInput
-                        required
-                        onChange={(e) => onChangeHandler(e, "expiry_date")}
-                        type="date"
-                    />
-                </ExpiryDateInputWrapper>
+                            <SmallLabel>Expiry Date:</SmallLabel>
+                            <ExpiryDateInput
+                                required
+                                onChange={(e) => onChangeHandler(e, "expiry_date")}
+                                type="date"
+                            />
+                        </ExpiryDateInputWrapper>
 
-                <PointsInputWrapper>
+                        <PointsInputWrapper>
 
-                    <SmallLabel>Points:</SmallLabel>
-                    <PointsInput required onChange={(e) => onChangeHandler(e, "points_cost")} type="number"/>
-                </PointsInputWrapper>
+                            <SmallLabel>Points:</SmallLabel>
+                            <PointsInput required onChange={(e) => onChangeHandler(e, "points_cost")} type="number"/>
+                        </PointsInputWrapper>
+                    </>
+                }
                 <InputBoxWrapper>
                     <Label htmlFor="description">Description:</Label>
                     <InputBox id="description" maxLength="300" rows={11} cols="50" placeholder={`Describe the test...`}
