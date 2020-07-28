@@ -35,7 +35,6 @@ const TotalGraph = ({profile}) => {
 
     useEffect(() => {
         if (profile) {
-            console.log("we got stats!")
             const newState = {...state}
             newState.datasets[0].data = [profile.no_of_open, profile.no_of_closed, profile.no_of_completed]
             setState(newState)

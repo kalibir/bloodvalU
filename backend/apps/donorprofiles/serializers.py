@@ -36,6 +36,7 @@ class DonorProfileSerializer(serializers.ModelSerializer):
         model = DonorProfile
         fields = ['id', 'phone', 'is_donor', 'is_staff', 'email', 'can_donate', 'can_donate', 'first_name', 'last_name',
                   'country',
+                  'unique_donor_id',
                   'zip_code', 'street', 'no_of_bought_tests',
                   'avatar', 'birthday', 'has_been_selected', 'test_results',
                   'next_donation', 'total_points', 'blood_group', 'gender', 'age',
@@ -65,6 +66,7 @@ class GetBuyersOfOfferedTestSerializer(DonorProfileSerializer):
         model = DonorProfile
         fields = ['id', 'phone', 'is_donor', 'is_staff', 'email', 'can_donate', 'can_donate', 'first_name', 'last_name',
                   'country',
+                  'unique_donor_id',
                   'zip_code', 'street', 'no_of_bought_tests',
                   'avatar', 'birthday', 'has_been_selected', 'test_results', 'pdf_result',
                   'next_donation', 'total_points', 'blood_group', 'created', 'gender', 'age',

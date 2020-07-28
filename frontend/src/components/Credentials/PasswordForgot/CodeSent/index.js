@@ -38,7 +38,6 @@ const CodeSentReset = ({ registrationReducer: { isDonor }, dispatch, errorReduce
   );
 };
 const mapStateToProps = (state) => {
-  console.log("state", state);
   return {
     registrationReducer: state.registrationReducer,
     errorReducer: state.errorReducer,

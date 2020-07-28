@@ -72,7 +72,6 @@ const Registration = ({registrationReducer: {isDonor}, dispatch, errorReducer: {
     });
     const [showSpinner, setShowSpinner] = useState(false);
     const [hasAgreed, setHasAgreed] = useState(false)
-    console.log("hasAgreed", hasAgreed)
 
     const onChangeHandler = (event, property) => {
         const value = event.currentTarget.value;

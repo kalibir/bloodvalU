@@ -102,7 +102,6 @@ const SeekerScanCode = (props) => {
         if (QRCode) {
             const data = {code: QRCode}
             const response = await dispatch(validateQRCode(data, active))
-            console.log(`dispatching this code: ${data.code} To   ${active}`)
             if (response.status < 300) setQRResponse({...QRresponse, message: response.data, isGood: true})
             else setQRResponse({...QRresponse, message: "INVALID CODE", isGood: false})
         }

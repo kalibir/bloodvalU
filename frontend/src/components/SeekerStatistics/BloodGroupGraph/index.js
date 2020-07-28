@@ -65,7 +65,6 @@ const BloodGroupGraph = ({statistics}) => {
 
     useEffect(() => {
         if (statistics) {
-            console.log("we got stats!")
             const newState = {...state}
             newState.datasets[0].data = getBloodGroupData(statistics)
             setState(newState)

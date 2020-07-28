@@ -213,7 +213,9 @@ class ValidateOfferedTestQRCodeView(CreateAPIView):
 
         if target_donor in target_offered_test.donors_who_bought.all():
             return Response({
-                'donor': f'{target_donor.first_name} {target_donor.last_name} {target_donor.blood_group}',
+                'donor': f'{target_donor.first_name} {target_donor.last_name}',
+                'blood_type': f'{target_donor.blood_group}',
+                'birthday': f'{target_donor.birthday}',
                 'institution': f'{target_offered_test.seeker.name}',
                 'type': f'{target_offered_test.test_type}'
             },

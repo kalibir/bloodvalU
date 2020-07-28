@@ -225,11 +225,9 @@ const GenericDonorRequestBar = ({
 
   const handleApply = async e => {
     setShowSpinner(true)
-    console.log("Showspinner, b4 dispatch", showSpinner)
     const response = await dispatch(applyToRequestActionInAll(id));
     if (response.status < 300)
             setShowSpinner(false)
-    console.log("Showspinner, after dispatch", showSpinner)
   };
   const renderBloodType = () => {
     if (blood_group === "O-") return O_negative;

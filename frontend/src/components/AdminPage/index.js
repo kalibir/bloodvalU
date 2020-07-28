@@ -98,7 +98,6 @@ const AdminPage = ({ dispatch, profilesReducer: { profiles } }) => {
 
   const validityHandler = (e) => {
     e.preventDefault();
-    console.log(validity, "clicked");
     setValidity(!validity);
   };
 
@@ -169,7 +168,6 @@ const AdminPage = ({ dispatch, profilesReducer: { profiles } }) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log("state", state);
   return {
     userProfileReducer: state.userProfileReducer,
     authReducer: state.authReducer,

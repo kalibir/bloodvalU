@@ -112,7 +112,6 @@ const AgeGraph = ({statistics}) => {
 
     useEffect(() => {
         if (statistics) {
-            console.log("we got stats!")
             const newState = {...state}
             newState.datasets[0].data = getAgeData(filterAll, statistics)
             newState.datasets[1].data = getAgeData(filterMale, statistics)

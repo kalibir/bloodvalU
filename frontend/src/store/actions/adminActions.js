@@ -15,7 +15,6 @@ export const toggleVerifyAction = (seekerID) => async (dispatch) => {
         dispatch(updateProfileInAll(response.data))
         return response
     } catch (error) {
-        console.log("error", error.response)
         return error
     }
 }
