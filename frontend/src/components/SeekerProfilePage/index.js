@@ -129,7 +129,7 @@ const SeekerProfilePage = ({userProfileReducer: {offeredTests}, dispatch}) => {
                         <MenuContainer>
                             <SideButton id="requests">Offered Tests</SideButton>
                         </MenuContainer>
-                        <CreateTestButton onClick={() => setModal({...modal, showModal: true})}>+ Create
+                        <CreateTestButton onClick={() => setModal({...modal, modalData: null, showModal: true})}>+ Create
                             Test</CreateTestButton>
                         <TestWrapper>
                             {offeredTests
