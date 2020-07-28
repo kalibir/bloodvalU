@@ -10,12 +10,12 @@ import UploadTestResultsModal from "../UploadTestResultsModal";
 const TestCard = styled.div`
   width: ${rem("320px")};
   height: ${rem("160px")};
-  background: #FFF;
+  background: #e5e5e5;
   padding: 10px;
   border: 1px solid #d3d4d8;
   border-radius: 4px;
   display: flex;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
