@@ -83,16 +83,7 @@ const BlindButton = styled.div`
 const GenericSeekerTestCard = ({
                                    handleShowEditModal,
                                    handleEditTest,
-                                   test: {
-                                       id,
-                                       test_type,
-                                       seeker_name,
-                                       points_cost,
-                                       expiry_date,
-                                       created,
-                                       no_of_customers,
-                                       is_expired,
-                                   },
+                                   test,
                                }) => {
 
     const [sureModal, setSureModal] = useState(false);
@@ -120,23 +111,24 @@ const GenericSeekerTestCard = ({
                     handleDeleteTest={handleDeleteTest}
                     closeModal={closeModal}
                     context={"test"}
-                    id={id}
+                    id={test.id}
                 />
             ) : null}
             {showCustomersModal ?
-                <UploadTestResultsModal handleCloseUploadResults={handleCloseUploadResults} test_type={test_type}
-                                        testID={id}/> : null}
+                <UploadTestResultsModal handleCloseUploadResults={handleCloseUploadResults} test_type={test.test_type}
+                                        testID={test.id}/> : null}
             <TextContainer>
-                <Text>{test_type}</Text>
-                <PointContainer>{points_cost} pts</PointContainer>
+                <Text>{test.test_type}</Text>
+                <PointContainer>{test.points_cost} pts</PointContainer>
             </TextContainer>
             <BottomContainer>
-                {no_of_customers ?
+                {test.no_of_customers ?
                     <CardGreenButton onClick={e => setShowCustomersModal(true)}>Customers</CardGreenButton>
                     : <BlindButton></BlindButton>
                 }
                 {/*<CardBlueButton>edit</CardBlueButton>*/}
                 <CardRedButton onClick={e => setSureModal(true)}>delete</CardRedButton>
+                <CardRedButton onClick={e => handleShowEditModal(e, test)}>edit</CardRedButton>
             </BottomContainer>
         </TestCard>
     );
