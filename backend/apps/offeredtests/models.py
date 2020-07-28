@@ -23,6 +23,8 @@ class OfferedTest(models.Model):
 
     donors_who_bought = models.ManyToManyField(to=DonorProfile, related_name='bought_tests', blank=True)
 
+    details = models.TextField(blank=True, max_length=300)
+
     created = models.DateTimeField(
         auto_now=True
     )
