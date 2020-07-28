@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import styled, { keyframes } from "styled-components";
-import { BaseStatusButton } from "../../style/GlobalButtons/";
-import { DarkBlueButton, WhiteButton } from "../../style/GlobalButtons/";
-import { rem } from "polished";
-import { connect, useDispatch } from "react-redux";
-import { Select } from "../../style/GlobalInputs";
-import { createBloodRequestAction } from "../../store/actions/bloodRequestActions";
-import { useHistory } from "react-router";
+import React, {useEffect, useState} from "react";
+import styled, {keyframes} from "styled-components";
+import {BaseStatusButton} from "../../style/GlobalButtons/";
+import {DarkBlueButton, WhiteButton} from "../../style/GlobalButtons/";
+import {rem} from "polished";
+import {connect, useDispatch} from "react-redux";
+import {Select} from "../../style/GlobalInputs";
+import {createBloodRequestAction} from "../../store/actions/bloodRequestActions";
+import {useHistory} from "react-router";
 import ToggleButton from "../../components/ToggleButton";
 import SmallButtonSpinner from "../SmallButtonSpinner";
 
@@ -100,101 +100,114 @@ const CustomDarkBlueButton = styled(DarkBlueButton)`
   align-items: center;
 `;
 
-const RequestModal = ({ closeModal, modalData, handleEditRequest }) => {
-  const dispatch = useDispatch();
-  const [canSubmit, setCanSubmit] = useState(true);
-  const { push } = useHistory();
-  const [requestData, setRequestData] = useState({
-    blood_group: modalData ? modalData.blood_group : "",
-    is_for_covid: modalData ? modalData.is_for_covid : false,
-    is_urgent: modalData ? modalData.is_urgent : false,
-    is_renewable: modalData ? modalData.is_renewable : false,
-    valid_until: modalData ? modalData.valid_until : "",
-  });
-  const [showSpinner, setShowSpinner] = useState(false);
+const RequestModal = ({closeModal, modalData, handleEditRequest}) => {
+    const dispatch = useDispatch();
+    const [canSubmit, setCanSubmit] = useState(true);
+    const {push} = useHistory();
+    const [requestData, setRequestData] = useState({
+        blood_group: modalData ? modalData.blood_group : "",
+        is_for_covid: modalData ? modalData.is_for_covid : false,
+        is_urgent: modalData ? modalData.is_urgent : false,
+        is_renewable: modalData ? modalData.is_renewable : false,
+        valid_until: modalData ? modalData.valid_until : "",
+    });
 
-  const onChangeHandler = (event, property) => {
-    const value = event.currentTarget.value;
-    setRequestData({ ...requestData, [property]: value });
-  };
-  const handleCheckBox = (property) => {
-    setRequestData({ ...requestData, [property]: !requestData[property] });
-  };
-  const handleSubmit = async (e) => {
-    if (canSubmit) {
-      setShowSpinner(true)
-      setCanSubmit(false);
-      e.preventDefault();
-      const response = await dispatch(createBloodRequestAction(requestData));
-      if (response.status < 300) closeModal();
-      setShowSpinner(false)
-      setCanSubmit(true);
-    }
-  };
+    useEffect(() => {
+        return () => {
+            setRequestData({
+                blood_group: "",
+                is_for_covid: false,
+                is_urgent: false,
+                is_renewable: false,
+                valid_until: "",
+            })
+        };
+    }, []);
 
-  return (
-    <ModalWrapper>
-      <ModalForm
-        onSubmit={
-          modalData ? (e) => handleEditRequest(e, modalData.id, requestData) : handleSubmit
-        }>
-        {modalData ? null : (
-          <BloodGroupDropDown
-            required
-            defaultValue={requestData.blood_group}
-            onChange={(e) => onChangeHandler(e, "blood_group")}>
-            <option value={requestData.blood_group} disabled>
-              Select Blood Type
-            </option>
-            <option value="O-">O-</option>
-            <option value="O+">O+</option>
-            <option value="A-">A-</option>
-            <option value="A+">A+</option>
-            <option value="B-">B-</option>
-            <option value="B+">B+</option>
-            <option value="AB-">AB-</option>
-            <option value="AB+">AB+</option>
-          </BloodGroupDropDown>
-        )}
-        {modalData ? null : (
-          <ValidityWrapper>
-            Valid until:
-            <RequestValidity
-              required
-              defaultValue={requestData.valid_until}
-              onChange={(e) => onChangeHandler(e, "valid_until")}
-              type="date"
-            />
-          </ValidityWrapper>
-        )}
-        <CheckboxWrapper>
-          <ToggleButton
-            toggleValue={requestData.is_urgent}
-            handleClick={(e) => handleCheckBox("is_urgent")}
-          />
-          <p>Urgent</p>
-        </CheckboxWrapper>
-        <CheckboxWrapper>
-          <ToggleButton
-            toggleValue={requestData.is_renewable}
-            handleClick={(e) => handleCheckBox("is_renewable")}
-          />
-          Renewable
-        </CheckboxWrapper>
-        <CheckboxWrapper>
-          <ToggleButton
-            toggleValue={requestData.is_for_covid}
-            handleClick={(e) => handleCheckBox("is_for_covid")}
-          />
-          Is for Covid
-        </CheckboxWrapper>
-        <ModalBtnWrapper>
-          <CustomWhiteButton onClick={closeModal}>Cancel</CustomWhiteButton>
-          <CustomDarkBlueButton>{showSpinner ? <SmallButtonSpinner/> : "Confirm"}</CustomDarkBlueButton>
-        </ModalBtnWrapper>
-      </ModalForm>
-    </ModalWrapper>
-  );
+    const [showSpinner, setShowSpinner] = useState(false);
+
+    const onChangeHandler = (event, property) => {
+        const value = event.currentTarget.value;
+        setRequestData({...requestData, [property]: value});
+    };
+    const handleCheckBox = (property) => {
+        setRequestData({...requestData, [property]: !requestData[property]});
+    };
+    const handleSubmit = async (e) => {
+        if (canSubmit) {
+            setShowSpinner(true)
+            setCanSubmit(false);
+            e.preventDefault();
+            const response = await dispatch(createBloodRequestAction(requestData));
+            if (response.status < 300) closeModal();
+            setShowSpinner(false)
+            setCanSubmit(true);
+        }
+    };
+
+    return (
+        <ModalWrapper>
+            <ModalForm
+                onSubmit={
+                    modalData ? (e) => handleEditRequest(e, modalData.id, requestData) : handleSubmit
+                }>
+                {modalData ? null : (
+                    <BloodGroupDropDown
+                        required
+                        defaultValue={requestData.blood_group}
+                        onChange={(e) => onChangeHandler(e, "blood_group")}>
+                        <option value={requestData.blood_group} disabled>
+                            Select Blood Type
+                        </option>
+                        <option value="O-">O-</option>
+                        <option value="O+">O+</option>
+                        <option value="A-">A-</option>
+                        <option value="A+">A+</option>
+                        <option value="B-">B-</option>
+                        <option value="B+">B+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="AB+">AB+</option>
+                    </BloodGroupDropDown>
+                )}
+                {modalData ? null : (
+                    <ValidityWrapper>
+                        Valid until:
+                        <RequestValidity
+                            required
+                            defaultValue={requestData.valid_until}
+                            onChange={(e) => onChangeHandler(e, "valid_until")}
+                            type="date"
+                        />
+                    </ValidityWrapper>
+                )}
+                <CheckboxWrapper>
+                    <ToggleButton
+                        toggleValue={requestData.is_urgent}
+                        handleClick={(e) => handleCheckBox("is_urgent")}
+                    />
+                    <p>Urgent</p>
+                </CheckboxWrapper>
+                <CheckboxWrapper>
+                    <ToggleButton
+                        toggleValue={requestData.is_renewable}
+                        handleClick={(e) => handleCheckBox("is_renewable")}
+                    />
+                    Renewable
+                </CheckboxWrapper>
+                <CheckboxWrapper>
+                    <ToggleButton
+                        toggleValue={requestData.is_for_covid}
+                        handleClick={(e) => handleCheckBox("is_for_covid")}
+                    />
+                    Is for Covid
+                </CheckboxWrapper>
+                <ModalBtnWrapper>
+                    <CustomWhiteButton onClick={closeModal}>Cancel</CustomWhiteButton>
+                    <CustomDarkBlueButton>{showSpinner ? <SmallButtonSpinner/> : "Confirm"}</CustomDarkBlueButton>
+                </ModalBtnWrapper>
+            </ModalForm>
+        </ModalWrapper>
+    );
 };
 
 export default RequestModal;
