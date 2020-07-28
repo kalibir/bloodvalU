@@ -80,35 +80,30 @@ const Registration = ({registrationReducer, dispatch, errorReducer: {error}}) =>
             <FormWrapper onSubmit={handleSubmit}>
                 <RegistrationTitle>Registration</RegistrationTitle>
                 <DisclaimerWrapper>
-                    <Text>1. Are you aged between 16-70 years?
-                        Yes.
-                        No. You may not be able to give blood. Please contact us.
-                        2. WA/QLD aged 16-17 years?
-                        Yes. Parental Consent Form required.
-                        No.
-                        3. Do you weigh at least 50 kg?
-                        Yes.
-                        No. You may not be able to give blood. Please contact us.
-                        4. At this time, are you feeling fit and healthy?
-                        Yes.
-                        No. At this time you may not be able to give blood. Please contact us.
-                        5. Have you spent a cumulative period of 6 months or
-                        more in the United Kingdom between 1 January 1980
-                        and 31 December 1996?
-                        Yes. You may not be able to give blood. Please contact us.
-                        No.
-                        6. In the last 12 months, have you undergone any
-                        surgical procedures?
-                        Yes. You may not be able to give blood. Please contact us.
-                        No.
-                        7. In the 3 days after your appointment do you intend to
-                        participate in any activity which would place you or
-                        others at risk of injury if you were to become unwell
-                        after donating, such as driving public transport,
-                        operating heavy machinery, underwater diving,
-                        piloting a plane or other activities?
-                        Yes. You may not be able to give blood. Please contact us.
-                        No.</Text>
+                    <Text>
+                        <p>1. I agree that I'm aged between <strong>18</strong> and <strong>70</strong>.</p>
+                        <p><br/>2. I agree that I weigh more than <strong>50kg</strong>.</p>
+                        <p><br/>3. I agree that I haven't tested positive for <strong>hepatitis B</strong> or <strong>hepatitis
+                            C</strong>, lived with or had sexual contact in the past 12 months with anyone who has
+                            hepatitis B or symptomatic <strong>hepatitis C</strong>.</p>
+                        <p>&nbsp;</p>
+                        <p>4. I agree that I have not spent a cumulative period of 6 months or<br/> more in the United
+                            Kingdom between <strong>1 January 1980</strong><br/> and <strong>31 December 1996</strong>.
+                        </p>
+                        <p>&nbsp;</p>
+                        <p>5. I agree that I haven't&nbsp;spent five years or more in France or Ireland
+                            between <strong>1980</strong> and <strong>2001</strong>.</p>
+                        <p>&nbsp;</p>
+                        <p>6. I agree that I haven't undergone any <strong>major</strong> surgical procedures&nbsp;in
+                            the last 12 months.</p>
+                        <p>&nbsp;</p>
+                        <p>7. I agree that I haven't had a tattoo in the past&nbsp;<strong>3</strong>&nbsp;months or
+                            received a blood transfusion (except with your own blood) in the past&nbsp;
+                            <strong>3</strong>&nbsp;months.</p>
+                        <p>&nbsp;</p>
+                        <p>8. I agree&nbsp;that I have never tested positive for the <strong>AIDS</strong> virus.</p>
+                        <p><br/><br/></p>
+                    </Text>
                 </DisclaimerWrapper>
                 {error ? <Error><p>{error}</p></Error> : null}
                 <SmallTitle>Email</SmallTitle>
