@@ -365,6 +365,11 @@ class MarkRequestAsCompletedView(CreateAPIView):
             target_donor.has_been_selected = False
             target_donor.save()
             for donor in target_blood_request.applicants.all():
+                # v Attila
+                unique_request_id = code_generator(length=8)
+                while BloodRequest.objects.filter(unique_request_id=unique_request_id).count() > 0:
+                    unique_request_id = code_generator(length=8)
+                # ^ Attila
                 new_data = DonorData.objects.create(
                     seeker=self.request.user.seeker_profile,
                     blood_request=target_blood_request,
@@ -374,14 +379,9 @@ class MarkRequestAsCompletedView(CreateAPIView):
                     country=donor.country,
                     street=donor.street,
                     gender=donor.gender,
+                    unique_request_id=unique_request_id,
                     blood_group=donor.blood_group,
                 )
-                # v Attila
-                unique_request_id = code_generator(length=8)
-                while BloodRequest.objects.filter(unique_request_id=unique_request_id).count() > 0:
-                    unique_request_id = code_generator(length=8)
-                # ^ Attila
-                new_data.unique_request_id = unique_request_id
                 new_data.save()
             target_blood_request.save()
             if target_blood_request.is_renewable:
