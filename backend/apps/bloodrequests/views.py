@@ -469,7 +469,9 @@ class ValidateBloodRequestQRCodeView(CreateAPIView):
 
         if target_donor in target_blood_request.applicants.all():
             return Response({
-                'donor': f'{target_donor.first_name} {target_donor.last_name} {target_donor.blood_group}',
+                'donor': f'{target_donor.first_name} {target_donor.last_name}',
+                'blood_type': f'{target_donor.blood_group}',
+                'birthday': f'{target_donor.birthday}',
                 'institution': f'{target_blood_request.seeker.name}',
                 'type': f'Blood Donation'
             },

@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 import {validateQRCode} from "../../store/actions/QRActions";
 import {MiddleButton} from "../DonorDashboard";
 import {rem} from "polished";
+import {Fade} from "react-reveal";
 
 const SuccessText = styled.h1`
   font-size: ${rem("25px")};
@@ -39,7 +40,8 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   color: black;
-  padding: ${rem("20px")};;
+  padding: ${rem("15px")};
+  margin-bottom: 10px;
   border-radius: 4px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
 `
@@ -118,14 +120,20 @@ const SeekerScanCode = (props) => {
                 </Button>
             </MenuContainer>
                 {QRresponse.message ? QRresponse.isGood ?
-                    <FadeWrapper>
-                        <Wrapper><SuccessText>Donor Name:</SuccessText>
-                            <SuccessText>{QRresponse.message.donor}</SuccessText></Wrapper>
-                        <Wrapper><SuccessText>Institution:</SuccessText>
-                            <SuccessText>{QRresponse.message.institution}</SuccessText></Wrapper>
-                        <Wrapper><SuccessText>Type of Appointment:</SuccessText>
-                            <SuccessText>{QRresponse.message.type}</SuccessText></Wrapper>
-                    </FadeWrapper>
+                    <Fade right>
+                        <FadeWrapper>
+                            <Wrapper><SuccessText>Name:</SuccessText>
+                                <SuccessText>{QRresponse.message.donor}</SuccessText></Wrapper>
+                            <Wrapper><SuccessText>Blood Type:</SuccessText>
+                                <SuccessText>{QRresponse.message.blood_type}</SuccessText></Wrapper>
+                            <Wrapper><SuccessText>Birthday:</SuccessText>
+                                <SuccessText>{QRresponse.message.birthday}</SuccessText></Wrapper>
+                            <Wrapper><SuccessText>Institution:</SuccessText>
+                                <SuccessText>{QRresponse.message.institution}</SuccessText></Wrapper>
+                            <Wrapper><SuccessText>Type of Appointment:</SuccessText>
+                                <SuccessText>{QRresponse.message.type}</SuccessText></Wrapper>
+                        </FadeWrapper>
+                    </Fade>
                     :
                     <ErrorText>{QRresponse.message}</ErrorText> : null}
                 <QrReader
