@@ -122,16 +122,25 @@ const SeekerScanCode = (props) => {
                 {QRresponse.message ? QRresponse.isGood ?
                     <Fade right>
                         <FadeWrapper>
-                            <Wrapper><SuccessText>Name:</SuccessText>
-                                <SuccessText>{QRresponse.message.donor}</SuccessText></Wrapper>
-                            <Wrapper><SuccessText>Blood Type:</SuccessText>
+                            <Wrapper>
+                                <SuccessText>Name:</SuccessText>
+                                <SuccessText>{QRresponse.message.donor}</SuccessText>
+                            </Wrapper>
+                            <Wrapper>
+                                <SuccessText>Birthday:</SuccessText>
+                                <SuccessText>{QRresponse.message.birthday}</SuccessText>
+                            </Wrapper>
+                            <Wrapper>
+                                <SuccessText>Blood Type:</SuccessText>
                                 <SuccessText>{QRresponse.message.blood_type}</SuccessText></Wrapper>
-                            <Wrapper><SuccessText>Birthday:</SuccessText>
-                                <SuccessText>{QRresponse.message.birthday}</SuccessText></Wrapper>
-                            <Wrapper><SuccessText>Institution:</SuccessText>
-                                <SuccessText>{QRresponse.message.institution}</SuccessText></Wrapper>
-                            <Wrapper><SuccessText>Type of Appointment:</SuccessText>
-                                <SuccessText>{QRresponse.message.type}</SuccessText></Wrapper>
+                            <Wrapper>
+                                <SuccessText>Institution:</SuccessText>
+                                <SuccessText>{QRresponse.message.institution}</SuccessText>
+                            </Wrapper>
+                            <Wrapper>
+                                <SuccessText>Type of Appointment:</SuccessText>
+                                <SuccessText>{QRresponse.message.type}</SuccessText>
+                            </Wrapper>
                         </FadeWrapper>
                     </Fade>
                     :
