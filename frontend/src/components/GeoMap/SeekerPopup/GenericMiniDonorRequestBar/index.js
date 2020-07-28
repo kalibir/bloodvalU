@@ -6,9 +6,10 @@ import { PointContainer } from "../../../GenericDonorTestCard";
 import { BaseStatusButton } from "../../../../style/GlobalButtons";
 import acceptedIcon from "../../../../assets/icons/accepted.png";
 import expiredIcon from "../../../../assets/icons/expired.png";
-import urgentIcon from "../../../../assets/icons/urgent.png";
+import urgentIcon from "../../../../assets/icons/urgent.svg";
 import onProgressIcon from "../../../../assets/icons/on_progress.png";
 import A_negative from "../../../../assets/icons/A_negative.svg";
+import A_positive from "../../../../assets/icons/A_positive.svg";
 import AB_negative from "../../../../assets/icons/AB_negative.svg";
 import AB_positive from "../../../../assets/icons/AB_positive.svg";
 import B_negative from "../../../../assets/icons/B_negative.svg";
@@ -81,16 +82,19 @@ const TextDiv = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
 const StatusDiv = styled(TextDiv)`
   grid-area: status;
 `;
+
 const UrgentDiv = styled(TextDiv)`
   grid-area: urgent;
 `;
+
 const BloodDiv = styled(TextDiv)`
   grid-area: blood;
   height: 35px;
-  background-color: darkred;
+  //background-color: darkred;
   border-radius: 50%;
   padding: 2px;
 `;
@@ -116,7 +120,12 @@ const InfoIcons = styled.img`
   height: ${rem("30px")};
 `;
 
-const Type = styled.p`
+const UrgentIcon = styled.img`
+  width: ${rem("38px")};
+  height: ${rem("38px")};
+`;
+
+const Type = styled.img`
   color: white;
 `;
 
@@ -154,7 +163,7 @@ const GenericMiniDonorRequestBar = ({
     if (blood_group === "O-") return O_negative;
     if (blood_group === "O+") return O_positive;
     if (blood_group === "A-") return A_negative;
-    if (blood_group === "A+") return O_positive;
+    if (blood_group === "A+") return A_positive;
     if (blood_group === "B-") return B_negative;
     if (blood_group === "B+") return B_positive;
     if (blood_group === "AB-") return AB_negative;
@@ -174,9 +183,9 @@ const GenericMiniDonorRequestBar = ({
         ) : null}
       </StatusDiv>
 
-      <UrgentDiv>{is_urgent ? <InfoIcons src={urgentIcon} /> : null}</UrgentDiv>
+      <UrgentDiv>{is_urgent ? <UrgentIcon src={urgentIcon} /> : null}</UrgentDiv>
       <BloodDiv>
-        <Type>{blood_group}</Type>
+        <Type src={renderBloodType()} alt="blood_type" />
       </BloodDiv>
 
       <ButtonDiv>
