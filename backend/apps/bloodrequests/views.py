@@ -117,8 +117,10 @@ class ListAllRequestsOfSpecificSeeker(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         target_seeker = self.get_object()
-        queryset = target_seeker.made_requests.filter((Q(valid_until__gt=date.today()) & Q(status="OP")) | Q(
-            selected_donor=self.request.user.donor_profile)).order_by('-created')
+        queryset = target_seeker.made_requests.filter(
+            (Q(valid_until__gt=date.today()) & Q(status="OP")) | Q(
+                Q(selected_donor=self.request.user.donor_profile) & Q(status="CL"))
+        ).order_by('-created')
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 

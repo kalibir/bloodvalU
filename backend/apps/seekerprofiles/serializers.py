@@ -1,3 +1,4 @@
+from django.utils.datetime_safe import date
 from django_countries.serializer_fields import CountryField
 from rest_framework import serializers
 
@@ -49,7 +50,10 @@ class SeekerProfileSerializer(serializers.ModelSerializer):
             count = 0
             donor_blood_group = self.context.get('request').user.donor_profile.blood_group
             for request_obj in obj.made_requests.all():
-                if bloodGroupTest(donor_blood_group, request_obj):
+                if bloodGroupTest(donor_blood_group, request_obj) and (
+                        (request_obj.valid_until > date.today() and request_obj.status == "OP") or (
+                        request_obj.selected_donor == self.context.get(
+                    'request').user.donor_profile and request_obj.status == "CL")):
                     count += 1
             return count
         else:
