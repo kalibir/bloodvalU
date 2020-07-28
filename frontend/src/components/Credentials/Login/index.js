@@ -107,7 +107,7 @@ const Login = ({errorReducer: {error}, authReducer: {authenticated, userObj}}) =
         if (response.status < 300) {
             const profile = response.data.profile
             if (profile.is_staff) {
-                push("/admin")
+                push("/admin-panel")
             } else if (profile.is_donor) {
                 profile.first_name === "" ?
                     push("/auth/signup/donor-profile/")

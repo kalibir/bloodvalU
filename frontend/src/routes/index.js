@@ -35,7 +35,7 @@ const Routes = () => {
                         <Route path="/editdonor" component={authComponentDonor(DonorEditProfile)}/>
                         <Route path="/dashboard/donor" component={authComponentDonor(DonorDashboard)}/>
 
-                        <Route path="/admin" component={AdminPage}/>
+                        <Route path="/admin-panel" component={AdminPage}/>
                         <Route path="/templates" component={Template}/>
                         <Route path="/auth" component={Credentials}/>
                     </Navigation>
