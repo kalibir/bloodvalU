@@ -19,6 +19,7 @@ import B_positive from "../../assets/icons/B_positive.svg";
 import AB_negative from "../../assets/icons/AB_negative.svg";
 import AB_positive from "../../assets/icons/AB_positive.svg";
 import urgentIcon from "../../assets/icons/urgent.svg";
+import renewIcon from "../../assets/icons/renew.svg";
 
 const BarWrapper = styled.div`
   width: 100%;
@@ -29,7 +30,7 @@ const RequestBar = styled.div`
   width: 100%;
   height: 48px;
   grid-template-areas: "text edit button urgent blood renew arrow";
-  grid-template-columns: 2fr 1fr 1fr 1fr 35px 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1.5fr 1fr 35px 1fr 1fr;
   background-color: #ffffff;
   border-bottom: 1px solid #d9d9d9;
   align-items: center;
@@ -42,12 +43,15 @@ const TextWrapper = styled.div`
   height: 100%;
   grid-area: text;
   align-items: center;
+  padding-left: 24px;
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   grid-area: button;
+  height: 38px;
+  //background-color: lightgreen;
 `;
 
 const IconWrapper = styled(ButtonWrapper)`
@@ -55,7 +59,7 @@ const IconWrapper = styled(ButtonWrapper)`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  background-color: orangered;
+  //background-color: orangered;
 `;
 
 const UrgentWrapper = styled.div`
@@ -65,30 +69,34 @@ const UrgentWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  background-color: darkgrey;
+  //background-color: darkgrey;
 `
 const BloodDiv = styled(UrgentWrapper)`
   grid-area: blood;
   display: flex;
   width: 100%;
-  background-color: deepskyblue;
+  //background-color: deepskyblue;
 `
 const RenewWrapper = styled(UrgentWrapper)`
   grid-area: renew;
   display: flex;
   width: 100%;
-  background-color: darkolivegreen;
+  //background-color: darkolivegreen;
 `
 
 const BlueButton = styled(BaseStatusButton)`
+  height: 37px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
   background-color: #2196f3;
 `;
 
 const IconButton = styled.button`
-  border: 1px solid #2196f3;
+  border: 3px solid #2196f3;
   padding: 3px;
   margin-right: 8px;
-  width: 30px;
+  width: 37px;
+  height: 37px;
   border-radius: 50%;
   background-color: white;
   color: #2196f3;
@@ -102,7 +110,7 @@ const IconButton = styled.button`
 `;
 
 const IconButton2 = styled(IconButton)`
-  border: 1px solid red;  
+  border: 3px solid red;  
   background-color: white;
   color: red;
 
@@ -122,7 +130,7 @@ const ArrowWrapper = styled.div`
   margin-right: 24px;
   width: 100%;
   height: 100%;
-  background-color: darksalmon;
+  //background-color: darksalmon;
 `;
 
 const EmptyArrowWrapper = styled.div`
@@ -175,9 +183,34 @@ const Type = styled.img`
 `;
 
 const UrgentIcon = styled.img`
-  width: ${rem("30px")};
-  height: ${rem("30px")};
+  width: ${rem("38px")};
+  height: ${rem("38px")};
 `;
+
+const CompleteItButton = styled(CompleteButton)`
+  height: 37px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  
+  :hover {
+    border: 3px solid #43a047;
+  }
+`
+
+const CompletedButton = styled(CompleteButton)`
+  height: 37px;
+  color: #43a047;
+  background: #ffffff;
+  border: 3px solid #43a047;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  
+  :hover {
+    color: #43a047;
+    background: #ffffff;
+    border: 3px solid #43a047;
+  }
+`
 
 
 //The seeker request bar starts from here
@@ -235,85 +268,92 @@ const GenericSeekerRequestBar = ({
         if (response.status < 300) closeModal();
     };
 
-  const renderBloodType = () => {
-    if (request.blood_group === "O-") return O_negative;
-    if (request.blood_group === "O+") return O_positive;
-    if (request.blood_group === "A-") return A_negative;
-    if (request.blood_group === "A+") return A_positive;
-    if (request.blood_group === "B-") return B_negative;
-    if (request.blood_group === "B+") return B_positive;
-    if (request.blood_group === "AB-") return AB_negative;
-    if (request.blood_group === "AB+") return AB_positive;
-  };
+    const renderBloodType = () => {
+        if (request.blood_group === "O-") return O_negative;
+        if (request.blood_group === "O+") return O_positive;
+        if (request.blood_group === "A-") return A_negative;
+        if (request.blood_group === "A+") return A_positive;
+        if (request.blood_group === "B-") return B_negative;
+        if (request.blood_group === "B+") return B_positive;
+        if (request.blood_group === "AB-") return AB_negative;
+        if (request.blood_group === "AB+") return AB_positive;
+    };
 
-  return (
-    <BarWrapper>
-      {sureModal ? (
-        <AreYouSureModal
-          handleDeleteRequest={handleDeleteRequest}
-          closeModal={closeModal}
-          id={request.id}
-          context={"request"}
-        />
-      ) : null}
+    return (
+        <BarWrapper>
+            {sureModal ? (
+                <AreYouSureModal
+                    handleDeleteRequest={handleDeleteRequest}
+                    closeModal={closeModal}
+                    id={request.id}
+                    context={"request"}
+                />
+            ) : null}
 
-      <RequestBar>
-        <TextWrapper onClick={handleRenderApplicants}> Request {request.id}</TextWrapper>
+            <RequestBar>
+                <TextWrapper onClick={handleRenderApplicants}> Request {request.id}</TextWrapper>
 
-        <IconWrapper>
-          <IconButton2 onClick={(e) => setSureModal(true)}>&#10006;</IconButton2>
-          <IconButton onClick={(e) => handleShowEditModal(e, request)}>&#9998;</IconButton>
-        </IconWrapper>
+                <IconWrapper>
+                    <IconButton2 onClick={(e) => setSureModal(true)}>&#10006;</IconButton2>
+                    <IconButton onClick={(e) => handleShowEditModal(e, request)}>&#9998;</IconButton>
+                </IconWrapper>
 
-        <ButtonWrapper>
-          {request.status === "OP" ? (
-            <BlueButton>Open</BlueButton>
-          ) : request.status === "CL" ? (
-            <CompleteButton onClick={handleCompleteRequest}>Mark As Complete</CompleteButton>
-          ) : (
-            <CompleteButton>Completed</CompleteButton>
-          )}
-        </ButtonWrapper>
+                <ButtonWrapper>
+                    {request.status === "OP" ? (
+                        <BlueButton>Open</BlueButton>
+                    ) : request.status === "CL" ? (
+                        <CompleteItButton onClick={handleCompleteRequest}>Mark As Complete</CompleteItButton>
+                    ) : (
+                        <CompletedButton onClick={handleRenderApplicants}>Completed</CompletedButton>
+                    )}
+                </ButtonWrapper>
 
-        <UrgentWrapper onClick={handleRenderApplicants}>{request.is_urgent ? <UrgentIcon src={urgentIcon} /> : null}</UrgentWrapper>
-        <BloodDiv onClick={handleRenderApplicants}><Type src={renderBloodType()} alt="blood_type" /></BloodDiv>
-        <RenewWrapper onClick={handleRenderApplicants}></RenewWrapper>
+                <UrgentWrapper onClick={handleRenderApplicants}>{request.is_urgent ?
+                    <UrgentIcon src={urgentIcon}/> : null}</UrgentWrapper>
+                <BloodDiv onClick={handleRenderApplicants}><Type src={renderBloodType()} alt="blood_type"/></BloodDiv>
+                <RenewWrapper onClick={handleRenderApplicants}>{request.is_renewable ?
+                    <UrgentIcon src={renewIcon}/> : null}</RenewWrapper>
 
-        {request.no_of_applicants ? (
-          <ArrowWrapper onClick={handleRenderApplicants}>
-            <BarArrowRight />
-          </ArrowWrapper>
-        ) : (
-          <EmptyArrowWrapper />
-        )}
+                {request.no_of_applicants ? (
+                    <ArrowWrapper onClick={handleRenderApplicants}>
+                        <BarArrowRight
+                            style={openArrow ? {transform: "rotate(45deg)"} : {transform: "rotate(-45deg)"}}/>
+                    </ArrowWrapper>
+                ) : (
+                    <EmptyArrowWrapper/>
+                )}
 
-      </RequestBar>
+            </RequestBar>
 
             {applicantsData.applicants && openArrow
                 ? applicantsData.applicants.map((applicant, index) => {
 
                     if (request.selected_donor && request.selected_donor.id === applicant.id) {
                         return (
-                            <DonorSelectedBar
-                                name={"selectbar"}
-                                onClick={handleClickApplicant}
-                                key={index}
-                                id={index}
-                                active={
-                                    false
-                                }>{`${applicant.first_name} ${applicant.last_name}`}</DonorSelectedBar>
+                            <SlidingContainer>
+                                <DonorSelectedBar
+                                    name={"selectbar"}
+                                    onClick={handleClickApplicant}
+                                    key={index}
+                                    id={index}
+                                    active={
+                                        false
+                                    }>{`${applicant.first_name} ${applicant.last_name}`}
+                                </DonorSelectedBar>
+                            </SlidingContainer>
                         );
                     }
 
                     return (
-                        // <SlidingContainer>
-                        <DonorSubBar
-                            name={"selectbar2"}
-                            onClick={request.status === "COM" ? null : handleClickApplicant}
-                            key={index}
-                            id={index}
-                            active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSubBar>
-                        // </SlidingContainer>
+                        <SlidingContainer>
+                            <DonorSubBar
+                                name={"selectbar2"}
+                                onClick={request.status === "COM" ? null : handleClickApplicant}
+                                key={index}
+                                id={index}
+                                active={false}>{`${applicant.first_name} ${applicant.last_name}`}
+                            </DonorSubBar>
+                        </SlidingContainer>
                     );
                 })
                 : applicantsData.applicants && !openArrow ? null
