@@ -19,8 +19,16 @@ const FormWrapper = styled.form`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-top: 90px;
 `;
+
+const DisclaimerWrapper = styled.div`
+  width: 350px;
+  max-height: 400px;
+  overflow: auto;
+`
+
+const Text = styled.p``
+
 
 const EmailInput = styled(BigInput)`
     margin-top: 9px;
@@ -40,7 +48,7 @@ const RegButton = styled(DarkBlueButton)`
 const Error = styled(ErrorPlaceholder)``
 
 
-const Registration = ({registrationReducer, dispatch, errorReducer:{error}}) => {
+const Registration = ({registrationReducer, dispatch, errorReducer: {error}}) => {
 
     const history = useHistory();
 
@@ -71,6 +79,37 @@ const Registration = ({registrationReducer, dispatch, errorReducer:{error}}) => 
         <PageWrapper>
             <FormWrapper onSubmit={handleSubmit}>
                 <RegistrationTitle>Registration</RegistrationTitle>
+                <DisclaimerWrapper>
+                    <Text>1. Are you aged between 16-70 years?
+                        Yes.
+                        No. You may not be able to give blood. Please contact us.
+                        2. WA/QLD aged 16-17 years?
+                        Yes. Parental Consent Form required.
+                        No.
+                        3. Do you weigh at least 50 kg?
+                        Yes.
+                        No. You may not be able to give blood. Please contact us.
+                        4. At this time, are you feeling fit and healthy?
+                        Yes.
+                        No. At this time you may not be able to give blood. Please contact us.
+                        5. Have you spent a cumulative period of 6 months or
+                        more in the United Kingdom between 1 January 1980
+                        and 31 December 1996?
+                        Yes. You may not be able to give blood. Please contact us.
+                        No.
+                        6. In the last 12 months, have you undergone any
+                        surgical procedures?
+                        Yes. You may not be able to give blood. Please contact us.
+                        No.
+                        7. In the 3 days after your appointment do you intend to
+                        participate in any activity which would place you or
+                        others at risk of injury if you were to become unwell
+                        after donating, such as driving public transport,
+                        operating heavy machinery, underwater diving,
+                        piloting a plane or other activities?
+                        Yes. You may not be able to give blood. Please contact us.
+                        No.</Text>
+                </DisclaimerWrapper>
                 {error ? <Error><p>{error}</p></Error> : null}
                 <SmallTitle>Email</SmallTitle>
                 <EmailInput onChange={(e) => onChangeHandler(e, "email")} placeholder="email" type="email" required/>
