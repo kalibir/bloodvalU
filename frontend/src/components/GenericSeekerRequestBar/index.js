@@ -21,7 +21,7 @@ const RequestBar = styled.div`
   grid-template-areas: "text status urgent blood button valid arrow";
   grid-template-columns: 2fr 1fr 1fr 35px 30% 1fr 1fr;
   background-color: #ffffff;
-  border-bottom: 1px solid #d9d9d9;
+  border: 1px solid #d9d9d9;
   align-items: center;
   justify-items: auto;
   grid-gap: 8px;
@@ -144,9 +144,8 @@ const GenericSeekerRequestBar = ({
       applicants: response.data,
       showApplicants: !applicantsData.showApplicants,
     });
-    setOpenArrow(!openArrow)
+    setOpenArrow(!openArrow);
   };
-
 
   const handleClickApplicant = (e) => {
     const index = Number(e.currentTarget.id);
@@ -158,13 +157,12 @@ const GenericSeekerRequestBar = ({
   const handleCompleteRequest = async (e) => {
     e.preventDefault();
     const response = dispatch(markRequestAsCompleteAction(request.id));
-     if (response.status < 300) closeModal();
+    if (response.status < 300) closeModal();
   };
 
   const closeModal = () => {
     setSureModal(false);
   };
-
 
   return (
     <BarWrapper>
@@ -202,33 +200,33 @@ const GenericSeekerRequestBar = ({
 
       {applicantsData.applicants && openArrow
         ? applicantsData.applicants.map((applicant, index) => {
-
-              if (request.selected_donor && request.selected_donor.id === applicant.id) {
-                return (
-                  <DonorSelectedBar
-                    name={"selectbar"}
-                    onClick={handleClickApplicant}
-                    key={index}
-                    id={index}
-                    active={
-                      false
-                    }>{`${applicant.first_name} ${applicant.last_name}`}</DonorSelectedBar>
-                );
-              }
+            if (request.selected_donor && request.selected_donor.id === applicant.id) {
+              return (
+                <DonorSelectedBar
+                  name={"selectbar"}
+                  onClick={handleClickApplicant}
+                  key={index}
+                  id={index}
+                  active={
+                    false
+                  }>{`${applicant.first_name} ${applicant.last_name}`}</DonorSelectedBar>
+              );
+            }
 
             return (
               // <SlidingContainer>
-                <DonorSubBar
-                  name={"selectbar2"}
-                  onClick={request.status === "COM" ? null : handleClickApplicant}
-                  key={index}
-                  id={index}
-                  active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSubBar>
+              <DonorSubBar
+                name={"selectbar2"}
+                onClick={request.status === "COM" ? null : handleClickApplicant}
+                key={index}
+                id={index}
+                active={false}>{`${applicant.first_name} ${applicant.last_name}`}</DonorSubBar>
               // </SlidingContainer>
             );
           })
-        : applicantsData.applicants && !openArrow ? null
-      : null}
+        : applicantsData.applicants && !openArrow
+        ? null
+        : null}
     </BarWrapper>
   );
 };
