@@ -18,5 +18,7 @@ class TestResult(models.Model):
         default=code_generator,
     )
 
+    details = models.TextField(blank=True, max_length=300)
+
     results = models.FileField(validators=[FileExtensionValidator(['pdf'])])
 

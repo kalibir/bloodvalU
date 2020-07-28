@@ -14,7 +14,7 @@ class TestResultSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TestResult
-        fields = ['id', 'donor', 'offered_test', 'result_code', 'results']
+        fields = ['id', 'donor', 'offered_test', 'details', 'result_code', 'results']
 
     def validate(self, data):
         request = self.context.get('request')
