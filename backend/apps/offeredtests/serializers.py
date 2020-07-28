@@ -22,6 +22,11 @@ class OfferedTestSerializer(serializers.ModelSerializer):
     seeker_name = serializers.SerializerMethodField()
     results_available = serializers.SerializerMethodField()
     results = serializers.SerializerMethodField()
+    no_of_customers = serializers.SerializerMethodField()
+
+    def get_no_of_customers(self, obj):
+        return obj.donors_who_bought.count()
+
 
     def get_results(self, obj):
         request = self.context.get('request')
@@ -57,8 +62,9 @@ class OfferedTestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OfferedTest
-        fields = ['id', 'test_type', 'results_available', 'seeker_name', 'test_results', 'results', 'points_cost', 'expiry_date',
-                  'created', 'is_bought', 'is_expired',
+        fields = ['id', 'test_type', 'results_available', 'seeker_name', 'test_results', 'results', 'points_cost',
+                  'expiry_date',
+                  'created', 'is_bought', 'is_expired', 'no_of_customers',
                   'seeker',
                   'donors_who_bought']
 

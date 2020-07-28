@@ -26,6 +26,14 @@ const FormWrapper = styled.form`
 const EmailInput = styled(BigInput)`
     margin-top: 9px;
     margin-bottom: 32px;
+    :not(placeholder-shown):invalid{
+      color: #a40000;
+    }
+`;
+
+const PasswordInput = styled(BigInput)`
+    margin-top: 9px;
+    margin-bottom: 32px;
 `;
 
 const RegistrationTitle = styled(MiddleTitle)`
@@ -118,10 +126,10 @@ const Login = ({errorReducer: {error}, authReducer: {authenticated, userObj}}) =
             <FormWrapper onSubmit={handleSubmit}>
                 <RegistrationTitle>Login</RegistrationTitle>
                 {error ? <Error><p>{error}</p></Error> : null}
-                <SmallTitle>Email</SmallTitle>
-                <EmailInput onChange={handleEmail} placeholder="example@email.com" type="email" required/>
-                <SmallTitle>Password</SmallTitle>
-                <EmailInput onChange={handlePassword} placeholder="***********" type="password" required/>
+                <SmallTitle htmlFor="email">Email</SmallTitle>
+                <EmailInput id="email" name="email" autocomplete="email" onChange={handleEmail} placeholder="example@email.com" type="email" required autoFocus/>
+                <SmallTitle  htmlFor="password">Password</SmallTitle>
+                <PasswordInput id="password" name="current-password" onChange={handlePassword} placeholder="***********" type="password" required/>
                 <ButtonWrapper>
                     <DarkBlueButton>Login</DarkBlueButton>
                     <ForgotContainer>

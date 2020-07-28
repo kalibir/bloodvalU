@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { rem } from "polished";
+import {rem} from "polished";
+import {device} from "../Functions";
 
-export const SmallTitle = styled.h4`
+export const SmallTitle = styled.label`
     font-style: normal;
     font-weight: 600;
     font-size: 14px;
@@ -29,19 +30,27 @@ export const BigTitle = styled.h1`
 
 export const BloodValU = ({text, black, red}) => {
 
-    const Bloodval = styled.span`
-      cursor: pointer;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 600;
-      font-size: ${rem(`${black}px`)};
-      line-height: ${rem("24px")};
-      color: #262541;
-    `
-
-    const U = styled(Bloodval)`
+    const U = styled.span`
+      @media ${device.tablet} { 
+        font-size: ${rem(`${50}px`)};
+        margin-right: 5px;
+      }
       font-size: ${rem(`${red}px`)};
       font-weight: 600;
       color: #D33449;
+      cursor: pointer;
+      margin-bottom: 5px;
+      font-family: 'Poppins', sans-serif;
+      line-height: ${rem("24px")};
+    `
+
+    const Bloodval = styled(U)`
+      @media ${device.tablet} { 
+        display: none;
+      }
+      font-size: ${rem(`${black}px`)};
+      line-height: ${rem("24px")};
+      color: #262541;
     `
 
     return (

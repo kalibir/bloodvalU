@@ -33,7 +33,7 @@ const ToggleButton = ({ toggleValue, handleClick }) => {
   // };
   return (
     <BtnContainer onClick={handleClick} active={toggleValue}>
-      <ToggleBtn active={toggleValue}></ToggleBtn>
+      <ToggleBtn active={toggleValue}/>
     </BtnContainer>
   );
 };

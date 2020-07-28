@@ -16,6 +16,7 @@ import {getLoggedInUserAction} from "../../store/actions/userActions";
 import {bloodGroupTest} from "../../HelperFunctions";
 import Spinner from "../../components/GenericSpinner";
 import {device, size} from "../../style/Functions";
+import Fade from "react-reveal/Fade";
 
 const ColorDebug = false; //at true all element get colored background for checking
 
@@ -143,8 +144,7 @@ const breatheAnimation = keyframes`
     }
     100% {
       transform: translate(0, 0);
-    }
-  }
+    }  
 `
 
 const CustomNumber = styled(NumberFormat)`
@@ -180,6 +180,11 @@ const UnderLine = styled.div`
 
 const OfferContainer = styled.div`
   width: 100%;
+  overflow: auto;
+  max-height: 550px;
+  height: inherit;
+  display: flex;
+  flex-wrap: wrap;
   
   justify-content: center;
   @media ${device.laptop} {
@@ -285,6 +290,7 @@ const DonorDashboard = ({
                             </OfferContainer>
                         </Content>
                         <Content active={active === "requests"}>
+
                             <RequestContainer>
                                 {requests ? (
                                     requests.map((request, index) => {
@@ -297,6 +303,7 @@ const DonorDashboard = ({
                                     </SpinnerContainer>
                                 )}
                             </RequestContainer>
+
                         </Content>
                         <Content active={active === "applied"}>
                             <div>
