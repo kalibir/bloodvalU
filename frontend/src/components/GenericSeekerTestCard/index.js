@@ -8,12 +8,14 @@ import {useDispatch} from "react-redux";
 import UploadTestResultsModal from "../UploadTestResultsModal";
 
 const TestCard = styled.div`
-  width: ${rem("290px")};
-  height: ${rem("150px")};
-  background: #FFF;
+  width: ${rem("320px")};
+  height: ${rem("160px")};
+  background: #e5e5e5;
+  padding: 10px;
   border: 1px solid #d3d4d8;
   border-radius: 4px;
   display: flex;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
@@ -52,25 +54,27 @@ const TextContainer = styled.div`
 
 const BottomContainer = styled.div`
   height: ${rem("40px")};
-  width: ${rem("250px")};
+  width: 100%;
   display: flex;
+  align-items: flex-end;
   justify-content: space-between;
 `;
 
 const CardBlueButton = styled(SmallBlueButton)`
-  width: 60px;
+  width: 150px;
   height: 30px;
+  margin: 0 5px 0 5px;
   font-size: 12px;
 `;
 
 const CardGreenButton = styled(SmallGreenButton)`
-   width: 80px;
+   width: 100px;
   height: 30px;
   font-size: 12px;
 `
 
 const CardRedButton = styled(SmallRedButton)`
-  width: 60px;
+  width: 70px;
   height: 30px;
   font-size: 12px;
 `;
@@ -81,16 +85,9 @@ const BlindButton = styled.div`
 `
 
 const GenericSeekerTestCard = ({
-                                   test: {
-                                       id,
-                                       test_type,
-                                       seeker_name,
-                                       points_cost,
-                                       expiry_date,
-                                       created,
-                                       no_of_customers,
-                                       is_expired,
-                                   },
+                                   handleShowEditModal,
+                                   handleEditTest,
+                                   test,
                                }) => {
 
     const [sureModal, setSureModal] = useState(false);
@@ -118,20 +115,22 @@ const GenericSeekerTestCard = ({
                     handleDeleteTest={handleDeleteTest}
                     closeModal={closeModal}
                     context={"test"}
-                    id={id}
+                    id={test.id}
                 />
             ) : null}
-            {showCustomersModal ? <UploadTestResultsModal handleCloseUploadResults={handleCloseUploadResults} test_type={test_type} testID={id}/>: null}
+            {showCustomersModal ?
+                <UploadTestResultsModal handleCloseUploadResults={handleCloseUploadResults} test_type={test.test_type}
+                                        testID={test.id}/> : null}
             <TextContainer>
-                <Text>{test_type}</Text>
-                <PointContainer>{points_cost} pts</PointContainer>
+                <Text>{test.test_type}</Text>
+                <PointContainer>{test.points_cost} pts</PointContainer>
             </TextContainer>
             <BottomContainer>
-                { no_of_customers ?
+                {test.no_of_customers ?
                     <CardGreenButton onClick={e => setShowCustomersModal(true)}>Customers</CardGreenButton>
                     : <BlindButton></BlindButton>
                 }
-                {/*<CardBlueButton>edit</CardBlueButton>*/}
+                <CardBlueButton onClick={e => handleShowEditModal(e, test)}>edit description</CardBlueButton>
                 <CardRedButton onClick={e => setSureModal(true)}>delete</CardRedButton>
             </BottomContainer>
         </TestCard>

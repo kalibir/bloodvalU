@@ -66,6 +66,7 @@ class OfferedTestSerializer(serializers.ModelSerializer):
                   'expiry_date',
                   'created', 'is_bought', 'is_expired', 'no_of_customers',
                   'seeker',
+                  'details',
                   'donors_who_bought']
 
 
@@ -88,4 +89,5 @@ class BoughtTestsOnProfileSerializer(serializers.ModelSerializer):
         model = OfferedTest
         fields = ['id', 'test_type', 'seeker_name', 'points_cost', 'expiry_date', 'created', 'is_bought', 'is_expired',
                   'seeker',
+                  'details',
                   'donors_who_bought']

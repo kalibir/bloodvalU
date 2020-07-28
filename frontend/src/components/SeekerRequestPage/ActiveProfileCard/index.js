@@ -20,8 +20,9 @@ import B_positive from "../../../assets/icons/B_positive.svg";
 import AB_negative from "../../../assets/icons/AB_negative.svg";
 import AB_positive from "../../../assets/icons/AB_positive.svg";
 
-const ProfileWrapper = styled.div`
+const ProfileWrapper = styled(Fade)`
   width: ${rem("544px")};
+  border: 1px solid green;
   height: ${rem("628px")};
   display: flex;
   justify-content: center;
@@ -41,7 +42,6 @@ const UpperContainer = styled.div`
 const ProfilePicPlaceholder = styled.div`
   width: ${rem("120px")};
   height: ${rem("120px")};
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
   margin-top: ${rem("15px")};
   border: none;
   outline: none;
@@ -174,65 +174,63 @@ const MinusSignButton = styled(PlusSignButton)`
 const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant, showSpinner}) => {
 
     const renderBloodType = () => {
-    if (activeProfile.blood_group === "O-") return O_negative;
-    if (activeProfile.blood_group === "O+") return O_positive;
-    if (activeProfile.blood_group === "A-") return A_negative;
-    if (activeProfile.blood_group === "A+") return A_positive;
-    if (activeProfile.blood_group === "B-") return B_negative;
-    if (activeProfile.blood_group === "B+") return B_positive;
-    if (activeProfile.blood_group === "AB-") return AB_negative;
-    if (activeProfile.blood_group === "AB+") return AB_positive;
-  };
+        if (activeProfile.blood_group === "O-") return O_negative;
+        if (activeProfile.blood_group === "O+") return O_positive;
+        if (activeProfile.blood_group === "A-") return A_negative;
+        if (activeProfile.blood_group === "A+") return A_positive;
+        if (activeProfile.blood_group === "B-") return B_negative;
+        if (activeProfile.blood_group === "B+") return B_positive;
+        if (activeProfile.blood_group === "AB-") return AB_negative;
+        if (activeProfile.blood_group === "AB+") return AB_positive;
+    };
 
 
     return (
-        <Fade>
         <ProfileWrapper>
-                        <UpperContainer>
-                            <BigTitle>donor profile</BigTitle>
-                            {activeRequest.status === "OP" ? (
-                                <ProfilePicPlaceholder>
-                                    <img src={renderBloodType()} alt={"avatar"}/>
-                                </ProfilePicPlaceholder>
-                            ) : activeProfile ? activeRequest.status === "CL" && activeProfile.id === activeRequest.selected_donor.id ? (
-                                <SelectedTitle>Selected</SelectedTitle>
-                            ) : activeRequest.status === "COM" ? (
-                                <ProfilePicPlaceholder>
-                                    <img src={success} alt="success sign"/>
-                                </ProfilePicPlaceholder>
-                            ) : (
-                                <p>Sorry, we are confused a little bit.</p>
-                            ) : null}
-                        </UpperContainer>
-                        <BottomContainer>
-                            <DetailTitlesContainer>
-                                <DetailTitle>ID:</DetailTitle>
-                                <DetailTitle>Blood Type:</DetailTitle>
-                                <DetailTitle>Gender:</DetailTitle>
-                                <DetailTitle>Age:</DetailTitle>
-                            </DetailTitlesContainer>
-                            <DetailsContainer>
-                                <Details>{activeProfile ? activeProfile.unique_donor_id : null}</Details>
-                                <Details>{activeProfile ? activeProfile.blood_group : null}</Details>
-                                <Details>{activeProfile ? activeProfile.gender === "M" ? "Male" : activeProfile.gender === "F" ? "Female" : "Other" : null}</Details>
-                                <Details>{activeProfile ? activeProfile.age : null}</Details>
-                            </DetailsContainer>
-                        </BottomContainer>
-                        <ButtonContainer>
-                            {activeRequest.status === "OP" ? (
-                                <SelectButton onClick={handleSelectApplicant}> {/*needs an onclick*/}
-                                    {/*<ButtonSpinner/>*/}
-                                    {showSpinner ? <ButtonSpinner/> : "+ Select Donor"}
-                                </SelectButton>
-                            ) : activeProfile ? activeRequest.selected_donor.id === activeProfile.id && activeRequest.status !== "COM" ? (
-                                <CancelButton onClick={handleSelectApplicant}>
-                                    {showSpinner ? <ButtonSpinner/> : "X Cancel Select"}
-                                </CancelButton>
-                            ) : activeRequest.status === "COM" ? null : null : null
-                            }
-                        </ButtonContainer>
-                    </ProfileWrapper>
-        </Fade>
+            <UpperContainer>
+                <BigTitle>donor profile</BigTitle>
+                {activeRequest.status === "OP" ? (
+                    <ProfilePicPlaceholder>
+                        <img src={renderBloodType()} alt={"avatar"}/>
+                    </ProfilePicPlaceholder>
+                ) : activeProfile ? activeRequest.status === "CL" && activeProfile.id === activeRequest.selected_donor.id ? (
+                    <SelectedTitle>Selected</SelectedTitle>
+                ) : activeRequest.status === "COM" ? (
+                    <ProfilePicPlaceholder>
+                        <img src={success} alt="success sign"/>
+                    </ProfilePicPlaceholder>
+                ) : (
+                    <p>Sorry, we are confused a little bit.</p>
+                ) : null}
+            </UpperContainer>
+            <BottomContainer>
+                <DetailTitlesContainer>
+                    <DetailTitle>ID:</DetailTitle>
+                    <DetailTitle>Blood Type:</DetailTitle>
+                    <DetailTitle>Gender:</DetailTitle>
+                    <DetailTitle>Age:</DetailTitle>
+                </DetailTitlesContainer>
+                <DetailsContainer>
+                    <Details>{activeProfile ? activeProfile.unique_donor_id : null}</Details>
+                    <Details>{activeProfile ? activeProfile.blood_group : null}</Details>
+                    <Details>{activeProfile ? activeProfile.gender === "M" ? "Male" : activeProfile.gender === "F" ? "Female" : "Other" : null}</Details>
+                    <Details>{activeProfile ? activeProfile.age : null}</Details>
+                </DetailsContainer>
+            </BottomContainer>
+            <ButtonContainer>
+                {activeRequest.status === "OP" ? (
+                    <SelectButton onClick={handleSelectApplicant}> {/*needs an onclick*/}
+                        {/*<ButtonSpinner/>*/}
+                        {showSpinner ? <ButtonSpinner/> : "+ Select Donor"}
+                    </SelectButton>
+                ) : activeProfile ? activeRequest.selected_donor.id === activeProfile.id && activeRequest.status !== "COM" ? (
+                    <CancelButton onClick={handleSelectApplicant}>
+                        {showSpinner ? <ButtonSpinner/> : "X Cancel Select"}
+                    </CancelButton>
+                ) : activeRequest.status === "COM" ? null : null : null
+                }
+            </ButtonContainer>
+        </ProfileWrapper>
     )
 }
 

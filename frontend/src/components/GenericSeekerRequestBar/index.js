@@ -110,7 +110,7 @@ const IconButton = styled.button`
   }
 `;
 
-const IconButton2 = styled(IconButton)`
+export const IconButton2 = styled(IconButton)`
   border: 3px solid red;  
   background-color: white;
   color: red;
@@ -342,7 +342,7 @@ const GenericSeekerRequestBar = ({
                                     id={index}
                                     active={
                                         false
-                                    }>{`${applicant.unique_donor_id}`}
+                                    }>{`Donor:  ${applicant.unique_donor_id}`}
                                 </DonorSelectedBar>
                             </SlidingContainer>
                         );
@@ -355,7 +355,7 @@ const GenericSeekerRequestBar = ({
                                 onClick={request.status === "COM" ? null : handleClickApplicant}
                                 key={index}
                                 id={index}
-                                active={false}>{`${applicant.first_name} ${applicant.last_name}`}
+                                active={false}>{`Donor:  ${applicant.unique_donor_id}`}
                             </DonorSubBar>
                         </SlidingContainer>
                     );

@@ -83,8 +83,7 @@ const SideButton = styled(MiddleButton)`
 `;
 
 const DashboardContentContainer = styled.div`
-    //width: ${rem("445px")};
-    width: 100%;
+    width: 600px;
     display: flex;
     flex-flow: column;
     justify-content: flex-start;
@@ -148,7 +147,7 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
     const handleClick = (e) => {
         const value = e.target.id;
         setActive(value);
-        // dispatch(getSeekerBloodRequestsAction(value));
+        dispatch(getSeekerBloodRequestsAction(value));
     };
 
     const closeModal = () => {
