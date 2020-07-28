@@ -47,6 +47,7 @@ export const getAllRequestsAction = () => async (dispatch) => {
     try {
         const response = await Axios.get(`donor/search/?search_param=&type=requests`);
         const {data} = response
+        console.log("data : ", data)
         dispatch(setAllRequests(data))
         return response
     } catch (error) {
