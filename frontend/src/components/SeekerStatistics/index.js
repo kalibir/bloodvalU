@@ -38,7 +38,7 @@ const SeekerStatistics = ({userProfileReducer: {statistics}, dispatch, authReduc
     useEffect(() => {
         dispatch(getLoggedInUserAction())
         dispatch(getMyStatisticsAction())
-    }, [dispatch])
+    }, [])
 
 
     return (
