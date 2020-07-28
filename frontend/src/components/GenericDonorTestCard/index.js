@@ -155,7 +155,6 @@ const GenericDonorTestCard = (props) => {
     const dispatch = useDispatch();
     const [showSpinner, setShowSpinner] = useState(false);
     const [showBroke, setShowBroke] = useState(false)
-    console.log(showBroke);
 
     const handleBuy = async e => {
         setShowSpinner(true)
