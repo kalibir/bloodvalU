@@ -28,7 +28,7 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-flow: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   width: calc(100% - 320px);
   margin-top: ${rem("104px")};
     @media ${device.laptop} { 
