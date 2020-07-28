@@ -342,7 +342,7 @@ const GenericSeekerRequestBar = ({
                                     id={index}
                                     active={
                                         false
-                                    }>{`${applicant.first_name} ${applicant.last_name}`}
+                                    }>{`${applicant.unique_donor_id}`}
                                 </DonorSelectedBar>
                             </SlidingContainer>
                         );
