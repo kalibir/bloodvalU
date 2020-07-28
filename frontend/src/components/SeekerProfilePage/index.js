@@ -99,33 +99,45 @@ const SeekerProfilePage = ({userProfileReducer: {offeredTests}, dispatch}) => {
         dispatch(getRequestsOfSeekerAction());
     }, []);
 
-    const [modalActive, setModalActive] = useState(false);
+    const [modal, setModal] = useState({
+        showModal: false,
+        modalData: null,
+    });
 
-  const closeModal = () => {
-    setModalActive(false);
-  };
+    const closeModal = () => {
+        setModal({...modal, showModal: false});
+    };
 
-      const handleEditTest = (event, requestID, requestData) => {
+    const handleEditTest = (event, requestID, requestData) => {
         // dispatch(editRequestAction(requestID, requestData));
-        setModalActive({...modalActive, showModal: false});
+        setModal({...modal, showModal: false});
+    };
+
+    const handleShowEditModal = (event, testObj) => {
+        setModal({showModal: true, modalData: testObj});
     };
 
 
     return (
         <PageWrapper>
-            {modalActive ? <CreateTestModal handleEditTest={handleEditTest} closeModal={closeModal}/> : null}
+            {modal.showModal ? <CreateTestModal modalData={modal.modalData}
+                                                handleEditTest={handleEditTest}
+                                                closeModal={closeModal}/> : null}
             <DashboardPageContainer>
                 <LeftSide>
                     <DashboardContentContainer>
                         <MenuContainer>
                             <SideButton id="requests">Offered Tests</SideButton>
                         </MenuContainer>
-                        <CreateTestButton onClick={() => setModalActive(true)}>+ Create Test</CreateTestButton>
+                        <CreateTestButton onClick={() => setModal({...modal, showModal: true})}>+ Create
+                            Test</CreateTestButton>
                         <TestWrapper>
                             {offeredTests
                                 ? offeredTests.map((test, index) => {
                                     return <GenericSeekerTestCard
                                         test={test}
+                                        handleShowEditModal={handleShowEditModal}
+                                        handleEditTest={handleEditTest}
                                         key={index}
                                     />;
                                 })
@@ -142,9 +154,9 @@ const SeekerProfilePage = ({userProfileReducer: {offeredTests}, dispatch}) => {
 };
 
 const mapStateToProps = (state) => {
-  return {
-    userProfileReducer: state.userProfileReducer,
-  };
+    return {
+        userProfileReducer: state.userProfileReducer,
+    };
 };
 
 export default connect(mapStateToProps)(SeekerProfilePage);

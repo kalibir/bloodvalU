@@ -81,6 +81,8 @@ const BlindButton = styled.div`
 `
 
 const GenericSeekerTestCard = ({
+                                   handleShowEditModal,
+                                   handleEditTest,
                                    test: {
                                        id,
                                        test_type,
@@ -121,13 +123,15 @@ const GenericSeekerTestCard = ({
                     id={id}
                 />
             ) : null}
-            {showCustomersModal ? <UploadTestResultsModal handleCloseUploadResults={handleCloseUploadResults} test_type={test_type} testID={id}/>: null}
+            {showCustomersModal ?
+                <UploadTestResultsModal handleCloseUploadResults={handleCloseUploadResults} test_type={test_type}
+                                        testID={id}/> : null}
             <TextContainer>
                 <Text>{test_type}</Text>
                 <PointContainer>{points_cost} pts</PointContainer>
             </TextContainer>
             <BottomContainer>
-                { no_of_customers ?
+                {no_of_customers ?
                     <CardGreenButton onClick={e => setShowCustomersModal(true)}>Customers</CardGreenButton>
                     : <BlindButton></BlindButton>
                 }
