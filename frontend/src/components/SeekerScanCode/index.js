@@ -5,10 +5,11 @@ import styled from "styled-components";
 import {useDispatch} from "react-redux";
 import {validateQRCode} from "../../store/actions/QRActions";
 import {MiddleButton} from "../DonorDashboard";
+import {rem} from "polished";
 
 const SuccessText = styled.h1`
-  color: #3eb33e;
-  font-size: 40px;
+  font-size: ${rem("25px")};
+  font-weight: lighter;
 `
 const ErrorText = styled.h1`
   color: #b33e3e;
@@ -32,6 +33,16 @@ const Button = styled(MiddleButton)`
 
 const MenuContainer = styled(BaseMenuContainer)`
 `
+const Wrapper = styled.div`
+  background-color: white;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  color: black;
+  padding: ${rem("20px")};;
+  border-radius: 4px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+`
 
 const ContentWrapper = styled.div`
   width: 50%;
@@ -39,6 +50,12 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`
+const FadeWrapper = styled.div`
+  display: flex;
+    width: 600px;
+  flex-direction: column;
+  align-items: flex-start;
 `
 
 const Content = styled.div`
@@ -61,7 +78,7 @@ const SeekerScanCode = (props) => {
     const handleTabs = e => {
         const activeTab = e.currentTarget.id
         setActive(activeTab)
-        setData({ delay: 100, scan: null})
+        setData({delay: 100, scan: null})
         setQRCode(null)
         setQRResponse({isGood: null, message: null})
     }
@@ -101,11 +118,14 @@ const SeekerScanCode = (props) => {
                 </Button>
             </MenuContainer>
                 {QRresponse.message ? QRresponse.isGood ?
-                    <>
-                    <SuccessText>Donor Name: {QRresponse.message.donor}</SuccessText>
-                    <SuccessText>Institution: {QRresponse.message.institution}</SuccessText>
-                    <SuccessText>Type of Appointment: {QRresponse.message.type}</SuccessText>
-                    </>
+                    <FadeWrapper>
+                        <Wrapper><SuccessText>Donor Name:</SuccessText>
+                            <SuccessText>{QRresponse.message.donor}</SuccessText></Wrapper>
+                        <Wrapper><SuccessText>Institution:</SuccessText>
+                            <SuccessText>{QRresponse.message.institution}</SuccessText></Wrapper>
+                        <Wrapper><SuccessText>Type of Appointment:</SuccessText>
+                            <SuccessText>{QRresponse.message.type}</SuccessText></Wrapper>
+                    </FadeWrapper>
                     :
                     <ErrorText>{QRresponse.message}</ErrorText> : null}
                 <QrReader
