@@ -58,8 +58,9 @@ const SeekerInfo = ({selectedSeeker, handleClosePopup, userObj}) => {
 
     return (
         <Wrapper>
-            <CloseWrapper><Close onClick={handleClosePopup}>&#9932;</Close></CloseWrapper>
-
+            <CloseWrapper>
+                <Close onClick={handleClosePopup}>&#10006;</Close>
+            </CloseWrapper>
             <h3>{selectedSeeker.name}</h3>
             <p>Phone: {selectedSeeker.phone}</p>
             {requests ? requests.map((request, index) => {
