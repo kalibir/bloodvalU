@@ -25,7 +25,6 @@ const PageWrapper = styled.div`
 
 const LeftSide = styled.div`
   height: 100%;
-  width: calc(100% - 700px);
   min-width: 576px;
   padding-top: ${rem("36px")};
   padding-left: ${rem("160px")};
