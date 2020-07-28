@@ -29,9 +29,14 @@ const DisclaimerWrapper = styled.div`
 
 const Text = styled.p``
 
-const CheckBox = styled.input``
+const CheckBox = styled.input`
+  margin-left: 20px;
+`
 
-const CheckboxWrapper = styled.div``
+const CheckboxWrapper = styled.div`
+  display: flex;
+  
+`
 
 const EmailInput = styled(BigInput)`
     margin-top: 9px;
@@ -112,9 +117,11 @@ const Registration = ({registrationReducer, dispatch, errorReducer: {error}}) =>
                         <p>&nbsp;</p>
                         <p>8. I agree&nbsp;that I have never tested positive for the <strong>AIDS</strong> virus.</p>
                         <p><br/><br/></p>
+                        <CheckboxWrapper>
+                            <p>I agree: </p>
+                            <CheckBox onClick={handleCheck} type="checkbox" defaultChecked={hasAgreed}/>
+                        </CheckboxWrapper>
 
-                        <p>I agree: </p>
-                        <CheckBox onClick={handleCheck} type="checkbox" defaultChecked={hasAgreed}/>
                     </Text>
                 </DisclaimerWrapper>
                 {error ? <Error><p>{error}</p></Error> : null}
