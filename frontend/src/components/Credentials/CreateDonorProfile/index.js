@@ -113,7 +113,6 @@ const CreateDonorProfile = (props) => {
         gender: "",
     });
 
-    console.log("donorInfo", donorInfo)
 
 
     const onChangeHandler = (event, property) => {

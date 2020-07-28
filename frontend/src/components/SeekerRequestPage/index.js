@@ -230,7 +230,6 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
 };
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         userProfileReducer: state.userProfileReducer,
     };

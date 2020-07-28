@@ -114,7 +114,6 @@ const CreateTestModal = ({ closeModal }) => {
     settestData({ ...testData, [property]: value });
   };
 
-  console.log(testData)
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = new FormData()

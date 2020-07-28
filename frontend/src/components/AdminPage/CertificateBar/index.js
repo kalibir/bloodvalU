@@ -151,7 +151,6 @@ const SeekerCertificateBar = ({profile: {id, name, phone, certificate, street, z
     const showSeekerHandler = (event) => {
         setSeekerInfo(!showSeeker);
     };
-    console.log("profile", certificate)
 
 
     return (

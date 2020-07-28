@@ -32,8 +32,6 @@ const CustomerBar = ({testID, customer: {id, pdf_result, last_name, first_name},
         }
     };
 
-    console.log(`${first_name}'s uploaded file`, uploadedPDF)
-
     const handleUpload = async (e) => {
         e.preventDefault()
         const form = new FormData()

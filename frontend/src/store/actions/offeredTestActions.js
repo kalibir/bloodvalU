@@ -81,10 +81,8 @@ export const deleteTestAction = (testID) => async (dispatch) => {
 export const getCustomersAction = (testIdObj) => async (dispatch) => {
     try {
         const response = await Axios.post(`tests/customers/`, testIdObj);
-        console.log("response", response.data)
         return response
     } catch (error) {
-        console.log("error in the getCustomersAction", error.response);
         return error
     }
 }
@@ -92,10 +90,8 @@ export const getCustomersAction = (testIdObj) => async (dispatch) => {
 export const uploadTestResultsAction = (data) => async (dispatch) => {
     try {
         const response = await Axios.post(`results/new/`, data);
-        console.log("response", response.data)
         return response
     } catch (error) {
-        console.log("error in the getCustomersAction", error.response);
         return error
     }
 }

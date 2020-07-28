@@ -92,7 +92,6 @@ const GenericSeekerTestCard = ({
                                        is_expired,
                                    },
                                }) => {
-    console.log("is bought", no_of_customers)
 
     const [sureModal, setSureModal] = useState(false);
     const [showCustomersModal, setShowCustomersModal] = useState(false)
