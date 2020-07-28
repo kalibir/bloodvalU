@@ -10,6 +10,7 @@ import {sendLoginAction} from "../../../store/actions/loginActions";
 import {useHistory} from "react-router";
 import {resetError} from "../../../store/actions/errorActions";
 import {Link} from "react-router-dom";
+import {setIsLogin} from "../../../store/actions/userActions";
 
 const PageWrapper = styled(PageContainer)`
     height: 78.2vh;
@@ -23,6 +24,14 @@ const FormWrapper = styled.form`
 `;
 
 const EmailInput = styled(BigInput)`
+    margin-top: 9px;
+    margin-bottom: 32px;
+    :not(placeholder-shown):invalid{
+      color: #a40000;
+    }
+`;
+
+const PasswordInput = styled(BigInput)`
     margin-top: 9px;
     margin-bottom: 32px;
 `;
@@ -57,13 +66,17 @@ const Error = styled(ErrorPlaceholder)`
 
 
 const Login = ({errorReducer: {error}, authReducer: {authenticated, userObj}}) => {
-    // const {authReducer} = props;
+
     const {push} = useHistory();
     const dispatch = useDispatch();
     const [loginInfo, setloginInfo] = useState({
         email: "",
         password: "",
     });
+
+    useEffect(()=> {
+        dispatch(setIsLogin(false))
+    }, [])
 
     useEffect(() => {
         if (authenticated && userObj && userObj.is_donor) push("/dashboard/donor")
@@ -93,7 +106,9 @@ const Login = ({errorReducer: {error}, authReducer: {authenticated, userObj}}) =
         const response = await dispatch(sendLoginAction(loginInfo));
         if (response.status < 300) {
             const profile = response.data.profile
-            if (profile.is_donor) {
+            if (profile.is_staff) {
+                push("/admin")
+            } else if (profile.is_donor) {
                 profile.first_name === "" ?
                     push("/auth/signup/donor-profile/")
                     : push("/dashboard/donor")
@@ -111,10 +126,10 @@ const Login = ({errorReducer: {error}, authReducer: {authenticated, userObj}}) =
             <FormWrapper onSubmit={handleSubmit}>
                 <RegistrationTitle>Login</RegistrationTitle>
                 {error ? <Error><p>{error}</p></Error> : null}
-                <SmallTitle>Email</SmallTitle>
-                <EmailInput onChange={handleEmail} placeholder="example@email.com" type="email" required/>
-                <SmallTitle>Password</SmallTitle>
-                <EmailInput onChange={handlePassword} placeholder="***********" type="password" required/>
+                <SmallTitle htmlFor="email">Email</SmallTitle>
+                <EmailInput id="email" name="email" autocomplete="email" onChange={handleEmail} placeholder="example@email.com" type="email" required autoFocus/>
+                <SmallTitle  htmlFor="password">Password</SmallTitle>
+                <PasswordInput id="password" name="current-password" onChange={handlePassword} placeholder="***********" type="password" required/>
                 <ButtonWrapper>
                     <DarkBlueButton>Login</DarkBlueButton>
                     <ForgotContainer>

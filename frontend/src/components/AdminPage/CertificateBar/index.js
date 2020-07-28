@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import React, {useEffect, useState} from "react";
+import styled, {keyframes} from "styled-components";
 import rem from "polished/lib/helpers/rem";
-import { BaseStatusButton } from "../../../style/GlobalButtons/";
-import { useDispatch } from "react-redux";
+import {BaseStatusButton} from "../../../style/GlobalButtons/";
+import {useDispatch} from "react-redux";
 
 const ColorDebug = false; //at true all element get colored background for checking
 
@@ -27,7 +27,6 @@ const CertificateBar = styled.div`
   border-bottom: 1px solid #d9d9d9;
   align-items: center;
   grid-gap: 8px;
-  cursor: pointer;
 `;
 
 const TextWrapper = styled.div`
@@ -41,11 +40,6 @@ const TextWrapper = styled.div`
 
 const DownloadButtonWrapper = styled.div`
   grid-area: download;
-`;
-
-const DownloadButton = styled(BaseStatusButton)`
-  background-color: #121232;
-  width: 175px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -66,12 +60,18 @@ const RedButton = styled(BaseStatusButton)`
 
 const BarArrowWrapper = styled(ButtonWrapper)`
   grid-area: arrow;
-  justify-self: end;
-  margin-right: 24px;
+align-items: center;
+justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
 `;
 
 const BarArrowRight = styled.i`
   border: solid #757575;
+  margin-right: 15px;
+  width: 5px;
+  height: 5px;
   border-width: 0 3px 3px 0;
   display: inline-block;
   padding: 3px;
@@ -106,6 +106,18 @@ const CompanyName = styled.p`
   font-size: 18px;
 `;
 
+const DownloadButton = styled.a`
+  border: none;
+  padding: ${rem("6px")} ${rem("10px")};
+  border-radius: 87px;
+  font-size: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  color: white;
+  background-color: #121232;
+
+`;
+
 const SeekerInfoBodyWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -134,64 +146,59 @@ const ProfilePicPlaceholder = styled.div`
   }
 `;
 
-const SeekerCertificateBar = ({ profile: { name, phone, street, zip_code, email, logo } }) => {
-  const dispatch = useDispatch();
-  const [showSeeker, setSeekerInfo] = useState(false);
-  const [verified, setVerified] = useState(false);
+const SeekerCertificateBar = ({profile: {id, name, phone, certificate, street, zip_code, email, logo, is_valid}, handleVerifyCertificate}) => {
+    const [showSeeker, setSeekerInfo] = useState(false);
+    const showSeekerHandler = (event) => {
+        setSeekerInfo(!showSeeker);
+    };
+    console.log("profile", certificate)
 
-  const showSeekerHandler = (event) => {
-    setSeekerInfo(!showSeeker);
-  };
 
-  const handleVerifyCertificate = (e) => {
-    setVerified(!verified);
-  };
-
-  return (
-    <CertificateWrapper>
-      <CertificateBar>
-        <TextWrapper onClick={showSeekerHandler}> {name} </TextWrapper>
-        <DownloadButtonWrapper>
-          <DownloadButton>Download Certificate</DownloadButton>
-        </DownloadButtonWrapper>
-        <ButtonWrapper>
-          {verified ? (
-            <RedButton onClick={handleVerifyCertificate}>Unverify</RedButton>
-          ) : (
-            <BlueButton onClick={handleVerifyCertificate}>Verify</BlueButton>
-          )}
-        </ButtonWrapper>
-        <BarArrowWrapper onClick={showSeekerHandler}>
-          <BarArrowRight
-            style={showSeeker ? { transform: "rotate(45deg)" } : { transform: "rotate(-45deg)" }}
-          />
-        </BarArrowWrapper>
-      </CertificateBar>
-      {showSeeker ? (
-        <>
-          <SeekerInfo>
-            <SeekerInfoHeader>
-              <CompanyName>{name}</CompanyName>
-            </SeekerInfoHeader>
-            <SeekerInfoBodyWrapper>
-              <SeekerInfoBody>
-                <SeekerInfoBodyLine>Phone: {phone}</SeekerInfoBodyLine>
-                <SeekerInfoBodyLine>Address: {street}</SeekerInfoBodyLine>
-                <SeekerInfoBodyLine>Zip Code: {zip_code}</SeekerInfoBodyLine>
-              </SeekerInfoBody>
-              <SeekerInfoBody>
-                <SeekerInfoBodyLine>Address: {street}</SeekerInfoBodyLine>
-                <SeekerInfoBodyLine>E-mail: {email}</SeekerInfoBodyLine>
-              </SeekerInfoBody>
-              <ProfilePicPlaceholder>
-                <img src={logo} />
-              </ProfilePicPlaceholder>
-            </SeekerInfoBodyWrapper>
-          </SeekerInfo>
-        </>
-      ) : null}
-    </CertificateWrapper>
-  );
+    return (
+        <CertificateWrapper>
+            <CertificateBar>
+                <TextWrapper onClick={showSeekerHandler}> {name} </TextWrapper>
+                <DownloadButtonWrapper>
+                    {certificate ? <DownloadButton href={certificate} target="_blank" download>Download Certificate</DownloadButton>: null}
+                </DownloadButtonWrapper>
+                <ButtonWrapper>
+                    {is_valid ? (
+                        <RedButton onClick={e => handleVerifyCertificate(e, id)}>Unverify</RedButton>
+                    ) : (
+                        <BlueButton onClick={e => handleVerifyCertificate(e, id)}>Verify</BlueButton>
+                    )}
+                </ButtonWrapper>
+                <BarArrowWrapper onClick={showSeekerHandler}>
+                    <BarArrowRight
+                        style={showSeeker ? {transform: "rotate(45deg)"} : {transform: "rotate(-45deg)"}}
+                    />
+                </BarArrowWrapper>
+            </CertificateBar>
+            {showSeeker ? (
+                <>
+                    <SeekerInfo>
+                        <SeekerInfoHeader>
+                            <CompanyName>{name}</CompanyName>
+                        </SeekerInfoHeader>
+                        <SeekerInfoBodyWrapper>
+                            <SeekerInfoBody>
+                                <SeekerInfoBodyLine>Phone: {phone}</SeekerInfoBodyLine>
+                                <SeekerInfoBodyLine>Address: {street}</SeekerInfoBodyLine>
+                                <SeekerInfoBodyLine>Zip Code: {zip_code}</SeekerInfoBodyLine>
+                            </SeekerInfoBody>
+                            <SeekerInfoBody>
+                                <SeekerInfoBodyLine>Address: {street}</SeekerInfoBodyLine>
+                                <SeekerInfoBodyLine>E-mail: {email}</SeekerInfoBodyLine>
+                            </SeekerInfoBody>
+                            <ProfilePicPlaceholder>
+                                <img src={logo}/>
+                            </ProfilePicPlaceholder>
+                        </SeekerInfoBodyWrapper>
+                    </SeekerInfo>
+                </>
+            ) : null}
+        </CertificateWrapper>
+    );
 };
 
 export default SeekerCertificateBar;

@@ -17,6 +17,8 @@ class DonorProfile(models.Model):
 
     first_name = models.CharField(max_length=100, blank=True)
 
+    created = models.DateTimeField(auto_now_add=True)
+
     last_name = models.CharField(max_length=100, blank=True)
 
     unique_donor_id = models.CharField(max_length=8, blank=True)

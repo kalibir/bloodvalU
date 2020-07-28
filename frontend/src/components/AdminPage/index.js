@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
-import NumberFormat from "react-number-format";
 import { PageContainer } from "../../style/GlobalWrappers";
 import { BigInput } from "../../style/GlobalInputs";
 import { DarkBlueButton } from "../../style/GlobalButtons";
-import { BaseStatusButton } from "../../style/GlobalButtons/";
 import { connect } from "react-redux";
 import { getAllSeekersAction } from "../../store/actions/userActions";
-import { useDispatch } from "react-redux";
-import { applyToRequestActionInAll } from "../../store/actions/bloodRequestActions";
-import { searchAllRequestsAndTestsAction } from "../../store/actions/searchActions";
-import { getLoggedInUserAction } from "../../store/actions/userActions";
-import { bloodGroupTest } from "../../HelperFunctions";
 import SeekerCertificateBar from "./CertificateBar";
-import Spinner from "../../components/GenericSpinner";
+import { toggleVerifyAction } from "../../store/actions/adminActions";
+import Spinner from "../GenericSpinner";
+import { useHistory } from "react-router";
+import ToggleButton from "../../components/ToggleButton";
 
 const ColorDebug = false; //at true all element get colored background for checking
 
@@ -55,13 +51,14 @@ const SearchContainer = styled.div`
 `;
 
 const SearchInput = styled(BigInput)`
-  width: 60%;
+  width: 90%;
   height: ${rem("40px")};
 `;
 
-const SearchButton = styled(DarkBlueButton)`
-  width: ${rem("96px")};
-  height: ${rem("40px")};
+const RefreshButton = styled(DarkBlueButton)`
+  width: 96px;
+  height: 40px;
+  border-radius: 5px;
 `;
 
 const FilterContainer = styled.div`
@@ -75,59 +72,70 @@ const FilterLabel = styled.label`
   color: #121232;
 `;
 
-const FilterInput = styled.select`
-  background: #ffffff;
-  border: 1px solid #a1a4b1;
-  box-sizing: border-box;
-  border-radius: 4px;
-  width: ${rem("160px")};
-  height: ${rem("24px")};
-  outline: none;
-  padding-left: ${rem("16px")};
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 24px;
-  color: #232735;
-
-  &:focus {
-    outline: none;
-  }
-`;
-
 const CertificateContainer = styled.div`
   width: 100%;
   background-color: ${ColorDebug ? "lightslategrey" : ""};
 `;
 
 const AdminPage = ({ dispatch, profilesReducer: { profiles } }) => {
-  const [showSeeker, setSeekerInfo] = useState(false);
-  const [active, setActive] = useState("requests");
-  const [verified, setVerified] = useState(false);
+  const [searchParams, setSearchParams] = useState("");
+  const [validity, setValidity] = useState(false);
 
   useEffect(() => {
     dispatch(getAllSeekersAction());
   }, [dispatch]);
 
-  const [searchParams, setSearchParams] = useState("");
-
-  const handleSeekers = (e) => {
-    console.log("in the apply handler");
+  const handleRefresh = (event) => {
+    event.preventDefault();
     dispatch(getAllSeekersAction());
   };
 
-  const handleSearch = (event) => {
-    dispatch(getAllSeekersAction(searchParams, active));
-    setSearchParams("");
-  };
-
   const handleSearchInput = (e) => {
-    const value = e.currentTarget.value;
+    e.preventDefault();
+    const value = e.currentTarget.value.toLowerCase();
     setSearchParams(value);
   };
 
-  const handleVerifyCertificate = (e) => {
-    setVerified(!verified);
+  const validityHandler = (e) => {
+    e.preventDefault();
+    console.log(validity, "clicked");
+    setValidity(!validity);
+  };
+
+  const handleCertificateDisplay = () => {
+    return profiles.map((profile, index) => {
+      if (
+        profile.name.toLowerCase().includes(searchParams) ||
+        profile.zip_code.includes(searchParams) ||
+        profile.street.toLowerCase().includes(searchParams)
+      ) {
+        return (
+          <SeekerCertificateBar
+            handleVerifyCertificate={handleVerifyCertificate}
+            key={index}
+            profile={profile}
+          />
+        );
+      }
+    });
+  };
+
+  const handleValidSeekerDisplay = () => {
+    return profiles.map((profile, index) => {
+      if (profile.is_valid) {
+        return (
+          <SeekerCertificateBar
+            handleVerifyCertificate={handleVerifyCertificate}
+            key={index}
+            profile={profile}
+          />
+        );
+      }
+    });
+  };
+
+  const handleVerifyCertificate = (e, seekerID) => {
+    dispatch(toggleVerifyAction(seekerID));
   };
   return (
     <PageContainer>
@@ -136,23 +144,23 @@ const AdminPage = ({ dispatch, profilesReducer: { profiles } }) => {
           <AdminText>Admin Panel</AdminText>
           <SearchContainer>
             <SearchInput onChange={handleSearchInput} placeholder="Search..." />
-            <SearchButton onClick={handleSearch}>Search</SearchButton>
-            <FilterContainer>
-              <FilterLabel>Sort by:</FilterLabel>
-              <FilterInput>
-                <option value="date">Date</option>
-                <option value="valid">Valid</option>
-                <option value="not_valid">Not Valid</option>
-              </FilterInput>
-            </FilterContainer>
+            <RefreshButton onClick={handleRefresh}>Refresh</RefreshButton>
+            {/* <FilterContainer>
+              <FilterLabel>Toggle Valid</FilterLabel>
+              <div onClick={validityHandler} style={{ background: "black" }}>
+                <ToggleButton />
+              </div>
+            </FilterContainer> */}
           </SearchContainer>
 
           <CertificateContainer>
-            {profiles
-              ? profiles.map((profile, index) => {
-                  return <SeekerCertificateBar key={index} profile={profile} />;
-                })
-              : null}
+            {profiles ? (
+              handleCertificateDisplay()
+            ) : validity ? (
+              handleValidSeekerDisplay()
+            ) : (
+              <Spinner />
+            )}
           </CertificateContainer>
         </DashboardContentContainer>
       </PageWrapper>

@@ -10,7 +10,7 @@ import UploadTestResultsModal from "../UploadTestResultsModal";
 const TestCard = styled.div`
   width: ${rem("290px")};
   height: ${rem("150px")};
-  background: #ffffff;
+  background: #FFF;
   border: 1px solid #d3d4d8;
   border-radius: 4px;
   display: flex;
@@ -25,38 +25,34 @@ const Text = styled.p`
   font-weight: 500;
   margin-top: 8px;
   margin-bottom: 8px;
-  font-size: 16px;
-  line-height: 22px;
+  font-size: 23px;
+  line-height: 25px;
   color: #121232;
 `;
 
 const PointContainer = styled.span`
   min-width: ${rem("84px")};
   max-width: fit-content;
-  padding: 5px;
   height: ${rem("30px")};
   font-weight: 500;
   font-size: 16px;
   display: flex;
   align-items: center;
-  justify-content: center;
   letter-spacing: 0.16px;
   color: #43a047;
-  border: 1px solid #71b774;
-  border-radius: 4px;
-  text-transform: uppercase;
+  //text-transform: uppercase;
 `;
 
 const TextContainer = styled.div`
   width: 80%;
   height: ${rem("42px")};
   margin-right: ${rem("17px")};
-  text-transform: capitalize;
+  //text-transform: capitalize;
 `;
 
 const BottomContainer = styled.div`
   height: ${rem("40px")};
-  width: ${rem("144px")};
+  width: ${rem("250px")};
   display: flex;
   justify-content: space-between;
 `;
@@ -68,7 +64,7 @@ const CardBlueButton = styled(SmallBlueButton)`
 `;
 
 const CardGreenButton = styled(SmallGreenButton)`
-    width: 60px;
+   width: 80px;
   height: 30px;
   font-size: 12px;
 `
@@ -79,6 +75,11 @@ const CardRedButton = styled(SmallRedButton)`
   font-size: 12px;
 `;
 
+const BlindButton = styled.div`
+   width: 80px;
+   height: 30px;
+`
+
 const GenericSeekerTestCard = ({
                                    test: {
                                        id,
@@ -87,10 +88,11 @@ const GenericSeekerTestCard = ({
                                        points_cost,
                                        expiry_date,
                                        created,
-                                       is_bought,
+                                       no_of_customers,
                                        is_expired,
                                    },
                                }) => {
+    console.log("is bought", no_of_customers)
 
     const [sureModal, setSureModal] = useState(false);
     const [showCustomersModal, setShowCustomersModal] = useState(false)
@@ -123,10 +125,13 @@ const GenericSeekerTestCard = ({
             {showCustomersModal ? <UploadTestResultsModal handleCloseUploadResults={handleCloseUploadResults} test_type={test_type} testID={id}/>: null}
             <TextContainer>
                 <Text>{test_type}</Text>
-                <PointContainer>{points_cost}</PointContainer>
+                <PointContainer>{points_cost} pts</PointContainer>
             </TextContainer>
             <BottomContainer>
-                <CardGreenButton onClick={e => setShowCustomersModal(true)}>Customers</CardGreenButton>
+                { no_of_customers ?
+                    <CardGreenButton onClick={e => setShowCustomersModal(true)}>Customers</CardGreenButton>
+                    : <BlindButton></BlindButton>
+                }
                 <CardBlueButton>edit</CardBlueButton>
                 <CardRedButton onClick={e => setSureModal(true)}>delete</CardRedButton>
             </BottomContainer>

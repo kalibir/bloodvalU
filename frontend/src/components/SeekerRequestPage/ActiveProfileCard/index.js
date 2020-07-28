@@ -6,6 +6,19 @@ import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
 import {DarkBlueButton, WhiteButton} from "../../../style/GlobalButtons";
 import ButtonSpinner from "../../ButtonSpinner";
+import Flip from 'react-reveal/Flip';
+import Tada from 'react-reveal/Tada';
+import Fade from 'react-reveal/Fade';
+import Zoom from 'react-reveal/Zoom';
+import Rotate from 'react-reveal/Rotate';
+import O_negative from "../../../assets/icons/O_negative.svg";
+import O_positive from "../../../assets/icons/O_positive.svg";
+import A_negative from "../../../assets/icons/A_negative.svg";
+import A_positive from "../../../assets/icons/A_positive.svg";
+import B_negative from "../../../assets/icons/B_negative.svg";
+import B_positive from "../../../assets/icons/B_positive.svg";
+import AB_negative from "../../../assets/icons/AB_negative.svg";
+import AB_positive from "../../../assets/icons/AB_positive.svg";
 
 const ProfileWrapper = styled.div`
   width: ${rem("544px")};
@@ -30,9 +43,14 @@ const ProfilePicPlaceholder = styled.div`
   height: ${rem("120px")};
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
   margin-top: ${rem("15px")};
+  border: none;
+  outline: none;
   img {
     width: ${rem("120px")};
     height: ${rem("120px")};
+    background: transparent;
+    border: none;
+    outline: none;
   }
 `;
 
@@ -49,44 +67,45 @@ const SelectedTitle = styled.h1`
   margin-bottom: ${rem("30px")};
 `;
 
-const NameContainer = styled.div`
-  width: ${rem("544px")};
-  height: ${rem("24px")};
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: 0.75px;
-  text-transform: uppercase;
-  color: #121232;
-  margin-top: ${rem("14px")};
-`;
-
-const CityContainer = styled.div`
-  width: ${rem("544px")};
-  height: ${rem("16px")};
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #121232;
-`;
+// const NameContainer = styled.div`
+//   width: ${rem("544px")};
+//   height: ${rem("24px")};
+//   font-style: normal;
+//   font-weight: 600;
+//   font-size: 14px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   letter-spacing: 0.75px;
+//   text-transform: uppercase;
+//   color: #121232;
+//   margin-top: ${rem("14px")};
+// `;
+//
+// const CityContainer = styled.div`
+//   width: ${rem("544px")};
+//   height: ${rem("16px")};
+//   font-style: normal;
+//   font-weight: normal;
+//   font-size: 12px;
+//   line-height: 16px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   color: #121232;
+// `;
 
 const BottomContainer = styled.div`
   width: ${rem("544px")};
   height: ${rem("260px")};
   display: flex;
+  justify-content: center;
+  margin-top: ${rem("20px")};
 `;
 
 const DetailTitlesContainer = styled.div`
-  height: ${rem("328px")};
-  width: ${rem("25px")};
-  margin-left: ${rem("158px")};
+  height: ${rem("250px")};
+  width: ${rem("100px")};
 `;
 const DetailTitle = styled.p`
   font-style: normal;
@@ -100,10 +119,10 @@ const DetailTitle = styled.p`
 `;
 
 const DetailsContainer = styled.div`
-  height: ${rem("328px")};
-  width: ${rem("204px")};
-  margin-left: ${rem("64px")};
+  height: ${rem("250px")};
+  width: ${rem("100px")};
 `;
+
 
 const Details = styled.p`
   font-style: normal;
@@ -116,9 +135,6 @@ const Details = styled.p`
   margin-bottom: ${rem("16px")};
 `;
 
-const AddressTitle = styled(DetailTitle)`
-  margin-bottom: ${rem("64px")};
-`;
 
 const ButtonContainer = styled.div`
   width: ${rem("544px")};
@@ -157,14 +173,26 @@ const MinusSignButton = styled(PlusSignButton)`
 
 const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant, showSpinner}) => {
 
+    const renderBloodType = () => {
+    if (activeProfile.blood_group === "O-") return O_negative;
+    if (activeProfile.blood_group === "O+") return O_positive;
+    if (activeProfile.blood_group === "A-") return A_negative;
+    if (activeProfile.blood_group === "A+") return A_positive;
+    if (activeProfile.blood_group === "B-") return B_negative;
+    if (activeProfile.blood_group === "B+") return B_positive;
+    if (activeProfile.blood_group === "AB-") return AB_negative;
+    if (activeProfile.blood_group === "AB+") return AB_positive;
+  };
+
 
     return (
+        <Fade>
         <ProfileWrapper>
                         <UpperContainer>
                             <BigTitle>donor profile</BigTitle>
                             {activeRequest.status === "OP" ? (
                                 <ProfilePicPlaceholder>
-                                    <img src={activeProfile ? activeProfile.avatar ? activeProfile.avatar : profilePic : profilePic} alt={"avatar"}/>
+                                    <img src={renderBloodType()} alt={"avatar"}/>
                                 </ProfilePicPlaceholder>
                             ) : activeProfile ? activeRequest.status === "CL" && activeProfile.id === activeRequest.selected_donor.id ? (
                                 <SelectedTitle>Selected</SelectedTitle>
@@ -175,27 +203,19 @@ const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant,
                             ) : (
                                 <p>Sorry, we are confused a little bit.</p>
                             ) : null}
-                            <NameContainer>{activeProfile ? activeProfile.first_name + " " + activeProfile.last_name : null}</NameContainer>
-                            <CityContainer>{activeProfile ? `${activeProfile.street} ${activeProfile.zip_code}, ${activeProfile.country}` : null}</CityContainer>
                         </UpperContainer>
                         <BottomContainer>
                             <DetailTitlesContainer>
+                                <DetailTitle>ID:</DetailTitle>
+                                <DetailTitle>Blood Type:</DetailTitle>
                                 <DetailTitle>Gender:</DetailTitle>
-                                <DetailTitle>Birthday:</DetailTitle>
-                                <AddressTitle>Address:</AddressTitle>
-                                <DetailTitle>Phone:</DetailTitle>
-                                <DetailTitle>Email:</DetailTitle>
+                                <DetailTitle>Age:</DetailTitle>
                             </DetailTitlesContainer>
                             <DetailsContainer>
-                                <Details>{activeProfile ? activeProfile.gender : null}</Details>
-                                <Details>{activeProfile ? activeProfile.birthday : null}</Details>
-                                <Details>
-                                    {activeProfile ? activeProfile.zip_code : null}<br/> {activeProfile ? activeProfile.city : null}
-                                    {activeProfile ? activeProfile.street : null}
-                                    <br/> {activeProfile ? activeProfile.country : null}
-                                </Details>
-                                <Details>{activeProfile ? activeProfile.phone : null}</Details>
-                                <Details>{activeProfile ? activeProfile.email : null}</Details>
+                                <Details>{activeProfile ? activeProfile.id : null}</Details>
+                                <Details>{activeProfile ? activeProfile.blood_group : null}</Details>
+                                <Details>{activeProfile ? activeProfile.gender === "M" ? "Male" : activeProfile.gender === "F" ? "Female" : "Other" : null}</Details>
+                                <Details>{activeProfile ? activeProfile.age : null}</Details>
                             </DetailsContainer>
                         </BottomContainer>
                         <ButtonContainer>
@@ -212,6 +232,7 @@ const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant,
                             }
                         </ButtonContainer>
                     </ProfileWrapper>
+        </Fade>
     )
 }
 

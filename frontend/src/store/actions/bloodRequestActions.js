@@ -47,6 +47,7 @@ export const getAllRequestsAction = () => async (dispatch) => {
     try {
         const response = await Axios.get(`donor/search/?search_param=&type=requests`);
         const {data} = response
+        console.log("data : ", data)
         dispatch(setAllRequests(data))
         return response
     } catch (error) {
@@ -61,6 +62,7 @@ export const createBloodRequestAction = (requestData) => async (dispatch) => {
         dispatch(addRequestToAll(data))
         return response
     } catch (error) {
+        console.log("error", error.response)
         return error
     }
 }
@@ -95,6 +97,7 @@ export const getSeekerBloodRequestsAction = (status) => async (dispatch) => {
         dispatch(setAllRequests(data))
         return response
     } catch (error) {
+        console.log("error", error)
         return error
     }
 }

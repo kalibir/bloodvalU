@@ -34,6 +34,7 @@ const ProfilePicPlaceholder = styled.div`
   img {
     width: ${rem("160px")};
     height: ${rem("160px")};
+    background: none;
   }
 `;
 

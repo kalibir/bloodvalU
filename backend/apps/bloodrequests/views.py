@@ -62,11 +62,11 @@ class CreateBloodRequestView(CreateAPIView):
             message = f'We are looking for a donor'
             to = target_emails
             sender = ''
-            html_message = f"""<!doctype html>
+            html_message = f"""
                     <html lang=en>
                         <head>
                             <meta charset=utf-8>
-                            <title>Looking for a donor</title>
+                            <title></title>
                         </head>
                         <body>
                                 <p>&nbsp;</p>
@@ -117,8 +117,10 @@ class ListAllRequestsOfSpecificSeeker(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         target_seeker = self.get_object()
-        queryset = target_seeker.made_requests.filter((Q(valid_until__gt=date.today()) & Q(status="OP")) | Q(
-            selected_donor=self.request.user.donor_profile)).order_by('-created')
+        queryset = target_seeker.made_requests.filter(
+            (Q(valid_until__gt=date.today()) & Q(status="OP")) | Q(
+                Q(selected_donor=self.request.user.donor_profile) & Q(status="CL"))
+        ).order_by('-created')
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -284,15 +286,15 @@ class SelectDonorFromApplicantsView(CreateAPIView):
             to = {donor_email}
             qr_img = f'https://qrickit.com/api/qr.php?d={code}&addtext=BloodvalU'
             sender = ''
-            html_message = f"""<!doctype html>
+            html_message = f"""
                     <html lang=en>
                         <head>
                             <meta charset=utf-8>
-                            <title>Blood test</title>
+                            <title></title>
                         </head>
                         <body>
                             <p>&nbsp;</p>
-                                <p>You have been selected as a donor at <a href="{seeker_website}">{seeker_name}</a></p>
+                                <p>You have been selected as a donor at <a href="{seeker_website}">{seeker_name}.</a></p>
                                 <p>&nbsp;</p>
                                 <p>{seeker_name} will contact you to make an appointment.</p>
                                 <p>&nbsp;</p>
@@ -374,6 +376,12 @@ class MarkRequestAsCompletedView(CreateAPIView):
                     gender=donor.gender,
                     blood_group=donor.blood_group,
                 )
+                # v Attila
+                unique_request_id = code_generator(length=8)
+                while BloodRequest.objects.filter(unique_request_id=unique_request_id).count() > 0:
+                    unique_request_id = code_generator(length=8)
+                # ^ Attila
+                new_data.unique_request_id = unique_request_id
                 new_data.save()
             target_blood_request.save()
             if target_blood_request.is_renewable:
@@ -469,7 +477,9 @@ class ValidateBloodRequestQRCodeView(CreateAPIView):
 
         if target_donor in target_blood_request.applicants.all():
             return Response({
-                'donor': f'{target_donor.first_name} {target_donor.last_name} {target_donor.blood_group}',
+                'donor': f'{target_donor.first_name} {target_donor.last_name}',
+                'blood_type': f'{target_donor.blood_group}',
+                'birthday': f'{target_donor.birthday}',
                 'institution': f'{target_blood_request.seeker.name}',
                 'type': f'Blood Donation'
             },

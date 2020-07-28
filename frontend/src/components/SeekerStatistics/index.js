@@ -8,6 +8,7 @@ import styled from "styled-components";
 import AgeGraph from "./AgeGraph";
 import rem from "polished/lib/helpers/rem";
 import TotalGraph from "./TotalGraph";
+import {getLoggedInUserAction} from "../../store/actions/userActions";
 
 
 // setInterval(() => {
@@ -35,6 +36,7 @@ const Title = styled.h2`
 const SeekerStatistics = ({userProfileReducer: {statistics}, dispatch, authReducer: {userObj}}) => {
 
     useEffect(() => {
+        dispatch(getLoggedInUserAction())
         dispatch(getMyStatisticsAction())
     }, [dispatch])
 

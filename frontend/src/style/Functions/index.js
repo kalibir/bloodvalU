@@ -133,4 +133,13 @@ export const DonorNavigation = ({first_name, email}) => {
     );
 };
 
+export const AdminNavigation = () => {
 
+    return (
+        <WrapperDiv>
+            <WelcomeText>ADMIN</WelcomeText>
+            <LinksDiv>
+            </LinksDiv>
+        </WrapperDiv>
+    );
+};
