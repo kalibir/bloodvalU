@@ -6,7 +6,7 @@ import {PageContainer} from "../../style/GlobalWrappers";
 import GenericSeekerTestCard from "../GenericSeekerTestCard";
 import SeekerProfileCard from "../GenericSeekerProfileCard";
 import {connect} from "react-redux";
-import {deleteTestAction, getRequestsOfSeekerAction} from "../../store/actions/offeredTestActions";
+import {deleteTestAction, editTestAction, getRequestsOfSeekerAction} from "../../store/actions/offeredTestActions";
 import CreateTestModal from "../CreateTestModal";
 import GenericSeekerRequestBar from "../GenericSeekerRequestBar";
 import {deleteRequestAction, editRequestAction} from "../../store/actions/bloodRequestActions";
@@ -99,28 +99,45 @@ const SeekerProfilePage = ({userProfileReducer: {offeredTests}, dispatch}) => {
         dispatch(getRequestsOfSeekerAction());
     }, []);
 
-    const [modalActive, setModalActive] = useState(false);
+    const [modal, setModal] = useState({
+        showModal: false,
+        modalData: null,
+    });
 
-  const closeModal = () => {
-    setModalActive(false);
-  };
+    const closeModal = () => {
+        setModal({...modal, showModal: false});
+    };
+
+    const handleEditTest = (event, testID, testData) => {
+        dispatch(editTestAction(testID, testData));
+        setModal({...modal, showModal: false});
+    };
+
+    const handleShowEditModal = (event, testObj) => {
+        setModal({showModal: true, modalData: testObj});
+    };
 
 
     return (
         <PageWrapper>
-            {modalActive ? <CreateTestModal closeModal={closeModal}/> : null}
+            {modal.showModal ? <CreateTestModal modalData={modal.modalData}
+                                                handleEditTest={handleEditTest}
+                                                closeModal={closeModal}/> : null}
             <DashboardPageContainer>
                 <LeftSide>
                     <DashboardContentContainer>
                         <MenuContainer>
                             <SideButton id="requests">Offered Tests</SideButton>
                         </MenuContainer>
-                        <CreateTestButton onClick={() => setModalActive(true)}>+ Create Test</CreateTestButton>
+                        <CreateTestButton onClick={() => setModal({...modal, modalData: null, showModal: true})}>+ Create
+                            Test</CreateTestButton>
                         <TestWrapper>
                             {offeredTests
                                 ? offeredTests.map((test, index) => {
                                     return <GenericSeekerTestCard
                                         test={test}
+                                        handleShowEditModal={handleShowEditModal}
+                                        handleEditTest={handleEditTest}
                                         key={index}
                                     />;
                                 })
@@ -137,9 +154,9 @@ const SeekerProfilePage = ({userProfileReducer: {offeredTests}, dispatch}) => {
 };
 
 const mapStateToProps = (state) => {
-  return {
-    userProfileReducer: state.userProfileReducer,
-  };
+    return {
+        userProfileReducer: state.userProfileReducer,
+    };
 };
 
 export default connect(mapStateToProps)(SeekerProfilePage);

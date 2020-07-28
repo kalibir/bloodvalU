@@ -221,6 +221,7 @@ const DonorDashboard = ({
     const [active, setActive] = useState("requests");
     const handleClick = (e) => {
         const value = e.target.id;
+        if (value === "tests") dispatch(getLoggedInUserAction());
         setActive(value);
     };
 
@@ -262,7 +263,8 @@ const DonorDashboard = ({
                         </MenuContainer>
 
                         <SearchFormContainer onSubmit={handleSearch}>
-                            <SearchInput onChange={handleSearchInput} value={searchParams} placeholder="Search..."/>{" "}
+                            <SearchInput onChange={handleSearchInput} value={searchParams}
+                                         placeholder="Search..."/>{" "}
                             {/*TODO add search on enter*/}
                             <SearchButton>Search</SearchButton>
                         </SearchFormContainer>

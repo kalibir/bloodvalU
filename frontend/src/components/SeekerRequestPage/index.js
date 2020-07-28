@@ -147,7 +147,7 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
     const handleClick = (e) => {
         const value = e.target.id;
         setActive(value);
-        // dispatch(getSeekerBloodRequestsAction(value));
+        dispatch(getSeekerBloodRequestsAction(value));
     };
 
     const closeModal = () => {
