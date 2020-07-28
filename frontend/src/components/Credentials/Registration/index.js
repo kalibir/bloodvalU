@@ -131,7 +131,9 @@ const Registration = ({registrationReducer: {isDonor}, dispatch, errorReducer: {
                 {error ? <Error><p>{error}</p></Error> : null}
                 <EmailTtitle>Email</EmailTtitle>
                 <EmailInput onChange={(e) => onChangeHandler(e, "email")} placeholder="email" type="email" required/>
-                {hasAgreed ? <RegButton>{showSpinner ? <ButtonSpinner/> : "Register"}</RegButton> : null}
+                {isDonor === "True" ? (hasAgreed ?
+                    <RegButton>{showSpinner ? <ButtonSpinner/> : "Register"}</RegButton> : null) :
+                    <RegButton>{showSpinner ? <ButtonSpinner/> : "Register"}</RegButton>}
             </FormWrapper>
         </PageWrapper>
     );
