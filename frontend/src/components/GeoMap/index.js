@@ -126,6 +126,7 @@ const GeoMap = ({
         <PageContainer>
             <ReactMapGL
                 {...viewPort}
+                minZoom={7}
                 mapStyle="mapbox://styles/gysen/ckd4ow3we0wvp1inb8cs9m8ff"
                 mapboxApiAccessToken={"pk.eyJ1IjoiZ3lzZW4iLCJhIjoiY2tjczdzcXJuMGZ5azJ3cDR6N2Jqcm00cyJ9.mkv2PJA7gpy9-ddtprFKXA"}
                 onViewportChange={viewport => {
