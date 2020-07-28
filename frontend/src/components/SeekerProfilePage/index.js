@@ -105,10 +105,15 @@ const SeekerProfilePage = ({userProfileReducer: {offeredTests}, dispatch}) => {
     setModalActive(false);
   };
 
+      const handleEditTest = (event, requestID, requestData) => {
+        // dispatch(editRequestAction(requestID, requestData));
+        setModalActive({...modalActive, showModal: false});
+    };
+
 
     return (
         <PageWrapper>
-            {modalActive ? <CreateTestModal closeModal={closeModal}/> : null}
+            {modalActive ? <CreateTestModal handleEditTest={handleEditTest} closeModal={closeModal}/> : null}
             <DashboardPageContainer>
                 <LeftSide>
                     <DashboardContentContainer>
