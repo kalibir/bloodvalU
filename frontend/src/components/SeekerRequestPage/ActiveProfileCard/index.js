@@ -212,7 +212,7 @@ const ActiveProfileCard = ({activeRequest, activeProfile, handleSelectApplicant,
                                 <DetailTitle>Age:</DetailTitle>
                             </DetailTitlesContainer>
                             <DetailsContainer>
-                                <Details>{activeProfile ? activeProfile.id : null}</Details>
+                                <Details>{activeProfile ? activeProfile.unique_donor_id : null}</Details>
                                 <Details>{activeProfile ? activeProfile.blood_group : null}</Details>
                                 <Details>{activeProfile ? activeProfile.gender === "M" ? "Male" : activeProfile.gender === "F" ? "Female" : "Other" : null}</Details>
                                 <Details>{activeProfile ? activeProfile.age : null}</Details>
