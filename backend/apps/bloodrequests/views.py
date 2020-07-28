@@ -374,6 +374,12 @@ class MarkRequestAsCompletedView(CreateAPIView):
                     gender=donor.gender,
                     blood_group=donor.blood_group,
                 )
+                # v Attila
+                unique_request_id = code_generator(length=8)
+                while BloodRequest.objects.filter(unique_request_id=unique_request_id).count() > 0:
+                    unique_request_id = code_generator(length=8)
+                # ^ Attila
+                new_data.unique_request_id = unique_request_id
                 new_data.save()
             target_blood_request.save()
             if target_blood_request.is_renewable:
