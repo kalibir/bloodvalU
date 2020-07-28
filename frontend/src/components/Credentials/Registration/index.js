@@ -27,7 +27,13 @@ const DisclaimerWrapper = styled.div`
   overflow: auto;
 `
 
-const Text = styled.p``
+const AgreeText = styled.p`
+  font-size: 20px;
+`
+
+const EmailTtitle = styled(SmallTitle)`
+      margin-top: 20px;
+`
 
 const CheckBox = styled.input`
   margin-left: 20px;
@@ -35,6 +41,7 @@ const CheckBox = styled.input`
 
 const CheckboxWrapper = styled.div`
   display: flex;
+  align-items: center;
   
 `
 
@@ -56,7 +63,7 @@ const RegButton = styled(DarkBlueButton)`
 const Error = styled(ErrorPlaceholder)``
 
 
-const Registration = ({registrationReducer, dispatch, errorReducer: {error}}) => {
+const Registration = ({registrationReducer: {isDonor}, dispatch, errorReducer: {error}}) => {
 
     const history = useHistory();
 
@@ -93,41 +100,38 @@ const Registration = ({registrationReducer, dispatch, errorReducer: {error}}) =>
         <PageWrapper>
             <FormWrapper onSubmit={handleSubmit}>
                 <RegistrationTitle>Registration</RegistrationTitle>
-                <DisclaimerWrapper>
-                    <Text>
-                        <p>1. I agree that I'm aged between <strong>18</strong> and <strong>70</strong>.</p>
-                        <p><br/>2. I agree that I weigh more than <strong>50kg</strong>.</p>
-                        <p><br/>3. I agree that I haven't tested positive for <strong>hepatitis B</strong> or <strong>hepatitis
-                            C</strong>, lived with or had sexual contact in the past 12 months with anyone who has
-                            hepatitis B or symptomatic <strong>hepatitis C</strong>.</p>
-                        <p>&nbsp;</p>
-                        <p>4. I agree that I have not spent a cumulative period of 6 months or<br/> more in the United
-                            Kingdom between <strong>1 January 1980</strong><br/> and <strong>31 December 1996</strong>.
-                        </p>
-                        <p>&nbsp;</p>
-                        <p>5. I agree that I haven't&nbsp;spent five years or more in France or Ireland
-                            between <strong>1980</strong> and <strong>2001</strong>.</p>
-                        <p>&nbsp;</p>
-                        <p>6. I agree that I haven't undergone any <strong>major</strong> surgical procedures&nbsp;in
-                            the last 12 months.</p>
-                        <p>&nbsp;</p>
-                        <p>7. I agree that I haven't had a tattoo in the past&nbsp;<strong>3</strong>&nbsp;months or
-                            received a blood transfusion (except with your own blood) in the past&nbsp;
-                            <strong>3</strong>&nbsp;months.</p>
-                        <p>&nbsp;</p>
-                        <p>8. I agree&nbsp;that I have never tested positive for the <strong>AIDS</strong> virus.</p>
-                        <p><br/><br/></p>
-                        <CheckboxWrapper>
-                            <p>I agree: </p>
-                            <CheckBox onClick={handleCheck} type="checkbox" defaultChecked={hasAgreed}/>
-                        </CheckboxWrapper>
-
-                    </Text>
-                </DisclaimerWrapper>
+                {isDonor === "True" ? <DisclaimerWrapper>
+                    <p>1. I agree that I'm aged between <strong>18</strong> and <strong>70</strong>.</p>
+                    <p><br/>2. I agree that I weigh more than <strong>50kg</strong>.</p>
+                    <p><br/>3. I agree that I haven't tested positive for <strong>hepatitis B</strong> or <strong>hepatitis
+                        C</strong>, lived with or had sexual contact in the past 12 months with anyone who has
+                        hepatitis B or symptomatic <strong>hepatitis C</strong>.</p>
+                    <p>&nbsp;</p>
+                    <p>4. I agree that I have not spent a cumulative period of 6 months or<br/> more in the United
+                        Kingdom between <strong>1 January 1980</strong><br/> and <strong>31 December 1996</strong>.
+                    </p>
+                    <p>&nbsp;</p>
+                    <p>5. I agree that I haven't&nbsp;spent five years or more in France or Ireland
+                        between <strong>1980</strong> and <strong>2001</strong>.</p>
+                    <p>&nbsp;</p>
+                    <p>6. I agree that I haven't undergone any <strong>major</strong> surgical procedures&nbsp;in
+                        the last 12 months.</p>
+                    <p>&nbsp;</p>
+                    <p>7. I agree that I haven't had a tattoo in the past&nbsp;<strong>3</strong>&nbsp;months or
+                        received a blood transfusion (except with your own blood) in the past&nbsp;
+                        <strong>3</strong>&nbsp;months.</p>
+                    <p>&nbsp;</p>
+                    <p>8. I agree&nbsp;that I have never tested positive for the <strong>AIDS</strong> virus.</p>
+                    <br/><br/>
+                    <CheckboxWrapper>
+                        <AgreeText>I agree: </AgreeText>
+                        <CheckBox onClick={handleCheck} type="checkbox" defaultChecked={hasAgreed}/>
+                    </CheckboxWrapper>
+                </DisclaimerWrapper> : null}
                 {error ? <Error><p>{error}</p></Error> : null}
-                <SmallTitle>Email</SmallTitle>
+                <EmailTtitle>Email</EmailTtitle>
                 <EmailInput onChange={(e) => onChangeHandler(e, "email")} placeholder="email" type="email" required/>
-                <RegButton>{showSpinner ? <ButtonSpinner/> : "Register"}</RegButton>
+                {hasAgreed ? <RegButton>{showSpinner ? <ButtonSpinner/> : "Register"}</RegButton> : null}
             </FormWrapper>
         </PageWrapper>
     );
