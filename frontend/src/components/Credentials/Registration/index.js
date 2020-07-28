@@ -29,6 +29,9 @@ const DisclaimerWrapper = styled.div`
 
 const Text = styled.p``
 
+const CheckBox = styled.input``
+
+const CheckboxWrapper = styled.div``
 
 const EmailInput = styled(BigInput)`
     margin-top: 9px;
@@ -56,11 +59,17 @@ const Registration = ({registrationReducer, dispatch, errorReducer: {error}}) =>
         email: "",
     });
     const [showSpinner, setShowSpinner] = useState(false);
+    const [hasAgreed, setHasAgreed] = useState(false)
+    console.log("hasAgreed", hasAgreed)
 
     const onChangeHandler = (event, property) => {
         const value = event.currentTarget.value;
         setUserInfo({...userInfo, [property]: value});
     };
+
+    const handleCheck = () => {
+        setHasAgreed(!hasAgreed)
+    }
 
     const handleSubmit = async (e) => {
         setShowSpinner(true)
@@ -103,6 +112,9 @@ const Registration = ({registrationReducer, dispatch, errorReducer: {error}}) =>
                         <p>&nbsp;</p>
                         <p>8. I agree&nbsp;that I have never tested positive for the <strong>AIDS</strong> virus.</p>
                         <p><br/><br/></p>
+
+                        <p>I agree: </p>
+                        <CheckBox onClick={handleCheck} type="checkbox" defaultChecked={hasAgreed}/>
                     </Text>
                 </DisclaimerWrapper>
                 {error ? <Error><p>{error}</p></Error> : null}
