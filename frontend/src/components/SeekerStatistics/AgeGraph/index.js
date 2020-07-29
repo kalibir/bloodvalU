@@ -14,6 +14,7 @@ const getLabels = (amountOfDays, format) => {
     }
     return labels.reverse()
 }
+
 // useEffect(() => {
 //     if (statistics) {
 //         console.log(dayjs(statistics[0].created).format('DD/MM/YYYY'))
@@ -22,7 +23,7 @@ const getLabels = (amountOfDays, format) => {
 //     }
 // }, [statistics])
 
-getLabels(7, 'dddd')
+// getLabels(7, 'dddd')
 
 const filterAll = (arr, min, max) => {
     return arr.filter(el => el.age >= min && el.age <= max).length
