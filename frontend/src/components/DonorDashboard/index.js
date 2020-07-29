@@ -111,7 +111,7 @@ const SearchFormContainer = styled.form`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: ${rem("32px")};
+    margin-bottom: ${rem("10px")};
     background-color: ${ColorDebug ? "darksalmon" : ""};
 `;
 

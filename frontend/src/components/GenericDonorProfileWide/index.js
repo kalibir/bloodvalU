@@ -97,6 +97,9 @@ const DetailTitle = styled.p`
     width: ${rem("100px")};
 `;
 
+const CustomFade = styled(Fade)`
+`
+
 const DetailsContainer = styled.div`
     height: ${rem("328px")};
     width: ${rem("204px")};
@@ -166,7 +169,7 @@ const DonorProfileCardWide = ({
 
 
     return (
-        <Fade>
+        <CustomFade>
             <ProfileWrapper>
                 <UpperContainer name={"upper"}>
                     <ProfilePicPlaceholder>
@@ -220,7 +223,7 @@ const DonorProfileCardWide = ({
                     <EditButton>Edit Profile</EditButton>
                 </Link>
             </ProfileWrapper>
-        </Fade>
+        </CustomFade>
     )
 }
 
