@@ -1,10 +1,18 @@
 import React from "react";
-import { rem } from "polished";
+import {rem} from "polished";
 import styled from "styled-components";
 import profilePic from "../../assets/images/default-profile-pic.jpg"
 import {DarkBlueButton} from "../../style/GlobalButtons";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Fade from "react-reveal/Fade";
+import O_negative from "../../assets/icons/O_negative.svg";
+import O_positive from "../../assets/icons/O_positive.svg";
+import A_negative from "../../assets/icons/A_negative.svg";
+import A_positive from "../../assets/icons/A_positive.svg";
+import B_negative from "../../assets/icons/B_negative.svg";
+import B_positive from "../../assets/icons/B_positive.svg";
+import AB_negative from "../../assets/icons/AB_negative.svg";
+import AB_positive from "../../assets/icons/AB_positive.svg";
 
 const ProfileWrapper = styled.div`
     width: 100%;
@@ -27,7 +35,6 @@ const UpperContainer = styled.div`
 
 const ProfilePicPlaceholder = styled.div`
     height: ${rem("160px")};
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
     img {
         width: ${rem("160px")};
         height: ${rem("160px")};
@@ -87,7 +94,7 @@ const DetailTitle = styled.p`
     align-items: center;
     color: #000000;
     margin-bottom: ${rem("16px")};
-    width: ${rem("72px")};
+    width: ${rem("100px")};
 `;
 
 const DetailsContainer = styled.div`
@@ -126,7 +133,6 @@ const EditButton = styled(DarkBlueButton)`
 `;
 
 
-
 const DonorProfileCardWide = ({
                                   userObj: {
                                       id,
@@ -143,61 +149,78 @@ const DonorProfileCardWide = ({
                                       total_points,
                                       blood_group,
                                       gender,
+                                      next_donation
                                   }
                               }) => {
 
+    const renderBloodType = () => {
+        if (blood_group === "O-") return O_negative;
+        if (blood_group === "O+") return O_positive;
+        if (blood_group === "A-") return A_negative;
+        if (blood_group === "A+") return A_positive;
+        if (blood_group === "B-") return B_negative;
+        if (blood_group === "B+") return B_positive;
+        if (blood_group === "AB-") return AB_negative;
+        if (blood_group === "AB+") return AB_positive;
+    };
+
+
     return (
         <Fade>
-        <ProfileWrapper>
-            <UpperContainer name={"upper"}>
-                <ProfilePicPlaceholder>
-                    <img src={avatar ? avatar : profilePic} alt={"avatar"}/>
-                </ProfilePicPlaceholder>
-                <NameContainer>
-                    {`${first_name} ${last_name}`}
-                </NameContainer>
-                <CityContainer>
-                    {zip_code}, {country}
-                </CityContainer>
-            </UpperContainer>
-            <BottomContainer>
-                <DetailTitlesContainer>
-                    <Test>
-                        <DetailTitle>Gender: </DetailTitle>
-                        <Details>{gender==="M" ? "Male" : gender==="F" ? "Female" : "Other"}</Details>
-                    </Test>
-                    <Test>
-                        <DetailTitle>Birthday: </DetailTitle>
-                        <Details>{birthday}</Details>
-                    </Test>
-                    <Test>
-                        <AddressTitle>Address:</AddressTitle>
-                        <AddressDetails>{street}</AddressDetails>
-                    </Test>
-                    <Test>
-                        <AddressTitle></AddressTitle>
-                        <AddressDetails>{zip_code}</AddressDetails>
-                    </Test>
-                    <Test>
-                        <DetailTitle></DetailTitle>
-                        <Details>{country}</Details>
-                    </Test>
-                    <Test>
-                        <DetailTitle>Phone:</DetailTitle>
-                        <Details>{phone.length ? phone : "please add a number"}</Details>
-                    </Test>
-                    <Test>
-                        <DetailTitle>Email:</DetailTitle>
-                        <Details>{email}</Details>
-                    </Test>
-                </DetailTitlesContainer>
+            <ProfileWrapper>
+                <UpperContainer name={"upper"}>
+                    <ProfilePicPlaceholder>
+                        <img src={avatar ? avatar : profilePic} alt={"avatar"}/>
+                    </ProfilePicPlaceholder>
+                    <NameContainer>
+                        {`${first_name} ${last_name}`}
+                    </NameContainer>
+                    <CityContainer>
+                        {zip_code}, {country}
+                    </CityContainer>
+                </UpperContainer>
+                <BottomContainer>
+                    <DetailTitlesContainer>
+                        <Test>
+                            <DetailTitle>Gender: </DetailTitle>
+                            <Details>{gender === "M" ? "Male" : gender === "F" ? "Female" : "Other"}</Details>
+                        </Test>
+                        <Test>
+                            <DetailTitle>Birthday: </DetailTitle>
+                            <Details>{birthday}</Details>
+                        </Test>
+                        <Test>
+                            <DetailTitle>Blood Group:</DetailTitle>
+                            <Details><img alt={"blood group"} src={renderBloodType()}/></Details>
+                        </Test>
+                        <Test>
+                            <AddressTitle>Address:</AddressTitle>
+                            <AddressDetails>{street}</AddressDetails>
+                        </Test>
+                        <Test>
+                            <AddressTitle></AddressTitle>
+                            <AddressDetails>{zip_code}</AddressDetails>
+                        </Test>
+                        <Test>
+                            <DetailTitle></DetailTitle>
+                            <Details>{country}</Details>
+                        </Test>
+                        <Test>
+                            <DetailTitle>Phone:</DetailTitle>
+                            <Details>{phone.length ? phone : "please add a number"}</Details>
+                        </Test>
+                        <Test>
+                            <DetailTitle>Email:</DetailTitle>
+                            <Details>{email}</Details>
+                        </Test>
+                    </DetailTitlesContainer>
 
-            </BottomContainer>
-            <Link to={`/editdonor`}>
-                <EditButton>Edit Profile</EditButton>
-            </Link>
-        </ProfileWrapper>
-            </Fade>
+                </BottomContainer>
+                <Link to={`/editdonor`}>
+                    <EditButton>Edit Profile</EditButton>
+                </Link>
+            </ProfileWrapper>
+        </Fade>
     )
 }
 

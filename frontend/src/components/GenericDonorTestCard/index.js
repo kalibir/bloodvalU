@@ -15,13 +15,24 @@ const ColorDebug = false; //at true all element get colored background for check
 const TestCard = styled.div`
   width: ${rem("330px")};
   height: ${rem("150px")};
-  background: rgba(52, 73, 211 0.05);
+  background: white;
   border: 1px solid #d3d4d8;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 0 ${rem("12px")} ${rem("12px")} 0;
+    -webkit-transition: -webkit-transform 0.8s ease-in-out;
+  transition: transform 0.4s ease-in-out;
+  :hover:nth-child(odd) {
+  transform: rotate(1deg) scale(1.05);
+  -webkit-transform: rotate(1deg) scale(1.05);
+}
+  :hover:nth-child(even) {
+  transform: rotate(-1deg) scale(1.05);
+  -webkit-transform: rotate(-1deg) scale(1.05);
+}
 `;
 
 const DetailsCard = styled.div`
@@ -29,6 +40,7 @@ const DetailsCard = styled.div`
   height: ${rem("150px")};
   background: rgba(52, 73, 211 0.05);
   border: 1px solid #d3d4d8;
+    background: #e5e5e5;
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -93,9 +105,10 @@ margin-top: 0;
 
 `
 
-const Text = styled.div`
+const Text = styled.p`
   font-style: normal;
   font-weight: 300;
+  
   font-size: ${rem("14px")};
   line-height: ${rem("18px")};
   color: #121232;
@@ -138,7 +151,7 @@ const TestCardBottomContainer = styled.div`
 `;
 
 export const PointContainer = styled.div`
-  width: ${rem("72px")}; //set width only for standardized looking
+  width: ${rem("80px")}; //set width only for standardized looking
   height: ${rem("20px")};
   font-weight: 500;
   font-size: ${rem("9px")};
@@ -195,6 +208,8 @@ const BuyButton = styled(SmallBlueButton)`
 const DetailsText = styled.p`
   white-space: pre-line;
   font-size: 12px;
+  max-height: 312px;
+  overflow: auto;
 `;
 
 const GenericDonorTestCard = (props) => {
