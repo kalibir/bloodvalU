@@ -166,7 +166,7 @@ const CreateBaseUser = ({
               <PasswordContainer>
                 <PasswordInput
                 title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-                //pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                 type={seePassword ? "text" : "password"}
                 name="new-password"
                 placeholder="password"
@@ -185,7 +185,7 @@ const CreateBaseUser = ({
                 <RepeatPasswordInput
                 type={seeRepeatPassword ? "text" : "password"}
                 name="new-password"
-                //pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                 placeholder="repeat password"
                 onChange={(e) => onChangeHandler(e, "password_repeat")}
                 required

@@ -64,6 +64,12 @@ const Content = styled.div`
     ${(props) => (props.active ? "" : "display:none")}
 `
 
+const PageContainer2 = styled(PageContainer)`
+  flex-flow: column;
+  justify-content: flex-start;
+  padding-top: 50px;
+`
+
 const SeekerScanCode = (props) => {
     const [active, setActive] = useState("request")
     const dispatch = useDispatch()
@@ -109,15 +115,25 @@ const SeekerScanCode = (props) => {
 
 
     return (
-        <PageContainer>
-            <ContentWrapper><MenuContainer>
-                <Button id="request" onClick={handleTabs} active={active === "request"}>
-                    Scan Blood Request QR Code
-                </Button>
-                <Button id="tests" onClick={handleTabs} active={active === "tests"}>
-                    Scan Test QR Code
-                </Button>
-            </MenuContainer>
+        <PageContainer2>
+            <ContentWrapper>
+                <MenuContainer>
+                    <Button id="request" onClick={handleTabs} active={active === "request"}>
+                        Scan Blood Request QR Code
+                    </Button>
+                    <Button id="tests" onClick={handleTabs} active={active === "tests"}>
+                        Scan Test QR Code
+                    </Button>
+                </MenuContainer>
+
+                <QrReader
+                    ref={refs}
+                    delay={data.delay}
+                    style={previewStyle}
+                    onError={handleError}
+                    onScan={handleScan}
+                />
+
                 {QRresponse.message ? QRresponse.isGood ?
                     <Fade right>
                         <FadeWrapper>
@@ -144,18 +160,13 @@ const SeekerScanCode = (props) => {
                     </Fade>
                     :
                     <ErrorText>{QRresponse.message}</ErrorText> : null}
-                <QrReader
-                    ref={refs}
-                    delay={data.delay}
-                    style={previewStyle}
-                    onError={handleError}
-                    onScan={handleScan}
-                />
+
+
                 {QRCode ? <SubmitQRBtn type="button" value="Submit QR Code" onClick={handleSubmitQR}/> :
                     <p>Scanning, please hold still...</p>
                 }</ContentWrapper>
 
-        </PageContainer>
+        </PageContainer2>
     )
 }
 
