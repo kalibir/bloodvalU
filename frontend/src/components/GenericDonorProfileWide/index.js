@@ -27,7 +27,6 @@ const UpperContainer = styled.div`
 
 const ProfilePicPlaceholder = styled.div`
     height: ${rem("160px")};
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
     img {
         width: ${rem("160px")};
         height: ${rem("160px")};
@@ -87,7 +86,7 @@ const DetailTitle = styled.p`
     align-items: center;
     color: #000000;
     margin-bottom: ${rem("16px")};
-    width: ${rem("72px")};
+    width: ${rem("100px")};
 `;
 
 const DetailsContainer = styled.div`
@@ -143,8 +142,11 @@ const DonorProfileCardWide = ({
                                       total_points,
                                       blood_group,
                                       gender,
+                                      next_donation
                                   }
                               }) => {
+
+
 
     return (
         <Fade>
@@ -169,6 +171,10 @@ const DonorProfileCardWide = ({
                     <Test>
                         <DetailTitle>Birthday: </DetailTitle>
                         <Details>{birthday}</Details>
+                    </Test>
+                    <Test>
+                        <DetailTitle>Blood Group:</DetailTitle>
+                        <Details>{blood_group}</Details>
                     </Test>
                     <Test>
                         <AddressTitle>Address:</AddressTitle>
