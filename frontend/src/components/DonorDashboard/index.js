@@ -185,6 +185,7 @@ const OfferContainer = styled.div`
   height: inherit;
   display: flex;
   flex-wrap: wrap;
+  padding: 10px;
   
   justify-content: center;
   @media ${device.laptop} {
