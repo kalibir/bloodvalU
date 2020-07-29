@@ -2,9 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import {rem} from "polished";
 import {NavLink} from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
+import {connect} from "react-redux";
 
 const activeClassName = "nav-item-active";
-const StyledNavLink = styled(NavLink).attrs({ activeClassName })`
+const StyledNavLink = styled(NavLink).attrs({activeClassName})`
   &.${activeClassName} {
      &:after {
      color: #d33449;
@@ -42,6 +44,18 @@ const StyledNavLink = styled(NavLink).attrs({ activeClassName })`
     transition: width 0.3s;
   }
 `;
+
+const InvalidMenuLink = styled.div`
+  color: darkgrey;
+  text-decoration: none;
+  position: relative;
+  width: ${rem("85px")};
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`
 
 const size = {
     mobileS: '320px',
@@ -84,23 +98,33 @@ const WrapperDiv = styled.div`
   align-items: center;
 `;
 
-export const SeekerNavigation = (name) => {
+const SeekerNavigation = ({authReducer: {userObj}}) => {
 
     return (
         <WrapperDiv>
             Welcome!
             <LinksDiv>
-                {name === "" ? <></> :
+                {userObj && userObj.name === "" ? <></> :
                     <>
                         <StyledNavLink to="/dashboard/seeker">
                             Dashboard
                         </StyledNavLink>
-                        <StyledNavLink to="/scan">
-                            Scan QR
-                        </StyledNavLink>
-                        <StyledNavLink to="/statistics">
-                            Analytics
-                        </StyledNavLink>
+                        {userObj.is_valid ?
+                            <>
+                                <StyledNavLink to="/scan">
+                                    Scan QR
+                                </StyledNavLink>
+                                <StyledNavLink to="/statistics">
+                                    Analytics
+                                </StyledNavLink>
+                            </>
+                            : <>
+                                <Tooltip title="You have to be validated to use this function." arrow><InvalidMenuLink>Scan
+                                    QR</InvalidMenuLink></Tooltip>
+                                <Tooltip title="You have to be validated to use this function."
+                                         arrow><InvalidMenuLink>Analytics</InvalidMenuLink></Tooltip>
+                            </>
+                        }
                         <StyledNavLink to="/seekerprofilepage">
                             Profile
                         </StyledNavLink>
@@ -112,10 +136,10 @@ export const SeekerNavigation = (name) => {
 };
 
 export const DonorNavigation = ({first_name, email}) => {
-
+    const shortEmail = email.split('@')[0];
     return (
         <WrapperDiv>
-            <WelcomeText>{first_name === "" ? `Welcome, ${email}` : `Welcome, ${first_name}`}</WelcomeText>
+            <WelcomeText>{first_name === "" ? `Welcome, ${shortEmail}.` : `Welcome, ${first_name}.`}</WelcomeText>
             <LinksDiv>
                 {first_name === "" ? <></>
                     : <>
@@ -143,3 +167,12 @@ export const AdminNavigation = () => {
         </WrapperDiv>
     );
 };
+
+
+const mapStateToProps = (state) => {
+    return {
+        authReducer: state.authReducer,
+    };
+};
+
+export default connect(mapStateToProps)(SeekerNavigation);
