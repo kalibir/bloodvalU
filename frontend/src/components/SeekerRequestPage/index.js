@@ -15,6 +15,7 @@ import {
 import ActiveProfileCard from "./ActiveProfileCard";
 
 import Spinner from "../../components/GenericSpinner";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -110,7 +111,7 @@ const NewRequestButton = styled(DarkBlueButton)`
   width: ${rem("194px")};
 `;
 
-const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
+const SeekerDashboard = ({dispatch, userProfileReducer: {requests}, authReducer: {userObj}}) => {
     const [active, setActive] = useState("OP");
     const [activeProfile, setActiveProfile] = useState(null);
     const [activeRequest, setActiveRequest] = useState(null);
@@ -208,9 +209,13 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
                             )}
                         </Requests>
                     </DashboardContentContainer>
+                    {userObj && userObj.is_valid ?
                     <NewRequestButton onClick={() => setModal({...modal, showModal: true, modalData: null})}>
                         <PlusSignButton/>+ Create Request
                     </NewRequestButton>
+                        :
+                        <Tooltip title="You have to be validated to use this function." arrow><NewRequestButton >Not allowed</NewRequestButton></Tooltip>}
+
                 </LeftSide>
                 <RightSide>
                     {activeProfile && activeRequest ? (
@@ -230,6 +235,7 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}}) => {
 const mapStateToProps = (state) => {
     return {
         userProfileReducer: state.userProfileReducer,
+        authReducer: state.authReducer,
     };
 };
 

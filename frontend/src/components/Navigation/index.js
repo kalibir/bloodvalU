@@ -10,7 +10,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {WhiteButton} from "../../style/GlobalButtons";
 import {BloodValU} from "../../style/GlobalTitles";
 import {userLogout} from "../../store/actions/logoutActions";
-import {SeekerNavigation, DonorNavigation, device, AdminNavigation} from "../../style/Functions";
+import {DonorNavigation, device, AdminNavigation} from "../../style/Functions";
+import SeekerNavigation from "../../style/Functions";
 import {setIsLogin} from "../../store/actions/userActions";
 
 const Wrapper = styled.div`
@@ -207,7 +208,9 @@ const FooterLinkTitle = styled.h2`
 `;
 
 const Navigation = ({children, authReducer: {authenticated, userObj, isLogin}, dispatch}) => {
+
     const {push} = useHistory();
+
     const handleClickLogo = (e) => {
         dispatch(setIsLogin(true))
         push("/");
@@ -241,7 +244,7 @@ const Navigation = ({children, authReducer: {authenticated, userObj, isLogin}, d
                             (userObj.is_donor ?
                                 <><DonorNavigation email={userObj.email} first_name={userObj.first_name}/>
                                     <HeaderButtonUser onClick={handleLogout}>Logout</HeaderButtonUser></> :
-                                <><SeekerNavigation name={userObj.name}/> <HeaderButtonUser
+                                <><SeekerNavigation/> <HeaderButtonUser
                                     onClick={handleLogout}>Logout</HeaderButtonUser></>) : null}
                     {!authenticated ? (isLogin ? <HeaderButtonUser onClick={handClickLogin}>Login</HeaderButtonUser> :
                         <HeaderButtonUser onClick={handClickSignUp}>Sign Up</HeaderButtonUser> ): null}

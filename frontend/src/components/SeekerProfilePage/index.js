@@ -10,6 +10,7 @@ import {deleteTestAction, editTestAction, getRequestsOfSeekerAction} from "../..
 import CreateTestModal from "../CreateTestModal";
 import GenericSeekerRequestBar from "../GenericSeekerRequestBar";
 import {deleteRequestAction, editRequestAction} from "../../store/actions/bloodRequestActions";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -94,7 +95,7 @@ const PlusSignButton = styled.span`
   margin-right: ${rem("10px")};
 `;
 
-const SeekerProfilePage = ({userProfileReducer: {offeredTests}, dispatch}) => {
+const SeekerProfilePage = ({userProfileReducer: {offeredTests}, authReducer: {userObj}, dispatch}) => {
     useEffect(() => {
         dispatch(getRequestsOfSeekerAction());
     }, []);
@@ -129,8 +130,12 @@ const SeekerProfilePage = ({userProfileReducer: {offeredTests}, dispatch}) => {
                         <MenuContainer>
                             <SideButton id="requests">Offered Tests</SideButton>
                         </MenuContainer>
+                        {userObj.is_valid ?
                         <CreateTestButton onClick={() => setModal({...modal, modalData: null, showModal: true})}>+ Create
                             Test</CreateTestButton>
+                            : <Tooltip title="You have to be validated to use this function." arrow><CreateTestButton>Not allowed</CreateTestButton></Tooltip>}
+
+
                         <TestWrapper>
                             {offeredTests
                                 ? offeredTests.map((test, index) => {
@@ -156,6 +161,7 @@ const SeekerProfilePage = ({userProfileReducer: {offeredTests}, dispatch}) => {
 const mapStateToProps = (state) => {
     return {
         userProfileReducer: state.userProfileReducer,
+        authReducer: state.authReducer,
     };
 };
 
