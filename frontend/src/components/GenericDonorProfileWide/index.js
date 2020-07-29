@@ -201,7 +201,7 @@ const DonorProfileCardWide = ({
 // }
 
     return (
-        <Fade>
+        <CustomFade>
         <ProfileWrapper>
             <UpperContainer name={"upper"}>
                 <ProfilePicPlaceholder>
