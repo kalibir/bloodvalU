@@ -5,6 +5,8 @@ import profilePic from "../../assets/images/default-profile-pic.jpg"
 import {DarkBlueButton} from "../../style/GlobalButtons";
 import { Link } from "react-router-dom";
 import Fade from "react-reveal/Fade";
+import DayJS from "react-dayjs";
+import dayjs from "dayjs";
 
 const ProfileWrapper = styled.div`
     width: 100%;
@@ -85,8 +87,8 @@ const DetailTitle = styled.p`
     display: flex;
     align-items: center;
     color: #000000;
-    margin-bottom: ${rem("16px")};
-    width: ${rem("100px")};
+    margin-bottom: ${rem("12px")};
+    width: ${rem("160px")};
 `;
 
 const DetailsContainer = styled.div`
@@ -109,7 +111,7 @@ const Details = styled.div`
     display: flex;
     align-items: center;
     color: #4E4E5A;
-    margin-bottom: ${rem("16px")};
+    margin-bottom: ${rem("12px")};
 `;
 
 const AddressTitle = styled(DetailTitle)`
@@ -146,7 +148,37 @@ const DonorProfileCardWide = ({
                                   }
                               }) => {
 
+            let today = new Date()
+            let next = new Date(next_donation)
 
+            let diff = Math.floor(((((Math.abs(today - next))/1000)/60)/60)/24)
+
+
+
+//             const calculateTimeLeft = () => {
+//                 let year = new Date().getFullYear();
+//                 let difference = +new Date(`${year}-10-1`) - +new Date();
+//                 let timeLeft = {};
+//
+//                 if (difference > 0) {
+//                   timeLeft = {
+//                     days: Math.floor(difference / (1000 * 60 * 60 * 24))
+//                 };
+//               }
+//
+//               return timeLeft;
+//
+//                 const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+//                useEffect(() => {
+//   const timer=setTimeout(() => {
+//     setTimeLeft(calculateTimeLeft());
+//     setYear(new Date().getFullYear());
+//   }, 1000);
+//   // Clear timeout if the component is unmounted
+//   return () => clearTimeout(timer);
+// });
+
+// }
 
     return (
         <Fade>
@@ -176,6 +208,12 @@ const DonorProfileCardWide = ({
                         <DetailTitle>Blood Group:</DetailTitle>
                         <Details>{blood_group}</Details>
                     </Test>
+                    {next_donation ?
+                        <Test>
+                        <DetailTitle>Next donation possible:</DetailTitle>
+                        <Details>In {diff} days</Details>
+                    </Test>
+                        : null}
                     <Test>
                         <AddressTitle>Address:</AddressTitle>
                         <AddressDetails>{street}</AddressDetails>
