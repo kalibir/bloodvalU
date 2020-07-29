@@ -32,7 +32,7 @@ const InputPairContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${rem("24px")};
+  margin-bottom: ${rem("40px")};
   width: ${rem("352px")};
 `;
 
@@ -52,7 +52,7 @@ const ButtonContainer = styled(InputPairContainer)`
 `;
 
 const PasswordContainer = styled.div`
-    margin-bottom: 32px;
+    //margin-bottom: 32px;
     height: ${rem("50px")};
     width: ${rem("352px")};
     display: flex;
@@ -73,6 +73,7 @@ const PasswordInput = styled(BigInput)`
     //  border:1px solid #ea0000;
     //}
 `;
+
 
 const RepeatPasswordInput = styled(BigInput)`
     width: 87%;
