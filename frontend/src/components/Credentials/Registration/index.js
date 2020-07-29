@@ -60,6 +60,25 @@ const RegButton = styled(DarkBlueButton)`
     align-items: center;
 `
 
+const RegButtonDisabled = styled(RegButton)`
+    background-color: darkgrey;
+    color: white;
+    border: 1px solid darkgrey;
+    
+    :hover {
+    color: white;
+    background: darkgrey;
+    border: 1px solid darkgrey;
+  }
+  :active {
+    color: white;
+    background: darkgrey;
+    border: 1px solid darkgrey;
+  }
+`
+
+
+
 const Error = styled(ErrorPlaceholder)``
 
 
@@ -120,7 +139,7 @@ const Registration = ({registrationReducer: {isDonor}, dispatch, errorReducer: {
                         received a blood transfusion (except with your own blood) in the past&nbsp;
                         <strong>3</strong>&nbsp;months.</p>
                     <p>&nbsp;</p>
-                    <p>8. I agree&nbsp;that I have never tested positive for the <strong>AIDS</strong> virus.</p>
+                    <p>8. I agree&nbsp;that I have never tested positive for <strong>HIV</strong>.</p>
                     <br/><br/>
                     <CheckboxWrapper>
                         <AgreeText>I agree: </AgreeText>
@@ -131,7 +150,7 @@ const Registration = ({registrationReducer: {isDonor}, dispatch, errorReducer: {
                 <EmailTtitle>Email</EmailTtitle>
                 <EmailInput onChange={(e) => onChangeHandler(e, "email")} placeholder="email" type="email" required/>
                 {isDonor === "True" ? (hasAgreed ?
-                    <RegButton>{showSpinner ? <ButtonSpinner/> : "Register"}</RegButton> : null) :
+                    <RegButton>{showSpinner ? <ButtonSpinner/> : "Register"}</RegButton> : <RegButtonDisabled disabled={true}>Register</RegButtonDisabled>) :
                     <RegButton>{showSpinner ? <ButtonSpinner/> : "Register"}</RegButton>}
             </FormWrapper>
         </PageWrapper>

@@ -13,6 +13,8 @@ import B_negative from "../../assets/icons/B_negative.svg";
 import B_positive from "../../assets/icons/B_positive.svg";
 import AB_negative from "../../assets/icons/AB_negative.svg";
 import AB_positive from "../../assets/icons/AB_positive.svg";
+import DayJS from "react-dayjs";
+import dayjs from "dayjs";
 
 const ProfileWrapper = styled.div`
     width: 100%;
@@ -93,9 +95,12 @@ const DetailTitle = styled.p`
     display: flex;
     align-items: center;
     color: #000000;
-    margin-bottom: ${rem("16px")};
-    width: ${rem("100px")};
+    margin-bottom: ${rem("12px")};
+    width: ${rem("160px")};
 `;
+
+const CustomFade = styled(Fade)`
+`
 
 const DetailsContainer = styled.div`
     height: ${rem("328px")};
@@ -117,7 +122,7 @@ const Details = styled.div`
     display: flex;
     align-items: center;
     color: #4E4E5A;
-    margin-bottom: ${rem("16px")};
+    margin-bottom: ${rem("12px")};
 `;
 
 const AddressTitle = styled(DetailTitle)`
@@ -153,6 +158,12 @@ const DonorProfileCardWide = ({
                                   }
                               }) => {
 
+            let today = new Date()
+            let next = new Date(next_donation)
+
+            let diff = Math.floor(((((Math.abs(today - next))/1000)/60)/60)/24)
+
+
     const renderBloodType = () => {
         if (blood_group === "O-") return O_negative;
         if (blood_group === "O+") return O_positive;
@@ -164,63 +175,93 @@ const DonorProfileCardWide = ({
         if (blood_group === "AB+") return AB_positive;
     };
 
+//             const calculateTimeLeft = () => {
+//                 let year = new Date().getFullYear();
+//                 let difference = +new Date(`${year}-10-1`) - +new Date();
+//                 let timeLeft = {};
+//
+//                 if (difference > 0) {
+//                   timeLeft = {
+//                     days: Math.floor(difference / (1000 * 60 * 60 * 24))
+//                 };
+//               }
+//
+//               return timeLeft;
+//
+//                 const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+//                useEffect(() => {
+//   const timer=setTimeout(() => {
+//     setTimeLeft(calculateTimeLeft());
+//     setYear(new Date().getFullYear());
+//   }, 1000);
+//   // Clear timeout if the component is unmounted
+//   return () => clearTimeout(timer);
+// });
+
+// }
 
     return (
-        <Fade>
-            <ProfileWrapper>
-                <UpperContainer name={"upper"}>
-                    <ProfilePicPlaceholder>
-                        <img src={avatar ? avatar : profilePic} alt={"avatar"}/>
-                    </ProfilePicPlaceholder>
-                    <NameContainer>
-                        {`${first_name} ${last_name}`}
-                    </NameContainer>
-                    <CityContainer>
-                        {zip_code}, {country}
-                    </CityContainer>
-                </UpperContainer>
-                <BottomContainer>
-                    <DetailTitlesContainer>
+        <CustomFade>
+        <ProfileWrapper>
+            <UpperContainer name={"upper"}>
+                <ProfilePicPlaceholder>
+                    <img src={avatar ? avatar : profilePic} alt={"avatar"}/>
+                </ProfilePicPlaceholder>
+                <NameContainer>
+                    {`${first_name} ${last_name}`}
+                </NameContainer>
+                <CityContainer>
+                    {zip_code}, {country}
+                </CityContainer>
+            </UpperContainer>
+            <BottomContainer>
+                <DetailTitlesContainer>
+                    <Test>
+                        <DetailTitle>Gender: </DetailTitle>
+                        <Details>{gender==="M" ? "Male" : gender==="F" ? "Female" : "Other"}</Details>
+                    </Test>
+                    <Test>
+                        <DetailTitle>Birthday: </DetailTitle>
+                        <Details>{birthday}</Details>
+                    </Test>
+                    <Test>
+                        <DetailTitle>Blood Group:</DetailTitle>
+                        <Details><img alt={"blood group"} src={renderBloodType()}/></Details>
+                    </Test>
+                    {next_donation ?
                         <Test>
-                            <DetailTitle>Gender: </DetailTitle>
-                            <Details>{gender === "M" ? "Male" : gender === "F" ? "Female" : "Other"}</Details>
-                        </Test>
-                        <Test>
-                            <DetailTitle>Birthday: </DetailTitle>
-                            <Details>{birthday}</Details>
-                        </Test>
-                        <Test>
-                            <DetailTitle>Blood Group:</DetailTitle>
-                            <Details><img alt={"blood group"} src={renderBloodType()}/></Details>
-                        </Test>
-                        <Test>
-                            <AddressTitle>Address:</AddressTitle>
-                            <AddressDetails>{street}</AddressDetails>
-                        </Test>
-                        <Test>
-                            <AddressTitle></AddressTitle>
-                            <AddressDetails>{zip_code}</AddressDetails>
-                        </Test>
-                        <Test>
-                            <DetailTitle></DetailTitle>
-                            <Details>{country}</Details>
-                        </Test>
-                        <Test>
-                            <DetailTitle>Phone:</DetailTitle>
-                            <Details>{phone.length ? phone : "please add a number"}</Details>
-                        </Test>
-                        <Test>
-                            <DetailTitle>Email:</DetailTitle>
-                            <Details>{email}</Details>
-                        </Test>
-                    </DetailTitlesContainer>
+                        <DetailTitle>Next donation possible:</DetailTitle>
+                        <Details>In {diff} days</Details>
+                    </Test>
+                        : null}
+                    <Test>
+                        <AddressTitle>Address:</AddressTitle>
+                        <AddressDetails>{street}</AddressDetails>
+                    </Test>
+                    <Test>
+                        <AddressTitle></AddressTitle>
+                        <AddressDetails>{zip_code}</AddressDetails>
+                    </Test>
+                    <Test>
+                        <DetailTitle></DetailTitle>
+                        <Details>{country}</Details>
+                    </Test>
+                    <Test>
+                        <DetailTitle>Phone:</DetailTitle>
+                        <Details>{phone.length ? phone : "please add a number"}</Details>
+                    </Test>
+                    <Test>
+                        <DetailTitle>Email:</DetailTitle>
+                        <Details>{email}</Details>
+                    </Test>
+                </DetailTitlesContainer>
 
                 </BottomContainer>
                 <Link to={`/editdonor`}>
                     <EditButton>Edit Profile</EditButton>
                 </Link>
             </ProfileWrapper>
-        </Fade>
+        </CustomFade>
     )
 }
 
