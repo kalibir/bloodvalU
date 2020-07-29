@@ -1,13 +1,13 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
-import {connect, useDispatch} from "react-redux";
-import {BigInput, SmallInput} from "../../../style/GlobalInputs";
-import {MiddleTitle, SmallTitle} from "../../../style/GlobalTitles";
-import {DarkBlueButton} from "../../../style/GlobalButtons";
-import {useHistory} from "react-router";
-import {updateProfileAction} from "../../../store/actions/userActions";
-import {PageContainer} from "../../../style/GlobalWrappers";
+import { connect, useDispatch } from "react-redux";
+import { BigInput, SmallInput } from "../../../style/GlobalInputs";
+import { MiddleTitle, SmallTitle } from "../../../style/GlobalTitles";
+import { DarkBlueButton } from "../../../style/GlobalButtons";
+import { useHistory } from "react-router";
+import { updateProfileAction } from "../../../store/actions/userActions";
+import { PageContainer } from "../../../style/GlobalWrappers";
 import CountrySelect from "../../CountrySelect";
 
 const FormWrapper = styled.form`
@@ -135,29 +135,29 @@ const ChooseFileButton = styled.label`
   justify-content: center;
 `;
 
-const CreateSeekerProfile = ({authReducer}) => {
-    const history = useHistory();
-    const dispatch = useDispatch();
-    const [seekerInfo, setSeekerInfo] = useState({
-        name: "",
-        country: "",
-        zip_code: "",
-        street: "",
-        phone: "",
-        website: "",
-        logo: null,
-        certificate: null,
-    });
+const CreateSeekerProfile = ({ authReducer }) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const [seekerInfo, setSeekerInfo] = useState({
+    name: "",
+    country: "",
+    zip_code: "",
+    street: "",
+    phone: "",
+    website: "",
+    logo: null,
+    certificate: null,
+  });
 
-    const logoSelectHandler = (e) => {
-        // dispatch(resetError());
-        if (e.target.files[0]) {
-            setSeekerInfo({
-                ...seekerInfo,
-                logo: e.target.files[0],
-            });
-        }
-    };
+  const logoSelectHandler = (e) => {
+    // dispatch(resetError());
+    if (e.target.files[0]) {
+      setSeekerInfo({
+        ...seekerInfo,
+        logo: e.target.files[0],
+      });
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -183,110 +183,108 @@ const CreateSeekerProfile = ({authReducer}) => {
 
   const onChangeHandler = (event, property) => {
     const value = event.currentTarget.value;
-    setSeekerInfo({ ...seekerInfo, [property]: value.replace(/,/g, '') });
+    setSeekerInfo({ ...seekerInfo, [property]: value.replace(/,/g, "") });
   };
 
-    const certificateSelectHandler = (e) => {
-        if (e.target.files[0]) {
-            setSeekerInfo({...seekerInfo, certificate: e.target.files[0]});
-        }
-    };
+  const certificateSelectHandler = (e) => {
+    if (e.target.files[0]) {
+      setSeekerInfo({ ...seekerInfo, certificate: e.target.files[0] });
+    }
+  };
 
-    return (
-        <PageContainer>
-            <FormWrapper onSubmit={handleSubmit}>
-                <TitleWrapper>
-                    <ValidationTitle>Create an Account</ValidationTitle>
-                </TitleWrapper>
-                <InputWrapper>
-                    <div>
-                        <InputTitle>Company name</InputTitle>
-                        <CostumizedBigInput
-                            onChange={(e) => onChangeHandler(e, "name")}
-                            placeholder="Company name"
-                            required
-                        />
-                    </div>
-                </InputWrapper>
-                <InputWrapper>
-                    <FullWidthInputContainer>
-                        <InputTitle>Street</InputTitle>
-                        <StreetInput
-                            onChange={(e) => onChangeHandler(e, "street")}
-                            placeholder="Longstreet 7"
-                            required
-                        />
-                    </FullWidthInputContainer>
-                </InputWrapper>
-                <InputWrapper>
-                    <div>
-                        <InputTitle>Zip</InputTitle>
-                        <CostumizedSmallInput
-                            onChange={(e) => onChangeHandler(e, "zip_code")}
-                            placeholder="8000 Zurich"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <InputTitle>Country</InputTitle>
-                        <CountrySelect
-                                handleChange={(e) => onChangeHandler(e, "country")}
-                                required/>
-                    </div>
-                </InputWrapper>
-                <InputWrapper>
-                    <div>
-                        <InputTitle>Phone</InputTitle>
-                        <CostumizedSmallInput
-                            onChange={(e) => onChangeHandler(e, "phone")}
-                            placeholder="044 123 45 67"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <InputTitle>Website</InputTitle>
-                        <CostumizedSmallInput
-                            onChange={(e) => onChangeHandler(e, "website")}
-                            placeholder="www.example.ch"
-                            required
-                        />
-                    </div>
-                </InputWrapper>
+  return (
+    <PageContainer>
+      <FormWrapper onSubmit={handleSubmit}>
+        <TitleWrapper>
+          <ValidationTitle>Create an Account</ValidationTitle>
+        </TitleWrapper>
+        <InputWrapper>
+          <div>
+            <InputTitle>Company name</InputTitle>
+            <CostumizedBigInput
+              onChange={(e) => onChangeHandler(e, "name")}
+              placeholder="Company name"
+              required
+            />
+          </div>
+        </InputWrapper>
+        <InputWrapper>
+          <FullWidthInputContainer>
+            <InputTitle>Street</InputTitle>
+            <StreetInput
+              onChange={(e) => onChangeHandler(e, "street")}
+              placeholder="Longstreet 7"
+              required
+            />
+          </FullWidthInputContainer>
+        </InputWrapper>
+        <InputWrapper>
+          <div>
+            <InputTitle>Zip</InputTitle>
+            <CostumizedSmallInput
+              onChange={(e) => onChangeHandler(e, "zip_code")}
+              placeholder="8000 Zurich"
+              required
+            />
+          </div>
+          <div>
+            <InputTitle>Country</InputTitle>
+            <CountrySelect handleChange={(e) => onChangeHandler(e, "country")} required />
+          </div>
+        </InputWrapper>
+        <InputWrapper>
+          <div>
+            <InputTitle>Phone</InputTitle>
+            <CostumizedSmallInput
+              onChange={(e) => onChangeHandler(e, "phone")}
+              placeholder="044 123 45 67"
+              required
+            />
+          </div>
+          <div>
+            <InputTitle>Website</InputTitle>
+            <CostumizedSmallInput
+              onChange={(e) => onChangeHandler(e, "website")}
+              placeholder="www.example.ch"
+              required
+            />
+          </div>
+        </InputWrapper>
 
-                <InputPairContainer>
-                    <ImgInput
-                        onChange={logoSelectHandler}
-                        type="file"
-                        name="logo"
-                        id="logo"
-                        className="inputfile"
-                    />
-                    <ChooseFileButton className="file_btn" htmlFor="logo">
-                        UPLOAD YOUR LOGO
-                    </ChooseFileButton>
-                    <ImgInput
-                        onChange={certificateSelectHandler}
-                        type="file"
-                        name="file"
-                        id="file"
-                        className="inputfile"
-                    />
-                    <ChooseFileButton className="file_btn" htmlFor="file">
-                        UPLOAD YOUR CERTICATE
-                    </ChooseFileButton>
-                </InputPairContainer>
-                <ButtonWrapper>
-                    <DarkBlueButton>Continue</DarkBlueButton>
-                </ButtonWrapper>
-            </FormWrapper>
-        </PageContainer>
-    );
+        <InputPairContainer>
+          <ImgInput
+            onChange={logoSelectHandler}
+            type="file"
+            name="logo"
+            id="logo"
+            className="inputfile"
+          />
+          <ChooseFileButton className="file_btn" htmlFor="logo">
+            {seekerInfo.logo ? "FILE UPLOADED" : "UPLOAD YOUR LOGO"}
+          </ChooseFileButton>
+          <ImgInput
+            onChange={certificateSelectHandler}
+            type="file"
+            name="file"
+            id="file"
+            className="inputfile"
+          />
+          <ChooseFileButton className="file_btn" htmlFor="file">
+            {seekerInfo.certificate ? "FILE UPLOADED" : "UPLOAD CERTIFICATE"}
+          </ChooseFileButton>
+        </InputPairContainer>
+        <ButtonWrapper>
+          <DarkBlueButton>Continue</DarkBlueButton>
+        </ButtonWrapper>
+      </FormWrapper>
+    </PageContainer>
+  );
 };
 
 const mapStateToProps = (state) => {
-    return {
-        authReducer: state.authReducer,
-    };
+  return {
+    authReducer: state.authReducer,
+  };
 };
 
 export default connect(mapStateToProps)(CreateSeekerProfile);
