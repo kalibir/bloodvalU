@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {BaseMenuContainer, PageContainer} from "../../style/GlobalWrappers";
 import QrReader from 'react-qr-scanner'
 import styled from "styled-components";
@@ -7,6 +7,7 @@ import {validateQRCode} from "../../store/actions/QRActions";
 import {MiddleButton} from "../DonorDashboard";
 import {rem} from "polished";
 import {Fade} from "react-reveal";
+import ButtonSpinner from "../ButtonSpinner";
 
 const SuccessText = styled.h1`
   font-size: ${rem("25px")};
@@ -59,6 +60,15 @@ const FadeWrapper = styled.div`
   flex-direction: column;
   align-items: flex-start;
 `
+const SpinnerText = styled.p`
+  color: #d33449;;
+`
+const SpinnerDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
 
 const Content = styled.div`
     ${(props) => (props.active ? "" : "display:none")}
@@ -83,6 +93,11 @@ const SeekerScanCode = (props) => {
         message: null
     })
 
+    useEffect(() => {
+        if (QRCode) handleSubmitQR()
+    }, [QRCode]);
+
+
     const handleTabs = e => {
         const activeTab = e.currentTarget.id
         setActive(activeTab)
@@ -103,8 +118,8 @@ const SeekerScanCode = (props) => {
         width: 320,
     }
     const refs = useRef()
-    const handleSubmitQR = async (e) => {
-        e.preventDefault()
+
+    const handleSubmitQR = async () => {
         if (QRCode) {
             const data = {code: QRCode}
             const response = await dispatch(validateQRCode(data, active))
@@ -162,8 +177,11 @@ const SeekerScanCode = (props) => {
                     <ErrorText>{QRresponse.message}</ErrorText> : null}
 
 
-                {QRCode ? <SubmitQRBtn type="button" value="Submit QR Code" onClick={handleSubmitQR}/> :
-                    <p>Scanning, please hold still...</p>
+                {QRCode ? null :
+                    <SpinnerDiv>
+                        <SpinnerText>Scanning, please hold still...</SpinnerText>
+                        <ButtonSpinner/>
+                    </SpinnerDiv>
                 }</ContentWrapper>
 
         </PageContainer2>

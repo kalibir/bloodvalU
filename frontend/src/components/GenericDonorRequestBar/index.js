@@ -22,6 +22,8 @@ import {Fade} from "react-reveal";
 import ButtonSpinner from "../ButtonSpinner";
 import SmallButtonSpinner from "../SmallButtonSpinner";
 import Tooltip from "@material-ui/core/Tooltip";
+import {useHistory} from "react-router";
+import {setCoordinates} from "../../store/actions/mapActions";
 
 const BarWrapper = styled.div`
   //width: 445px;
@@ -213,9 +215,10 @@ const GenericDonorRequestBar = ({
                                         created,
                                         points_value,
                                         no_of_applicants,
-                                        seeker: {name, phone, email, website, street, zip_code, logo, country},
+                                        seeker: {name, phone, email, website, street, zip_code, logo, country, latitude, longitude},
                                     },
                                 }) => {
+    const {push} = useHistory()
     const dispatch = useDispatch();
     const [showSeeker, setSeekerInfo] = useState(false);
     const [showSpinner, setShowSpinner] = useState(false);
@@ -224,27 +227,37 @@ const GenericDonorRequestBar = ({
         setSeekerInfo(!showSeeker);
     };
 
-  const handleApply = async e => {
-    setShowSpinner(true)
-    const response = await dispatch(applyToRequestActionInAll(id));
-    if (response.status < 300)
+
+    const handleSendToMap = () => {
+        if (latitude) {
+            dispatch(setCoordinates([latitude, longitude]))
+            push("/map")
+        } else {
+            push("/map")
+        }
+    }
+
+    const handleApply = async e => {
+        setShowSpinner(true)
+        const response = await dispatch(applyToRequestActionInAll(id));
+        if (response.status < 300)
             setShowSpinner(false)
-  };
-  const renderBloodType = () => {
-    if (blood_group === "O-") return O_negative;
-    if (blood_group === "O+") return O_positive;
-    if (blood_group === "A-") return A_negative;
-    if (blood_group === "A+") return A_positive;
-    if (blood_group === "B-") return B_negative;
-    if (blood_group === "B+") return B_positive;
-    if (blood_group === "AB-") return AB_negative;
-    if (blood_group === "AB+") return AB_positive;
-  };
-  return (
-      <Fade left>
-    <BarWrapper>
-      <RequestBar>
-        <TextWrapper onClick={showSeekerHandler}> {name}</TextWrapper>
+    };
+    const renderBloodType = () => {
+        if (blood_group === "O-") return O_negative;
+        if (blood_group === "O+") return O_positive;
+        if (blood_group === "A-") return A_negative;
+        if (blood_group === "A+") return A_positive;
+        if (blood_group === "B-") return B_negative;
+        if (blood_group === "B+") return B_positive;
+        if (blood_group === "AB-") return AB_negative;
+        if (blood_group === "AB+") return AB_positive;
+    };
+    return (
+        <Fade left>
+            <BarWrapper>
+                <RequestBar>
+                    <TextWrapper onClick={showSeekerHandler}> {name}</TextWrapper>
 
                     <IconWrapper onClick={showSeekerHandler}>
                         {(status === "CL") &
@@ -268,7 +281,8 @@ const GenericDonorRequestBar = ({
                         {logged_in_donor_applied ? (
                             is_valid ? (
                                 <Tooltip title="Click to cancel your apply." arrow><RedButton
-                                    onClick={handleApply}>{showSpinner ? <SmallButtonSpinner/> : "Cancel"}</RedButton></Tooltip>
+                                    onClick={handleApply}>{showSpinner ?
+                                    <SmallButtonSpinner/> : "Cancel"}</RedButton></Tooltip>
                             ) : (
                                 <Tooltip title="Another donor is accepted for this request." arrow><RequestIsActiveSign
                                     onClick={showSeekerHandler}>Active</RequestIsActiveSign></Tooltip>
@@ -301,7 +315,7 @@ const GenericDonorRequestBar = ({
                                 showSeeker ? {animationDirection: "normal"} : {animationDirection: "reverse"}
                             }>
                             <SeekerInfoHeader>
-                                <CompanyName>{name}</CompanyName>
+                                <CompanyName onClick={handleSendToMap}>{name}</CompanyName>
                                 <RequestPoints>{points_value} pts</RequestPoints>
                             </SeekerInfoHeader>
                             <SeekerInfoBodyWrapper>
