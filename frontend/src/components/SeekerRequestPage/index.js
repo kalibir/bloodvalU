@@ -2,7 +2,15 @@ import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import rem from "polished/lib/helpers/rem";
 import {PageContainer} from "../../style/GlobalWrappers";
-import GenericSeekerRequestBar from "../GenericSeekerRequestBar";
+import GenericSeekerRequestBar, {
+    ArrowWrapper,
+    BloodDiv,
+    ButtonWrapper,
+    IconWrapper, RenewWrapper,
+    RequestBar, Separator,
+    TextWrapper,
+    UrgentWrapper
+} from "../GenericSeekerRequestBar";
 import {DarkBlueButton} from "../../style/GlobalButtons";
 import RequestModal from "../RequestModal";
 import {connect} from "react-redux";
@@ -27,9 +35,12 @@ const PageWrapper = styled.div`
 const LeftSide = styled.div`
   height: 100%;
   min-width: 576px;
+  width: 100%;  //07.30 mod
   padding-top: ${rem("36px")};
   padding-left: ${rem("160px")};
-  padding-right: ${rem("85px")};
+  //padding-right: ${rem("85px")};
+  padding-right: ${rem("160px")};  //07.30 mod
+ 
 `;
 
 const RightSide = styled.div`
@@ -84,7 +95,8 @@ const SideButton = styled(MiddleButton)`
 `;
 
 const DashboardContentContainer = styled.div`
-    width: 600px;
+    //width: 600px;
+    width: 100%;  //07.30 mod
     display: flex;
     flex-flow: column;
     justify-content: flex-start;
@@ -110,6 +122,12 @@ const PlusSignButton = styled.span`
 const NewRequestButton = styled(DarkBlueButton)`
   width: ${rem("194px")};
 `;
+
+const RequestBarTitle = styled(RequestBar)`
+  cursor: none;
+  height: 40px;
+  font-weight: 500;
+`
 
 const SeekerDashboard = ({dispatch, userProfileReducer: {requests}, authReducer: {userObj}}) => {
     const [active, setActive] = useState("OP");
@@ -189,6 +207,19 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}, authReducer:
                             </SideButton>
                         </MenuContainer>
                         <Requests>
+
+                                <RequestBarTitle>
+                                    <TextWrapper>Request No.</TextWrapper>
+                                    <IconWrapper>
+                                        <Separator>Delete</Separator>
+                                        <Separator>Edit</Separator>
+                                    </IconWrapper>
+                                    <ButtonWrapper>Status</ButtonWrapper>
+                                    <UrgentWrapper>Urgency</UrgentWrapper>
+                                    <BloodDiv>Blood-type</BloodDiv>
+                                    <RenewWrapper>Renewable</RenewWrapper>
+                                    <ArrowWrapper>More info</ArrowWrapper>
+                                </RequestBarTitle>
                             {requests ? (
                                 requests.map((request, index) => {
                                     if (request.status === active) {
@@ -217,16 +248,16 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}, authReducer:
                         <Tooltip title="You have to be validated to use this function." arrow><NewRequestButton >Not allowed</NewRequestButton></Tooltip>}
 
                 </LeftSide>
-                <RightSide>
-                    {activeProfile && activeRequest ? (
-                        <ActiveProfileCard
-                            handleSelectApplicant={handleSelectApplicant}
-                            activeRequest={activeRequest}
-                            activeProfile={activeProfile}
-                            showSpinner={showSpinner}
-                        />
-                    ) : null}
-                </RightSide>
+                {/*<RightSide>*/}
+                {/*    {activeProfile && activeRequest ? (*/}
+                {/*        <ActiveProfileCard*/}
+                {/*            handleSelectApplicant={handleSelectApplicant}*/}
+                {/*            activeRequest={activeRequest}*/}
+                {/*            activeProfile={activeProfile}*/}
+                {/*            showSpinner={showSpinner}*/}
+                {/*        />*/}
+                {/*    ) : null}*/}
+                {/*</RightSide>*/}
             </PageWrapper>
         </PageContainer>
     );

@@ -26,12 +26,12 @@ const BarWrapper = styled.div`
   width: 100%;
 `;
 
-const RequestBar = styled.div`
+export const RequestBar = styled.div`
   display: grid;
   width: 100%;
   height: 48px;
   grid-template-areas: "text edit button urgent blood renew arrow";
-  grid-template-columns: 2fr 1fr 1.5fr 1fr 35px 1fr 1fr;
+  grid-template-columns: 1.5fr 1.5fr 1.5fr 1fr 1fr 1fr 1fr;
   background-color: #ffffff;
   border: 1px solid #d9d9d9;
   align-items: center;
@@ -39,7 +39,7 @@ const RequestBar = styled.div`
   cursor: pointer;
 `;
 
-const TextWrapper = styled.div`
+export const TextWrapper = styled.div`
   display: flex;
   height: 100%;
   grid-area: text;
@@ -47,23 +47,24 @@ const TextWrapper = styled.div`
   padding-left: 24px;
 `;
 
-const ButtonWrapper = styled.div`
+export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   grid-area: button;
   height: 38px;
   //background-color: lightgreen;
 `;
 
-const IconWrapper = styled(ButtonWrapper)`
+export const IconWrapper = styled(ButtonWrapper)`
   grid-area: edit;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  //justify-content: space-around;
   //background-color: orangered;
 `;
 
-const UrgentWrapper = styled.div`
+export const UrgentWrapper = styled.div`
   grid-area: urgent;
   height: 100%;
   display: flex;
@@ -72,13 +73,13 @@ const UrgentWrapper = styled.div`
   width: 100%;
   //background-color: darkgrey;
 `
-const BloodDiv = styled(UrgentWrapper)`
+export const BloodDiv = styled(UrgentWrapper)`
   grid-area: blood;
   display: flex;
   width: 100%;
   //background-color: deepskyblue;
 `
-const RenewWrapper = styled(UrgentWrapper)`
+export const RenewWrapper = styled(UrgentWrapper)`
   grid-area: renew;
   display: flex;
   width: 100%;
@@ -95,7 +96,7 @@ const BlueButton = styled(BaseStatusButton)`
 const IconButton = styled.button`
   border: 3px solid #2196f3;
   padding: 3px;
-  margin-right: 8px;
+  //margin-right: 8px;
   width: 37px;
   height: 37px;
   border-radius: 50%;
@@ -122,7 +123,7 @@ export const IconButton2 = styled(IconButton)`
   }
 `;
 
-const ArrowWrapper = styled.div`
+export const ArrowWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -213,6 +214,14 @@ const CompletedButton = styled(CompleteButton)`
   }
 `
 
+export const Separator = styled.div`
+  height: 100%;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 
 //The seeker request bar starts from here
 
@@ -297,8 +306,12 @@ const GenericSeekerRequestBar = ({
                 <IconWrapper>
                     {request.status != "COM" ? (
                         <>
+                            <Separator>
                     <Tooltip title="Delete request." arrow><IconButton2 onClick={(e) => setSureModal(true)}>&#10006;</IconButton2></Tooltip>
-                    <Tooltip title="Edit request." arrow><IconButton onClick={(e) => handleShowEditModal(e, request)}>&#9998;</IconButton></Tooltip>
+                    </Separator>
+                            <Separator>
+                                <Tooltip title="Edit request." arrow><IconButton onClick={(e) => handleShowEditModal(e, request)}>&#9998;</IconButton></Tooltip>
+                            </Separator>
                         </>) : null}
                 </IconWrapper>
 
