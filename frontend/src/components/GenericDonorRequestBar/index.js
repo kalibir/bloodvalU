@@ -22,6 +22,8 @@ import {Fade} from "react-reveal";
 import ButtonSpinner from "../ButtonSpinner";
 import SmallButtonSpinner from "../SmallButtonSpinner";
 import Tooltip from "@material-ui/core/Tooltip";
+import {useHistory} from "react-router";
+import {setCoordinates} from "../../store/actions/mapActions";
 
 const BarWrapper = styled.div`
   //width: 445px;
@@ -216,6 +218,7 @@ const GenericDonorRequestBar = ({
                                         seeker: {name, phone, email, website, street, zip_code, logo, country},
                                     },
                                 }) => {
+    const {push} = useHistory()
     const dispatch = useDispatch();
     const [showSeeker, setSeekerInfo] = useState(false);
     const [showSpinner, setShowSpinner] = useState(false);
@@ -224,8 +227,12 @@ const GenericDonorRequestBar = ({
         setSeekerInfo(!showSeeker);
     };
 
-    const handleSendToMap = (e) => {
 
+    const handleSendToMap = (e) => {
+        if(latitude){
+            dispatch(setCoordinates([latitude, longitude]))
+            push("/map")
+        }
     }
 
     const handleApply = async e => {

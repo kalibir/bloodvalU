@@ -375,6 +375,7 @@ const DonorDashboard = ({
 ;
 
 const mapStateToProps = (state) => {
+    console.log("state", state);
     return {
         userProfileReducer: state.userProfileReducer,
         authReducer: state.authReducer,
