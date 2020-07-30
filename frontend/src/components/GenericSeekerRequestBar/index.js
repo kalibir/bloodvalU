@@ -215,6 +215,31 @@ const CompletedButton = styled(CompleteButton)`
   }
 `
 
+const SelectButton = styled(CompletedButton)`
+  height: 30px;
+  
+  :hover {
+    color: #FFFFFF;
+    background: #43a047;
+  }
+`
+
+const UnSelectButton = styled(CompletedButton)`
+  height: 30px;
+  color: darkred;
+  background: #FFFFFF;
+  border: 3px solid darkred;
+  
+  :hover {
+    color: #FFFFFF;
+    background: darkred;
+  }
+`
+
+
+
+
+
 export const Separator = styled.div`
   height: 100%;
   width: 50%;
@@ -302,6 +327,14 @@ const GenericSeekerRequestBar = ({
 
     };
 
+    const getLongGender = (shortGender) => {
+        if (shortGender === "M") {return "Male"}
+        else if (shortGender === "F") {return "Female"}
+        else return "Other"
+    }
+
+
+
     return (
         <BarWrapper>
             {sureModal ? (
@@ -366,7 +399,7 @@ const GenericSeekerRequestBar = ({
 
                     if (request.selected_donor && request.selected_donor.id === applicant.id) {
                         return (
-                            <SlidingContainer>
+                            <SlidingContainer key={applicant.id}>
                                 <DonorSelectedBar
                                     name={"selectbar"}
                                     // onClick={handleClickApplicant}
@@ -377,10 +410,10 @@ const GenericSeekerRequestBar = ({
                                     }>
 
                                     {`Donor:  ${applicant.unique_donor_id}`}
-                                    <p>{`Gender:  ${applicant.gender}`}</p>
+                                    <p>{`Gender:  ${getLongGender(applicant.gender)}`}</p>
                                     <p>{`Blood type:  ${applicant.blood_group}`}</p>
                                     <p>{`Age:  ${applicant.age}`}</p>
-                                {request.status === "COM" ? null : <button id={applicant.id} onClick={handleSelectApplicant}>Unselect</button>}
+                                {request.status === "COM" ? null : <UnSelectButton id={applicant.id} onClick={handleSelectApplicant}>Unselect</UnSelectButton>}
                                 </DonorSelectedBar>
                             </SlidingContainer>
                         );
@@ -395,10 +428,10 @@ const GenericSeekerRequestBar = ({
                                 id={index}
                                 active={false}>
                                 {`Donor:  ${applicant.unique_donor_id}`}
-                                <p>{`Gender:  ${applicant.gender}`}</p>
+                                <p>{`Gender:  ${getLongGender(applicant.gender)}`}</p>
                                 <p>{`Blood type:  ${applicant.blood_group}`}</p>
                                 <p>{`Age:  ${applicant.age}`}</p>
-                                {request.status === "COM" ? null : <button id={applicant.id} onClick={handleSelectApplicant}>Select</button>}
+                                {request.status === "COM" ? null : <SelectButton id={applicant.id} onClick={handleSelectApplicant}>Select</SelectButton>}
                             </DonorSubBar>
                         </SlidingContainer>
                     );
