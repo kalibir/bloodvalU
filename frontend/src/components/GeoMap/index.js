@@ -103,7 +103,6 @@ const GeoMap = ({
 
     const [selectedSeeker, setSelectedSeeker] = useState(null)
     const [showName, setShowName] = useState(false)
-    console.log(showName);
 
 
     const handleFly = () => {
