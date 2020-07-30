@@ -111,6 +111,16 @@ const GeoMap = ({
     const handleFly = () => {
         if (coordinates) {
             console.log("coordinates!", coordinates)
+            const newViewport = {
+                ...viewPort,
+                latitude: coordinates[0],
+                longitude: coordinates[1],
+                zoom: 14,
+                transitionDuration: 2000,
+                transitionInterpolator: new FlyToInterpolator(),
+            };
+            setViewport(newViewport);
+            dispatch(getAllSeekersAction())
         } else {
             const newViewport = {
                 ...viewPort,

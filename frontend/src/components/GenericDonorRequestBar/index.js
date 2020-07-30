@@ -228,7 +228,7 @@ const GenericDonorRequestBar = ({
     };
 
 
-    const handleSendToMap = (e) => {
+    const handleSendToMap = () => {
         if (latitude) {
             dispatch(setCoordinates([latitude, longitude]))
             push("/map")
@@ -315,7 +315,7 @@ const GenericDonorRequestBar = ({
                                 showSeeker ? {animationDirection: "normal"} : {animationDirection: "reverse"}
                             }>
                             <SeekerInfoHeader>
-                                <CompanyName>{name}</CompanyName>
+                                <CompanyName onClick={handleSendToMap}>{name}</CompanyName>
                                 <RequestPoints>{points_value} pts</RequestPoints>
                             </SeekerInfoHeader>
                             <SeekerInfoBodyWrapper>
