@@ -73,6 +73,7 @@ const TextWrapper = styled.div`
   grid-area: text;
   justify-content: flex-start;
   align-items: center;
+  text-align: center;
   padding-left: 24px;
 `;
 
@@ -243,7 +244,7 @@ const GenericDonorRequestBar = ({
       <Fade left>
     <BarWrapper>
       <RequestBar>
-        <TextWrapper onClick={showSeekerHandler}> Request {id}</TextWrapper>
+        <TextWrapper onClick={showSeekerHandler}> {name}</TextWrapper>
 
                     <IconWrapper onClick={showSeekerHandler}>
                         {(status === "CL") &
