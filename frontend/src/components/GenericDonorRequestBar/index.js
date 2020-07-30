@@ -215,7 +215,7 @@ const GenericDonorRequestBar = ({
                                         created,
                                         points_value,
                                         no_of_applicants,
-                                        seeker: {name, phone, email, website, street, zip_code, logo, country},
+                                        seeker: {name, phone, email, website, street, zip_code, logo, country, latitude, longitude},
                                     },
                                 }) => {
     const {push} = useHistory()
