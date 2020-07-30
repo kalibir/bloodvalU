@@ -191,9 +191,6 @@ const OfferContainer = styled.div`
   @media ${device.laptop} {
     height: auto;
   }
-  display: flex;
-  flex-wrap: wrap;
-  //overflow: auto;
   background-color: ${ColorDebug ? "greenyellow" : ""};
 `;
 
@@ -218,7 +215,6 @@ const Content = styled.div`
 
 const TestContent = styled.div`
   height: 100%;
-  //overflow: auto;
   ${(props) => (props.active ? "" : "display:none")}
 `
 const DonorDashboard = ({
