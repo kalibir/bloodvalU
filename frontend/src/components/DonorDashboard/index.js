@@ -212,6 +212,7 @@ const SpinnerContainer = styled.div`
 
 const Content = styled.div`
   height: 100%;
+  overflow: auto;
   ${(props) => (props.active ? "" : "display:none")}
 `
 const DonorDashboard = ({
@@ -291,7 +292,7 @@ const DonorDashboard = ({
                                     : null}
                             </OfferContainer>
                         </Content>
-                        <Content active={active === "requests"}>
+                        <Content name={"all"} active={active === "requests"}>
 
                             <RequestContainer>
                                 {requests ? (
