@@ -233,9 +233,9 @@ const DonorDashboard = ({
         const [searchParams, setSearchParams] = useState("");
 
         const handleSearch = (event) => {
-            event.preventDefault()
+            // event.preventDefault()
             dispatch(searchAllRequestsAndTestsAction(searchParams, active));
-            setSearchParams("");
+            // setSearchParams("");
         };
 
         const handleSearchInput = (e) => {
@@ -320,7 +320,7 @@ const DonorDashboard = ({
                                 <SearchInput onChange={handleSearchInput} value={searchParams}
                                              placeholder="Search..."/>{" "}
                                 {/*TODO add search on enter*/}
-                                <SearchButton>Search</SearchButton>
+                                <SearchButton>Refresh</SearchButton>
                             </SearchFormContainer>
                             <TestContent name={"content"} active={active === "tests"}>
                                 <PointsHeader>
