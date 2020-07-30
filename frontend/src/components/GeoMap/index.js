@@ -52,14 +52,13 @@ const CustomScaler = styled(ScaleControl)`
 
 const SeekerLabel = styled.h2`
   font-weight: bold;
+  color: rgba(0,0,0,0.52);
   font-size: ${rem("25px")};
   margin-left: 5px;
 `
-const LabelHidden = styled.h2`
+const LabelHidden = styled(SeekerLabel)`
   opacity: 0;
-   font-weight: bold;
-  font-size: ${rem("25px")};
-    margin-left: 5px;
+  display : none;
 `
 
 const CustomNavigator = styled(NavigationControl)`
