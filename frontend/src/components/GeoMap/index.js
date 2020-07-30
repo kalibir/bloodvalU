@@ -15,6 +15,7 @@ import droplet from '../../assets/images/blood-icon.png'
 import SeekerInfo from "./SeekerPopup";
 import {PageContainer} from "../../style/GlobalWrappers";
 import {rem} from "polished";
+import Reveal from "react-reveal/Reveal";
 
 const rotate = keyframes`
 	0% {
@@ -52,11 +53,13 @@ const CustomScaler = styled(ScaleControl)`
 const SeekerLabel = styled.h2`
   font-weight: bold;
   font-size: ${rem("25px")};
+  margin-left: 5px;
 `
 const LabelHidden = styled.h2`
   opacity: 0;
    font-weight: bold;
   font-size: ${rem("25px")};
+    margin-left: 5px;
 `
 
 const CustomNavigator = styled(NavigationControl)`
@@ -160,7 +163,7 @@ const GeoMap = ({
                                                 onMouseLeave={e => setShowName(false)}>{profile.no_of_requests && !selectedSeeker ?
                                     <AlertWrapper>
                                         <span role={"img"}>&#10071;</span>{profile.no_of_requests}
-                                        {showName && !selectedSeeker ? <SeekerLabel>{profile.name}</SeekerLabel> : <LabelHidden>{profile.name}</LabelHidden>}
+                                        {showName && !selectedSeeker ? <Reveal effect="fadeInUp"><SeekerLabel>{profile.name}</SeekerLabel></Reveal> : <LabelHidden>{profile.name}</LabelHidden>}
                                     </AlertWrapper> : null}
                                     <Img
                                         onClick={(e) => {
