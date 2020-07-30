@@ -14,6 +14,7 @@ import {getAllSeekersAction} from "../../store/actions/userActions";
 import droplet from '../../assets/images/blood-icon.png'
 import SeekerInfo from "./SeekerPopup";
 import {PageContainer} from "../../style/GlobalWrappers";
+import {rem} from "polished";
 
 const rotate = keyframes`
 	0% {
@@ -46,7 +47,16 @@ const CustomLocation = styled(GeolocateControl)`
 `
 const CustomScaler = styled(ScaleControl)`
   bottom: 0;
+`
 
+const SeekerLabel = styled.h2`
+  font-weight: bold;
+  font-size: ${rem("25px")};
+`
+const LabelHidden = styled.h2`
+  opacity: 0;
+   font-weight: bold;
+  font-size: ${rem("25px")};
 `
 
 const CustomNavigator = styled(NavigationControl)`
@@ -70,6 +80,9 @@ const CustomPopup = styled(Popup)`
 const CustomMarker = styled(Marker)``
 
 const AlertWrapper = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
 `
 
 const GeoMap = ({
@@ -86,6 +99,8 @@ const GeoMap = ({
     })
 
     const [selectedSeeker, setSelectedSeeker] = useState(null)
+    const [showName, setShowName] = useState(false)
+    console.log(showName);
 
 
     const handleFly = () => {
@@ -139,14 +154,20 @@ const GeoMap = ({
                 {profiles ? profiles.map((profile) => {
                     if (profile.latitude && profile.no_of_requests) {
                         return (
-                            <CustomMarker key={profile.id} latitude={profile.latitude} longitude={profile.longitude}>
-                                <WaypointMarker>{profile.no_of_requests && !selectedSeeker ? <AlertWrapper>
-                                    <span role={"img"}>&#10071;</span>{profile.no_of_requests}
-                                </AlertWrapper> : null}
-                                    <Img onClick={(e) => {
-                                        e.preventDefault()
-                                        setSelectedSeeker(profile)
-                                    }} src={droplet}/></WaypointMarker>
+                            <CustomMarker key={profile.id}
+                                          latitude={profile.latitude} longitude={profile.longitude}>
+                                <WaypointMarker onMouseEnter={e => setShowName(true)}
+                                                onMouseLeave={e => setShowName(false)}>{profile.no_of_requests && !selectedSeeker ?
+                                    <AlertWrapper>
+                                        <span role={"img"}>&#10071;</span>{profile.no_of_requests}
+                                        {showName && !selectedSeeker ? <SeekerLabel>{profile.name}</SeekerLabel> : <LabelHidden>{profile.name}</LabelHidden>}
+                                    </AlertWrapper> : null}
+                                    <Img
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            setSelectedSeeker(profile)
+                                        }}
+                                        src={droplet}/></WaypointMarker>
                             </CustomMarker>
                         )
                     }
