@@ -22,14 +22,14 @@ const rotate = keyframes`
 		transform: translatey(0px);
 	}
 	50% {
-		transform: translatey(-10px);
+		transform: translatey(-5px);
 	}
 	100% {
 		transform: translatey(0px);
 	}
 `;
 const Img = styled.img`
-  
+  z-index: 10;
   width: 40px;
   height: 40px;
   background-color: transparent;
