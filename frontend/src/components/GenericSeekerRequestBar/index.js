@@ -5,6 +5,7 @@ import {BaseStatusButton, CompleteButton} from "../../style/GlobalButtons/";
 import {rem} from "polished";
 import {useDispatch} from "react-redux";
 import {
+    assignApplicantAsSelectedDonor,
     deleteRequestAction,
     getApplicantsOfRequestAction,
     markRequestAsCompleteAction,
@@ -26,12 +27,12 @@ const BarWrapper = styled.div`
   width: 100%;
 `;
 
-const RequestBar = styled.div`
+export const RequestBar = styled.div`
   display: grid;
   width: 100%;
   height: 48px;
   grid-template-areas: "text edit button urgent blood renew arrow";
-  grid-template-columns: 2fr 1fr 1.5fr 1fr 35px 1fr 1fr;
+  grid-template-columns: 1.5fr 1.5fr 1.5fr 1fr 1fr 1fr 1fr;
   background-color: #ffffff;
   border: 1px solid #d9d9d9;
   align-items: center;
@@ -39,7 +40,7 @@ const RequestBar = styled.div`
   cursor: pointer;
 `;
 
-const TextWrapper = styled.div`
+export const TextWrapper = styled.div`
   display: flex;
   height: 100%;
   grid-area: text;
@@ -47,23 +48,24 @@ const TextWrapper = styled.div`
   padding-left: 24px;
 `;
 
-const ButtonWrapper = styled.div`
+export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   grid-area: button;
   height: 38px;
   //background-color: lightgreen;
 `;
 
-const IconWrapper = styled(ButtonWrapper)`
+export const IconWrapper = styled(ButtonWrapper)`
   grid-area: edit;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  //justify-content: space-around;
   //background-color: orangered;
 `;
 
-const UrgentWrapper = styled.div`
+export const UrgentWrapper = styled.div`
   grid-area: urgent;
   height: 100%;
   display: flex;
@@ -72,13 +74,13 @@ const UrgentWrapper = styled.div`
   width: 100%;
   //background-color: darkgrey;
 `
-const BloodDiv = styled(UrgentWrapper)`
+export const BloodDiv = styled(UrgentWrapper)`
   grid-area: blood;
   display: flex;
   width: 100%;
   //background-color: deepskyblue;
 `
-const RenewWrapper = styled(UrgentWrapper)`
+export const RenewWrapper = styled(UrgentWrapper)`
   grid-area: renew;
   display: flex;
   width: 100%;
@@ -95,7 +97,7 @@ const BlueButton = styled(BaseStatusButton)`
 const IconButton = styled.button`
   border: 3px solid #2196f3;
   padding: 3px;
-  margin-right: 8px;
+  //margin-right: 8px;
   width: 37px;
   height: 37px;
   border-radius: 50%;
@@ -122,7 +124,7 @@ export const IconButton2 = styled(IconButton)`
   }
 `;
 
-const ArrowWrapper = styled.div`
+export const ArrowWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -213,6 +215,39 @@ const CompletedButton = styled(CompleteButton)`
   }
 `
 
+const SelectButton = styled(CompletedButton)`
+  height: 30px;
+  
+  :hover {
+    color: #FFFFFF;
+    background: #43a047;
+  }
+`
+
+const UnSelectButton = styled(CompletedButton)`
+  height: 30px;
+  color: darkred;
+  background: #FFFFFF;
+  border: 3px solid darkred;
+  
+  :hover {
+    color: #FFFFFF;
+    background: darkred;
+  }
+`
+
+
+
+
+
+export const Separator = styled.div`
+  height: 100%;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 
 //The seeker request bar starts from here
 
@@ -230,6 +265,7 @@ const GenericSeekerRequestBar = ({
     });
     const [sureModal, setSureModal] = useState(false);
     const [openArrow, setOpenArrow] = useState(false);
+    const [showSpinner, setShowSpinner] = useState(false);
 
     // const handleDeleteRequest = (event, requestID) => {
     //   dispatch(deleteRequestAction(requestID));
@@ -237,7 +273,7 @@ const GenericSeekerRequestBar = ({
 
     const handleRenderApplicants = async (e) => {
         const response = await dispatch(getApplicantsOfRequestAction(request.id));
-        handleSetActiveRequest(request);
+        // handleSetActiveRequest(request);
         setApplicantsData({
             ...applicantsData,
             applicants: response.data,
@@ -253,7 +289,7 @@ const GenericSeekerRequestBar = ({
     const handleClickApplicant = (e) => {
         const index = Number(e.currentTarget.id);
         const targetProfile = applicantsData.applicants[index];
-        handleSetActiveProfile(targetProfile);
+        // handleSetActiveProfile(targetProfile);
         // handleSetActiveRequest(request)
     };
 
@@ -280,6 +316,25 @@ const GenericSeekerRequestBar = ({
         if (request.blood_group === "AB+") return AB_positive;
     };
 
+    const handleSelectApplicant = async (e) => {
+        const applicantID = e.currentTarget.id
+        setShowSpinner(true)
+        console.log("applicantID", applicantID)
+        console.log("request.id", request.id)
+        const response = await dispatch(assignApplicantAsSelectedDonor(request.id, applicantID));
+        if (response.status < 300)
+            setShowSpinner(false)
+
+    };
+
+    const getLongGender = (shortGender) => {
+        if (shortGender === "M") {return "Male"}
+        else if (shortGender === "F") {return "Female"}
+        else return "Other"
+    }
+
+
+
     return (
         <BarWrapper>
             {sureModal ? (
@@ -297,8 +352,14 @@ const GenericSeekerRequestBar = ({
                 <IconWrapper>
                     {request.status != "COM" ? (
                         <>
-                    <Tooltip title="Delete request." arrow><IconButton2 onClick={(e) => setSureModal(true)}>&#10006;</IconButton2></Tooltip>
-                    <Tooltip title="Edit request." arrow><IconButton onClick={(e) => handleShowEditModal(e, request)}>&#9998;</IconButton></Tooltip>
+                            <Separator>
+                                <Tooltip title="Delete request." arrow><IconButton2
+                                    onClick={(e) => setSureModal(true)}>&#10006;</IconButton2></Tooltip>
+                            </Separator>
+                            <Separator>
+                                <Tooltip title="Edit request." arrow><IconButton
+                                    onClick={(e) => handleShowEditModal(e, request)}>&#9998;</IconButton></Tooltip>
+                            </Separator>
                         </>) : null}
                 </IconWrapper>
 
@@ -308,14 +369,18 @@ const GenericSeekerRequestBar = ({
                     ) : request.status === "CL" ? (
                         <CompleteItButton onClick={handleCompleteRequest}>Mark As Complete</CompleteItButton>
                     ) : (
-                        <Tooltip title="Request is completed." arrow><CompletedButton onClick={handleRenderApplicants}>Completed</CompletedButton></Tooltip>
+                        <Tooltip title="Request is completed." arrow><CompletedButton
+                            onClick={handleRenderApplicants}>Completed</CompletedButton></Tooltip>
                     )}
                 </ButtonWrapper>
 
                 <UrgentWrapper onClick={handleRenderApplicants}>{request.is_urgent ?
-                    <Tooltip title="This request is urgent." arrow><UrgentIcon src={urgentIcon}/></Tooltip> : null}</UrgentWrapper>
-                <BloodDiv onClick={handleRenderApplicants}><Tooltip title="Blood-group of request." arrow><Type src={renderBloodType()} alt="blood_type"/></Tooltip></BloodDiv>
-                <Tooltip title="Request renew itself after current one is done." arrow><RenewWrapper onClick={handleRenderApplicants}>{request.is_renewable ?
+                    <Tooltip title="This request is urgent." arrow><UrgentIcon
+                        src={urgentIcon}/></Tooltip> : null}</UrgentWrapper>
+                <BloodDiv onClick={handleRenderApplicants}><Tooltip title="Blood-group of request." arrow><Type
+                    src={renderBloodType()} alt="blood_type"/></Tooltip></BloodDiv>
+                <Tooltip title="Request renew itself after current one is done." arrow><RenewWrapper
+                    onClick={handleRenderApplicants}>{request.is_renewable ?
                     <UrgentIcon src={renewIcon}/> : null}</RenewWrapper></Tooltip>
 
                 {request.no_of_applicants ? (
@@ -334,15 +399,21 @@ const GenericSeekerRequestBar = ({
 
                     if (request.selected_donor && request.selected_donor.id === applicant.id) {
                         return (
-                            <SlidingContainer>
+                            <SlidingContainer key={applicant.id}>
                                 <DonorSelectedBar
                                     name={"selectbar"}
-                                    onClick={handleClickApplicant}
+                                    // onClick={handleClickApplicant}
                                     key={index}
-                                    id={index}
+                                    id={applicant.id}
                                     active={
                                         false
-                                    }>{`Donor:  ${applicant.unique_donor_id}`}
+                                    }>
+
+                                    {`Donor:  ${applicant.unique_donor_id}`}
+                                    <p>{`Gender:  ${getLongGender(applicant.gender)}`}</p>
+                                    <p>{`Blood type:  ${applicant.blood_group}`}</p>
+                                    <p>{`Age:  ${applicant.age}`}</p>
+                                {request.status === "COM" ? null : <UnSelectButton id={applicant.id} onClick={handleSelectApplicant}>Unselect</UnSelectButton>}
                                 </DonorSelectedBar>
                             </SlidingContainer>
                         );
@@ -355,7 +426,12 @@ const GenericSeekerRequestBar = ({
                                 onClick={request.status === "COM" ? null : handleClickApplicant}
                                 key={index}
                                 id={index}
-                                active={false}>{`Donor:  ${applicant.unique_donor_id}`}
+                                active={false}>
+                                {`Donor:  ${applicant.unique_donor_id}`}
+                                <p>{`Gender:  ${getLongGender(applicant.gender)}`}</p>
+                                <p>{`Blood type:  ${applicant.blood_group}`}</p>
+                                <p>{`Age:  ${applicant.age}`}</p>
+                                {request.status === "COM" ? null : <SelectButton id={applicant.id} onClick={handleSelectApplicant}>Select</SelectButton>}
                             </DonorSubBar>
                         </SlidingContainer>
                     );
