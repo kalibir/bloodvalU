@@ -193,7 +193,7 @@ const OfferContainer = styled.div`
   }
   display: flex;
   flex-wrap: wrap;
-  overflow: auto;
+  //overflow: auto;
   background-color: ${ColorDebug ? "greenyellow" : ""};
 `;
 
@@ -213,6 +213,12 @@ const SpinnerContainer = styled.div`
 const Content = styled.div`
   height: 100%;
   overflow: auto;
+  ${(props) => (props.active ? "" : "display:none")}
+`
+
+const TestContent = styled.div`
+  height: 100%;
+  //overflow: auto;
   ${(props) => (props.active ? "" : "display:none")}
 `
 const DonorDashboard = ({
@@ -270,7 +276,7 @@ const DonorDashboard = ({
                             {/*TODO add search on enter*/}
                             <SearchButton>Search</SearchButton>
                         </SearchFormContainer>
-                        <Content name={"content"} active={active === "tests"}>
+                        <TestContent name={"content"} active={active === "tests"}>
                             <PointsHeader>
                                 <OfferTitle>Offers</OfferTitle>
                                 <Animated>
@@ -291,7 +297,7 @@ const DonorDashboard = ({
                                     })
                                     : null}
                             </OfferContainer>
-                        </Content>
+                        </TestContent>
                         <Content name={"all"} active={active === "requests"}>
 
                             <RequestContainer>
