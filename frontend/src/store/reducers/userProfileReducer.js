@@ -7,7 +7,7 @@ import {
     UPDATE_REQUEST_IN_ALL_REQUESTS,
     REMOVE_REQUEST_FROM_LIST,
     ADD_TEST_TO_LIST,
-    REMOVE_TEST_FROM_LIST, SET_ALL_STATISTICS
+    REMOVE_TEST_FROM_LIST, SET_ALL_STATISTICS, SET_COORDINATES
 
 } from "../actionTypes";
 
@@ -16,6 +16,7 @@ const initialState = {
   requests: null,
   offeredTests: null,
   statistics: null,
+  coordinates: null,
 };
 
 export const userProfileReducer = (state = initialState, action) => {
@@ -62,6 +63,9 @@ export const userProfileReducer = (state = initialState, action) => {
                 test => test.id !== action.payload
             );
             return {...newState, offeredTests: newTests};
+        }
+        case SET_COORDINATES: {
+            return {...newState, coordinates: action.payload};
         }
         case ADD_TEST_TO_LIST: {
             if (newState.offeredTests)
