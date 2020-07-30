@@ -102,7 +102,10 @@ const GeoMap = ({
     })
 
     const [selectedSeeker, setSelectedSeeker] = useState(null)
-    const [showName, setShowName] = useState(false)
+    const [showName, setShowName] = useState({
+        show: false,
+        id: null
+    })
 
 
     const handleFly = () => {
@@ -158,17 +161,23 @@ const GeoMap = ({
                         return (
                             <CustomMarker key={profile.id}
                                           latitude={profile.latitude} longitude={profile.longitude}>
-                                <WaypointMarker onMouseEnter={e => setShowName(true)}
-                                                onMouseLeave={e => setShowName(false)}>{profile.no_of_requests && !selectedSeeker ?
-                                    <AlertWrapper>
-                                        <span role={"img"}>&#10071;</span>{profile.no_of_requests}
-                                        {showName && !selectedSeeker ? <Reveal effect="fadeInUp"><SeekerLabel>{profile.name}</SeekerLabel></Reveal> : <LabelHidden>{profile.name}</LabelHidden>}
-                                    </AlertWrapper> : null}
+                                <WaypointMarker
+
+                                >
+                                    {profile.no_of_requests && !selectedSeeker ?
+                                        <AlertWrapper>
+                                            <span role={"img"}>&#10071;</span>{profile.no_of_requests}
+                                            {(showName.show && showName.id === profile.id) && !selectedSeeker ? <Reveal
+                                                    effect="fadeInUp"><SeekerLabel>{profile.name}</SeekerLabel></Reveal> :
+                                                <LabelHidden>{profile.name}</LabelHidden>}
+                                        </AlertWrapper> : null}
                                     <Img
                                         onClick={(e) => {
                                             e.preventDefault()
                                             setSelectedSeeker(profile)
                                         }}
+                                        onMouseEnter={e => setShowName({show: true, id: profile.id})}
+                                        onMouseLeave={e => setShowName({show: false, id: null})}
                                         src={droplet}/></WaypointMarker>
                             </CustomMarker>
                         )
