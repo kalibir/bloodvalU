@@ -131,33 +131,23 @@ const RequestBarTitle = styled(RequestBar)`
 
 const SeekerDashboard = ({dispatch, userProfileReducer: {requests}, authReducer: {userObj}}) => {
     const [active, setActive] = useState("OP");
-    const [activeProfile, setActiveProfile] = useState(null);
-    const [activeRequest, setActiveRequest] = useState(null);
-    const [showSpinner, setShowSpinner] = useState(false);
+    // const [activeProfile, setActiveProfile] = useState(null);
+    // const [activeRequest, setActiveRequest] = useState(null);
+
     const [modal, setModal] = useState({
         showModal: false,
         modalData: null,
     });
 
-    const handleSetActiveProfile = (profileObj) => {
-        setActiveProfile(profileObj);
-    };
+    // const handleSetActiveProfile = (profileObj) => {
+    //     setActiveProfile(profileObj);
+    // };
+    //
+    // const handleSetActiveRequest = (requestObj) => {
+    //     setActiveRequest(requestObj);
+    // };
 
-    const handleSetActiveRequest = (requestObj) => {
-        setActiveRequest(requestObj);
-    };
 
-    const handleSelectApplicant = async (e) => {
-        if (activeRequest && activeProfile) {
-            setShowSpinner(true)
-            const response = await dispatch(
-                assignApplicantAsSelectedDonor(activeRequest.id, activeProfile.id)
-            );
-            if (response.status < 300)
-                setShowSpinner(false)
-            setActiveRequest(response.data);
-        }
-    };
 
     useEffect(() => {
         dispatch(getSeekerBloodRequestsAction(""));
@@ -166,7 +156,7 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}, authReducer:
     const handleClick = (e) => {
         const value = e.target.id;
         setActive(value);
-        dispatch(getSeekerBloodRequestsAction(value));
+        // dispatch(getSeekerBloodRequestsAction(value));
     };
 
     const closeModal = () => {
@@ -227,8 +217,8 @@ const SeekerDashboard = ({dispatch, userProfileReducer: {requests}, authReducer:
                                             <GenericSeekerRequestBar
                                                 handleShowEditModal={handleShowEditModal}
                                                 handleEditRequest={handleEditRequest}
-                                                handleSetActiveRequest={handleSetActiveRequest}
-                                                handleSetActiveProfile={handleSetActiveProfile}
+                                                // handleSetActiveRequest={handleSetActiveRequest}
+                                                // handleSetActiveProfile={handleSetActiveProfile}
                                                 key={index}
                                                 request={request}
                                             />
