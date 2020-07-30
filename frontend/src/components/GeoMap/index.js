@@ -115,7 +115,7 @@ const GeoMap = ({
                 ...viewPort,
                 latitude: coordinates[0],
                 longitude: coordinates[1],
-                zoom: 14,
+                zoom: 15,
                 transitionDuration: 2000,
                 transitionInterpolator: new FlyToInterpolator(),
             };
