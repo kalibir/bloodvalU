@@ -110,7 +110,7 @@ const GeoMap = ({
 
     const handleFly = () => {
         if (coordinates) {
-            console.log("coordinates!")
+            console.log("coordinates!", coordinates)
         } else {
             const newViewport = {
                 ...viewPort,
