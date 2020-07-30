@@ -229,8 +229,10 @@ const GenericDonorRequestBar = ({
 
 
     const handleSendToMap = (e) => {
-        if(latitude){
+        if (latitude) {
             dispatch(setCoordinates([latitude, longitude]))
+            push("/map")
+        } else {
             push("/map")
         }
     }
