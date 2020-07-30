@@ -99,10 +99,10 @@ const WrapperDiv = styled.div`
 `;
 
 const SeekerNavigation = ({authReducer: {userObj}}) => {
-
+    document.title = "BloodvalU - Clinic"
     return (
         <WrapperDiv>
-            Welcome!
+            {userObj ?  `${userObj.name}` : "Welcome!" }
             <LinksDiv>
                 {userObj && userObj.name === "" ? <></> :
                     <>
@@ -136,6 +136,7 @@ const SeekerNavigation = ({authReducer: {userObj}}) => {
 };
 
 export const DonorNavigation = ({first_name, email}) => {
+    document.title = "BloodvalU - Donor"
     const shortEmail = email.split('@')[0];
     return (
         <WrapperDiv>
@@ -158,7 +159,7 @@ export const DonorNavigation = ({first_name, email}) => {
 };
 
 export const AdminNavigation = () => {
-
+    document.title = "BloodvalU - Admin"
     return (
         <WrapperDiv>
             <WelcomeText>ADMIN</WelcomeText>
