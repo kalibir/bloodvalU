@@ -224,27 +224,31 @@ const GenericDonorRequestBar = ({
         setSeekerInfo(!showSeeker);
     };
 
-  const handleApply = async e => {
-    setShowSpinner(true)
-    const response = await dispatch(applyToRequestActionInAll(id));
-    if (response.status < 300)
+    const handleSendToMap = (e) => {
+
+    }
+
+    const handleApply = async e => {
+        setShowSpinner(true)
+        const response = await dispatch(applyToRequestActionInAll(id));
+        if (response.status < 300)
             setShowSpinner(false)
-  };
-  const renderBloodType = () => {
-    if (blood_group === "O-") return O_negative;
-    if (blood_group === "O+") return O_positive;
-    if (blood_group === "A-") return A_negative;
-    if (blood_group === "A+") return A_positive;
-    if (blood_group === "B-") return B_negative;
-    if (blood_group === "B+") return B_positive;
-    if (blood_group === "AB-") return AB_negative;
-    if (blood_group === "AB+") return AB_positive;
-  };
-  return (
-      <Fade left>
-    <BarWrapper>
-      <RequestBar>
-        <TextWrapper onClick={showSeekerHandler}> {name}</TextWrapper>
+    };
+    const renderBloodType = () => {
+        if (blood_group === "O-") return O_negative;
+        if (blood_group === "O+") return O_positive;
+        if (blood_group === "A-") return A_negative;
+        if (blood_group === "A+") return A_positive;
+        if (blood_group === "B-") return B_negative;
+        if (blood_group === "B+") return B_positive;
+        if (blood_group === "AB-") return AB_negative;
+        if (blood_group === "AB+") return AB_positive;
+    };
+    return (
+        <Fade left>
+            <BarWrapper>
+                <RequestBar>
+                    <TextWrapper onClick={showSeekerHandler}> {name}</TextWrapper>
 
                     <IconWrapper onClick={showSeekerHandler}>
                         {(status === "CL") &
@@ -268,7 +272,8 @@ const GenericDonorRequestBar = ({
                         {logged_in_donor_applied ? (
                             is_valid ? (
                                 <Tooltip title="Click to cancel your apply." arrow><RedButton
-                                    onClick={handleApply}>{showSpinner ? <SmallButtonSpinner/> : "Cancel"}</RedButton></Tooltip>
+                                    onClick={handleApply}>{showSpinner ?
+                                    <SmallButtonSpinner/> : "Cancel"}</RedButton></Tooltip>
                             ) : (
                                 <Tooltip title="Another donor is accepted for this request." arrow><RequestIsActiveSign
                                     onClick={showSeekerHandler}>Active</RequestIsActiveSign></Tooltip>

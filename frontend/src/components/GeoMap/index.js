@@ -91,6 +91,7 @@ const GeoMap = ({
                     dispatch,
                     profilesReducer: {profiles},
                     authReducer: {userObj},
+                    userProfileReducer: {coordinates}
                 }) => {
     const [viewPort, setViewport] = useState({
         latitude: 47.36667,
@@ -108,16 +109,20 @@ const GeoMap = ({
 
 
     const handleFly = () => {
-        const newViewport = {
-            ...viewPort,
-            latitude: 47.36667,
-            longitude: 8.55,
-            zoom: 10,
-            transitionDuration: 2000,
-            transitionInterpolator: new FlyToInterpolator(),
-        };
-        setViewport(newViewport);
-        dispatch(getAllSeekersAction())
+        if (coordinates) {
+            console.log("coordinates!")
+        } else {
+            const newViewport = {
+                ...viewPort,
+                latitude: 47.36667,
+                longitude: 8.55,
+                zoom: 10,
+                transitionDuration: 2000,
+                transitionInterpolator: new FlyToInterpolator(),
+            };
+            setViewport(newViewport);
+            dispatch(getAllSeekersAction())
+        }
     }
 
     useEffect(() => {
@@ -204,6 +209,7 @@ const mapStateToProps = (state) => {
     return {
         profilesReducer: state.profilesReducer,
         authReducer: state.authReducer,
+        userProfileReducer: state.userProfileReducer,
     };
 };
 

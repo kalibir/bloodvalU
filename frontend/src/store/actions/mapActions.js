@@ -1,6 +1,7 @@
 import axios from "axios";
 import Axios from "../../axios";
 import {updateRequestInAll} from "./bloodRequestActions";
+import {SET_COORDINATES, SET_IS_LOGIN} from "../actionTypes";
 
 
 
@@ -29,3 +30,10 @@ export const applyToRequestOnMap = (request_id) => async (dispatch) => {
         return error
     }
 }
+
+export const setCoordinates = (arrayOfCoordinates) => {
+    return {
+        type: SET_COORDINATES,
+        payload: arrayOfCoordinates,
+    };
+};
