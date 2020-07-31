@@ -234,7 +234,7 @@ const GenericDonorTestCard = (props) => {
     background-image: url(${seeker_logo});
     width: ${rem("135px")};
     height: ${rem("135px")};
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     text-align: center;
