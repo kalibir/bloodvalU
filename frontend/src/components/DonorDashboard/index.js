@@ -312,12 +312,12 @@ const DonorDashboard = ({
         const handleFilterAppliedRequests = () => {
             return requests.map((request, index) => {
                 if (
-                    request.seeker.name.toLowerCase().includes(searchParams) ||
+                    (request.seeker.name.toLowerCase().includes(searchParams) ||
                     request.seeker.zip_code.includes(searchParams) ||
                     request.seeker.country.includes(searchParams) ||
                     request.blood_group.includes(searchParams) ||
-                    request.seeker.street.toLowerCase().includes(searchParams) &&
-                    (request.logged_in_donor_applied)
+                    request.seeker.street.toLowerCase().includes(searchParams)) &&
+                    request.logged_in_donor_applied
                 ) {
                     return (
                         <GenericDonorRequestBar key={index} request={request}/>

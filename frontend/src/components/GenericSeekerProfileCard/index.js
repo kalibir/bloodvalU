@@ -1,12 +1,12 @@
 import React from "react";
-import { rem } from "polished";
+import {rem} from "polished";
 import styled from "styled-components";
 import profilePic from "../../assets/images/default-profile-pic.jpg";
-import { connect } from "react-redux";
-import { useEffect } from "react";
-import { getLoggedInUserAction } from "../../store/actions/userActions";
-import { DarkBlueButton } from "../../style/GlobalButtons";
-import { useHistory } from "react-router";
+import {connect} from "react-redux";
+import {useEffect} from "react";
+import {getLoggedInUserAction} from "../../store/actions/userActions";
+import {DarkBlueButton} from "../../style/GlobalButtons";
+import {useHistory} from "react-router";
 
 const ProfileWrapper = styled.div`
   width: ${rem("544px")};
@@ -95,6 +95,7 @@ const DetailTitle = styled.div`
     font-weight: 600;
     font-size: 14px;
     line-height: 24px;
+    text-decoration: none;
   }
 `;
 
@@ -102,48 +103,54 @@ const EditProfileBtn = styled(DarkBlueButton)`
   align-self: center;
 `;
 
-const SeekerProfileCard = ({ authReducer: { userObj }, dispatch }) => {
-  const { push } = useHistory();
-  useEffect(() => {
-    dispatch(getLoggedInUserAction());
-  }, [dispatch]);
+const SeekerProfileCard = ({authReducer: {userObj}, dispatch}) => {
+    const {push} = useHistory();
+    useEffect(() => {
+        dispatch(getLoggedInUserAction());
+    }, [dispatch]);
 
-  const onClickHandler = (event) => {
-    push("/editseeker");
-  };
+    const onClickHandler = (event) => {
+        push("/editseeker");
+    };
 
-  return (
-    <>
-      {userObj ? (
-        <ProfileWrapper>
-          <UpperContainer>
-            <ProfilePicPlaceholder>
-              <img src={userObj.logo ? userObj.logo : profilePic} alt={"logo"} />
-            </ProfilePicPlaceholder>
-            <NameContainer>{userObj.name}</NameContainer>
-            <CityContainer> {userObj.country}</CityContainer>
-          </UpperContainer>
-          <BottomContainer>
-            <DetailTitlesContainer>
-              <DetailTitle>
-                Address: {userObj.street}, {userObj.country}
-              </DetailTitle>
-              <DetailTitle>Website: <a href={userObj.website}> {userObj.website}</a></DetailTitle>
-              <DetailTitle>Phone: {userObj.phone}</DetailTitle>
-              <DetailTitle>Email: {userObj.email}</DetailTitle>
-            </DetailTitlesContainer>
-          </BottomContainer>
-          <EditProfileBtn onClick={onClickHandler}>Edit Profile</EditProfileBtn>
-        </ProfileWrapper>
-      ) : null}
-    </>
-  );
+    return (
+        <>
+            {userObj ? (
+                <ProfileWrapper>
+                    <UpperContainer>
+                        <ProfilePicPlaceholder>
+                            <img src={userObj.logo ? userObj.logo : profilePic} alt={"logo"}/>
+                        </ProfilePicPlaceholder>
+                        <NameContainer>{userObj.name}</NameContainer>
+                        <CityContainer> {userObj.country}</CityContainer>
+                    </UpperContainer>
+                    <BottomContainer>
+                        <DetailTitlesContainer>
+                            <DetailTitle>
+                                Address: {userObj.street}, {userObj.country}
+                            </DetailTitle>
+                            <DetailTitle>
+                                Website: <a href={userObj.website}>{userObj.website}</a>
+                            </DetailTitle>
+                            <DetailTitle>
+                                Phone: {userObj.phone}
+                            </DetailTitle>
+                            <DetailTitle>
+                                Email: {userObj.email}
+                            </DetailTitle>
+                        </DetailTitlesContainer>
+                    </BottomContainer>
+                    <EditProfileBtn onClick={onClickHandler}>Edit Profile</EditProfileBtn>
+                </ProfileWrapper>
+            ) : null}
+        </>
+    );
 };
 
 const mapStateToProps = (state) => {
-  return {
-    authReducer: state.authReducer,
-  };
+    return {
+        authReducer: state.authReducer,
+    };
 };
 
 export default connect(mapStateToProps)(SeekerProfileCard);

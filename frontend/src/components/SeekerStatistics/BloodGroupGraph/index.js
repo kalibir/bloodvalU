@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Polar} from "react-chartjs-2";
+import {Doughnut} from "react-chartjs-2";
 import styled from "styled-components";
 import {BaseChartWrapper} from "../../../style/GlobalWrappers";
 import {ChartTitle} from "../../../style/GlobalTitles";
@@ -75,7 +75,7 @@ const BloodGroupGraph = ({statistics}) => {
     return (
         <Wrapper>
             <ChartTitle>Average Donor Blood Type</ChartTitle>
-            {state ? <Polar data={state}/> : null}
+            {state ? <Doughnut data={state}/> : null}
         </Wrapper>)
 }
 

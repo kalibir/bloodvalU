@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Pie} from "react-chartjs-2";
+import {Polar} from "react-chartjs-2";
 import styled from "styled-components";
 import {BaseChartWrapper} from "../../../style/GlobalWrappers";
 import {ChartTitle} from "../../../style/GlobalTitles";
@@ -51,7 +51,7 @@ const GenderGraph = ({statistics}) => {
     return (
         <Wrapper>
             <ChartTitle>Gender Demographic</ChartTitle>
-            {state ? <Pie data={state}/> : null}
+            {state ? <Polar data={state}/> : null}
         </Wrapper>)
 }
 
