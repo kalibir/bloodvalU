@@ -315,7 +315,7 @@ const GenericDonorRequestBar = ({
                                 showSeeker ? {animationDirection: "normal"} : {animationDirection: "reverse"}
                             }>
                             <SeekerInfoHeader>
-                                <CompanyName onClick={handleSendToMap}>{name}</CompanyName>
+                                <Tooltip title="Show on map" arrow><CompanyName onClick={handleSendToMap}>{name}</CompanyName></Tooltip>
                                 <RequestPoints>{points_value} pts</RequestPoints>
                             </SeekerInfoHeader>
                             <SeekerInfoBodyWrapper>

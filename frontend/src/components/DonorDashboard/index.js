@@ -218,6 +218,26 @@ const TestContent = styled.div`
   height: 100%;
   ${(props) => (props.active ? "" : "display:none")}
 `
+
+const RequestCountDown = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffa2a2;
+  color: orangered;
+  font-weight: 500;
+  width: 100%;
+  height: 48px;
+  border-radius: 4px;
+  margin-bottom: 38px;
+`
+
+const DaysLeftText = styled(PointsText)`
+  text-shadow: 2px 0 0 darkred, -2px 0 0 darkred, 0 2px 0 darkred, 0 -2px 0 darkred, 1px 1px darkred, -1px -1px 0 darkred, 1px -1px 0 darkred, -1px 1px 0 darkred;
+  color: white;
+`
+
+
 const DonorDashboard = ({
                             dispatch,
                             userProfileReducer: {offeredTests, requests, appliedRequests},
@@ -243,14 +263,16 @@ const DonorDashboard = ({
             setSearchParams(value);
         };
 
-        useEffect(() => {
-            // get Requests and tests
-            dispatch(getAllRequestsAction()); // This gets all requests
-            dispatch(searchAllRequestsAndTestsAction("", "tests")); //This gets all offered tests
-            dispatch(getLoggedInUserAction());
-        }, [dispatch]);
-
-        const handleFilterTests = () => {
+    useEffect(() => {
+        // get Requests and tests
+        dispatch(getAllRequestsAction()); // This gets all requests
+        dispatch(searchAllRequestsAndTestsAction("", "tests")); //This gets all offered tests
+        dispatch(getLoggedInUserAction());
+    }, [dispatch]);
+    let today = new Date()
+    let next = new Date(userObj.next_donation)
+    let diff = Math.floor(((((Math.abs(today - next))/1000)/60)/60)/24)
+    const handleFilterTests = () => {
             return offeredTests.map((test, index) => {
                 if (
                     test.seeker.name.toLowerCase().includes(searchParams) ||
@@ -299,22 +321,22 @@ const DonorDashboard = ({
             });
         }
 
-        return (
-            <PageContainer>
-                <PageWrapper>
-                    <LeftSide>
-                        <DashboardContentContainer>
-                            <MenuContainer>
-                                <SideButton id="requests" onClick={handleClick} active={active === "requests"}>
-                                    All requests
-                                </SideButton>
-                                <MiddleButton id="applied" onClick={handleClick} active={active === "applied"}>
-                                    Applied
-                                </MiddleButton>
-                                <SideButton id="tests" onClick={handleClick} active={active === "tests"}>
-                                    Points menu
-                                </SideButton>
-                            </MenuContainer>
+    return (
+        <PageContainer>
+            <PageWrapper>
+                <LeftSide>
+                    <DashboardContentContainer>
+                        <MenuContainer>
+                            <SideButton id="requests" onClick={handleClick} active={active === "requests"}>
+                                All requests
+                            </SideButton>
+                            <MiddleButton id="applied" onClick={handleClick} active={active === "applied"}>
+                                Applied
+                            </MiddleButton>
+                            <SideButton id="tests" onClick={handleClick} active={active === "tests"}>
+                                Points menu
+                            </SideButton>
+                        </MenuContainer>
 
                             <SearchFormContainer onSubmit={handleSearch}>
                                 <SearchInput onChange={handleSearchInput} value={searchParams}
@@ -342,30 +364,34 @@ const DonorDashboard = ({
                             </TestContent>
                             <Content name={"all"} active={active === "requests"}>
 
-                                <RequestContainer>
-                                    {requests ? (
-                                        handleFilterRequests()
-                                    ) : (
-                                        <SpinnerContainer>
-                                            <Spinner/>
-                                        </SpinnerContainer>
-                                    )}
-                                </RequestContainer>
+                            <RequestContainer>
+                                {diff <= 0 ?
+                                    requests ? (
+                                    handleFilterRequests()
+                                ) : (
+                                    <SpinnerContainer>
+                                        <Spinner/>
+                                    </SpinnerContainer>
+                                ) :
+                                    <RequestCountDown><DaysLeftText>{diff} days until next donation.</DaysLeftText></RequestCountDown>}
+                            </RequestContainer>
 
-                            </Content>
-                            <Content active={active === "applied"}>
-                                <div>
-                                    {requests ? (
-                                        handleFilterAppliedRequests()
-                                    ) : (
-                                        <SpinnerContainer>
-                                            <Spinner/>
-                                        </SpinnerContainer>
-                                    )}
-                                </div>
-                            </Content>
-                        </DashboardContentContainer>
-                    </LeftSide>
+                        </Content>
+                        <Content active={active === "applied"}>
+                            <div>
+                                {diff <= 0 ?
+                                    requests ? (
+                                    handleFilterAppliedRequests()
+                                ) : (
+                                    <SpinnerContainer>
+                                        <Spinner/>
+                                    </SpinnerContainer>
+                                ) :
+                                    <RequestCountDown><DaysLeftText>{diff} days until next donation.</DaysLeftText></RequestCountDown>}
+                            </div>
+                        </Content>
+                    </DashboardContentContainer>
+                </LeftSide>
 
                     <RightSide>{userObj ? <DonorProfileCardWide userObj={userObj}/> : null}</RightSide>
                 </PageWrapper>
