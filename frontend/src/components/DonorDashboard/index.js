@@ -214,6 +214,22 @@ const Content = styled.div`
   height: 100%;
   ${(props) => (props.active ? "" : "display:none")}
 `
+
+const RequestCountDown = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffa2a2;
+  color: orangered;
+  font-weight: 500;
+  width: 100%;
+  height: 48px;
+  border-radius: 4px;
+  margin-bottom: 38px;
+`
+
+
+
 const DonorDashboard = ({
                             dispatch,
                             userProfileReducer: {offeredTests, requests, appliedRequests},
@@ -245,7 +261,11 @@ const DonorDashboard = ({
         dispatch(searchAllRequestsAndTestsAction("", "tests")); //This gets all offered tests
         dispatch(getLoggedInUserAction());
     }, [dispatch]);
-
+    console.log("user time", userObj.next_donation)
+    let today = new Date()
+    let next = new Date(userObj.next_donation)
+    let diff = Math.floor(((((Math.abs(today - next))/1000)/60)/60)/24)
+    console.log("is it yet?", diff <= 0)
     return (
         <PageContainer>
             <PageWrapper>
@@ -294,7 +314,8 @@ const DonorDashboard = ({
                         <Content active={active === "requests"}>
 
                             <RequestContainer>
-                                {requests ? (
+                                {diff <= 0 ?
+                                    requests ? (
                                     requests.map((request, index) => {
                                         if (userObj && bloodGroupTest(userObj.blood_group, request))
                                             return <GenericDonorRequestBar key={index} request={request}/>;
@@ -303,13 +324,16 @@ const DonorDashboard = ({
                                     <SpinnerContainer>
                                         <Spinner/>
                                     </SpinnerContainer>
-                                )}
+                                ) :
+                                    <RequestCountDown>{diff} days until next donation.</RequestCountDown>
+                                }
                             </RequestContainer>
 
                         </Content>
                         <Content active={active === "applied"}>
                             <div>
-                                {requests ? (
+                                {diff <= 0 ?
+                                    requests ? (
                                     requests.map((request, index) => {
                                         if (request.logged_in_donor_applied) return <GenericDonorRequestBar key={index}
                                                                                                             request={request}/>;
@@ -318,7 +342,9 @@ const DonorDashboard = ({
                                     <SpinnerContainer>
                                         <Spinner/>
                                     </SpinnerContainer>
-                                )}
+                                ) :
+                                    <RequestCountDown>{diff} days until next donation.</RequestCountDown>
+                                }
                             </div>
                         </Content>
                     </DashboardContentContainer>
