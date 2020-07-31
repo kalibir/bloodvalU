@@ -232,6 +232,10 @@ const RequestCountDown = styled.div`
   margin-bottom: 38px;
 `
 
+const DaysLeftText = styled(PointsText)`
+  text-shadow: 2px 0 0 darkred, -2px 0 0 darkred, 0 2px 0 darkred, 0 -2px 0 darkred, 1px 1px darkred, -1px -1px 0 darkred, 1px -1px 0 darkred, -1px 1px 0 darkred;
+  color: white;
+`
 
 
 const DonorDashboard = ({
@@ -369,7 +373,7 @@ const DonorDashboard = ({
                                         <Spinner/>
                                     </SpinnerContainer>
                                 ) :
-                                    <RequestCountDown>{diff} days until next donation.</RequestCountDown>}
+                                    <RequestCountDown><DaysLeftText>{diff} days until next donation.</DaysLeftText></RequestCountDown>}
                             </RequestContainer>
 
                         </Content>
@@ -383,7 +387,7 @@ const DonorDashboard = ({
                                         <Spinner/>
                                     </SpinnerContainer>
                                 ) :
-                                    <RequestCountDown>{diff} days until next donation.</RequestCountDown>}
+                                    <RequestCountDown><DaysLeftText>{diff} days until next donation.</DaysLeftText></RequestCountDown>}
                             </div>
                         </Content>
                     </DashboardContentContainer>
