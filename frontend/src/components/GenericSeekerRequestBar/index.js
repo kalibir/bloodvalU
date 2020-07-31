@@ -162,6 +162,10 @@ export const DonorSubBar = styled.div`
   padding-right: 27px;
   cursor: pointer;
   color: white;
+  
+  :hover {
+    background: #586786;
+  }
 `;
 
 const slideAnimation = keyframes`
@@ -175,6 +179,11 @@ const SlidingContainer = styled.div`
 
 const DonorSelectedBar = styled(DonorSubBar)`
   background: #43a047;
+  
+  :hover {
+    background: #348234;
+  }
+  
 `;
 
 const DonorNotSelected = styled(DonorSubBar)`
